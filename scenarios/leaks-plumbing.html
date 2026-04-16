@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I have a leak or plumbing problem — Tenant Triage NYC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../lookup.css">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f3ef;
+      --bg-elevated: #fafaf8;
+      --ink: #111111;
+      --ink-soft: #3d3d3d;
+      --ink-faded: #6b6b6b;
+      --rule: #e6e4df;
+      --rule-strong: #c9c5bc;
+
+      --accent: #0d7377;
+      --accent-deep: #08494c;
+      --accent-soft: #e3f0f0;
+      --accent-bright: #5eb6b9;
+
+      --protect: #2a4a7f;
+      --protect-soft: #eaeff7;
+      --warning-ink: #7a3a0a;
+      --warning-bg: #fff4e6;
+      --warning-rule: #e8a35a;
+
+      --code-bg: #f3f1ec;
+      --code-rule: #d9d5ca;
+      --quote-bar: #c9c5bc;
+
+      --measure: 38rem;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--accent); width: 0%; z-index: 1000;
+      transition: width 0.05s linear;
+    }
+
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem 1.5rem;
+      background: var(--bg);
+    }
+    .site-header-inner {
+      max-width: 64rem; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .wordmark {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      text-decoration: none; color: var(--ink);
+    }
+    .wordmark-main {
+      font-weight: 900; font-size: 1.375rem;
+      letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
+    }
+    .wordmark-accent {
+      font-weight: 500; font-size: 0.95rem;
+      color: var(--accent); letter-spacing: 0.01em;
+    }
+    .site-nav {
+      display: flex; gap: 1.75rem;
+      font-size: 0.875rem; color: var(--ink); font-weight: 500;
+    }
+    .site-nav a {
+      color: inherit; text-decoration: none;
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .site-nav a:hover { border-bottom-color: var(--accent); }
+
+    article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+      font-size: 0.875rem;
+    }
+    .breadcrumbs a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.25rem 0;
+      border-bottom: 1px solid var(--rule-strong);
+      transition: all 0.15s ease;
+    }
+    .breadcrumbs a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .breadcrumbs .sep {
+      color: var(--ink-faded);
+      font-weight: 400;
+    }
+    .breadcrumbs .current {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: clamp(2.25rem, 5.5vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+
+    .reading-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+      padding: 0.35rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .reading-label svg {
+      width: 12px; height: 12px;
+      stroke: currentColor; fill: none; stroke-width: 2.5;
+    }
+
+    .standfirst {
+      font-weight: 400;
+      font-size: 1.1875rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin-bottom: 2rem;
+      max-width: 36rem;
+    }
+
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 1.5rem;
+      padding: 0.875rem 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.8125rem; color: var(--ink-faded);
+      margin-bottom: 2.5rem;
+    }
+    .meta-item { display: flex; align-items: center; gap: 0.4rem; }
+    .meta-item svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .meta-item strong { color: var(--ink); font-weight: 600; }
+    .meta-item a {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    p { margin-bottom: 1.25rem; color: var(--ink); }
+    p strong { font-weight: 600; }
+
+    a.inline-link {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: background 0.15s ease;
+    }
+    a.inline-link:hover { background: var(--accent-soft); }
+
+    h2 {
+      font-weight: 800;
+      font-size: 1.625rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-top: 3.5rem;
+      margin-bottom: 1.25rem;
+      color: var(--ink);
+    }
+
+    .sub-label {
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--ink);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .read-first {
+      background: var(--bg-soft);
+      border-left: 4px solid var(--ink);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+    .read-first p { margin-bottom: 0.75rem; font-size: 0.9375rem; }
+    .read-first p:last-child { margin-bottom: 0; }
+    .read-first strong { color: var(--ink); font-weight: 700; }
+
+    .rights-box {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 1.75rem 2rem;
+      margin: 2rem 0;
+    }
+    .rights-box .rights-label {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #d4d2cc;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .rights-box h3 {
+      font-weight: 800; font-size: 1.375rem;
+      letter-spacing: -0.015em; color: var(--bg);
+      margin-bottom: 0.75rem;
+    }
+    .rights-box p { color: var(--bg); font-size: 0.9375rem; margin-bottom: 0.75rem; }
+    .rights-box ul { list-style: none; padding: 0; margin-top: 0.75rem; }
+    .rights-box li {
+      position: relative; padding-left: 1.5rem; margin-bottom: 0.6rem;
+      font-size: 0.9375rem; color: var(--bg);
+    }
+    .rights-box li::before {
+      content: "\2192"; position: absolute; left: 0;
+      color: var(--accent-bright); font-weight: 700;
+    }
+    .rights-box .source {
+      font-size: 0.75rem; color: #b8b6b1;
+      margin-top: 1rem; margin-bottom: 0;
+    }
+
+    .severity-table {
+      margin: 1rem 0 0.5rem;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .severity-table th,
+    .severity-table td {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid #2c2c2c;
+      color: var(--bg);
+    }
+    .severity-table th {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #d4d2cc;
+      border-bottom-color: #4a4a4a;
+    }
+    .severity-table tr:last-child td { border-bottom: none; }
+    .severity-table .class-cell { font-weight: 700; color: var(--accent-bright); }
+
+    /* SEVERITY PICKER */
+    .severity-picker {
+      margin: 2rem 0 2.5rem;
+      padding: 1.5rem;
+      background: var(--bg-soft);
+      border: 2px solid var(--ink);
+    }
+    .severity-picker-header {
+      margin-bottom: 1rem;
+    }
+    .severity-picker-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .severity-picker-title {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .severity-picker-help {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+    }
+    .severity-options {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .severity-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.875rem;
+      padding: 0.875rem 1rem;
+      background: var(--bg);
+      border: 1.5px solid var(--rule-strong);
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: all 0.12s ease;
+      width: 100%;
+    }
+    .severity-option:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .severity-option.active {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .severity-option-marker {
+      flex-shrink: 0;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 1.5px solid var(--rule-strong);
+      border-radius: 100px;
+      margin-top: 0.15rem;
+      position: relative;
+      transition: all 0.12s ease;
+    }
+    .severity-option:hover .severity-option-marker {
+      border-color: var(--accent);
+    }
+    .severity-option.active .severity-option-marker {
+      border-color: var(--bg);
+      background: var(--bg);
+    }
+    .severity-option.active .severity-option-marker::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      background: var(--ink);
+      border-radius: 100px;
+    }
+    .severity-option-text {
+      flex: 1;
+    }
+    .severity-option-name {
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+    .severity-option.active .severity-option-name { color: var(--bg); }
+    .severity-option-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      display: block;
+    }
+    .severity-option.active .severity-option-desc { color: #c9c5bc; }
+
+    .severity-context {
+      margin: 1.5rem 0 2.5rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      display: none;
+    }
+    .severity-context.visible {
+      display: block;
+    }
+    .severity-context-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .severity-context h3 {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+    .severity-context p {
+      font-size: 0.9375rem;
+      margin-bottom: 0.5rem;
+    }
+    .severity-context p:last-child { margin-bottom: 0; }
+    .severity-context .key-fact {
+      display: block;
+      padding: 0.75rem 0;
+      border-top: 1px solid rgba(13, 115, 119, 0.2);
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+    }
+    .severity-context .key-fact strong {
+      color: var(--accent-deep);
+    }
+
+    .step {
+      margin: 3rem 0;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .step-header { margin-bottom: 1.25rem; }
+    .step-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .step-number {
+      font-weight: 800; font-size: 0.75rem;
+      letter-spacing: 0.08em; color: var(--accent);
+      text-transform: uppercase;
+    }
+    .time-chip {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.75rem; font-weight: 500;
+      color: var(--ink-soft); background: var(--bg-soft);
+      padding: 0.25rem 0.6rem; border-radius: 100px;
+    }
+    .time-chip svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .step-title {
+      font-weight: 800; font-size: 1.625rem;
+      line-height: 1.2; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0;
+    }
+
+    .why-this-matters {
+      color: var(--ink-soft);
+      border-left: 3px solid var(--rule-strong);
+      padding-left: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+
+    .step ol, .step ul { margin-bottom: 1.25rem; padding-left: 1.25rem; }
+    .step li { margin-bottom: 0.6rem; }
+
+    /* Template box */
+    .template {
+      background: var(--code-bg);
+      border: 1px solid var(--code-rule);
+      border-left: 4px solid var(--ink);
+      margin: 1rem 0 1.5rem;
+      position: relative;
+    }
+    .template-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 1rem 0.6rem 1.25rem;
+      border-bottom: 1px solid var(--code-rule);
+      background: rgba(0,0,0,0.025);
+    }
+    .template-label {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink);
+    }
+    .template-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: inherit; font-size: 0.75rem; font-weight: 600;
+      color: var(--ink); background: var(--bg);
+      border: 1px solid var(--ink);
+      padding: 0.35rem 0.75rem;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .copy-btn:hover { background: var(--ink); color: var(--bg); }
+    .copy-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .copy-btn.copied { background: var(--ink); color: var(--bg); }
+    .template-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+      font-size: 0.9375rem; line-height: 1.65;
+      color: var(--ink);
+    }
+    .template-body p { margin-bottom: 0.75rem; color: var(--ink); }
+    .template-body p:last-child { margin-bottom: 0; }
+
+    .fill {
+      display: inline-block;
+      font-family: inherit; font-size: inherit; font-weight: 500;
+      color: var(--accent-deep); background: var(--bg);
+      border: none; border-bottom: 1.5px dashed var(--accent);
+      padding: 0 0.25rem; margin: 0 1px;
+      min-width: 4rem; max-width: 100%;
+      line-height: 1.4;
+      transition: background 0.12s ease;
+    }
+    .fill::placeholder {
+      color: var(--accent); font-style: italic;
+      font-weight: 400; opacity: 0.65;
+    }
+    .fill:focus {
+      outline: none;
+      background: var(--accent-soft);
+      border-bottom-color: var(--accent-deep);
+      border-bottom-style: solid;
+    }
+    .fill.has-value {
+      border-bottom-style: solid;
+      border-bottom-color: var(--ink);
+      color: var(--ink);
+    }
+
+    /* Spoken script box */
+    .spoken {
+      margin: 1rem 0 1.5rem;
+      padding: 1rem 0 1rem 1.5rem;
+      border-left: 4px solid var(--quote-bar);
+      position: relative;
+    }
+    .spoken-label {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.6rem;
+    }
+    .spoken-label svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .spoken-body {
+      font-size: 1.0625rem; line-height: 1.65;
+      color: var(--ink); font-weight: 400;
+    }
+    .spoken-body p { margin-bottom: 0.6rem; }
+    .spoken-body p:last-child { margin-bottom: 0; }
+
+    .spoken .fill {
+      font-size: 1.0625rem;
+      font-weight: 500;
+      color: var(--accent-deep);
+      border-bottom-width: 2px;
+      padding: 0 0.3rem;
+      min-width: 5rem;
+    }
+    .spoken .fill::placeholder {
+      font-size: 1rem;
+    }
+    .spoken .fill.has-value {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .spoken-hint {
+      display: block; margin-top: 0.75rem;
+      font-size: 0.8125rem; color: var(--ink-faded);
+      font-style: italic;
+    }
+
+    /* Reference number capture */
+    .ref-capture {
+      background: var(--bg-soft);
+      border: 1px solid var(--rule-strong);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .ref-capture-label {
+      font-weight: 600; font-size: 0.9375rem;
+      color: var(--ink); flex: 1 1 auto;
+    }
+    .ref-capture input {
+      font-family: inherit; font-size: 1rem; font-weight: 600;
+      color: var(--ink); background: var(--bg);
+      border: 1.5px solid var(--ink);
+      padding: 0.5rem 0.75rem;
+      width: 14rem; max-width: 100%;
+    }
+    .ref-capture input::placeholder { font-weight: 400; color: var(--ink-faded); }
+    .ref-capture input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+    .ref-recall {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.9375rem;
+    }
+    .ref-recall .label {
+      display: block;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 0.25rem;
+    }
+    .ref-recall .number {
+      font-size: 1.125rem; font-weight: 700; color: var(--ink);
+    }
+    .ref-recall .empty {
+      color: var(--ink-faded);
+      font-weight: 400; font-style: italic;
+      font-size: 0.9375rem;
+    }
+
+    /* Callouts */
+    .callout {
+      margin: 2.5rem 0;
+      padding: 1.75rem 2rem;
+      position: relative;
+    }
+    .callout-protect {
+      background: var(--protect-soft);
+      border-left: 4px solid var(--protect);
+    }
+    .callout-warning {
+      background: var(--warning-bg);
+      border-left: 4px solid var(--warning-rule);
+    }
+    .callout-label {
+      font-size: 0.7rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      margin-bottom: 0.5rem; display: block;
+    }
+    .callout-protect .callout-label { color: var(--protect); }
+    .callout-warning .callout-label { color: var(--warning-ink); }
+
+    .callout h3 {
+      margin-top: 0; margin-bottom: 0.75rem;
+      font-weight: 800; font-size: 1.25rem;
+      letter-spacing: -0.015em; color: var(--ink);
+    }
+    .callout p { font-size: 0.9375rem; margin-bottom: 0.85rem; }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout strong { font-weight: 700; color: var(--ink); }
+    .callout ul { margin: 0.75rem 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    .callout li { margin-bottom: 0.5rem; }
+    .callout .resource-list { list-style: none; padding-left: 0; }
+    .callout .resource-list li { padding-left: 1.25rem; position: relative; }
+    .callout .resource-list li::before {
+      content: "\2022"; position: absolute; left: 0; font-weight: 700;
+    }
+    .callout-protect .resource-list li::before { color: var(--protect); }
+    .callout .sub-label { color: var(--ink); }
+
+    .draft-flag {
+      display: inline-block;
+      font-size: 0.65rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--ink); color: var(--bg);
+      padding: 0.25rem 0.55rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .help-list { list-style: none; padding: 0; margin: 1rem 0 2rem; }
+    .help-list li {
+      padding: 1.125rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .help-list li:last-child { border-bottom: none; }
+    .help-list .name {
+      font-weight: 700; color: var(--ink);
+      display: block; margin-bottom: 0.2rem; font-size: 1rem;
+    }
+    .help-list .phone {
+      font-weight: 700; color: var(--accent-deep);
+      font-size: 1.125rem; letter-spacing: -0.005em;
+    }
+    .help-list .desc {
+      display: block; font-size: 0.875rem;
+      color: var(--ink-soft); margin-top: 0.2rem;
+    }
+
+    .related {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .related-grid { display: grid; gap: 0.5rem; margin-top: 1rem; }
+    .related-link {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      background: var(--bg);
+      border: 1px solid var(--rule-strong);
+      text-decoration: none; color: var(--ink);
+      transition: all 0.15s ease;
+      font-size: 0.9375rem; font-weight: 500;
+    }
+    .related-link:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+    }
+    .related-link::after {
+      content: "\2192"; margin-left: auto;
+      color: var(--accent); font-weight: 700;
+    }
+
+    .sources {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      font-size: 0.8125rem; color: var(--ink-faded);
+    }
+    .sources h3 {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--ink); margin-bottom: 0.75rem;
+    }
+    .sources ul { list-style: none; padding: 0; }
+    .sources li { margin-bottom: 0.4rem; }
+    .sources a {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--rule-strong);
+    }
+    .verified {
+      margin-top: 1.25rem; padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .disclaimer {
+      margin-top: 2.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-soft);
+      border: 1px dashed var(--rule-strong);
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .disclaimer strong { color: var(--ink); font-weight: 700; }
+
+    .verify-tag {
+      display: inline-block;
+      background: #c8292e;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      margin: 0 0.15rem;
+      vertical-align: baseline;
+      font-style: normal;
+    }
+    .verify-tag::before { content: "\2691 "; }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(150%);
+      background: var(--ink); color: var(--bg);
+      padding: 0.875rem 1.5rem;
+      font-size: 0.875rem; font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media print {
+      .progress-bar, .site-header, .related, .meta-item.print-hide, .copy-btn, .toast { display: none; }
+      body { background: white; }
+      .fill { border-bottom: 1px solid #999; }
+    }
+
+    @media (max-width: 600px) {
+      article { padding: 2rem 1.25rem 4rem; }
+      h1 { font-size: 2.25rem; }
+      .step-title { font-size: 1.375rem; }
+      .template-header { flex-wrap: wrap; gap: 0.5rem; }
+      .ref-capture { flex-direction: column; align-items: stretch; }
+      .ref-capture input { width: 100%; }
+      .severity-table { font-size: 0.8125rem; }
+      .severity-table th, .severity-table td { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" id="progress"></div>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="wordmark">
+        <span class="wordmark-main">Tenant Triage</span>
+        <span class="wordmark-accent">NYC</span>
+      </a>
+      <nav class="site-nav">
+        <a href="../index.html">All scenarios</a>
+        <a href="#">About</a>
+        <a href="#">Free help</a>
+      </nav>
+    </div>
+  </header>
+
+  <article>
+
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">All scenarios</a>
+      <span class="sep">/</span>
+      <a href="#">Repairs not being made</a>
+      <span class="sep">/</span>
+      <span class="current">Leaks &amp; plumbing</span>
+    </nav>
+
+    <span class="reading-label">
+      <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Leak &amp; plumbing guide
+    </span>
+
+    <h1>I have a leak or plumbing problem.</h1>
+
+    <p class="standfirst">A clear, step-by-step plan for making your landlord fix the leak &mdash; not just send someone to look at it and leave.</p>
+
+    <div class="meta">
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span><strong>10 min</strong> read</span>
+      </span>
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span>Last verified <strong>April 16, 2026</strong></span>
+      </span>
+      <span class="meta-item print-hide">
+        <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+        <a href="#" onclick="window.print(); return false;">Print this page</a>
+      </span>
+    </div>
+
+    <div class="read-first">
+      <p>Leaks are one of the most common &mdash; and most damaging &mdash; apartment problems in NYC. A small drip can seem like a minor nuisance until it destroys a ceiling, causes mold, or ruins your belongings. Your landlord is legally required to maintain all plumbing in good working order, and the city takes water leaks seriously because of the damage they cause.</p>
+      <p><strong>You can choose your situation below to see what applies most to you</strong>, or read the full page to understand the complete picture. Most tenants only need the first two or three steps.</p>
+      <p><strong>Treat this as an emergency if:</strong> water is actively pouring in, you have no running water, there's a sewage backup, or the leak is near electrical wiring or outlets. If there's a risk of electrocution or flooding, call <strong>911</strong> first.</p>
+    </div>
+
+    <div class="rights-box">
+      <span class="rights-label">Know your rights</span>
+      <h3>What NYC law requires</h3>
+      <p>Under the NYC Housing Maintenance Code, your landlord must maintain all plumbing, water supply, and drainage in good working order. The severity of the HPD violation depends on the problem:</p>
+
+      <table class="severity-table">
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Condition</th>
+            <th>Time to fix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="class-cell">C</td>
+            <td>No running water, sewage backup, major active leak</td>
+            <td>24 hours</td>
+          </tr>
+          <tr>
+            <td class="class-cell">B</td>
+            <td>Leaking pipe or fixture, slow drain, minor plumbing defect</td>
+            <td>30 days</td>
+          </tr>
+          <tr>
+            <td class="class-cell">A</td>
+            <td>Minor drip or cosmetic plumbing issue</td>
+            <td>90 days</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top: 1rem;">Your landlord must also provide <strong>hot and cold running water at all times</strong> (<a href="heat-hot-water.html" style="color: var(--accent-bright); text-decoration: none; border-bottom: 1px solid var(--accent-bright);">no hot water? see that guide</a>), and maintain all pipes, faucets, toilets, and drains. If a leak is coming from another apartment or a building system (like the roof or a shared pipe), that's still your landlord's responsibility to fix &mdash; not yours, and not your neighbor's.</p>
+      <p class="source">Source: NYC Housing Maintenance Code &sect;&sect; 27-2005, 27-2025 through 27-2032</p>
+    </div>
+
+    <!-- SEVERITY PICKER -->
+    <div class="severity-picker">
+      <div class="severity-picker-header">
+        <span class="severity-picker-label">Tailor this guide</span>
+        <h3 class="severity-picker-title">What kind of leak or plumbing problem do you have?</h3>
+        <p class="severity-picker-help">Different problems have different urgency levels and different violation classes. Pick what you're dealing with, or choose "show me everything" to see the full guide.</p>
+      </div>
+      <div class="severity-options" role="radiogroup" aria-label="Leak type">
+        <button class="severity-option" data-severity="active" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Active leak from ceiling, wall, or pipe</span>
+            <span class="severity-option-desc">Water is coming in and causing damage. Typically Class B or C depending on severity.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="nowater" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">No running water or very low pressure</span>
+            <span class="severity-option-desc">Class C &mdash; immediately hazardous. Your landlord has 24 hours once a violation is issued.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="drain" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Clogged or slow drain, toilet won't flush</span>
+            <span class="severity-option-desc">Class B or C depending on whether it's backed up or just slow.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="fixture" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Leaky faucet, running toilet, dripping pipe</span>
+            <span class="severity-option-desc">Ongoing drip that won't stop. Typically Class B, 30 days to fix.</span>
+          </span>
+        </button>
+        <button class="severity-option active" data-severity="all" role="radio" aria-checked="true">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">I'm not sure &mdash; show me everything</span>
+            <span class="severity-option-desc">Default. See the full guide so you can figure it out as you go.</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Severity context banner -->
+    <div class="severity-context" id="severity-context">
+      <span class="severity-context-label">For your situation</span>
+      <h3 id="severity-context-title">Active leak</h3>
+      <div id="severity-context-body">
+        <p>Placeholder</p>
+      </div>
+    </div>
+
+    <!-- HPDONLINE LEVERAGE CALLOUT -->
+    <aside class="callout callout-protect">
+      <span class="callout-label">Before you start: look up your building</span>
+      <h3>Check HPDOnline first. You might already have leverage.</h3>
+      <p>Before you message your landlord, spend two minutes on <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link">HPDOnline</a>. Enter your building's address and look at the "Violations" tab. You're looking for:</p>
+      <ul>
+        <li><strong>Existing plumbing or leak violations on the building</strong> &mdash; open or closed. A history of leak violations tells you whether the problem is building-wide and whether your landlord has been ignoring the plumbing for years.</li>
+        <li><strong>Mold violations tied to water damage</strong> &mdash; leaks cause mold. If there are mold violations in the building, the landlord already knows there's a water problem and has been cited for not fixing it.</li>
+        <li><strong>Violations that were falsely certified as corrected</strong> &mdash; a pattern of false certifications tells you what kind of landlord you're dealing with.</li>
+      </ul>
+      <p>Walk into your conversation with the landlord already knowing what's on record. Reference specific violations in your written complaint. It changes the dynamic completely.</p>
+
+      <!-- ADDRESS LOOKUP COMPONENT -->
+      <section class="lookup" id="lookup">
+        <span class="lookup-label">Look it up now</span>
+        <h4>Enter your address to check your building's violation history.</h4>
+        <p class="lookup-intro">HPD maintains a public database of every housing code violation ever issued in NYC. See what's on record for your building without leaving this page.</p>
+        <div class="lookup-input-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
+          <div class="lookup-suggestions" id="lookup-suggestions"></div>
+        </div>
+        <div class="lookup-status" id="lookup-status"></div>
+        <div class="lookup-results" id="lookup-results"></div>
+        <div class="lookup-fallback" id="lookup-fallback" style="display: none;">
+          <strong>Having trouble?</strong> You can also look up your building directly on <a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">HPDOnline</a>.
+        </div>
+      </section>
+    </aside>
+
+    <h2>What to do, step by step</h2>
+
+    <!-- STEP 1: Document -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 1</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            10&ndash;15 min
+          </span>
+        </div>
+        <h3 class="step-title">Document the leak with photos and video.</h3>
+      </div>
+
+      <p class="why-this-matters">Leaks can be intermittent &mdash; they may stop by the time an inspector arrives. Your photos and video become the evidence that the leak exists, even if things look dry during the inspection. They also document the damage to your apartment and belongings, which matters if you later seek compensation.</p>
+
+      <span class="sub-label">How to do it</span>
+      <ol>
+        <li><strong>Take photos and video of the active leak.</strong> Capture the water coming in, dripping, or pooling. Video is especially powerful for leaks because it shows the rate and severity in a way photos can't.</li>
+        <li><strong>Photograph all damage.</strong> Water stains on ceilings and walls, peeling or bubbling paint, warped floors, damaged furniture or belongings. Include wide shots showing the room and close-ups showing the damage detail.</li>
+        <li><strong>Photograph the source if you can see it.</strong> A cracked pipe, dripping fixture, water stain spreading from the apartment above, damp patch growing on the ceiling. If the leak seems to be coming from outside your apartment (upstairs neighbor, roof, building pipe), photograph the area where it enters your space.</li>
+        <li><strong>Keep a running log.</strong> Every time the leak is active: date, time, severity (drip vs. stream vs. pouring), and how long it lasts. Note when it stops. This pattern is valuable &mdash; a leak that happens every time it rains tells you it's the roof; one that happens when the upstairs neighbor showers tells you it's their plumbing.</li>
+        <li><strong>Document any belongings that were damaged.</strong> Take photos of damaged items with context showing the water damage. Keep receipts if you have them &mdash; you may need these later.</li>
+      </ol>
+
+      <span class="sub-label">What to save</span>
+      <p>All photos and video, your written log, and any records of damaged belongings. Back everything up &mdash; email the files to yourself or save them to cloud storage. Don't risk losing them if your phone breaks.</p>
+    </section>
+
+    <!-- STEP 2: Notify landlord -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 2</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            10 min
+          </span>
+        </div>
+        <h3 class="step-title">Tell your landlord, in writing.</h3>
+      </div>
+
+      <p class="why-this-matters">Most landlords will respond to a written complaint about a leak &mdash; especially an active one &mdash; because water damage gets worse fast and they know it. Even if they don't respond, this letter creates the paper trail you need for everything that comes next. A text or a verbal complaint to your super is not enough &mdash; it has to be in writing, and you need a copy.</p>
+
+      <span class="sub-label">How to do it</span>
+      <ol>
+        <li>Write a short, factual message. Email is fine. If you don't have an email for them, send a letter by USPS Certified Mail with Return Receipt.</li>
+        <li>Be specific about where the leak is, how long it's been happening, and any damage it's causing.</li>
+        <li>If the leak appears to be coming from another apartment or a building system, say so. This makes clear it's the landlord's problem, not a neighbor dispute.</li>
+        <li>Attach photos if you're sending email.</li>
+        <li>Keep a copy of what you sent and any response.</li>
+      </ol>
+
+      <span class="sub-label">Email template &mdash; fill it in, then copy</span>
+      <div class="template" id="email-template">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email or letter
+          </span>
+          <button class="copy-btn" data-copy-target="email-template-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="email-template-content">
+          <p><strong>Subject:</strong> Water leak at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"></p>
+          <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26">,</p>
+          <p>I am writing to formally report a water leak in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22">. The leak is located in <input type="text" class="fill" data-field="location" placeholder="kitchen ceiling, bathroom wall, etc." size="32"> and has been ongoing since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">. The water appears to be coming from <input type="text" class="fill" data-field="source" placeholder="upstairs apartment, roof, pipe in wall, etc." size="32">.</p>
+          <p>The leak is causing <input type="text" class="fill" data-field="damage" placeholder="water stains, peeling paint, pooling water, damage to belongings, etc." size="48">. I have photographs and video documenting the condition and damage.</p>
+          <p>Under the NYC Housing Maintenance Code, you are required to maintain all plumbing in good working order and repair conditions causing water damage. Please arrange for inspection and repair immediately. If the problem is not addressed promptly, I will be filing a complaint with 311 and HPD.</p>
+          <p>Thank you,<br>
+          <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18"><br>
+          <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16"></p>
+        </div>
+      </div>
+
+      <span class="sub-label">What to expect</span>
+      <p>A responsive landlord will acknowledge your message within a day or two and arrange for a plumber to inspect. <strong>What to watch out for:</strong> a landlord who sends the super to "look at it" and then nothing happens, or who patches a visible stain without finding and fixing the source. A ceiling repaint is not a plumbing repair. If your landlord proposes a cosmetic fix or stops responding, move to Step&nbsp;3.</p>
+    </section>
+
+    <!-- STEP 3: 311 -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 3</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            5&ndash;15 min
+          </span>
+        </div>
+        <h3 class="step-title">File a 311 complaint.</h3>
+      </div>
+
+      <p class="why-this-matters">A 311 complaint triggers an HPD inspection. The inspector will check the leak, assess the damage, and classify the violation. For serious leaks (active water, no water supply, sewage), this is what puts legal pressure on your landlord with real deadlines.</p>
+
+      <span class="sub-label">How to do it &mdash; pick what's easiest</span>
+      <ul>
+        <li><strong>By phone:</strong> Call <strong>311</strong>. If you're deaf or hard of hearing, use TTY at <strong>(212) 504-4115</strong>.</li>
+        <li><strong>Online:</strong> Go to <a href="https://portal.311.nyc.gov/" class="inline-link">portal.311.nyc.gov</a> and search for "water leak" or "plumbing."</li>
+        <li><strong>Mobile app:</strong> Download the NYC 311 app (iOS or Android). The app lets you upload your photos directly.</li>
+      </ul>
+
+      <span class="sub-label">What to say on the phone &mdash; fill in your details first</span>
+      <div class="spoken">
+        <span class="spoken-label">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Say it in your own words
+        </span>
+        <div class="spoken-body">
+          <p>"I'd like to file a complaint about a water leak in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20">. The leak is in my <input type="text" class="fill" data-field="location" placeholder="kitchen ceiling, bathroom, etc." size="22"> and it's been happening since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">. The water appears to be coming from <input type="text" class="fill" data-field="source" placeholder="upstairs, roof, pipe" size="18">. I already contacted my landlord on <input type="text" class="fill" data-field="contacted_date" placeholder="date" size="12"> and the problem hasn't been fixed. I have photos and video."</p>
+          <p>If the leak is severe: <em>"Water is actively coming in and causing damage to my apartment."</em></p>
+          <p>If anyone in your apartment is elderly, disabled, or a young child, mention it.</p>
+        </div>
+        <span class="spoken-hint">Fill in the blanks above so you have a complete script to read from on the call. This is a guide, not a word-for-word script &mdash; use your own voice and answer their questions as they come.</span>
+      </div>
+
+      <div class="ref-capture">
+        <label class="ref-capture-label" for="ref-input">After filing, write down your complaint number here so it's saved for the next step:</label>
+        <input type="text" id="ref-input" placeholder="C1-1-XXXXXXXXX" data-field="complaint_ref">
+      </div>
+
+      <span class="sub-label">What to expect</span>
+      <ul>
+        <li>HPD may contact your landlord first to give them a chance to fix the problem.</li>
+        <li>If the problem isn't fixed, HPD sends an inspector to check for the leak and assess the damage. The inspector will classify the violation.</li>
+        <li>Once a violation is issued, your landlord has the legally required time to fix it: 24 hours for Class C (no water, sewage, major leak), 30 days for Class B (leaking fixture, minor pipe leak), or 90 days for Class A.</li>
+        <li>For emergencies (flooding, sewage backup, no water): 311 can escalate your complaint for faster response. Make sure to say it's an emergency.</li>
+      </ul>
+    </section>
+
+    <!-- CALLOUT: Undocumented tenants -->
+    <aside class="callout callout-protect">
+      <span class="draft-flag">Draft &mdash; pending immigration advocacy review</span>
+      <span class="callout-label">For undocumented tenants</span>
+      <h3>Your immigration status does not affect your right to safe housing.</h3>
+
+      <p>NYC law is clear: your landlord must fix leaks and maintain plumbing regardless of your immigration status, and HPD's job is to enforce that. <strong>NYC agencies including HPD and 311 do not ask about immigration status when you file a housing complaint.</strong></p>
+
+      <p>It is also illegal under NYC Human Rights Law for your landlord to threaten to report you to ICE, deport you, or treat you differently because of your immigration status. If your landlord threatens you in this way, that is itself a crime you can report.</p>
+
+      <p><strong>An honest note:</strong> NYC's protections are strong, but they are city and state protections. Federal immigration enforcement is a separate system. If you are worried about risks specific to your situation, you can talk to a free, confidential immigration legal organization before filing any complaint. You are not alone in asking these questions.</p>
+
+      <span class="sub-label">Free, confidential help</span>
+      <ul class="resource-list">
+        <li><strong>ActionNYC</strong> &mdash; free, safe immigration legal help connected to city services. Call <strong>311</strong> and ask for ActionNYC.</li>
+        <li><strong>Make the Road New York</strong> &mdash; tenant and immigrant rights support: <strong>718-418-7690</strong></li>
+        <li><strong>New York Immigration Coalition</strong> &mdash; referrals to trusted legal help: <strong>212-627-2227</strong></li>
+        <li><strong>NYC Commission on Human Rights</strong> &mdash; if your landlord threatens you with ICE: <strong>212-416-0197</strong></li>
+      </ul>
+    </aside>
+
+    <!-- CALLOUT: Retaliation -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Worried about retaliation?</span>
+      <h3>This is a real fear &mdash; here's what you should know.</h3>
+
+      <p><strong>Retaliation is illegal in New York.</strong> Under NY Real Property Law &sect;&nbsp;223-b, your landlord cannot punish you for making a good-faith complaint about housing conditions. Punishment includes raising your rent, refusing to renew your lease, starting an eviction, reducing services, or harassing you.</p>
+
+      <p><strong>The law specifically protects complaints like this one.</strong> Filing a 311 complaint about a leak is exactly the kind of action the anti-retaliation law covers.</p>
+
+      <p><strong>An honest note for market-rate tenants:</strong> If you're not in a rent-stabilized or rent-controlled apartment, you have fewer protections against non-renewal or large rent increases at the end of your lease. The anti-retaliation law still applies, but enforcing it can be harder. If you're worried about this, talk to Met Council or a tenant lawyer <em>before</em> filing the complaint &mdash; they can help you think through the timing and your options.</p>
+
+      <p>If you believe your landlord is retaliating: document everything (dates, what happened, any written communication), and call the Met Council on Housing hotline at <strong>212-979-0611</strong>.</p>
+
+      <p style="margin-top: 1rem;"><a href="#" class="inline-link">Read more: What retaliation looks like and what to do &rarr;</a></p>
+    </aside>
+
+    <!-- STEP 4: Check status -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 4</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            5 min
+          </span>
+        </div>
+        <h3 class="step-title">Check the status and keep a paper trail.</h3>
+      </div>
+
+      <p class="why-this-matters">You need to know whether HPD has actually inspected, what class of violation was issued, and whether your landlord is on track to fix it within the legal time frame. This is also the moment to escalate if things aren't moving.</p>
+
+      <div class="ref-recall" id="ref-recall">
+        <span class="label">Your complaint reference number</span>
+        <span class="number" id="ref-display"><span class="empty">Not entered yet &mdash; you can save it in Step&nbsp;3 above.</span></span>
+      </div>
+
+      <span class="sub-label">How to do it</span>
+      <ol>
+        <li>Go to <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link">HPDOnline</a> and enter your building's address.</li>
+        <li>Look for open plumbing or leak violations. Common HPD language includes "repair the plumbing," "abate the leak condition," or "trace and repair the source of the leak."</li>
+        <li>Note the violation number, date issued, and class. The class tells you how many days your landlord has.</li>
+        <li>Save a screenshot or print the page.</li>
+      </ol>
+
+      <span class="sub-label">What to expect</span>
+      <p>Violations typically appear online within a few days of the inspection. If your complaint doesn't show up at all, the inspection may not have happened yet, or the inspector didn't find a violation &mdash; in which case, call 311 again and request another inspection.</p>
+
+      <p><strong>Important:</strong> If your landlord "certifies" they fixed the leak but it's still happening, you can challenge the certification. HPD will re-inspect and, if the condition still exists, the violation will be upgraded to a more serious class.</p>
+    </section>
+
+    <!-- STEP 5: Escalate -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 5</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Varies
+          </span>
+        </div>
+        <h3 class="step-title">If nothing's working: escalate.</h3>
+      </div>
+
+      <p class="why-this-matters">By this point, you've given your landlord multiple chances and the city has been involved. If the leak is still happening, you have stronger options &mdash; but most involve legal or advocacy help, and you shouldn't try them alone.</p>
+
+      <span class="sub-label">A. Call the Met Council on Housing Tenants' Rights Hotline</span>
+      <p>Free, staffed by trained volunteers, and the best starting point for figuring out what to do next.</p>
+      <ul>
+        <li><strong>Phone:</strong> 212-979-0611</li>
+        <li><strong>Hours:</strong> Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM</li>
+        <li><strong>Heads up:</strong> The hotline is very busy &mdash; call after 4&nbsp;PM if you can, and avoid Mondays.</li>
+      </ul>
+
+      <span class="sub-label">B. Start an HP Action in Housing Court</span>
+      <p>A legal proceeding asking a judge to order your landlord to fix the leak and repair the damage. You can file one yourself or with help from a free legal services organization. An HP Action can result in a court order forcing the landlord to make repairs, plus fines.</p>
+
+      <span class="sub-label">C. If you're rent-stabilized or rent-controlled: file for a rent reduction</span>
+      <p>NYS Homes and Community Renewal (DHCR) can order a rent reduction when essential services aren't provided. Use <strong>Form RA-81</strong> for an individual apartment or <strong>Form RA-84</strong> for a building-wide issue. Call DHCR at <strong>833-499-0343</strong> for forms.</p>
+
+      <span class="sub-label">D. If you qualify: free legal representation</span>
+      <p>NYC's Right to Counsel program provides free lawyers to low-income tenants facing housing issues. The Met Council hotline (option A) can help you figure out if you qualify.</p>
+    </section>
+
+    <!-- WARNING: Mold risk -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; about mold</span>
+      <h3>Leaks cause mold. Check for it.</h3>
+      <p>Any area that's been wet for more than 24&ndash;48 hours is at risk for mold growth. If your leak has been ongoing, check the area around and behind the water damage for mold &mdash; dark spots, discoloration, or a musty smell. If you find mold, you may need to file a <em>second</em> complaint specifically for the mold condition, because mold has its own set of violation classes and remediation requirements under Local Law 55.</p>
+      <p><a href="mold.html" class="inline-link">Read the full mold guide &rarr;</a></p>
+    </aside>
+
+    <!-- WARNING: Property damage -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; about damaged belongings</span>
+      <h3>Your landlord may be liable for property damage caused by the leak.</h3>
+      <p>If a leak from a building system (roof, shared plumbing, another apartment) damages your belongings, your landlord may be legally responsible. <strong>Document everything</strong> &mdash; photograph damaged items, keep receipts if you have them, and get written estimates for replacement or repair.</p>
+      <p>However, recovering property damage costs usually requires either small claims court or including property damage in an HP Action. Talk to the Met Council hotline or a tenant lawyer before spending money on replacements and expecting reimbursement. <strong>Renter's insurance</strong> &mdash; if you have it &mdash; may be the fastest path to getting your belongings replaced.</p>
+    </aside>
+
+    <!-- WARNING: Repair-and-deduct -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; about hiring your own plumber</span>
+      <h3>Don't hire a plumber yourself and try to deduct it from rent.</h3>
+      <p>NYC does not have an automatic "repair and deduct" rule for tenants. If you hire your own plumber and try to subtract the cost from your rent, your landlord can sue you for nonpayment and start eviction proceedings. Met Council's strong advice: <strong>do not repair and deduct without first consulting a lawyer.</strong></p>
+      <p>If the leak is making your apartment unlivable and your landlord is doing nothing, the right path is an HP Action in Housing Court (Step&nbsp;5B above), not paying for the work yourself.</p>
+    </aside>
+
+    <!-- Free help -->
+    <h2>Free help available</h2>
+    <ul class="help-list">
+      <li>
+        <span class="name">Met Council on Housing Tenants' Rights Hotline</span>
+        <span class="phone">212-979-0611</span>
+        <span class="desc">Free advice from trained volunteers. Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM. Not lawyers, but very knowledgeable.</span>
+      </li>
+      <li>
+        <span class="name">NYC 311</span>
+        <span class="phone"><a href="tel:311">Dial 311</a></span>
+        <span class="desc">For filing complaints, checking complaint status, and emergency plumbing issues.</span>
+      </li>
+      <li>
+        <span class="name">Housing Court Answers</span>
+        <span class="phone">212-962-4795</span>
+        <span class="desc">Help navigating Housing Court, including HP Actions.</span>
+      </li>
+      <li>
+        <span class="name">Legal Services NYC</span>
+        <span class="phone">917-661-4500</span>
+        <span class="desc">Free legal help for low-income tenants, multiple boroughs.</span>
+      </li>
+    </ul>
+
+    <!-- Related -->
+    <section class="related">
+      <h2 style="margin-top: 0;">Related situations</h2>
+      <div class="related-grid">
+        <a href="mold.html" class="related-link">I have mold in my apartment</a>
+        <a href="heat-hot-water.html" class="related-link">My apartment has no heat or hot water</a>
+        <a href="#" class="related-link">Appliances or fixtures in my apartment are broken</a>
+        <a href="#" class="related-link">My landlord is retaliating against me for complaining</a>
+        <a href="#" class="related-link">I'm in a NYCHA building, not private housing</a>
+      </div>
+    </section>
+
+    <!-- Sources -->
+    <div class="sources">
+      <h3>Sources &amp; verification</h3>
+      <ul>
+        <li><a href="https://www.nyc.gov/site/hpd/services-and-information/maintenance-and-repair.page">NYC HPD &mdash; Maintenance and Repair</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/help-answers/getting-repairs/">Met Council on Housing &mdash; Getting Repairs</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/program/tenants-rights-hotline/">Met Council on Housing &mdash; Tenants' Rights Hotline</a></li>
+        <li><a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-16153">NYC Housing Maintenance Code &mdash; Subchapter 3 (Plumbing)</a></li>
+      </ul>
+      <p class="verified">All sources verified April 16, 2026. <a href="#" class="inline-link">Found an error? Tell us.</a></p>
+    </div>
+
+    <div class="disclaimer">
+      <strong>This isn't legal advice.</strong> Tenant Triage NYC is an independent guide to help you understand your options and take action. We are not lawyers, and this is not an official government resource. If you need legal advice for your specific situation, please contact one of the free legal help organizations listed above.
+    </div>
+
+  </article>
+
+  <div class="toast" id="toast">Copied to clipboard</div>
+
+  <script>
+    // Scroll progress bar
+    window.addEventListener('scroll', function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progress").style.width = scrolled + "%";
+    });
+
+    const formState = {};
+
+    function syncField(fieldName, value) {
+      formState[fieldName] = value;
+      document.querySelectorAll('[data-field="' + fieldName + '"]').forEach(function(input) {
+        if (input.value !== value) input.value = value;
+        if (value && value.trim() !== '') {
+          input.classList.add('has-value');
+        } else {
+          input.classList.remove('has-value');
+        }
+        autoResize(input);
+      });
+      if (fieldName === 'complaint_ref') {
+        const display = document.getElementById('ref-display');
+        if (value && value.trim() !== '') {
+          display.innerHTML = value;
+        } else {
+          display.innerHTML = '<span class="empty">Not entered yet &mdash; you can save it in Step&nbsp;3 above.</span>';
+        }
+      }
+    }
+
+    document.querySelectorAll('.fill, [data-field]').forEach(function(input) {
+      input.addEventListener('input', function() { syncField(this.dataset.field, this.value); });
+    });
+
+    function autoResize(input) {
+      if (!input.classList.contains('fill')) return;
+      const placeholder = input.getAttribute('placeholder') || '';
+      const value = input.value || '';
+      const len = Math.max(value.length, placeholder.length, 4);
+      input.size = len + 1;
+    }
+    document.querySelectorAll('.fill').forEach(function(input) {
+      autoResize(input);
+      input.addEventListener('input', function() { autoResize(this); });
+    });
+
+    // LEAK TYPE PICKER
+    const severityContent = {
+      active: {
+        title: 'Active leak from ceiling, wall, or pipe',
+        body: '<p>An active leak is typically a <strong>Class B violation</strong> (30 days to fix), but if it\'s severe enough to cause immediate danger &mdash; water pouring in, structural damage, risk of collapse, or proximity to electrical wiring &mdash; it can be classified as <strong>Class C</strong> (24 hours).</p><p>When you call 311, describe the severity clearly: how much water, how fast it\'s coming in, and whether it\'s near electrical outlets or wiring. The more specific you are, the more likely it gets the right classification.</p><span class="key-fact"><strong>Most important for you:</strong> Leaks from above (upstairs apartment, roof, shared building pipes) are <em>always</em> the landlord\'s responsibility, even if the source is in another tenant\'s apartment. Your landlord must access the source, fix it, and repair any damage to your apartment. Document the damage to your belongings &mdash; you may be able to recover costs later.</span>'
+      },
+      nowater: {
+        title: 'No running water or very low pressure',
+        body: '<p>Loss of water supply is a <strong>Class C violation &mdash; immediately hazardous</strong>. Your landlord has <strong>24 hours</strong> to restore service once HPD issues a violation.</p><p>Under the Housing Maintenance Code, your landlord must provide adequate hot and cold running water at all times. A building-wide outage, a shut-off for "repairs" that drags on for days, or water pressure so low you can\'t shower &mdash; all of these are violations.</p><span class="key-fact"><strong>Most important for you:</strong> If your water has been shut off for building work and hasn\'t come back, or if your landlord shut off water without proper notice, call 311 immediately and explain that you have no running water. This gets prioritized. If you suspect the landlord shut off water deliberately (to pressure you to move or in retaliation for complaints), mention that &mdash; it may constitute harassment.</span>'
+      },
+      drain: {
+        title: 'Clogged or slow drain, toilet won\'t flush',
+        body: '<p>A completely backed-up drain or non-functioning toilet is typically a <strong>Class C violation</strong> (24 hours) because it creates unsanitary conditions. A slow drain that still functions is usually <strong>Class B</strong> (30 days).</p><p>Your landlord is responsible for maintaining all building drains and plumbing. Even if the clog seems like it\'s in your apartment, the underlying cause is often in the building\'s drain stack or sewer connection &mdash; which is always the landlord\'s responsibility.</p><span class="key-fact"><strong>Most important for you:</strong> If sewage is backing up into your apartment (from the toilet, bathtub drain, or kitchen sink), this is a <strong>health emergency</strong>. Call 311 immediately and use the word "sewage." Do not try to clean it yourself without protective gear &mdash; sewage contains bacteria and pathogens. Photograph the backup for your records but keep yourself and your family away from it.</span>'
+      },
+      fixture: {
+        title: 'Leaky faucet, running toilet, dripping pipe',
+        body: '<p>A dripping faucet, running toilet, or slow pipe leak is typically a <strong>Class B violation</strong>. Your landlord has <strong>30 days</strong> to fix it once HPD issues a violation.</p><p>These may seem minor, but they\'re not: a running toilet can waste thousands of gallons of water per month (and you may be paying for it), and a slow pipe leak can cause hidden water damage and mold behind walls.</p><span class="key-fact"><strong>Most important for you:</strong> If you pay your own water bill (common in some smaller buildings), a leaking fixture is costing you money every day your landlord doesn\'t fix it. Document when you reported the problem &mdash; you may be able to recover the excess water costs later. Even if you don\'t pay for water directly, a persistent drip signals a plumbing issue that will only get worse.</span>'
+      },
+      all: null
+    };
+
+    const contextEl = document.getElementById('severity-context');
+    const contextTitle = document.getElementById('severity-context-title');
+    const contextBody = document.getElementById('severity-context-body');
+
+    document.querySelectorAll('.severity-option').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.severity-option').forEach(function(b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-checked', 'false');
+        });
+        this.classList.add('active');
+        this.setAttribute('aria-checked', 'true');
+
+        const severity = this.dataset.severity;
+        const content = severityContent[severity];
+
+        if (content) {
+          contextTitle.textContent = content.title;
+          contextBody.innerHTML = content.body;
+          contextEl.classList.add('visible');
+        } else {
+          contextEl.classList.remove('visible');
+        }
+      });
+    });
+
+    // COPY TO CLIPBOARD
+    function getTemplateText(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return '';
+      const clone = container.cloneNode(true);
+      clone.querySelectorAll('input.fill').forEach(function(input) {
+        const original = container.querySelector('[data-field="' + input.dataset.field + '"]');
+        const value = original.value.trim();
+        const replacement = value || ('[' + (input.getAttribute('placeholder') || input.dataset.field) + ']');
+        const textNode = document.createTextNode(replacement);
+        input.parentNode.replaceChild(textNode, input);
+      });
+      let text = '';
+      clone.querySelectorAll('p').forEach(function(p, index) {
+        if (index > 0) text += '\n\n';
+        const html = p.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        text += tempDiv.textContent.trim();
+      });
+      return text;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 2200);
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const targetId = this.dataset.copyTarget;
+        const text = getTemplateText(targetId);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function() { showCopySuccess(btn); })
+            .catch(function() { fallbackCopy(text, btn); });
+        } else {
+          fallbackCopy(text, btn);
+        }
+      });
+    });
+
+    function fallbackCopy(text, btn) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try { document.execCommand('copy'); showCopySuccess(btn); }
+      catch (err) { showToast('Copy failed \u2014 please select and copy manually'); }
+      document.body.removeChild(textarea);
+    }
+
+    function showCopySuccess(btn) {
+      btn.classList.add('copied');
+      const textSpan = btn.querySelector('.copy-btn-text');
+      const originalText = textSpan.textContent;
+      textSpan.textContent = 'Copied!';
+      showToast('Copied to clipboard');
+      setTimeout(function() {
+        btn.classList.remove('copied');
+        textSpan.textContent = originalText;
+      }, 2000);
+    }
+  </script>
+  <script src="../lookup.js"></script>
+  <script>
+    initLookup({
+      filterKeywords: ['leak', 'water', 'plumbing', 'pipe', 'drain', 'faucet', 'toilet', 'sewage', 'flooding', 'moisture', 'drip']
+    });
+  </script>
+
+</body>
+</html>
