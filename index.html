@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find your situation — Tenant Triage NYC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f3ef;
+      --bg-elevated: #fafaf8;
+      --ink: #111111;
+      --ink-soft: #3d3d3d;
+      --ink-faded: #6b6b6b;
+      --rule: #e6e4df;
+      --rule-strong: #c9c5bc;
+
+      --accent: #0d7377;
+      --accent-deep: #08494c;
+      --accent-soft: #e3f0f0;
+      --accent-bright: #5eb6b9;
+
+      --measure: 44rem;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem 1.5rem;
+      background: var(--bg);
+    }
+    .site-header-inner {
+      max-width: 64rem; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .wordmark {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      text-decoration: none; color: var(--ink);
+    }
+    .wordmark-main {
+      font-weight: 900; font-size: 1.375rem;
+      letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
+    }
+    .wordmark-accent {
+      font-weight: 500; font-size: 0.95rem;
+      color: var(--accent); letter-spacing: 0.01em;
+    }
+    .site-nav {
+      display: flex; gap: 1.75rem;
+      font-size: 0.875rem; color: var(--ink); font-weight: 500;
+    }
+    .site-nav a {
+      color: inherit; text-decoration: none;
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .site-nav a:hover { border-bottom-color: var(--accent); }
+    .site-nav a.current {
+      border-bottom-color: var(--ink);
+    }
+
+    article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+    /* Hero / intro */
+    .hero {
+      margin-bottom: 3rem;
+    }
+    .reading-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+      padding: 0.35rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .reading-label svg {
+      width: 12px; height: 12px;
+      stroke: currentColor; fill: none; stroke-width: 2.5;
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: clamp(2.5rem, 6vw, 3.75rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      margin-bottom: 1rem;
+      color: var(--ink);
+    }
+
+    .standfirst {
+      font-weight: 400;
+      font-size: 1.1875rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin-bottom: 1.25rem;
+      max-width: 38rem;
+    }
+
+    .intro-detail {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--ink-soft);
+      max-width: 38rem;
+    }
+    .intro-detail strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* Search section */
+    .search-section {
+      margin: 3rem 0 4rem;
+    }
+    .search-label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+    .search-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .search-input-wrap svg.search-icon {
+      position: absolute;
+      left: 1.25rem;
+      width: 22px;
+      height: 22px;
+      stroke: var(--ink-faded);
+      fill: none;
+      stroke-width: 2;
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      font-family: inherit;
+      font-size: 1.1875rem;
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--bg);
+      border: 2px solid var(--ink);
+      padding: 1.125rem 1.25rem 1.125rem 3.25rem;
+      transition: all 0.15s ease;
+    }
+    .search-input::placeholder {
+      color: var(--ink-faded);
+      font-weight: 400;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .search-suggestions {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border: 2px solid var(--ink);
+      max-height: 24rem;
+      overflow-y: auto;
+      z-index: 100;
+      display: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .search-suggestions.visible { display: block; }
+
+    .suggestion {
+      display: block;
+      padding: 0.875rem 1.25rem;
+      text-decoration: none;
+      color: var(--ink);
+      border-bottom: 1px solid var(--rule);
+      cursor: pointer;
+      transition: background 0.1s ease;
+      font-size: 1rem;
+    }
+    .suggestion:last-child { border-bottom: none; }
+    .suggestion:hover,
+    .suggestion.highlighted {
+      background: var(--accent-soft);
+    }
+    .suggestion-text {
+      display: block;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .suggestion-text mark {
+      background: transparent;
+      color: var(--accent-deep);
+      font-weight: 700;
+    }
+    .suggestion-scenario {
+      display: block;
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+      margin-top: 0.15rem;
+    }
+    .suggestion-coming-soon {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--bg-soft);
+      color: var(--ink-faded);
+      padding: 0.15rem 0.45rem;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+
+    .search-no-results {
+      padding: 1.25rem 1.25rem;
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+    }
+    .search-no-results strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .search-no-results a {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    .search-help {
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+    }
+
+    /* Feedback footer inside the suggestions dropdown */
+    .feedback-footer {
+      border-top: 1px solid var(--rule);
+      background: var(--bg-soft);
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .feedback-prompt {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      letter-spacing: 0.01em;
+    }
+    .feedback-buttons {
+      display: flex;
+      gap: 0.35rem;
+      align-items: center;
+    }
+    .feedback-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.75rem;
+      height: 1.75rem;
+      padding: 0;
+      background: var(--bg);
+      border: 1px solid var(--rule-strong);
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .feedback-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+    }
+    .feedback-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .feedback-form {
+      display: flex;
+      gap: 0.5rem;
+      width: 100%;
+      align-items: flex-start;
+    }
+    .feedback-form[hidden] {
+      display: none;
+    }
+    .feedback-textarea {
+      flex: 1;
+      font-family: inherit;
+      font-size: 0.875rem;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1.5px solid var(--ink);
+      padding: 0.5rem 0.75rem;
+      resize: vertical;
+      min-height: 2.5rem;
+    }
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-soft);
+    }
+    .feedback-submit {
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--bg);
+      background: var(--ink);
+      border: 1.5px solid var(--ink);
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.12s ease;
+      white-space: nowrap;
+    }
+    .feedback-submit:hover {
+      background: var(--accent-deep);
+      border-color: var(--accent-deep);
+    }
+    .feedback-thanks {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--accent-deep);
+    }
+    .feedback-thanks[hidden] { display: none; }
+    [hidden] { display: none !important; }
+
+    /* Browse by category */
+    .browse-section {
+      margin: 4rem 0;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--ink);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .section-title {
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .section-meta {
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+    }
+
+    .category {
+      margin-bottom: 2.5rem;
+    }
+    .category-header {
+      margin-bottom: 0.75rem;
+    }
+    .category-name {
+      font-weight: 800;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .category-desc {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      margin-bottom: 0;
+    }
+
+    .scenario-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.5rem;
+    }
+    .scenario-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      background: var(--bg);
+      border: 1px solid var(--rule-strong);
+      text-decoration: none;
+      color: var(--ink);
+      transition: all 0.15s ease;
+      font-size: 0.9375rem;
+      font-weight: 500;
+    }
+    .scenario-item.linked:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+    }
+    .scenario-item.linked::after {
+      content: "→";
+      margin-left: auto;
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .scenario-item.coming-soon {
+      color: var(--ink-faded);
+      cursor: default;
+      background: var(--bg-soft);
+      border-style: dashed;
+    }
+    .scenario-item.coming-soon::after {
+      content: "Coming soon";
+      margin-left: auto;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faded);
+      flex-shrink: 0;
+    }
+
+    /* Walk-through checklist intro */
+    .walkthrough {
+      margin: 4rem 0;
+      padding: 2.25rem 2.25rem;
+      background: var(--ink);
+      color: var(--bg);
+      position: relative;
+    }
+    .walkthrough-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      margin-bottom: 0.6rem;
+    }
+    .walkthrough h2 {
+      font-weight: 800;
+      font-size: 1.625rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--bg);
+      margin-bottom: 0.875rem;
+      max-width: 32rem;
+    }
+    .walkthrough p {
+      color: #d4d2cc;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      max-width: 36rem;
+    }
+    .walkthrough p:last-of-type {
+      margin-bottom: 1.5rem;
+    }
+    .walkthrough-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--ink);
+      background: var(--bg);
+      border: 2px solid var(--bg);
+      padding: 0.75rem 1.25rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .walkthrough-cta:hover {
+      background: var(--accent-bright);
+      border-color: var(--accent-bright);
+      color: var(--ink);
+    }
+    .walkthrough-cta::after {
+      content: "→";
+      font-weight: 700;
+    }
+
+    /* Missing scenario footer */
+    .missing {
+      margin: 4rem 0 2rem;
+      padding: 1.75rem 2rem;
+      background: var(--bg-soft);
+      border: 1px dashed var(--rule-strong);
+    }
+    .missing h3 {
+      font-weight: 800;
+      font-size: 1.125rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .missing p {
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+      margin-bottom: 0.75rem;
+      line-height: 1.6;
+    }
+    .missing p:last-child { margin-bottom: 0; }
+    .missing strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .missing a {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+    .missing a:hover { background: var(--accent-soft); }
+
+    @media (max-width: 600px) {
+      article { padding: 2rem 1.25rem 4rem; }
+      h1 { font-size: 2.25rem; }
+      .search-input { font-size: 1rem; padding: 1rem 1rem 1rem 3rem; }
+      .search-input-wrap svg.search-icon { left: 1rem; width: 18px; height: 18px; }
+      .walkthrough { padding: 1.75rem 1.5rem; }
+      .walkthrough h2 { font-size: 1.375rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="index.html" class="wordmark">
+        <span class="wordmark-main">Tenant Triage</span>
+        <span class="wordmark-accent">NYC</span>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html" class="current">All scenarios</a>
+        <a href="#">About</a>
+        <a href="#">Free help</a>
+      </nav>
+    </div>
+  </header>
+
+  <article>
+
+    <div class="hero">
+      <span class="reading-label">
+        <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35"/><circle cx="11" cy="11" r="8"/></svg>
+        Find your situation
+      </span>
+      <h1>What's going on with your apartment?</h1>
+      <p class="standfirst">Tenant Triage NYC is a free, independent guide to taking action on housing problems in New York City. Find the situation that fits yours below.</p>
+      <p class="intro-detail">Every guide walks you through what to do step by step &mdash; with sample messages, scripts for phone calls, and the right city resources to use. <strong>This isn't legal advice</strong>, but it's a clear starting point when you don't know where to start.</p>
+    </div>
+
+    <!-- SEARCH -->
+    <section class="search-section">
+      <label class="search-label" for="search-input">Search by your problem</label>
+      <div class="search-wrap">
+        <div class="search-input-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input
+            type="text"
+            id="search-input"
+            class="search-input"
+            placeholder="Try &lsquo;no heat&rsquo;, &lsquo;mold on ceiling&rsquo;, &lsquo;eviction notice&rsquo;&hellip;"
+            autocomplete="off"
+            aria-label="Search scenarios"
+            aria-controls="search-suggestions"
+            aria-expanded="false">
+        </div>
+        <div class="search-suggestions" id="search-suggestions" role="listbox"></div>
+      </div>
+      <p class="search-help">Type a few words about your situation. Suggestions will appear as you type.</p>
+    </section>
+
+    <!-- BROWSE BY CATEGORY -->
+    <section class="browse-section">
+      <div class="section-header">
+        <h2 class="section-title">Or browse all scenarios</h2>
+        <span class="section-meta">9 scenarios &middot; 2 ready</span>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-name">Repairs &amp; conditions</span>
+          <p class="category-desc">Things in your apartment that aren't working or aren't safe.</p>
+        </div>
+        <ul class="scenario-list">
+          <li><a href="scenarios/heat-hot-water.html" class="scenario-item linked">My apartment has no heat or hot water</a></li>
+          <li><a href="scenarios/mold.html" class="scenario-item linked">I have mold in my apartment</a></li>
+          <li><span class="scenario-item coming-soon">I have pests &mdash; rats, mice, roaches, or bedbugs</span></li>
+          <li><span class="scenario-item coming-soon">I have a leak or plumbing problem</span></li>
+          <li><span class="scenario-item coming-soon">Appliances or fixtures in my apartment are broken</span></li>
+          <li><span class="scenario-item coming-soon">I'm worried about lead paint in my apartment</span></li>
+        </ul>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-name">Eviction &amp; lease issues</span>
+          <p class="category-desc">Problems with your lease, your tenancy, or notices from your landlord.</p>
+        </div>
+        <ul class="scenario-list">
+          <li><span class="scenario-item coming-soon">I got an eviction notice</span></li>
+          <li><span class="scenario-item coming-soon">My landlord won't renew my lease</span></li>
+        </ul>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-name">Retaliation &amp; harassment</span>
+          <p class="category-desc">When your landlord is punishing you for asserting your rights.</p>
+        </div>
+        <ul class="scenario-list">
+          <li><span class="scenario-item coming-soon">My landlord is retaliating against me for complaining</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- WALK-THROUGH CHECKLIST -->
+    <aside class="walkthrough">
+      <span class="walkthrough-label">Not sure where to start?</span>
+      <h2>Walk through your apartment with us.</h2>
+      <p>If you have multiple problems, or you're not sure how to describe what's wrong, our room-by-room walk-through helps you build a complete list of issues to give your landlord and the city in one go.</p>
+      <p>You'll get a checklist organized room by room. Mark what's broken, and we'll generate a written letter you can send to your landlord that covers everything &mdash; so you only have to make your case once.</p>
+      <a href="#" class="walkthrough-cta">Start the walk-through</a>
+    </aside>
+
+    <!-- MISSING SCENARIO FOOTER -->
+    <div class="missing">
+      <h3>Don't see your problem?</h3>
+      <p>This site is growing &mdash; new scenarios are added regularly. If your situation isn't listed yet, the fastest way to get help is to call <strong>Met Council on Housing's free Tenants' Rights Hotline</strong> at <strong>212-979-0611</strong> (Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM). They're trained volunteers who can talk you through almost any NYC housing issue.</p>
+      <p>You can also <a href="#">tell us what's missing</a> and we'll prioritize building it.</p>
+    </div>
+
+  </article>
+
+  <script>
+    // ============================================
+    // SEARCH SUGGESTIONS DATA
+    // Each entry maps a search phrase to a scenario.
+    // Multiple phrases per scenario for natural-language matching.
+    // ============================================
+    const scenarios = {
+      heat: {
+        name: 'My apartment has no heat or hot water',
+        url: 'scenarios/heat-hot-water.html',
+        ready: true,
+        keywords: ['heat', 'heating', 'hot', 'water', 'cold', 'freezing', 'warm', 'temperature', 'boiler', 'radiator', 'furnace', 'shower', 'bath', 'winter', 'chilly', 'frigid']
+      },
+      mold: {
+        name: 'I have mold in my apartment',
+        url: 'scenarios/mold.html',
+        ready: true,
+        keywords: ['mold', 'mildew', 'fungus', 'spores', 'damp', 'dampness', 'moisture', 'patch', 'growth', 'black', 'musty', 'moldy', 'wet', 'bathroom', 'ceiling', 'wall', 'laundry', 'basement', 'closet']
+      },
+      pests: {
+        name: 'I have pests — rats, mice, roaches, or bedbugs',
+        url: '#',
+        ready: false,
+        keywords: ['pests', 'pest', 'rats', 'rat', 'mice', 'mouse', 'rodent', 'rodents', 'roach', 'roaches', 'cockroach', 'cockroaches', 'bedbug', 'bedbugs', 'bugs', 'infestation', 'droppings', 'nest', 'vermin', 'bites', 'kitchen', 'laundry']
+      },
+      leaks: {
+        name: 'I have a leak or plumbing problem',
+        url: '#',
+        ready: false,
+        keywords: ['leak', 'leaks', 'leaking', 'leaky', 'water', 'pipe', 'pipes', 'plumbing', 'drip', 'dripping', 'ceiling', 'wall', 'floor', 'bathroom', 'kitchen', 'laundry', 'sink', 'toilet', 'faucet', 'drain', 'flood', 'flooding', 'damage', 'wet']
+      },
+      broken: {
+        name: 'Appliances or fixtures in my apartment are broken',
+        url: '#',
+        ready: false,
+        keywords: ['broken', 'break', 'appliance', 'appliances', 'fixture', 'fixtures', 'fridge', 'refrigerator', 'stove', 'oven', 'range', 'dishwasher', 'microwave', 'outlet', 'outlets', 'light', 'lights', 'fixture', 'door', 'lock', 'window', 'windows', 'doesnt', 'working']
+      },
+      lead: {
+        name: "I'm worried about lead paint in my apartment",
+        url: '#',
+        ready: false,
+        keywords: ['lead', 'paint', 'peeling', 'chipping', 'chips', 'child', 'children', 'kids', 'baby', 'toddler', 'pregnant', 'exposure', 'poisoning', 'dust', 'old', 'prewar', 'wall', 'walls']
+      },
+      eviction: {
+        name: 'I got an eviction notice',
+        url: '#',
+        ready: false,
+        keywords: ['eviction', 'evict', 'evicted', 'evicting', 'notice', 'petition', 'court', 'marshal', 'sheriff', 'out', 'leave', 'kick', 'kicked', 'served', 'papers', 'summons']
+      },
+      lease: {
+        name: "My landlord won't renew my lease",
+        url: '#',
+        ready: false,
+        keywords: ['lease', 'renew', 'renewal', 'renewing', 'ending', 'expire', 'expiring', 'expiration', 'non-renewal', 'refuse', 'refusing', 'increase', 'raised', 'rent']
+      },
+      retaliation: {
+        name: 'My landlord is retaliating against me for complaining',
+        url: '#',
+        ready: false,
+        keywords: ['retaliation', 'retaliate', 'retaliating', 'harassment', 'harassing', 'harass', 'threat', 'threats', 'threatening', 'punish', 'punishing', 'revenge', 'after', 'complained', 'complaint']
+      }
+    };
+
+    // Search phrases — multiple phrasings per scenario
+    const suggestions = [
+      // Heat / hot water
+      { text: 'No heat in my apartment', scenario: 'heat' },
+      { text: 'Heat not working', scenario: 'heat' },
+      { text: 'My apartment is freezing', scenario: 'heat' },
+      { text: 'Cold apartment', scenario: 'heat' },
+      { text: 'No hot water', scenario: 'heat' },
+      { text: 'Hot water not working', scenario: 'heat' },
+      { text: 'Shower is cold', scenario: 'heat' },
+      { text: 'Boiler is broken', scenario: 'heat' },
+      { text: 'Radiator not working', scenario: 'heat' },
+      { text: 'Heat goes off at night', scenario: 'heat' },
+
+      // Mold
+      { text: 'Mold in my apartment', scenario: 'mold' },
+      { text: 'Mold on the ceiling', scenario: 'mold' },
+      { text: 'Mold on the wall', scenario: 'mold' },
+      { text: 'Mold in the bathroom', scenario: 'mold' },
+      { text: 'Black mold', scenario: 'mold' },
+      { text: 'Moldy smell', scenario: 'mold' },
+      { text: 'Mildew on the walls', scenario: 'mold' },
+      { text: 'Brown spots on ceiling', scenario: 'mold' },
+      { text: 'Bathroom is moldy', scenario: 'mold' },
+
+      // Pests
+      { text: 'Rats in my apartment', scenario: 'pests' },
+      { text: 'Mice in my apartment', scenario: 'pests' },
+      { text: 'Cockroaches', scenario: 'pests' },
+      { text: 'Roaches in the kitchen', scenario: 'pests' },
+      { text: 'Bedbugs', scenario: 'pests' },
+      { text: 'Pest infestation', scenario: 'pests' },
+      { text: 'Rodents in the building', scenario: 'pests' },
+      { text: 'Mouse droppings', scenario: 'pests' },
+
+      // Leaks
+      { text: 'Ceiling is leaking', scenario: 'leaks' },
+      { text: 'Water leak from upstairs', scenario: 'leaks' },
+      { text: 'Pipe is leaking', scenario: 'leaks' },
+      { text: 'Bathroom leak', scenario: 'leaks' },
+      { text: 'Sink is leaking', scenario: 'leaks' },
+      { text: 'Toilet is leaking', scenario: 'leaks' },
+      { text: 'Water damage', scenario: 'leaks' },
+      { text: 'Plumbing problem', scenario: 'leaks' },
+
+      // Broken appliances/fixtures
+      { text: 'Refrigerator is broken', scenario: 'broken' },
+      { text: 'Stove is broken', scenario: 'broken' },
+      { text: 'Oven is broken', scenario: 'broken' },
+      { text: 'Broken appliance', scenario: 'broken' },
+      { text: 'Outlet is broken', scenario: 'broken' },
+      { text: 'Light fixture broken', scenario: 'broken' },
+      { text: 'Door lock is broken', scenario: 'broken' },
+      { text: 'Window is broken', scenario: 'broken' },
+
+      // Lead paint
+      { text: 'Lead paint', scenario: 'lead' },
+      { text: 'Peeling paint with a child', scenario: 'lead' },
+      { text: 'Paint chips', scenario: 'lead' },
+      { text: 'Lead exposure', scenario: 'lead' },
+      { text: 'Old building lead', scenario: 'lead' },
+
+      // Eviction
+      { text: 'Eviction notice', scenario: 'eviction' },
+      { text: 'Got served eviction papers', scenario: 'eviction' },
+      { text: 'Landlord is evicting me', scenario: 'eviction' },
+      { text: 'Notice of petition', scenario: 'eviction' },
+      { text: 'Marshal notice', scenario: 'eviction' },
+      { text: 'Landlord wants me out', scenario: 'eviction' },
+
+      // Lease non-renewal
+      { text: "Landlord won't renew lease", scenario: 'lease' },
+      { text: 'Lease is ending', scenario: 'lease' },
+      { text: 'Non-renewal of lease', scenario: 'lease' },
+      { text: 'Big rent increase', scenario: 'lease' },
+
+      // Retaliation
+      { text: 'Landlord is retaliating', scenario: 'retaliation' },
+      { text: 'Landlord raised rent after I complained', scenario: 'retaliation' },
+      { text: 'Landlord is harassing me', scenario: 'retaliation' },
+      { text: 'Landlord threatening me', scenario: 'retaliation' }
+    ];
+
+    // ============================================
+    // TYPO DICTIONARY
+    // Maps common misspellings to their correct form.
+    // Applied after tokenization but before matching, so "mlod" becomes "mold"
+    // and is then matched as "mold." Curated for housing vocabulary — not
+    // trying to be exhaustive, just catching words people actually mistype.
+    // ============================================
+    const TYPO_MAP = {
+      // Mold variants
+      'mlod': 'mold', 'mlod': 'mold', 'moudl': 'mold', 'molde': 'mold',
+      'moled': 'mold', 'mould': 'mold', 'moldd': 'mold',
+      'mildue': 'mildew', 'mildu': 'mildew', 'mildwe': 'mildew',
+      'funguss': 'fungus', 'fungas': 'fungus',
+
+      // Pest variants
+      'cockroches': 'cockroaches', 'cokroaches': 'cockroaches',
+      'coackroaches': 'cockroaches', 'cockroachs': 'cockroaches',
+      'roachs': 'roaches', 'roches': 'roaches',
+      'mise': 'mice', 'mics': 'mice',
+      'bedbug': 'bedbugs', 'bedbuggs': 'bedbugs', 'bed-bugs': 'bedbugs',
+      'rodent': 'rodents', 'roddents': 'rodents',
+      'rats': 'rats', 'ratts': 'rats',
+
+      // Heat variants
+      'heeat': 'heat', 'het': 'heat', 'heting': 'heating',
+      'raditor': 'radiator', 'radiater': 'radiator', 'radator': 'radiator',
+      'bioler': 'boiler', 'boilor': 'boiler',
+      'freezng': 'freezing', 'freesing': 'freezing', 'freezin': 'freezing',
+
+      // Leak variants
+      'lek': 'leak', 'leek': 'leak', 'leaek': 'leak',
+      'leeking': 'leaking', 'leking': 'leaking',
+      'plumming': 'plumbing', 'plumbling': 'plumbing',
+      'dripin': 'dripping', 'driping': 'dripping',
+
+      // Eviction variants
+      'evition': 'eviction', 'evicton': 'eviction', 'evictoin': 'eviction',
+      'evicited': 'evicted', 'evicteded': 'evicted',
+
+      // Lead paint variants
+      'lead': 'lead', 'leed': 'lead',
+      'peeing': 'peeling', 'pealing': 'peeling', 'peelin': 'peeling',
+
+      // Retaliation variants
+      'retailation': 'retaliation', 'retalation': 'retaliation',
+      'harrasment': 'harassment', 'harasment': 'harassment', 'harrassment': 'harassment',
+      'harrassing': 'harassing', 'harasing': 'harassing',
+
+      // Other common ones
+      'celing': 'ceiling', 'cieling': 'ceiling', 'ceeling': 'ceiling',
+      'aparment': 'apartment', 'apartement': 'apartment', 'appartment': 'apartment',
+      'landord': 'landlord', 'landlrod': 'landlord', 'landloard': 'landlord',
+      'bathrom': 'bathroom', 'bathrom': 'bathroom',
+      'kitchin': 'kitchen', 'ktichen': 'kitchen'
+    };
+
+    // ============================================
+    // SYNONYM MAP
+    // Expands colloquial, slang, and metaphorical terms to canonical keywords.
+    // Applied during tokenization so "critters" scores the same as "pests."
+    // ============================================
+    const SYNONYM_MAP = {
+      // Pest synonyms
+      'critter': 'pests', 'critters': 'pests',
+      'vermin': 'pests', 'creepy': 'pests', 'crawlies': 'pests',
+      'infested': 'pests', 'infestation': 'pests',
+      'bugs': 'pests', 'bug': 'pests',
+      'creatures': 'pests',
+
+      // Mold synonyms
+      'gunk': 'mold', 'fuzz': 'mold', 'fuzzy': 'mold',
+      'spot': 'mold', 'spots': 'mold',
+      'discoloration': 'mold', 'stain': 'mold', 'stains': 'mold',
+      'musty': 'mold',
+
+      // Heat synonyms (NYC tenants get dramatic about the cold)
+      'icebox': 'heat', 'siberian': 'heat', 'siberia': 'heat',
+      'polar': 'heat', 'arctic': 'heat', 'tundra': 'heat',
+      'frigid': 'heat', 'brrrr': 'heat',
+
+      // Leak synonyms
+      'dripping': 'leak', 'pouring': 'leak', 'waterfall': 'leak',
+      'soaked': 'leak', 'soaking': 'leak', 'puddle': 'leak', 'puddles': 'leak',
+      'pooling': 'leak', 'seeping': 'leak',
+
+      // Eviction synonyms
+      'kicked': 'eviction', 'thrown': 'eviction', 'booted': 'eviction',
+      'boot': 'eviction',
+
+      // Retaliation synonyms
+      'revenge': 'retaliation', 'payback': 'retaliation',
+      'bullying': 'harassment', 'bully': 'harassment',
+      'intimidating': 'harassment', 'intimidation': 'harassment',
+
+      // Broken appliance synonyms
+      'busted': 'broken', 'busted': 'broken', 'dead': 'broken',
+      'kaput': 'broken', 'conked': 'broken',
+
+      // Lease synonyms
+      'nonrenewal': 'renewal', 'non-renewal': 'renewal',
+      'hiked': 'rent', 'hike': 'rent', 'jacked': 'rent'
+    };
+
+    // ============================================
+    // ANALYTICS LOGGING STUB
+    // In production, replace the console.log with a POST to your analytics endpoint.
+    // All events have a consistent shape: { type, query, timestamp, ...context }
+    // ============================================
+    function logEvent(eventType, data) {
+      const event = Object.assign({
+        type: eventType,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent.substring(0, 100)
+      }, data);
+      // PRODUCTION: replace this with:
+      //   fetch('/api/search-analytics', { method: 'POST', body: JSON.stringify(event) });
+      console.log('[analytics]', event);
+    }
+
+    // ============================================
+    // SEARCH STATE
+    // ============================================
+    const searchInput = document.getElementById('search-input');
+    const suggestionsBox = document.getElementById('search-suggestions');
+    let highlightedIndex = -1;
+    let currentMatches = [];
+    let lastQuery = '';
+
+    // Stopwords to ignore when tokenizing queries. These are words that
+    // carry no meaning for search and would cause false matches if kept.
+    const STOPWORDS = new Set([
+      'a', 'an', 'the', 'is', 'are', 'was', 'were', 'am', 'be', 'been', 'being',
+      'i', 'me', 'my', 'mine', 'myself', 'we', 'our', 'ours', 'us',
+      'you', 'your', 'yours', 'he', 'she', 'it', 'its', 'they', 'them', 'their',
+      'this', 'that', 'these', 'those',
+      'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'up', 'down',
+      'out', 'off', 'over', 'under', 'into', 'onto', 'about',
+      'and', 'or', 'but', 'so', 'if', 'than', 'then', 'as', 'because',
+      'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should',
+      'can', 'cant', 'cannot', 'not', 'no',
+      'there', 'theres', 'here', 'heres', 'where', 'when', 'what', 'which', 'who', 'how',
+      'some', 'any', 'all', 'every', 'each', 'few', 'more', 'most',
+      'just', 'really', 'very', 'too', 'also',
+      'got', 'get', 'getting', 'going', 'go',
+      'apartment', 'place', 'home', 'house', 'unit'
+      // Note: "apartment" is a stopword because every query is about an apartment —
+      // keeping it would cause it to match nothing usefully.
+    ]);
+
+    function tokenize(str) {
+      // Lowercase, strip punctuation, split on whitespace
+      let tokens = str
+        .toLowerCase()
+        .replace(/[^\w\s'-]/g, ' ')
+        .replace(/['']/g, '')
+        .split(/\s+/)
+        .filter(function(w) { return w.length > 0; });
+
+      // Apply typo correction: if a word is in TYPO_MAP, replace with canonical form.
+      // This runs BEFORE synonym expansion so "cockroches" → "cockroaches" → "pests".
+      tokens = tokens.map(function(t) { return TYPO_MAP[t] || t; });
+
+      // Apply synonym expansion: colloquial terms become canonical keywords.
+      tokens = tokens.map(function(t) { return SYNONYM_MAP[t] || t; });
+
+      // Remove stopwords and empty strings. Stopwords run AFTER typo/synonym
+      // substitution so we don't accidentally drop a correction.
+      tokens = tokens.filter(function(w) {
+        return w.length > 0 && !STOPWORDS.has(w);
+      });
+
+      return tokens;
+    }
+
+    // Build a searchable token bag for each suggestion: tokens from its text
+    // plus tokens from the scenario's name and keywords.
+    function buildSuggestionTokens(suggestion) {
+      const scenario = scenarios[suggestion.scenario];
+      const allText = [
+        suggestion.text,
+        scenario.name,
+        (scenario.keywords || []).join(' ')
+      ].join(' ');
+      return new Set(tokenize(allText));
+    }
+
+    // Precompute tokens for every suggestion once on load
+    suggestions.forEach(function(s) {
+      s._tokens = buildSuggestionTokens(s);
+    });
+
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function highlightMatchWords(text, queryTokens) {
+      let escaped = escapeHTML(text);
+      if (!queryTokens.length) return escaped;
+      // Highlight each query token in the text
+      queryTokens.forEach(function(token) {
+        const escapedToken = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp('(\\b' + escapedToken + '\\w*)', 'gi');
+        escaped = escaped.replace(regex, '<mark>$1</mark>');
+      });
+      return escaped;
+    }
+
+    function scoreSuggestion(suggestion, queryTokens) {
+      // Score = number of query tokens that appear in the suggestion's token bag.
+      // Partial-word matching: a query token matches if ANY suggestion token
+      // starts with it (so "mold" matches "moldy" and "mold" matches "molded").
+      let score = 0;
+      queryTokens.forEach(function(qt) {
+        for (const st of suggestion._tokens) {
+          if (st === qt || st.startsWith(qt) || qt.startsWith(st)) {
+            score++;
+            break;
+          }
+        }
+      });
+      return score;
+    }
+
+    function renderSuggestions(query) {
+      const q = query.trim();
+      suggestionsBox.innerHTML = '';
+      highlightedIndex = -1;
+      lastQuery = q;
+
+      if (!q) {
+        suggestionsBox.classList.remove('visible');
+        searchInput.setAttribute('aria-expanded', 'false');
+        return;
+      }
+
+      const queryTokens = tokenize(q);
+
+      // Edge case: query is all stopwords (e.g. "what is the")
+      if (queryTokens.length === 0) {
+        suggestionsBox.innerHTML = '<div class="search-no-results"><strong>Keep typing&hellip;</strong> Try describing the specific problem, like &ldquo;mold on ceiling&rdquo; or &ldquo;no heat.&rdquo;</div>';
+        suggestionsBox.classList.add('visible');
+        searchInput.setAttribute('aria-expanded', 'true');
+        return;
+      }
+
+      // Score every suggestion
+      const scored = suggestions
+        .map(function(s) {
+          return { suggestion: s, score: scoreSuggestion(s, queryTokens) };
+        })
+        .filter(function(item) { return item.score > 0; })
+        .sort(function(a, b) { return b.score - a.score; });
+
+      // Deduplicate by scenario, keeping the highest-scored entry per scenario
+      const seenScenarios = new Set();
+      currentMatches = [];
+      for (const item of scored) {
+        if (!seenScenarios.has(item.suggestion.scenario)) {
+          seenScenarios.add(item.suggestion.scenario);
+          currentMatches.push(item.suggestion);
+        }
+      }
+
+      // Limit to 8 results
+      currentMatches = currentMatches.slice(0, 8);
+
+      if (currentMatches.length === 0) {
+        // No results — log it and show the no-results UI with a prominent
+        // "Tell us what you were looking for" feedback option.
+        logEvent('search_no_results', { query: q, tokens: queryTokens });
+        renderNoResults(q);
+        return;
+      }
+
+      // Log a successful search event
+      logEvent('search_results', {
+        query: q,
+        tokens: queryTokens,
+        resultCount: currentMatches.length,
+        topScenario: currentMatches[0].scenario
+      });
+
+      currentMatches.forEach(function(match, i) {
+        const scenario = scenarios[match.scenario];
+        const el = document.createElement('a');
+        el.className = 'suggestion';
+        el.setAttribute('role', 'option');
+        el.setAttribute('data-index', i);
+        el.href = scenario.ready ? scenario.url : '#stub';
+        el.dataset.scenarioReady = scenario.ready;
+        el.dataset.scenarioName = scenario.name;
+
+        const comingSoonTag = scenario.ready
+          ? ''
+          : '<span class="suggestion-coming-soon">Coming soon</span>';
+
+        el.innerHTML =
+          '<span class="suggestion-text">' + highlightMatchWords(match.text, queryTokens) + comingSoonTag + '</span>' +
+          '<span class="suggestion-scenario">' + escapeHTML(scenario.name) + '</span>';
+
+        el.addEventListener('mouseenter', function() {
+          setHighlight(i);
+        });
+
+        el.addEventListener('click', function(e) {
+          // Log the click event with query context
+          logEvent('suggestion_click', {
+            query: q,
+            scenario: match.scenario,
+            scenarioName: scenario.name,
+            ready: scenario.ready,
+            position: i
+          });
+
+          if (!scenario.ready) {
+            e.preventDefault();
+            // In production, route to a stub page for unbuilt scenarios.
+            // For the prototype, just show an alert so you can see it works.
+            alert("'" + scenario.name + "' isn't built yet. In production, this would route to a polite stub page with the Met Council number and a feedback link.");
+          }
+        });
+
+        suggestionsBox.appendChild(el);
+      });
+
+      // Append feedback footer to results
+      suggestionsBox.appendChild(buildFeedbackFooter('results'));
+
+      suggestionsBox.classList.add('visible');
+      searchInput.setAttribute('aria-expanded', 'true');
+    }
+
+    function renderNoResults(q) {
+      const noResultsHTML =
+        '<div class="search-no-results">' +
+          '<strong>No matches for &ldquo;' + escapeHTML(q) + '&rdquo;.</strong> ' +
+          'Try a different word, or scroll down to browse all scenarios. ' +
+          'If your situation isn\'t listed, call Met Council at <strong>212-979-0611</strong>.' +
+        '</div>';
+      suggestionsBox.innerHTML = noResultsHTML;
+      suggestionsBox.appendChild(buildFeedbackFooter('no-results'));
+      suggestionsBox.classList.add('visible');
+      searchInput.setAttribute('aria-expanded', 'true');
+    }
+
+    // ============================================
+    // FEEDBACK FOOTER
+    // Small row of icon buttons at the bottom of the suggestions dropdown.
+    // Lets users flag good/bad matches or send a free-form suggestion.
+    // ============================================
+    function buildFeedbackFooter(context) {
+      const wrap = document.createElement('div');
+      wrap.className = 'feedback-footer';
+      wrap.dataset.context = context;
+
+      // In no-results state, lead with the suggestion prompt instead of thumbs.
+      const promptText = context === 'no-results'
+        ? 'Tell us what you were looking for:'
+        : 'Was this helpful?';
+
+      wrap.innerHTML =
+        '<span class="feedback-prompt">' + promptText + '</span>' +
+        '<div class="feedback-buttons">' +
+          (context === 'results' ? (
+            '<button class="feedback-btn" data-action="up" aria-label="Helpful">' +
+              '<svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>' +
+            '</button>' +
+            '<button class="feedback-btn" data-action="down" aria-label="Not helpful">' +
+              '<svg viewBox="0 0 24 24"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zM17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>' +
+            '</button>'
+          ) : '') +
+          '<button class="feedback-btn" data-action="suggest" aria-label="Make a suggestion">' +
+            '<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' +
+          '</button>' +
+        '</div>' +
+        '<div class="feedback-form" hidden>' +
+          '<textarea class="feedback-textarea" placeholder="What were you looking for?" rows="2"></textarea>' +
+          '<button class="feedback-submit">Send</button>' +
+        '</div>' +
+        '<div class="feedback-thanks" hidden>Thanks &mdash; noted.</div>';
+
+      // Wire up the buttons
+      wrap.querySelectorAll('.feedback-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const action = btn.dataset.action;
+
+          if (action === 'up') {
+            logEvent('feedback_helpful', {
+              query: lastQuery,
+              topScenario: currentMatches[0] ? currentMatches[0].scenario : null
+            });
+            showThanks(wrap);
+          } else if (action === 'down') {
+            logEvent('feedback_not_helpful', {
+              query: lastQuery,
+              shownScenarios: currentMatches.map(function(m) { return m.scenario; })
+            });
+            // Auto-open the suggestion form after thumbs down
+            showSuggestionForm(wrap);
+          } else if (action === 'suggest') {
+            showSuggestionForm(wrap);
+          }
+        });
+      });
+
+      // Wire up the suggestion form submit
+      const submitBtn = wrap.querySelector('.feedback-submit');
+      const textarea = wrap.querySelector('.feedback-textarea');
+      submitBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const text = textarea.value.trim();
+        if (!text) return;
+        logEvent('feedback_suggestion', {
+          query: lastQuery,
+          suggestion: text,
+          context: context,
+          shownScenarios: currentMatches.map(function(m) { return m.scenario; })
+        });
+        wrap.querySelector('.feedback-form').hidden = true;
+        showThanks(wrap);
+      });
+
+      // Prevent clicks inside the feedback footer from closing the dropdown
+      wrap.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+
+      return wrap;
+    }
+
+    function showSuggestionForm(wrap) {
+      wrap.querySelector('.feedback-buttons').hidden = true;
+      wrap.querySelector('.feedback-prompt').hidden = true;
+      wrap.querySelector('.feedback-form').hidden = false;
+      const textarea = wrap.querySelector('.feedback-textarea');
+      textarea.focus();
+    }
+
+    function showThanks(wrap) {
+      wrap.querySelector('.feedback-buttons').hidden = true;
+      wrap.querySelector('.feedback-prompt').hidden = true;
+      wrap.querySelector('.feedback-form').hidden = true;
+      wrap.querySelector('.feedback-thanks').hidden = false;
+    }
+
+    function setHighlight(index) {
+      const items = suggestionsBox.querySelectorAll('.suggestion');
+      items.forEach(function(item, i) {
+        if (i === index) {
+          item.classList.add('highlighted');
+        } else {
+          item.classList.remove('highlighted');
+        }
+      });
+      highlightedIndex = index;
+    }
+
+    searchInput.addEventListener('input', function(e) {
+      renderSuggestions(e.target.value);
+    });
+
+    searchInput.addEventListener('keydown', function(e) {
+      const items = suggestionsBox.querySelectorAll('.suggestion');
+      if (!items.length) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = Math.min(highlightedIndex + 1, items.length - 1);
+        setHighlight(next);
+        items[next].scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prev = Math.max(highlightedIndex - 1, 0);
+        setHighlight(prev);
+        items[prev].scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'Enter') {
+        if (highlightedIndex >= 0) {
+          e.preventDefault();
+          items[highlightedIndex].click();
+        }
+      } else if (e.key === 'Escape') {
+        searchInput.value = '';
+        renderSuggestions('');
+        searchInput.blur();
+      }
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-wrap')) {
+        suggestionsBox.classList.remove('visible');
+        searchInput.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Show again on focus if there's a query
+    searchInput.addEventListener('focus', function() {
+      if (searchInput.value.trim()) {
+        renderSuggestions(searchInput.value);
+      }
+    });
+  </script>
+
+</body>
+</html>

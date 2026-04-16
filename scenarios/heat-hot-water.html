@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My apartment has no heat or hot water — Tenant Triage NYC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Neutrals do most of the work */
+      --bg: #ffffff;
+      --bg-soft: #f5f3ef;
+      --bg-elevated: #fafaf8;
+      --ink: #111111;
+      --ink-soft: #3d3d3d;
+      --ink-faded: #6b6b6b;
+      --rule: #e6e4df;
+      --rule-strong: #c9c5bc;
+
+      /* Single accent — teal (cool, distinct from warning) */
+      --accent: #0d7377;
+      --accent-deep: #08494c;
+      --accent-soft: #e3f0f0;
+
+      /* Callout colors stay distinct from accent */
+      --protect: #2a4a7f;
+      --protect-soft: #eaeff7;
+      --warning-ink: #7a3a0a;
+      --warning-bg: #fff4e6;
+      --warning-rule: #e8a35a;
+
+      /* Code/script colors */
+      --code-bg: #f3f1ec;
+      --code-rule: #d9d5ca;
+      --quote-bar: #c9c5bc;
+
+      --measure: 38rem;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Scroll progress bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--accent);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.05s linear;
+    }
+
+    /* Site header */
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem 1.5rem;
+      background: var(--bg);
+    }
+    .site-header-inner {
+      max-width: 64rem;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .wordmark {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .wordmark-main {
+      font-weight: 900;
+      font-size: 1.375rem;
+      letter-spacing: -0.035em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    .wordmark-accent {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--accent);
+      letter-spacing: 0.01em;
+    }
+    .site-nav {
+      display: flex;
+      gap: 1.75rem;
+      font-size: 0.875rem;
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .site-nav a {
+      color: inherit;
+      text-decoration: none;
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .site-nav a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    /* Article container */
+    article {
+      max-width: var(--measure);
+      margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+    }
+
+    /* Breadcrumb */
+    .crumb {
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+    .crumb a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule-strong);
+    }
+    .crumb a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* Headline */
+    h1 {
+      font-weight: 900;
+      font-size: clamp(2.25rem, 5.5vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 1.25rem;
+      color: var(--ink);
+    }
+
+    .standfirst {
+      font-weight: 400;
+      font-size: 1.1875rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin-bottom: 2rem;
+      max-width: 36rem;
+    }
+
+    /* Article meta */
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding: 0.875rem 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+      margin-bottom: 2.5rem;
+    }
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .meta-item svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+    .meta-item strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .meta-item a {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    /* Body text */
+    p {
+      margin-bottom: 1.25rem;
+      color: var(--ink);
+    }
+
+    p strong {
+      font-weight: 600;
+    }
+
+    a.inline-link {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: background 0.15s ease;
+    }
+    a.inline-link:hover {
+      background: var(--accent-soft);
+    }
+
+    /* Section headers */
+    h2 {
+      font-weight: 800;
+      font-size: 1.625rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-top: 3.5rem;
+      margin-bottom: 1.25rem;
+      color: var(--ink);
+    }
+
+    .sub-label {
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--ink);
+      margin-top: 1.5rem;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    /* Read this first box */
+    .read-first {
+      background: var(--bg-soft);
+      border-left: 4px solid var(--ink);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+    .read-first p {
+      margin-bottom: 0.75rem;
+      font-size: 0.9375rem;
+    }
+    .read-first p:last-child {
+      margin-bottom: 0;
+    }
+    .read-first strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    /* Rights summary — dark block */
+    .rights-box {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 1.75rem 2rem;
+      margin: 2rem 0;
+    }
+    .rights-box .rights-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #d4d2cc;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .rights-box h3 {
+      font-weight: 800;
+      font-size: 1.375rem;
+      letter-spacing: -0.015em;
+      color: var(--bg);
+      margin-bottom: 0.75rem;
+    }
+    .rights-box p {
+      color: var(--bg);
+      font-size: 0.9375rem;
+      margin-bottom: 0.75rem;
+    }
+    .rights-box ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 0.75rem;
+    }
+    .rights-box li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.6rem;
+      font-size: 0.9375rem;
+      color: var(--bg);
+    }
+    .rights-box li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .rights-box .source {
+      font-size: 0.75rem;
+      color: #b8b6b1;
+      margin-top: 1rem;
+      margin-bottom: 0;
+    }
+
+    /* Steps */
+    .step {
+      margin: 3rem 0;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .step-header {
+      margin-bottom: 1.25rem;
+    }
+    .step-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .step-number {
+      font-weight: 800;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+    .time-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      background: var(--bg-soft);
+      padding: 0.25rem 0.6rem;
+      border-radius: 100px;
+    }
+    .time-chip svg {
+      width: 11px;
+      height: 11px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.25;
+    }
+    .step-title {
+      font-weight: 800;
+      font-size: 1.625rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .why-this-matters {
+      color: var(--ink-soft);
+      border-left: 3px solid var(--rule-strong);
+      padding-left: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+
+    .step ol, .step ul {
+      margin-bottom: 1.25rem;
+      padding-left: 1.25rem;
+    }
+    .step li {
+      margin-bottom: 0.6rem;
+    }
+
+    /* ============================== */
+    /* TEMPLATE BOX (for copy/paste)  */
+    /* ============================== */
+    .template {
+      background: var(--code-bg);
+      border: 1px solid var(--code-rule);
+      border-left: 4px solid var(--ink);
+      margin: 1rem 0 1.5rem;
+      position: relative;
+    }
+    .template-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 1rem 0.6rem 1.25rem;
+      border-bottom: 1px solid var(--code-rule);
+      background: rgba(0,0,0,0.025);
+    }
+    .template-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .template-label svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.25;
+    }
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1px solid var(--ink);
+      padding: 0.35rem 0.75rem;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .copy-btn:hover {
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .copy-btn svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.25;
+    }
+    .copy-btn.copied {
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .template-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: var(--ink);
+    }
+    .template-body p {
+      margin-bottom: 0.75rem;
+      color: var(--ink);
+    }
+    .template-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Inline fillable inputs */
+    .fill {
+      display: inline-block;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 500;
+      color: var(--accent-deep);
+      background: var(--bg);
+      border: none;
+      border-bottom: 1.5px dashed var(--accent);
+      padding: 0 0.25rem;
+      margin: 0 1px;
+      min-width: 4rem;
+      max-width: 100%;
+      line-height: 1.4;
+      transition: background 0.12s ease;
+    }
+    .fill::placeholder {
+      color: var(--accent);
+      font-style: italic;
+      font-weight: 400;
+      opacity: 0.65;
+    }
+    .fill:focus {
+      outline: none;
+      background: var(--accent-soft);
+      border-bottom-color: var(--accent-deep);
+      border-bottom-style: solid;
+    }
+    .fill.has-value {
+      border-bottom-style: solid;
+      border-bottom-color: var(--ink);
+      color: var(--ink);
+    }
+
+    /* ============================== */
+    /* SPOKEN SCRIPT (for phone use)  */
+    /* ============================== */
+    .spoken {
+      margin: 1rem 0 1.5rem;
+      padding: 0.5rem 0 0.5rem 1.5rem;
+      border-left: 4px solid var(--quote-bar);
+      position: relative;
+    }
+    .spoken-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.6rem;
+    }
+    .spoken-label svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+    .spoken-body {
+      font-size: 1.0625rem;
+      line-height: 1.55;
+      color: var(--ink);
+      font-weight: 400;
+    }
+    .spoken-body p {
+      margin-bottom: 0.5rem;
+    }
+    .spoken-body p:last-child {
+      margin-bottom: 0;
+    }
+    .spoken-hint {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+      font-style: italic;
+    }
+
+    /* Reference number capture box */
+    .ref-capture {
+      background: var(--bg-soft);
+      border: 1px solid var(--rule-strong);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .ref-capture-label {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--ink);
+      flex: 1 1 auto;
+    }
+    .ref-capture input {
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1.5px solid var(--ink);
+      padding: 0.5rem 0.75rem;
+      width: 14rem;
+      max-width: 100%;
+    }
+    .ref-capture input::placeholder {
+      font-weight: 400;
+      color: var(--ink-faded);
+    }
+    .ref-capture input:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+    }
+
+    /* Reference recall — appears in step 4 */
+    .ref-recall {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.9375rem;
+    }
+    .ref-recall .label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 0.25rem;
+    }
+    .ref-recall .number {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .ref-recall .empty {
+      color: var(--ink-faded);
+      font-weight: 400;
+      font-style: italic;
+      font-size: 0.9375rem;
+    }
+
+    /* Callouts */
+    .callout {
+      margin: 2.5rem 0;
+      padding: 1.75rem 2rem;
+      position: relative;
+    }
+    .callout-protect {
+      background: var(--protect-soft);
+      border-left: 4px solid var(--protect);
+    }
+    .callout-warning {
+      background: var(--warning-bg);
+      border-left: 4px solid var(--warning-rule);
+    }
+    .callout-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .callout-protect .callout-label { color: var(--protect); }
+    .callout-warning .callout-label { color: var(--warning-ink); }
+
+    .callout h3 {
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+    }
+    .callout p {
+      font-size: 0.9375rem;
+      margin-bottom: 0.85rem;
+    }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout strong {
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .callout ul {
+      margin: 0.75rem 0;
+      padding-left: 1.25rem;
+      font-size: 0.9375rem;
+    }
+    .callout li {
+      margin-bottom: 0.5rem;
+    }
+    .callout .resource-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    .callout .resource-list li {
+      padding-left: 1.25rem;
+      position: relative;
+    }
+    .callout .resource-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+    }
+    .callout-protect .resource-list li::before { color: var(--protect); }
+    .callout .sub-label {
+      color: var(--ink);
+    }
+
+    .draft-flag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 0.25rem 0.55rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Help section */
+    .help-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0 2rem;
+    }
+    .help-list li {
+      padding: 1.125rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .help-list li:last-child {
+      border-bottom: none;
+    }
+    .help-list .name {
+      font-weight: 700;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 0.2rem;
+      font-size: 1rem;
+    }
+    .help-list .phone {
+      font-weight: 700;
+      color: var(--accent-deep);
+      font-size: 1.125rem;
+      letter-spacing: -0.005em;
+    }
+    .help-list .desc {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      margin-top: 0.2rem;
+    }
+
+    /* Related scenarios */
+    .related {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .related-grid {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .related-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      background: var(--bg);
+      border: 1px solid var(--rule-strong);
+      text-decoration: none;
+      color: var(--ink);
+      transition: all 0.15s ease;
+      font-size: 0.9375rem;
+      font-weight: 500;
+    }
+    .related-link:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+    }
+    .related-link::after {
+      content: "→";
+      margin-left: auto;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Sources footer */
+    .sources {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+    }
+    .sources h3 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+    .sources ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sources li {
+      margin-bottom: 0.4rem;
+    }
+    .sources a {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule-strong);
+    }
+    .verified {
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* Disclaimer */
+    .disclaimer {
+      margin-top: 2.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-soft);
+      border: 1px dashed var(--rule-strong);
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .disclaimer strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
+    .verify-tag {
+      display: inline-block;
+      background: #c8292e;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      margin: 0 0.15rem;
+      vertical-align: baseline;
+      font-style: normal;
+    }
+    .verify-tag::before { content: "⚑ "; }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(150%);
+      background: var(--ink);
+      color: var(--bg);
+      padding: 0.875rem 1.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Print styles */
+    @media print {
+      .progress-bar, .site-header, .related, .meta-item.print-hide, .copy-btn, .toast { display: none; }
+      body { background: white; }
+      .fill { border-bottom: 1px solid #999; }
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      article { padding: 2rem 1.25rem 4rem; }
+      h1 { font-size: 2.25rem; }
+      .step-title { font-size: 1.375rem; }
+      .template-header { flex-wrap: wrap; gap: 0.5rem; }
+      .ref-capture { flex-direction: column; align-items: stretch; }
+      .ref-capture input { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" id="progress"></div>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="wordmark">
+        <span class="wordmark-main">Tenant Triage</span>
+        <span class="wordmark-accent">NYC</span>
+      </a>
+      <nav class="site-nav">
+        <a href="../index.html">All scenarios</a>
+        <a href="#">About</a>
+        <a href="#">Free help</a>
+      </nav>
+    </div>
+  </header>
+
+  <article>
+
+    <p class="crumb"><a href="../index.html">All scenarios</a> &nbsp;·&nbsp; Repairs &amp; conditions</p>
+
+    <h1>My apartment has no heat or hot water.</h1>
+
+    <p class="standfirst">A clear, step-by-step plan for getting your landlord to fix the problem &mdash; written for the moment you're standing in your kitchen wondering what to do.</p>
+
+    <div class="meta">
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span><strong>9 min</strong> read</span>
+      </span>
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span>Last verified <strong>April 13, 2026</strong></span>
+      </span>
+      <span class="meta-item print-hide">
+        <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+        <a href="#" onclick="window.print(); return false;">Print this page</a>
+      </span>
+    </div>
+
+    <div class="read-first">
+      <p>This is a stressful situation and you shouldn't have to deal with it. The good news: NYC has some of the strongest heat and hot water protections in the country, and the steps below have worked for thousands of tenants.</p>
+      <p><strong>Read this whole page first if you can.</strong> You don't need to take every step &mdash; you just need to know what the full path looks like so you can decide how far to go. Most tenants only need the first two or three steps.</p>
+      <p><strong>If anyone in your apartment is elderly, disabled, a young child, or has a medical condition affected by cold:</strong> treat this as urgent. Skip ahead to Step&nbsp;3 immediately and mention the vulnerable resident when you file your complaint.</p>
+    </div>
+
+    <div class="rights-box">
+      <span class="rights-label">Know your rights</span>
+      <h3>What NYC law requires</h3>
+      <p>Your landlord must provide:</p>
+      <ul>
+        <li><strong>Hot water year-round</strong>, at a minimum of 120&deg;F, every day of the year.</li>
+        <li><strong>Heat during "heat season"</strong> (October&nbsp;1 &ndash; May&nbsp;31).</li>
+        <li><strong>Daytime (6&nbsp;AM &ndash; 10&nbsp;PM):</strong> If it's below 55&deg;F outside, your apartment must be at least 68&deg;F inside.</li>
+        <li><strong>Nighttime (10&nbsp;PM &ndash; 6&nbsp;AM):</strong> Your apartment must be at least 62&deg;F inside, regardless of outside temperature.</li>
+      </ul>
+      <p class="source">Source: NYC Department of Housing Preservation &amp; Development</p>
+    </div>
+
+    <!-- HPDONLINE LOOKUP CALLOUT: Pre-Step-1 leverage -->
+    <aside class="callout callout-protect">
+      <span class="callout-label">Before you do anything else</span>
+      <h3>Look up your building's heat complaint history on HPDOnline.</h3>
+      <p>HPD maintains a public database of every housing code violation ever issued in NYC, including heat and hot water. <strong>You can look up your building right now</strong> and see whether it has a history of heat complaints, whether there are any current open violations, and how your landlord has responded in past winters.</p>
+      <p>Go to <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link">HPDOnline</a> and enter your building's address. Look for the "Violations" tab and scan for "heat" or "hot water." This tells you:</p>
+      <ul>
+        <li><strong>Whether your building has been cited for heat violations before</strong> &mdash; and how many times</li>
+        <li><strong>Whether there are any currently open heat or hot water violations</strong> on the building</li>
+        <li><strong>Whether your landlord typically corrects violations within the legal time frame</strong> or lets them languish</li>
+      </ul>
+      <p>This is leverage. A landlord with a history of heat violations knows exactly what they're doing when the boiler "mysteriously" stops working every January. Walking in with that knowledge changes the conversation entirely.</p>
+    </aside>
+
+    <h2>What to do, step by step</h2>
+
+    <!-- STEP 1 -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 1</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            5 min, then ongoing
+          </span>
+        </div>
+        <h3 class="step-title">Document the problem right now.</h3>
+      </div>
+
+      <p class="why-this-matters">Everything you do after this depends on having evidence. Housing Court and HPD inspections both need documentation. A verbal complaint to your landlord will not hold up if this ends up in court.</p>
+
+      <span class="sub-label">How to do it</span>
+      <ol>
+        <li>Get a thermometer. A cheap one from a dollar store or hardware store is fine.</li>
+        <li>Take temperature readings inside your apartment, and outside if you can (your phone's weather app works). Write down the date, time, indoor temp, and outdoor temp.</li>
+        <li>Take readings a few times a day, especially during legally-required heat hours.</li>
+        <li>Photograph your thermometer next to something showing the time &mdash; a phone clock, wall clock, or newspaper.</li>
+        <li>If hot water is the issue, time how long the water runs cold and note the warmest temperature it reaches.</li>
+      </ol>
+
+      <span class="sub-label">What to save</span>
+      <p>A running log with every reading. Met Council on Housing has a free <a href="https://www.metcouncilonhousing.org/wp-content/uploads/2010/12/Met_Council_on_Housing_Heat_and_Hot_Water_Sheet-1.pdf" class="inline-link">Tenant Heat Log PDF</a> designed to be accepted as evidence in Housing Court.</p>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 2</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            10 min
+          </span>
+        </div>
+        <h3 class="step-title">Tell your landlord, in writing.</h3>
+      </div>
+
+      <p class="why-this-matters">Most heat and hot water problems are fixed at this step. Many landlords respond once they know there's a problem. Just as important: creating a written record protects you if things escalate. A phone call or text to your super doesn't count as the same kind of evidence as a dated written notice.</p>
+
+      <span class="sub-label">How to do it</span>
+      <ol>
+        <li>Write a short, factual message to your landlord or management company. Email is fine. If you don't have an email, send a letter by USPS Certified Mail with Return Receipt &mdash; a few dollars, but proof they received it.</li>
+        <li>Fill in your details below, then copy the message and send it.</li>
+        <li>Keep a copy of what you sent and any response.</li>
+      </ol>
+
+      <span class="sub-label">Email template &mdash; fill it in, then copy</span>
+      <div class="template" id="email-template">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email or letter
+          </span>
+          <button class="copy-btn" data-copy-target="email-template-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="email-template-content">
+          <p><strong>Subject:</strong> Heat and hot water not working at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"></p>
+          <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26">,</p>
+          <p>I am writing to inform you that my apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"> has not had adequate <input type="text" class="fill" data-field="problem" placeholder="heat / hot water / both" size="20"> since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">. I have recorded indoor temperatures as low as <input type="text" class="fill" data-field="temp" placeholder="temperature" size="14"> during <input type="text" class="fill" data-field="time_of_day" placeholder="time of day" size="14">, which is below the legal minimum required by NYC Housing Maintenance Code.</p>
+          <p>Please restore <input type="text" class="fill" data-field="problem" placeholder="heat / hot water / both" size="20"> immediately. If the problem is not resolved within 24 hours, I will be filing a complaint with 311 and HPD.</p>
+          <p>Thank you,<br>
+          <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18"><br>
+          <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16"></p>
+        </div>
+      </div>
+
+      <span class="sub-label">What to expect</span>
+      <p>A responsive landlord will acknowledge your message within a day and send someone to fix the problem. If you don't hear back within 24 hours, or if the problem continues, go to Step&nbsp;3.</p>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 3</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            5&ndash;15 min
+          </span>
+        </div>
+        <h3 class="step-title">File a 311 complaint.</h3>
+      </div>
+
+      <p class="why-this-matters">This is the step that triggers the city to send an inspector. A 311 complaint creates an official record, gets HPD involved, and can result in a legal violation issued against your landlord.</p>
+
+      <span class="sub-label">How to do it &mdash; pick what's easiest</span>
+      <ul>
+        <li><strong>By phone:</strong> Call <strong>311</strong>. If you're deaf or hard of hearing, use TTY at <strong>(212) 504-4115</strong>.</li>
+        <li><strong>Online:</strong> Go to <a href="https://portal.311.nyc.gov/" class="inline-link">portal.311.nyc.gov</a> and search for "heat" or "hot water."</li>
+        <li><strong>Mobile app:</strong> Download the NYC 311 app (iOS or Android) and file from there.</li>
+      </ul>
+
+      <span class="sub-label">What to say on the phone</span>
+      <div class="spoken">
+        <span class="spoken-label">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Say it in your own words
+        </span>
+        <div class="spoken-body">
+          <p>"I'd like to file a complaint about no heat (or hot water) at my apartment. The problem started on [date]. I've recorded indoor temperatures of [temperature]. I already contacted my landlord on [date] and the problem hasn't been fixed."</p>
+          <p>If anyone in your apartment is elderly, disabled, or a young child, mention it: <em>"There is a [vulnerable person] living in the apartment."</em></p>
+        </div>
+        <span class="spoken-hint">This is a guide, not a script &mdash; use your own voice and answer their questions as they come.</span>
+      </div>
+
+      <div class="ref-capture">
+        <label class="ref-capture-label" for="ref-input">After filing, write down your complaint number here so it's saved for the next step:</label>
+        <input type="text" id="ref-input" placeholder="C1-1-XXXXXXXXX" data-field="complaint_ref">
+      </div>
+
+      <span class="sub-label">What to expect</span>
+      <ul>
+        <li>HPD may call your landlord first and give them a chance to fix the problem.</li>
+        <li>If the problem isn't fixed, HPD sends an inspector. For winter heat complaints, inspectors often arrive within 24&ndash;48&nbsp;hours.</li>
+        <li>The inspector may arrive unannounced. If you won't be home, ask a neighbor to let them in or leave a note with a phone number.</li>
+        <li>If the inspector confirms the problem, they'll issue a violation against the landlord. This carries civil penalties of $250&ndash;$500 per day for a first violation, and $500&ndash;$1,000 per day for repeat violations.</li>
+      </ul>
+    </section>
+
+    <!-- CALLOUT: Undocumented tenants -->
+    <aside class="callout callout-protect">
+      <span class="draft-flag">Draft &mdash; pending immigration advocacy review</span>
+      <span class="callout-label">For undocumented tenants</span>
+      <h3>Your immigration status does not affect your right to safe housing.</h3>
+
+      <p>NYC law is clear: your landlord must provide heat and hot water regardless of your immigration status, and HPD's job is to enforce that. <strong>NYC agencies including HPD and 311 do not ask about immigration status when you file a housing complaint.</strong></p>
+
+      <p>It is also illegal under NYC Human Rights Law for your landlord to threaten to report you to ICE, deport you, or treat you differently because of your immigration status. If your landlord threatens you in this way, that is itself a crime you can report.</p>
+
+      <p><strong>An honest note:</strong> NYC's protections are strong, but they are city and state protections. Federal immigration enforcement is a separate system. If you are worried about risks specific to your situation, you can talk to a free, confidential immigration legal organization before filing any complaint. You are not alone in asking these questions.</p>
+
+      <span class="sub-label">Free, confidential help</span>
+      <ul class="resource-list">
+        <li><strong>ActionNYC</strong> &mdash; free, safe immigration legal help connected to city services. Call <strong>311</strong> and ask for ActionNYC.</li>
+        <li><strong>Make the Road New York</strong> &mdash; tenant and immigrant rights support: <strong>718-418-7690</strong></li>
+        <li><strong>New York Immigration Coalition</strong> &mdash; referrals to trusted legal help: <strong>212-627-2227</strong></li>
+        <li><strong>NYC Commission on Human Rights</strong> &mdash; if your landlord threatens you with ICE: <strong>212-416-0197</strong></li>
+      </ul>
+    </aside>
+
+    <!-- CALLOUT: Retaliation -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Worried about retaliation?</span>
+      <h3>This is a real fear &mdash; here's what you should know.</h3>
+
+      <p><strong>Retaliation is illegal in New York.</strong> Under NY Real Property Law &sect;&nbsp;223-b, your landlord cannot punish you for making a good-faith complaint about housing conditions. Punishment includes raising your rent, refusing to renew your lease, starting an eviction, reducing services, or harassing you.</p>
+
+      <p><strong>The law specifically protects complaints like this one.</strong> Filing a 311 complaint about heat or hot water is exactly the kind of action the anti-retaliation law covers.</p>
+
+      <p>If you believe your landlord is retaliating: document everything (dates, what happened, any written communication), and call the Met Council on Housing hotline at <strong>212-979-0611</strong>. Retaliation cases can be fought in Housing Court, and the law is on your side.</p>
+
+      <p style="margin-top: 1rem;"><a href="#" class="inline-link">Read more: What retaliation looks like and what to do &rarr;</a></p>
+    </aside>
+
+    <!-- STEP 4 -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 4</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            5 min
+          </span>
+        </div>
+        <h3 class="step-title">Check the status and keep a paper trail.</h3>
+      </div>
+
+      <p class="why-this-matters">You need to know whether HPD has actually inspected, whether a violation was issued, and what the landlord has done in response. This is also the moment to decide whether to escalate.</p>
+
+      <div class="ref-recall" id="ref-recall">
+        <span class="label">Your complaint reference number</span>
+        <span class="number" id="ref-display"><span class="empty">Not entered yet &mdash; you can save it in Step&nbsp;3 above.</span></span>
+      </div>
+
+      <span class="sub-label">How to do it</span>
+      <ol>
+        <li>Go to <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link">HPDOnline</a> and enter your building's address.</li>
+        <li>Look for open violations, especially under "heat" or "hot water." If your complaint resulted in a violation, you'll see it here.</li>
+        <li>Note the violation number, date issued, and classification. Heat and hot water violations are typically Class&nbsp;C &mdash; immediately hazardous.</li>
+        <li>Save a screenshot or print the page.</li>
+      </ol>
+
+      <span class="sub-label">What to expect</span>
+      <p>Violations typically appear online within a few days of the inspection. If your complaint doesn't show up at all, the inspection may not have happened yet, or the inspector didn't find a violation &mdash; in which case, call 311 again and request another inspection.</p>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 5</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Varies
+          </span>
+        </div>
+        <h3 class="step-title">If nothing's working: escalate.</h3>
+      </div>
+
+      <p class="why-this-matters">By this point, you've given your landlord multiple chances and the city has been involved. If you're still without heat or hot water, you have stronger options &mdash; but most involve legal or advocacy help, and you shouldn't try them alone.</p>
+
+      <span class="sub-label">A. Call the Met Council on Housing Tenants' Rights Hotline</span>
+      <p>Free, staffed by trained volunteers, and the best starting point for figuring out what to do next. They can help you decide between the options below and point you to the right legal help.</p>
+      <ul>
+        <li><strong>Phone:</strong> 212-979-0611</li>
+        <li><strong>Hours:</strong> Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM</li>
+        <li><strong>Heads up:</strong> The hotline is very busy &mdash; call after 4&nbsp;PM if you can, and avoid Mondays. Volunteer-staffed, so it occasionally closes on short notice.</li>
+      </ul>
+
+      <span class="sub-label">B. Start an HP Action in Housing Court</span>
+      <p>A legal proceeding asking a judge to order your landlord to make repairs. You can file one yourself or with help from a free legal services organization. An HP Action can result in a court order forcing the landlord to fix the problem, plus fines.</p>
+
+      <span class="sub-label">C. If you're rent-stabilized or rent-controlled: file for a rent reduction</span>
+      <p>NYS Homes and Community Renewal (DHCR) can order a rent reduction when essential services aren't provided. You'll need the HPD inspection report from Step&nbsp;4. Use <a href="https://hcr.ny.gov/system/files/documents/2021/05/hhw-1-fillable.pdf" class="inline-link">Form HHW-1</a> or call DHCR at <strong>833-499-0343</strong>.</p>
+
+      <span class="sub-label">D. If you qualify: free legal representation</span>
+      <p>NYC's Right to Counsel program provides free lawyers to low-income tenants facing housing issues. The Met Council hotline (option A) can help you figure out if you qualify.</p>
+    </section>
+
+    <!-- Rent strike warning -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; about rent strikes</span>
+      <h3>You may have heard you can stop paying rent. This is risky.</h3>
+      <p>It's technically legal to withhold rent, but if you do it without following the right legal process, your landlord can start eviction proceedings against you and you could lose your home. Met Council on Housing's advice: <strong>always consult a lawyer before withholding rent.</strong></p>
+      <p>If you decide you need to withhold rent as a last resort, put the rent money aside every month in a separate account. Do not spend it. You may need to pay it later, and having it saved protects you if things go wrong.</p>
+    </aside>
+
+    <!-- Free help -->
+    <h2>Free help available</h2>
+    <ul class="help-list">
+      <li>
+        <span class="name">Met Council on Housing Tenants' Rights Hotline</span>
+        <span class="phone">212-979-0611</span>
+        <span class="desc">Free advice from trained volunteers. Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM. Not lawyers, but very knowledgeable.</span>
+      </li>
+      <li>
+        <span class="name">NYC 311</span>
+        <span class="phone">Dial 311</span>
+        <span class="desc">For filing complaints, checking complaint status, and reaching the Tenant Helpline.</span>
+      </li>
+      <li>
+        <span class="name">Housing Court Answers</span>
+        <span class="phone">212-962-4795</span>
+        <span class="desc">Help navigating Housing Court, including HP Actions.</span>
+      </li>
+      <li>
+        <span class="name">Legal Services NYC</span>
+        <span class="phone">917-661-4500</span>
+        <span class="desc">Free legal help for low-income tenants, multiple boroughs.</span>
+      </li>
+    </ul>
+
+    <!-- Related -->
+    <section class="related">
+      <h2 style="margin-top: 0;">Related situations</h2>
+      <div class="related-grid">
+        <a href="#" class="related-link">My landlord is making repairs but they're not fixing the actual problem</a>
+        <a href="#" class="related-link">I got an eviction notice after complaining about heat</a>
+        <a href="#" class="related-link">My landlord is retaliating against me for complaining</a>
+        <a href="#" class="related-link">I'm in a NYCHA building, not private housing</a>
+        <a href="#" class="related-link">My building-wide heat has been out for weeks</a>
+      </div>
+    </section>
+
+    <!-- Sources -->
+    <div class="sources">
+      <h3>Sources &amp; verification</h3>
+      <ul>
+        <li><a href="https://www.nyc.gov/site/hpd/services-and-information/heat-and-hot-water-information.page">NYC HPD &mdash; Heat and Hot Water Information</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/help-answers/heat-hot-water/">Met Council on Housing &mdash; Heat &amp; Hot Water</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/program/tenants-rights-hotline/">Met Council on Housing &mdash; Tenants' Rights Hotline</a></li>
+        <li><a href="https://hcr.ny.gov/system/files/documents/2021/05/hhw-1-fillable.pdf">NYS HCR &mdash; Form HHW-1</a></li>
+      </ul>
+      <p class="verified">All sources verified April 13, 2026. <a href="#" class="inline-link">Found an error? Tell us.</a></p>
+    </div>
+
+    <div class="disclaimer">
+      <strong>This isn't legal advice.</strong> Tenant Triage NYC is an independent guide to help you understand your options and take action. We are not lawyers, and this is not an official government resource. If you need legal advice for your specific situation, please contact one of the free legal help organizations listed above.
+    </div>
+
+  </article>
+
+  <div class="toast" id="toast">Copied to clipboard</div>
+
+  <script>
+    // Scroll progress bar
+    window.addEventListener('scroll', function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progress").style.width = scrolled + "%";
+    });
+
+    // ============================================
+    // FORM STATE — in-memory only for prototype
+    // Production should use localStorage for persistence
+    // ============================================
+    const formState = {};
+
+    // Sync all inputs sharing the same data-field name
+    function syncField(fieldName, value) {
+      formState[fieldName] = value;
+      document.querySelectorAll('[data-field="' + fieldName + '"]').forEach(function(input) {
+        if (input.value !== value) {
+          input.value = value;
+        }
+        // Update visual state based on whether it has a value
+        if (value && value.trim() !== '') {
+          input.classList.add('has-value');
+        } else {
+          input.classList.remove('has-value');
+        }
+      });
+
+      // Update reference number recall display in step 4
+      if (fieldName === 'complaint_ref') {
+        const display = document.getElementById('ref-display');
+        if (value && value.trim() !== '') {
+          display.innerHTML = value;
+        } else {
+          display.innerHTML = '<span class="empty">Not entered yet &mdash; you can save it in Step&nbsp;3 above.</span>';
+        }
+      }
+    }
+
+    // Wire up all fillable inputs
+    document.querySelectorAll('.fill, [data-field]').forEach(function(input) {
+      input.addEventListener('input', function() {
+        syncField(this.dataset.field, this.value);
+      });
+    });
+
+    // Auto-resize fillable inputs based on content
+    function autoResize(input) {
+      const placeholder = input.getAttribute('placeholder') || '';
+      const value = input.value || '';
+      const len = Math.max(value.length, placeholder.length, 4);
+      input.size = len + 1;
+    }
+    document.querySelectorAll('.fill').forEach(function(input) {
+      autoResize(input);
+      input.addEventListener('input', function() { autoResize(this); });
+    });
+
+    // ============================================
+    // COPY TO CLIPBOARD
+    // ============================================
+    function getTemplateText(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return '';
+
+      // Clone the container so we can manipulate it without affecting the DOM
+      const clone = container.cloneNode(true);
+
+      // Replace each input with its current value (or placeholder text if empty)
+      clone.querySelectorAll('input.fill').forEach(function(input) {
+        const original = container.querySelector('[data-field="' + input.dataset.field + '"]');
+        const value = original.value.trim();
+        const replacement = value || ('[' + (input.getAttribute('placeholder') || input.dataset.field) + ']');
+        const textNode = document.createTextNode(replacement);
+        input.parentNode.replaceChild(textNode, input);
+      });
+
+      // Get the text content with line breaks preserved from <br> and <p>
+      // Walk the clone and assemble plain text with appropriate spacing
+      let text = '';
+      clone.querySelectorAll('p').forEach(function(p, index) {
+        if (index > 0) text += '\n\n';
+        // Replace <br> with newlines
+        const html = p.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        text += tempDiv.textContent.trim();
+      });
+
+      return text;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 2200);
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const targetId = this.dataset.copyTarget;
+        const text = getTemplateText(targetId);
+
+        // Use Clipboard API with fallback
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function() {
+            showCopySuccess(btn);
+          }).catch(function() {
+            fallbackCopy(text, btn);
+          });
+        } else {
+          fallbackCopy(text, btn);
+        }
+      });
+    });
+
+    function fallbackCopy(text, btn) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showCopySuccess(btn);
+      } catch (err) {
+        showToast('Copy failed — please select and copy manually');
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function showCopySuccess(btn) {
+      btn.classList.add('copied');
+      const textSpan = btn.querySelector('.copy-btn-text');
+      const originalText = textSpan.textContent;
+      textSpan.textContent = 'Copied!';
+      showToast('Copied to clipboard');
+      setTimeout(function() {
+        btn.classList.remove('copied');
+        textSpan.textContent = originalText;
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>

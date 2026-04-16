@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Address lookup test — Tenant Triage NYC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f3ef;
+      --ink: #111111;
+      --ink-soft: #3d3d3d;
+      --ink-faded: #6b6b6b;
+      --rule: #e6e4df;
+      --rule-strong: #c9c5bc;
+      --accent: #0d7377;
+      --accent-deep: #08494c;
+      --accent-soft: #e3f0f0;
+      --accent-bright: #5eb6b9;
+      --warning-ink: #7a3a0a;
+      --warning-bg: #fff4e6;
+      --warning-rule: #e8a35a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      padding: 3rem 1.5rem 6rem;
+    }
+
+    article {
+      max-width: 42rem;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: 2.25rem;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 0.5rem;
+    }
+
+    .reading-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+      padding: 0.35rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .standfirst {
+      font-size: 1.0625rem;
+      color: var(--ink-soft);
+      margin-bottom: 2.5rem;
+      max-width: 36rem;
+    }
+
+    p { margin-bottom: 1rem; }
+    p strong { font-weight: 600; }
+
+    /* ============================================ */
+    /* ADDRESS LOOKUP COMPONENT                     */
+    /* ============================================ */
+
+    .lookup {
+      margin: 2rem 0 2.5rem;
+      padding: 1.75rem 2rem;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+    }
+
+    .lookup-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 0.5rem;
+    }
+
+    .lookup h3 {
+      font-weight: 800;
+      font-size: 1.4375rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+
+    .lookup-intro {
+      font-size: 1.0625rem;
+      color: var(--ink-soft);
+      margin-bottom: 1.25rem;
+    }
+
+    .lookup-input-wrap {
+      position: relative;
+    }
+
+    .lookup-input {
+      width: 100%;
+      font-family: inherit;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1.5px solid var(--ink);
+      padding: 0.75rem 1rem 0.75rem 2.75rem;
+      transition: all 0.15s ease;
+    }
+
+    .lookup-input::placeholder {
+      color: var(--ink-faded);
+      font-weight: 400;
+    }
+
+    .lookup-input:focus {
+      outline: none;
+      border-color: var(--accent-deep);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .lookup-input-wrap svg.search-icon {
+      position: absolute;
+      left: 0.875rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      stroke: var(--ink-faded);
+      fill: none;
+      stroke-width: 2;
+      pointer-events: none;
+    }
+
+    .lookup-suggestions {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border: 1.5px solid var(--ink);
+      max-height: 18rem;
+      overflow-y: auto;
+      z-index: 100;
+      display: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .lookup-suggestions.visible { display: block; }
+
+    .lookup-suggestion {
+      display: block;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      border-bottom: 1px solid var(--rule);
+      transition: background 0.1s ease;
+      font-size: 1.0625rem;
+    }
+    .lookup-suggestion:last-child { border-bottom: none; }
+    .lookup-suggestion:hover,
+    .lookup-suggestion.highlighted {
+      background: var(--accent-soft);
+    }
+    .lookup-suggestion-address {
+      display: block;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .lookup-suggestion-borough {
+      display: block;
+      font-size: 1.0625rem;
+      color: var(--ink-faded);
+      margin-top: 0.15rem;
+    }
+
+    .lookup-status {
+      margin-top: 1rem;
+      font-size: 1.125rem;
+      color: var(--ink-soft);
+    }
+    .lookup-status.error {
+      color: var(--warning-ink);
+    }
+
+    /* Results display */
+    .lookup-results {
+      margin-top: 1.25rem;
+      display: none;
+    }
+    .lookup-results.visible { display: block; }
+
+    .lookup-results-header {
+      padding: 1rem 1.25rem;
+      background: var(--bg);
+      border: 1.5px solid var(--ink);
+      margin-bottom: 0.75rem;
+    }
+    .lookup-results-address {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink-faded);
+      margin-bottom: 0.25rem;
+    }
+    .lookup-results-building {
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .lookup-results-summary {
+      font-size: 1.0625rem;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .lookup-results-summary.none {
+      color: var(--accent-deep);
+    }
+    .lookup-results-summary.some {
+      color: var(--warning-ink);
+    }
+
+    .lookup-violation-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .lookup-violation {
+      padding: 1rem 1.125rem;
+      background: var(--bg);
+      border: 1px solid var(--rule-strong);
+      margin-bottom: 0.5rem;
+      font-size: 1.125rem;
+    }
+    /* Subtle left-border state hint, complementing the pill */
+    .lookup-violation.state-open {
+      border-left: 3px solid #c8292e;
+    }
+    .lookup-violation.state-closed {
+      border-left: 3px solid var(--rule-strong);
+    }
+    .lookup-violation.state-dismissed {
+      border-left: 3px solid var(--rule-strong);
+      opacity: 0.75;
+    }
+
+    /* Top row: state pill + class pill + date (right-aligned) */
+    .lookup-violation-top {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+
+    /* State pill — colored, indicates open/closed/dismissed */
+    .lookup-state-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.3rem 0.7rem 0.3rem 0.6rem;
+      border-radius: 100px;
+      letter-spacing: 0.005em;
+      flex-shrink: 0;
+    }
+    .lookup-state-pill .state-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 100px;
+      flex-shrink: 0;
+    }
+    .lookup-state-pill.state-open {
+      background: #fdecec;
+      color: #8c1c20;
+    }
+    .lookup-state-pill.state-open .state-dot {
+      background: #c8292e;
+    }
+    .lookup-state-pill.state-closed {
+      background: #ececea;
+      color: var(--ink-soft);
+    }
+    .lookup-state-pill.state-closed .state-dot {
+      background: var(--ink-faded);
+    }
+    .lookup-state-pill.state-dismissed {
+      background: #ececea;
+      color: var(--ink-faded);
+      font-style: italic;
+    }
+    .lookup-state-pill.state-dismissed .state-dot {
+      background: var(--ink-faded);
+    }
+
+    /* Class pill — monochrome, indicates severity. Bold, bordered. */
+    .lookup-class-pill {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0;
+      font-size: 0.85rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 100px;
+      border: 1.5px solid var(--ink);
+      background: var(--bg);
+      color: var(--ink);
+      flex-shrink: 0;
+    }
+    .lookup-class-pill .class-letter {
+      font-weight: 800;
+      letter-spacing: 0.005em;
+    }
+    .lookup-class-pill .class-descriptor {
+      font-weight: 500;
+      color: var(--ink-soft);
+    }
+
+    /* Date — right-aligned on the pill row */
+    .lookup-violation-date {
+      font-size: 0.85rem;
+      color: var(--ink-faded);
+      font-weight: 500;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    /* Main description text */
+    .lookup-violation-desc {
+      font-size: 1.0625rem;
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    /* Apartment location — secondary, slightly smaller, gray */
+    .lookup-violation-location {
+      margin-top: 0.4rem;
+      font-size: 1.0625rem;
+      color: var(--ink-faded);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    /* Footer area: Show more button + HPDOnline link */
+    .lookup-results-footer {
+      margin-top: 0.875rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.625rem;
+    }
+    .lookup-show-more {
+      font-family: inherit;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1.5px solid var(--ink);
+      padding: 0.5rem 1.25rem;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .lookup-show-more:hover {
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .lookup-hpd-link {
+      font-size: 1.0625rem;
+      color: var(--ink-faded);
+    }
+    .lookup-hpd-link a {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    .lookup-fallback {
+      margin-top: 1rem;
+      padding: 0.875rem 1rem;
+      background: var(--warning-bg);
+      border-left: 3px solid var(--warning-rule);
+      font-size: 1.125rem;
+      color: var(--ink-soft);
+    }
+    .lookup-fallback a {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    /* Test harness section */
+    .test-instructions {
+      background: var(--bg-soft);
+      border-left: 4px solid var(--ink);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2rem;
+      font-size: 1.0625rem;
+    }
+    .test-instructions h2 {
+      font-weight: 800;
+      font-size: 1.125rem;
+      margin-bottom: 0.75rem;
+    }
+    .test-instructions ol {
+      padding-left: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    .test-instructions li {
+      margin-bottom: 0.4rem;
+    }
+    .test-instructions code {
+      background: var(--bg);
+      padding: 0.1rem 0.35rem;
+      font-family: ui-monospace, monospace;
+      font-size: 1.0625rem;
+      border: 1px solid var(--rule-strong);
+    }
+
+    .debug-panel {
+      margin-top: 2rem;
+      padding: 1rem 1.25rem;
+      background: #1a1a1a;
+      color: #e0e0e0;
+      font-family: ui-monospace, monospace;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      max-height: 16rem;
+      overflow-y: auto;
+    }
+    .debug-panel-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 0.5rem;
+    }
+    .debug-line {
+      margin-bottom: 0.25rem;
+      word-wrap: break-word;
+    }
+    .debug-line.error { color: #ff6b6b; }
+    .debug-line.success { color: #5eb6b9; }
+  </style>
+</head>
+<body>
+
+  <article>
+
+    <span class="reading-label">Test page</span>
+    <h1>Address lookup component test</h1>
+    <p class="standfirst">This is a standalone test page for the address lookup + violations display component. If it works here, it gets integrated into the scenario pages.</p>
+
+    <div class="test-instructions">
+      <h2>How to test</h2>
+      <ol>
+        <li>Type an NYC address in the input below. Try a known-good one like <code>142 Ocean Pkwy, Brooklyn</code> or your own NYC address.</li>
+        <li>Suggestions should appear as you type (after ~3 characters). Click one.</li>
+        <li>The component should query HPD violations for that building and display them below.</li>
+        <li>Watch the debug panel at the bottom &mdash; it shows every API call and response so you can see what's happening.</li>
+        <li>If something fails, the debug panel will show the error and the component will fall back to a link-out to HPDOnline.</li>
+      </ol>
+      <p>This page is looking up <strong>all violations</strong> for testing. In the real scenario pages, the component will filter to scenario-specific violations (mold for mold, pests for pests, etc.).</p>
+    </div>
+
+    <!-- THE COMPONENT -->
+    <section class="lookup" id="lookup">
+      <span class="lookup-label">Before you do anything else</span>
+      <h3>Look up your building's violation history.</h3>
+      <p class="lookup-intro">HPD maintains a public database of every housing code violation ever issued in NYC. Enter your address to see what's on record for your building.</p>
+
+      <div class="lookup-input-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input
+          type="text"
+          class="lookup-input"
+          id="lookup-input"
+          placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn"
+          autocomplete="off"
+          spellcheck="false">
+        <div class="lookup-suggestions" id="lookup-suggestions"></div>
+      </div>
+
+      <div class="lookup-status" id="lookup-status"></div>
+
+      <div class="lookup-results" id="lookup-results"></div>
+
+      <div class="lookup-fallback" id="lookup-fallback" style="display: none;">
+        <strong>Having trouble?</strong> You can also look up your building directly on <a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">HPDOnline</a>.
+      </div>
+    </section>
+
+    <!-- DEBUG PANEL -->
+    <div class="debug-panel" id="debug-panel">
+      <div class="debug-panel-label">Debug log (remove before production)</div>
+      <div id="debug-lines"></div>
+    </div>
+
+  </article>
+
+  <script>
+    // ============================================
+    // CONFIGURATION
+    // ============================================
+    // Socrata app token goes here when we register for one.
+    // Null is fine for prototyping — just means we use the anonymous rate limit.
+    const SOCRATA_APP_TOKEN = null;
+
+    // NYC Planning Labs GeoSearch autocomplete endpoint
+    const GEOSEARCH_URL = 'https://geosearch.planninglabs.nyc/v2/autocomplete';
+
+    // NYC Open Data Socrata endpoint for Housing Maintenance Code Violations
+    const SOCRATA_VIOLATIONS_URL = 'https://data.cityofnewyork.us/resource/wvxf-dwi5.json';
+
+    // How many suggestions to show in the autocomplete dropdown
+    const MAX_SUGGESTIONS = 5;
+
+    // How many violations to display initially
+    const INITIAL_VIOLATIONS_DISPLAY = 10;
+
+    // How many additional violations to reveal per "Show more" click
+    const VIOLATIONS_PER_PAGE = 20;
+
+    // Maximum number of violations to fetch from Socrata in a single call.
+    // Socrata's hard limit is 50000 but we'll never realistically need that much.
+    const SOCRATA_FETCH_LIMIT = 1000;
+
+    // Debounce delay for autocomplete (ms)
+    const DEBOUNCE_MS = 250;
+
+    // ============================================
+    // DEBUG LOGGING
+    // ============================================
+    const debugLinesEl = document.getElementById('debug-lines');
+
+    function debug(msg, type) {
+      const line = document.createElement('div');
+      line.className = 'debug-line' + (type ? ' ' + type : '');
+      const time = new Date().toLocaleTimeString();
+      line.textContent = '[' + time + '] ' + msg;
+      debugLinesEl.appendChild(line);
+      debugLinesEl.parentElement.scrollTop = debugLinesEl.parentElement.scrollHeight;
+      // Also log to console
+      if (type === 'error') console.error(msg);
+      else if (type === 'success') console.log('%c' + msg, 'color: #5eb6b9');
+      else console.log(msg);
+    }
+
+    debug('Test page loaded. Ready for input.');
+
+    // ============================================
+    // DOM REFERENCES
+    // ============================================
+    const input = document.getElementById('lookup-input');
+    const suggestionsBox = document.getElementById('lookup-suggestions');
+    const statusEl = document.getElementById('lookup-status');
+    const resultsEl = document.getElementById('lookup-results');
+    const fallbackEl = document.getElementById('lookup-fallback');
+
+    let highlightedIndex = -1;
+    let currentSuggestions = [];
+    let debounceTimer = null;
+
+    // ============================================
+    // GEOSEARCH AUTOCOMPLETE
+    // ============================================
+    async function fetchGeoSearch(query) {
+      const url = GEOSEARCH_URL + '?text=' + encodeURIComponent(query) + '&size=' + MAX_SUGGESTIONS;
+      debug('→ GeoSearch: ' + url);
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('HTTP ' + response.status + ' ' + response.statusText);
+        }
+        const data = await response.json();
+        debug('← GeoSearch returned ' + (data.features ? data.features.length : 0) + ' features', 'success');
+        // Log the first feature's full structure so we can see what we're working with
+        if (data.features && data.features.length > 0) {
+          debug('First feature properties keys: ' + Object.keys(data.features[0].properties || {}).join(', '));
+          // Check for the key fields we need (BBL lives under addendum.pad in Pelias)
+          const props = data.features[0].properties || {};
+          const padData = (props.addendum && props.addendum.pad) || {};
+          debug('bbl=' + padData.bbl + ', bin=' + padData.bin + ', borough=' + props.borough + ', label=' + props.label);
+        }
+        return data;
+      } catch (err) {
+        debug('GeoSearch error: ' + err.message, 'error');
+        throw err;
+      }
+    }
+
+    function renderSuggestions(features) {
+      suggestionsBox.innerHTML = '';
+      currentSuggestions = [];
+      highlightedIndex = -1;
+
+      if (!features || features.length === 0) {
+        suggestionsBox.classList.remove('visible');
+        return;
+      }
+
+      features.forEach(function(feature, i) {
+        const props = feature.properties || {};
+        // GeoSearch returns a 'label' field with the full normalized address
+        // and 'borough' as a separate field
+        const label = props.label || props.name || 'Unknown address';
+        const borough = props.borough || '';
+
+        // GeoSearch is built on Pelias, which nests source-specific data inside
+        // an 'addendum' object keyed by source name. NYC's Property Address
+        // Directory data lives at addendum.pad — so BBL is addendum.pad.bbl,
+        // BIN is addendum.pad.bin, etc.
+        const padData = (props.addendum && props.addendum.pad) || {};
+        const bbl = padData.bbl;
+        const bin = padData.bin;
+
+        // Debug: dump the full addendum so we can see what fields are available
+        if (i === 0) {
+          debug('addendum: ' + JSON.stringify(props.addendum || {}));
+        }
+
+        // We need a BBL to query Socrata. If there's no BBL, skip this suggestion.
+        if (!bbl) {
+          debug('Skipping suggestion with no BBL: ' + label);
+          return;
+        }
+
+        currentSuggestions.push({
+          label: label,
+          borough: borough,
+          bbl: bbl,
+          bin: bin,
+          housenumber: props.housenumber,
+          street: props.street,
+          postalcode: props.postalcode
+        });
+
+        const el = document.createElement('div');
+        el.className = 'lookup-suggestion';
+        el.dataset.index = currentSuggestions.length - 1;
+        el.innerHTML =
+          '<span class="lookup-suggestion-address">' + escapeHTML(label) + '</span>' +
+          (borough ? '<span class="lookup-suggestion-borough">' + escapeHTML(borough) + '</span>' : '');
+
+        el.addEventListener('click', function() {
+          selectSuggestion(parseInt(el.dataset.index));
+        });
+
+        el.addEventListener('mouseenter', function() {
+          setHighlight(parseInt(el.dataset.index));
+        });
+
+        suggestionsBox.appendChild(el);
+      });
+
+      if (currentSuggestions.length > 0) {
+        suggestionsBox.classList.add('visible');
+      } else {
+        suggestionsBox.classList.remove('visible');
+      }
+    }
+
+    function setHighlight(index) {
+      const items = suggestionsBox.querySelectorAll('.lookup-suggestion');
+      items.forEach(function(item, i) {
+        item.classList.toggle('highlighted', i === index);
+      });
+      highlightedIndex = index;
+    }
+
+    function selectSuggestion(index) {
+      if (index < 0 || index >= currentSuggestions.length) return;
+      const selected = currentSuggestions[index];
+      debug('Selected: ' + selected.label + ' (BBL ' + selected.bbl + ')', 'success');
+      input.value = selected.label;
+      suggestionsBox.classList.remove('visible');
+      fetchViolations(selected);
+    }
+
+    // ============================================
+    // SOCRATA VIOLATIONS QUERY
+    // ============================================
+    async function fetchViolations(building) {
+      statusEl.textContent = 'Looking up violations...';
+      statusEl.classList.remove('error');
+      resultsEl.classList.remove('visible');
+      fallbackEl.style.display = 'none';
+
+      // Socrata stores BBL as a string. Query uses SoQL.
+      // Filter by BBL and order by most recent first.
+      const bbl = building.bbl;
+
+      // SoQL: $where filter, $order by newest, $limit (pull a generous batch
+      // since we paginate in the UI rather than via additional API calls)
+      const whereClause = "bbl='" + bbl + "'";
+      const url = SOCRATA_VIOLATIONS_URL +
+        '?$where=' + encodeURIComponent(whereClause) +
+        '&$order=' + encodeURIComponent('inspectiondate DESC') +
+        '&$limit=' + SOCRATA_FETCH_LIMIT;
+
+      debug('→ Socrata: ' + url);
+
+      try {
+        const headers = {};
+        if (SOCRATA_APP_TOKEN) {
+          headers['X-App-Token'] = SOCRATA_APP_TOKEN;
+        }
+        const response = await fetch(url, { headers: headers });
+        if (!response.ok) {
+          throw new Error('HTTP ' + response.status + ' ' + response.statusText);
+        }
+        const data = await response.json();
+        debug('← Socrata returned ' + data.length + ' violations', 'success');
+
+        // Log the first violation's structure so we can see what fields exist
+        if (data.length > 0) {
+          debug('First violation keys: ' + Object.keys(data[0]).join(', '));
+          debug('First violation sample: ' + JSON.stringify(data[0]).substring(0, 300));
+        }
+
+        renderViolations(building, data);
+      } catch (err) {
+        debug('Socrata error: ' + err.message, 'error');
+        statusEl.textContent = 'Could not fetch violations from HPD data. The HPD data service may be temporarily unavailable.';
+        statusEl.classList.add('error');
+        fallbackEl.style.display = 'block';
+      }
+    }
+
+    // State for progressive loading: track all fetched violations and how
+    // many we're currently displaying so the "Show more" button can extend.
+    let allViolations = [];
+    let displayedCount = 0;
+
+    function renderViolations(building, violations) {
+      statusEl.textContent = '';
+      allViolations = violations;
+      displayedCount = 0;
+      cardCleanupLogCount = 0;
+
+      // Build the results display
+      const header = document.createElement('div');
+      header.className = 'lookup-results-header';
+
+      const addressLabel = document.createElement('div');
+      addressLabel.className = 'lookup-results-address';
+      addressLabel.textContent = 'Results for';
+
+      const buildingLabel = document.createElement('div');
+      buildingLabel.className = 'lookup-results-building';
+      buildingLabel.textContent = toSentenceCase(building.label);
+
+      const summary = document.createElement('div');
+      summary.className = 'lookup-results-summary';
+
+      if (violations.length === 0) {
+        summary.textContent = 'Good news — no violations on record for this building. That doesn\'t mean your landlord is responsible, but it does mean you\'re not in a building with a long enforcement history.';
+        summary.classList.add('none');
+      } else {
+        // Count open vs closed using the translated status state
+        let openCount = 0;
+        violations.forEach(function(v) {
+          const status = translateStatus(v.currentstatus);
+          if (status.state === 'open') openCount++;
+        });
+
+        if (openCount > 0) {
+          summary.textContent = openCount + ' open violation' + (openCount === 1 ? '' : 's') + ' on this building (plus ' + (violations.length - openCount) + ' resolved or dismissed in the fetched history).';
+          summary.classList.add('some');
+        } else {
+          summary.textContent = violations.length + ' past violation' + (violations.length === 1 ? '' : 's') + ', all currently resolved or dismissed. This is still useful context for your conversation with your landlord.';
+          summary.classList.add('none');
+        }
+      }
+
+      header.appendChild(addressLabel);
+      header.appendChild(buildingLabel);
+      header.appendChild(summary);
+
+      resultsEl.innerHTML = '';
+      resultsEl.appendChild(header);
+
+      if (violations.length > 0) {
+        const list = document.createElement('ul');
+        list.className = 'lookup-violation-list';
+        list.id = 'violation-list';
+        resultsEl.appendChild(list);
+
+        // Render the initial batch
+        appendViolations(INITIAL_VIOLATIONS_DISPLAY);
+
+        // "Show more" button + HPDOnline fallback link container
+        const footer = document.createElement('div');
+        footer.className = 'lookup-results-footer';
+        footer.id = 'lookup-results-footer';
+        resultsEl.appendChild(footer);
+        renderFooter();
+      }
+
+      resultsEl.classList.add('visible');
+    }
+
+    function appendViolations(count) {
+      const list = document.getElementById('violation-list');
+      if (!list) return;
+
+      const end = Math.min(displayedCount + count, allViolations.length);
+      for (let i = displayedCount; i < end; i++) {
+        list.appendChild(buildViolationCard(allViolations[i]));
+      }
+      displayedCount = end;
+      renderFooter();
+    }
+
+    let cardCleanupLogCount = 0;
+
+    function buildViolationCard(v) {
+      const li = document.createElement('li');
+      li.className = 'lookup-violation';
+
+      // Translate the status first since it controls the state pill
+      const statusInfo = translateStatus(v.currentstatus);
+      li.classList.add('state-' + statusInfo.state);
+
+      // Process the description, splitting out apartment location
+      const desc = cleanDescription(v.novdescription || v.novtype);
+
+      // Debug: log raw vs cleaned for the first few cards so we can verify the parser
+      if (cardCleanupLogCount < 3) {
+        debug('RAW: ' + (v.novdescription || v.novtype || '(empty)'));
+        debug('MAIN: ' + desc.main);
+        debug('LOC: ' + (desc.location || '(none)'));
+        cardCleanupLogCount++;
+      }
+
+      // Top row: state pill + class pill, paired
+      const top = document.createElement('div');
+      top.className = 'lookup-violation-top';
+
+      // State pill (colored, indicates open/closed/dismissed)
+      const statePill = document.createElement('span');
+      statePill.className = 'lookup-state-pill state-' + statusInfo.state;
+      statePill.innerHTML = '<span class="state-dot" aria-hidden="true"></span>' + escapeHTML(statusInfo.label);
+      top.appendChild(statePill);
+
+      // Class pill (monochrome, indicates severity)
+      const violationClass = (v.class || '').toUpperCase();
+      const classDescriptor = {
+        'A': 'Non-hazardous',
+        'B': 'Hazardous',
+        'C': 'Immediately hazardous',
+        'I': 'Information'
+      }[violationClass] || '';
+
+      if (violationClass) {
+        const classPill = document.createElement('span');
+        classPill.className = 'lookup-class-pill';
+        classPill.innerHTML =
+          '<span class="class-letter">Class ' + escapeHTML(violationClass) + '</span>' +
+          (classDescriptor ? '<span class="class-descriptor">: ' + escapeHTML(classDescriptor) + '</span>' : '');
+        top.appendChild(classPill);
+      }
+
+      // Date — right-aligned via margin-left: auto in CSS
+      const date = document.createElement('span');
+      date.className = 'lookup-violation-date';
+      date.textContent = v.inspectiondate ? formatDate(v.inspectiondate) : '';
+      top.appendChild(date);
+
+      li.appendChild(top);
+
+      // Description (cleaned, sentence-cased)
+      const descEl = document.createElement('div');
+      descEl.className = 'lookup-violation-desc';
+      descEl.textContent = desc.main;
+      li.appendChild(descEl);
+
+      // Apartment location (de-emphasized secondary line)
+      if (desc.location) {
+        const locEl = document.createElement('div');
+        locEl.className = 'lookup-violation-location';
+        locEl.textContent = desc.location;
+        li.appendChild(locEl);
+      }
+
+      return li;
+    }
+
+    function renderFooter() {
+      const footer = document.getElementById('lookup-results-footer');
+      if (!footer) return;
+      footer.innerHTML = '';
+
+      const remaining = allViolations.length - displayedCount;
+
+      if (remaining > 0) {
+        const moreBtn = document.createElement('button');
+        moreBtn.type = 'button';
+        moreBtn.className = 'lookup-show-more';
+        const nextBatch = Math.min(VIOLATIONS_PER_PAGE, remaining);
+        moreBtn.textContent = 'Show ' + nextBatch + ' more (' + remaining + ' remaining)';
+        moreBtn.addEventListener('click', function() {
+          appendViolations(VIOLATIONS_PER_PAGE);
+        });
+        footer.appendChild(moreBtn);
+      }
+
+      // Always show the HPDOnline fallback link
+      const hpdLink = document.createElement('div');
+      hpdLink.className = 'lookup-hpd-link';
+      hpdLink.innerHTML = 'Or view the full history on <a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">HPDOnline</a>.';
+      footer.appendChild(hpdLink);
+    }
+
+    function formatDate(isoDate) {
+      try {
+        const d = new Date(isoDate);
+        return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      } catch (err) {
+        return isoDate;
+      }
+    }
+
+    // ============================================
+    // STATUS TRANSLATION
+    // ============================================
+    // HPD stores statuses as internal shorthand. Translate to plain English
+    // for display, and classify each one as 'open' / 'closed' / 'dismissed'
+    // so we can apply the right state pill.
+    //
+    // TODO (post-launch): build a quarterly audit job that queries Socrata for
+    // distinct currentstatus values and flags any not in this map. Could be a
+    // GitHub Action triggered on cron. See PROJECT-PLAN.md for details.
+    const STATUS_MAP = {
+      // Open / in-progress states
+      'NOV SENT OUT':                          { label: 'Notice sent to landlord',                state: 'open' },
+      'FIRST NOTICE OF VIOLATION SENT':        { label: 'Notice sent to landlord',                state: 'open' },
+      'NOTICE OF ISSUANCE SENT TO TENANT':     { label: 'Tenant notified of violation',           state: 'open' },
+      'VIOLATION OPEN':                        { label: 'Open — landlord has not fixed yet',      state: 'open' },
+      'NOV CERTIFIED':                         { label: 'Landlord claims fixed (not re-inspected)', state: 'open' },
+      'CERTIFICATION POSTPONMENT GRANTED':     { label: 'Certification deadline extended',        state: 'open' },
+      'FIRST NO ACCESS TO RE-INSPECT VIOLATION': { label: 'HPD inspector could not access apartment', state: 'open' },
+      'CIV14 MAILED':                          { label: 'Court action initiated',                 state: 'open' },
+      // Closed / resolved states
+      'VIOLATION CLOSED':                      { label: 'Resolved',                                state: 'closed' },
+      'CLOSED':                                { label: 'Resolved',                                state: 'closed' },
+      // Dismissed states
+      'VIOLATION DISMISSED':                   { label: 'Dismissed by HPD',                       state: 'dismissed' },
+      'INVALID':                               { label: 'Marked invalid',                         state: 'dismissed' }
+    };
+
+    function translateStatus(rawStatus) {
+      if (!rawStatus) return { label: 'Status unknown', state: 'open' };
+      const upper = rawStatus.toUpperCase().trim();
+      if (STATUS_MAP[upper]) return STATUS_MAP[upper];
+
+      // Unknown status — log a warning so we know to add it to the map.
+      // In production this would also POST to an analytics endpoint.
+      console.warn('Unknown HPD status:', rawStatus);
+      debug('Unknown status (add to STATUS_MAP): ' + rawStatus);
+
+      // Fallback: best guess based on keywords, plus toSentenceCase the raw value
+      const isClosed = upper.includes('CLOS');
+      const isDismissed = upper.includes('DISMISS') || upper.includes('INVALID');
+      return {
+        label: toSentenceCase(rawStatus),
+        state: isDismissed ? 'dismissed' : (isClosed ? 'closed' : 'open')
+      };
+    }
+
+    // ============================================
+    // SENTENCE CASE UTILITY
+    // ============================================
+    // HPD stores most text in ALL CAPS. This makes cards hard to scan.
+    // Convert to sentence case while preserving known acronyms and unit numbers.
+    const PRESERVE_UPPERCASE = new Set([
+      'HPD', 'DEC', 'NOV', 'NYC', 'NYS', 'DOH', 'DOHMH', 'DEP', 'DOB',
+      'FDNY', 'NYCHA', 'IPM', 'DHCR', 'ADA', 'DOL', 'EPA', 'DCWP',
+      'HMC', 'MDL', 'ECB', 'OATH', 'TTY', 'EIN', 'SSN', 'LL', 'BIN',
+      'BBL', 'AEP', 'SRO', 'NYS', 'USPS', 'PDF', 'LLC', 'PC', 'PA',
+      'I', 'II', 'III', 'IV', 'V'  // roman numerals up to 5
+    ]);
+
+    function toSentenceCase(str) {
+      if (!str) return '';
+      // Lowercase the whole thing first
+      let out = str.toLowerCase();
+      // Capitalize first letter of each sentence (after . ! ?)
+      out = out.replace(/(^\s*|[.!?]\s+)([a-z])/g, function(_, prefix, ch) {
+        return prefix + ch.toUpperCase();
+      });
+      // Re-uppercase known acronyms and unit/floor designations
+      out = out.replace(/\b([a-z]+)\b/gi, function(match, word) {
+        const upper = word.toUpperCase();
+        if (PRESERVE_UPPERCASE.has(upper)) return upper;
+        return match;
+      });
+      // Re-uppercase apartment/floor codes like "apt 4b" → "Apt 4B"
+      out = out.replace(/\b(apt|fl|floor|unit|rm|room)\s+(\d+[a-z]?)\b/gi, function(_, prefix, num) {
+        const cap = prefix.charAt(0).toUpperCase() + prefix.slice(1).toLowerCase();
+        return cap + ' ' + num.toUpperCase();
+      });
+      // Re-uppercase standalone unit codes like "4b" or "12c" when adjacent to whitespace
+      out = out.replace(/\b(\d+[a-z])\b/g, function(match) {
+        return match.toUpperCase();
+      });
+      return out;
+    }
+
+    // ============================================
+    // DESCRIPTION CLEANUP
+    // ============================================
+    // Strip the legal code prefix (§ XX-XXXX ADM CODE) and apply sentence case.
+    // ============================================
+    // DESCRIPTION CLEANUP — VERB-ANCHORED PARSING
+    // ============================================
+    // HPD violation descriptions follow a reliable pattern:
+    //   [legal citation chain] [action verb] [what needs to be done] [location]
+    //
+    // The citation chain is highly variable, but the description almost always
+    // starts with an imperative verb (these are legal orders to the landlord).
+    // We scan for the first known HPD action verb and treat everything from
+    // there onward as the human-readable description.
+    //
+    // If no verb is found, we fall back to showing the full text (sentence-cased).
+    // The worst case is "we don't strip the citation," not "we mangle it."
+
+    const HPD_ACTION_VERBS = new Set([
+      'abate', 'adjust', 'apply',
+      'caulk', 'certify', 'clean', 'clear', 'close', 'correct',
+      'demolish', 'discontinue',
+      'eliminate', 'enclose', 'erect', 'establish', 'exterminate',
+      'file', 'fix', 'furnish',
+      'hang',
+      'install',
+      'keep',
+      'maintain', 'make',
+      'obtain',
+      'paint', 'patch', 'parge', 'perform', 'plaster', 'plug', 'post',
+      'properly', 'provide', 'purge',
+      'rearrange', 'rebuild', 'reconstruct', 'refit', 'refinish',
+      'rehang', 'remediate', 'remedy', 'remove', 'repair', 'replace',
+      'replaster', 'replumb', 'restore', 'resurface', 'rewire',
+      'seal', 'secure', 'submit', 'supply',
+      'tighten', 'trim',
+      'upgrade',
+      'ventilate',
+      'weatherize', 'wire',
+    ]);
+
+    function cleanDescription(rawDesc) {
+      if (!rawDesc) return { main: 'No description available', location: '' };
+
+      let working = rawDesc.trim();
+
+      // Step 1: Find the first HPD action verb that marks the start of the
+      // actual description. We look for a word boundary + verb, case-insensitive.
+      // We skip verbs that appear inside the citation chain itself (e.g., "repair"
+      // in "28 rcny §25-171: repair" where the colon precedes it — that's fine,
+      // we'd catch "repair" there too).
+      // Words that appear in citation chains but are NOT action verbs.
+      // Used by the fallback heuristic to skip past citation boilerplate.
+      const CITATION_WORDS = new Set([
+        'hmc', 'mdl', 'adm', 'admin', 'code', 'rcny', 'nyc', 'nys',
+        'and', 'or', 'of', 'the', 'in', 'at', 'to', 'for', 'by',
+        'a', 'an', 'no', 'not', 'per', 'law', 'local', 'section',
+        'sec', 'sub', 'subdivision', 'article', 'chapter', 'title',
+        'pursuant', 'accordance', 'with', 'under', 'also', 'see',
+        'dm', 'multiple', 'dwelling',
+        'dept', 'department', 'rules', 'regs', 'regulations', 'rule',
+      ]);
+
+      let descriptionStart = -1;
+      let passedCitationMaterial = false;
+      const words = working.split(/\s+/);
+      let charPos = 0;
+
+      for (let i = 0; i < words.length; i++) {
+        const word = words[i];
+        const cleaned = word.replace(/^[^a-zA-Z]+|[^a-zA-Z]+$/g, '').toLowerCase();
+
+        // Track whether we've passed any citation-like material:
+        // tokens with numbers, §, parenthesized refs, OR known citation
+        // keywords like "dept", "hmc", "rules", "regs", etc.
+        if (/[\d§():]/.test(word) || CITATION_WORDS.has(cleaned)) {
+          passedCitationMaterial = true;
+        }
+
+        // First pass: check known verb list
+        if (HPD_ACTION_VERBS.has(cleaned)) {
+          descriptionStart = charPos;
+          break;
+        }
+
+        // Second pass (fallback heuristic): if we've moved past citation
+        // material and hit a pure-letter word that isn't a citation keyword,
+        // it's very likely the start of the description.
+        if (passedCitationMaterial
+            && cleaned.length > 1
+            && /^[a-zA-Z]+$/.test(cleaned)
+            && !CITATION_WORDS.has(cleaned)) {
+          debug('Verb fallback triggered on: "' + cleaned + '" (not in known list — consider adding)');
+          descriptionStart = charPos;
+          break;
+        }
+
+        charPos += word.length;
+        if (charPos < working.length) {
+          const nextChar = working[charPos];
+          if (nextChar === ' ' || nextChar === '\t' || nextChar === '\n') {
+            charPos++;
+            while (charPos < working.length && (working[charPos] === ' ' || working[charPos] === '\t')) {
+              charPos++;
+            }
+          }
+        }
+      }
+
+      let description;
+      if (descriptionStart > 0) {
+        description = working.substring(descriptionStart).trim();
+      } else if (descriptionStart === 0) {
+        // Verb is the very first word — no citation prefix at all
+        description = working;
+      } else {
+        // No verb found — fall back to full text
+        description = working;
+      }
+
+      // Step 2: strip any leading punctuation/whitespace left over
+      description = description.replace(/^[\s:;,\-\.]+/, '');
+
+      // Step 3: Split out the apartment location block.
+      let main = description;
+      let location = '';
+
+      // Try "[in/at] the [room] located at [details]" as one block
+      const fullLocMatch = description.match(/\.\s+(in\s+(?:the\s+)?\w[\w\s]*?(?:located\s+at\s+.+))$/i);
+      if (fullLocMatch) {
+        main = description.substring(0, fullLocMatch.index + 1).trim();
+        location = fullLocMatch[1].trim();
+      } else {
+        // Try just "located at [details]"
+        const simpleLocMatch = description.match(/\.?\s*(located\s+at\s+.+)$/i);
+        if (simpleLocMatch) {
+          main = description.substring(0, simpleLocMatch.index).trim();
+          const danglingRoom = main.match(/\.\s+(in\s+(?:the\s+)?\w[\w\s]*)$/i);
+          if (danglingRoom) {
+            const roomText = danglingRoom[1].trim();
+            main = main.substring(0, danglingRoom.index + 1).trim();
+            location = roomText + ' — ' + simpleLocMatch[1].trim();
+          } else {
+            location = simpleLocMatch[1].trim();
+          }
+        } else {
+          const trailingRoom = main.match(/\.\s+(in\s+(?:the\s+)?\w[\w\s]*)$/i);
+          if (trailingRoom && trailingRoom[1].split(/\s+/).length <= 6) {
+            location = trailingRoom[1].trim();
+            main = main.substring(0, trailingRoom.index + 1).trim();
+          }
+        }
+      }
+
+      // Step 4: strip trailing punctuation off main
+      main = main.replace(/[\s:;,\-]+$/, '');
+
+      return {
+        main: toSentenceCase(main),
+        location: location ? toSentenceCase(location) : ''
+      };
+    }
+
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str || '';
+      return div.innerHTML;
+    }
+
+    // ============================================
+    // INPUT HANDLING
+    // ============================================
+    input.addEventListener('input', function(e) {
+      const query = e.target.value.trim();
+
+      // Clear results when input changes
+      resultsEl.classList.remove('visible');
+      statusEl.textContent = '';
+      statusEl.classList.remove('error');
+      fallbackEl.style.display = 'none';
+
+      if (query.length < 3) {
+        suggestionsBox.classList.remove('visible');
+        return;
+      }
+
+      // Debounce the API call
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(function() {
+        fetchGeoSearch(query)
+          .then(function(data) {
+            renderSuggestions(data.features || []);
+          })
+          .catch(function(err) {
+            suggestionsBox.classList.remove('visible');
+            statusEl.textContent = 'Address lookup service is temporarily unavailable.';
+            statusEl.classList.add('error');
+            fallbackEl.style.display = 'block';
+          });
+      }, DEBOUNCE_MS);
+    });
+
+    input.addEventListener('keydown', function(e) {
+      const items = suggestionsBox.querySelectorAll('.lookup-suggestion');
+      if (!items.length) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = Math.min(highlightedIndex + 1, items.length - 1);
+        setHighlight(next);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prev = Math.max(highlightedIndex - 1, 0);
+        setHighlight(prev);
+      } else if (e.key === 'Enter') {
+        if (highlightedIndex >= 0) {
+          e.preventDefault();
+          selectSuggestion(highlightedIndex);
+        }
+      } else if (e.key === 'Escape') {
+        suggestionsBox.classList.remove('visible');
+      }
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.lookup-input-wrap')) {
+        suggestionsBox.classList.remove('visible');
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I have mold in my apartment — Tenant Triage NYC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f3ef;
+      --bg-elevated: #fafaf8;
+      --ink: #111111;
+      --ink-soft: #3d3d3d;
+      --ink-faded: #6b6b6b;
+      --rule: #e6e4df;
+      --rule-strong: #c9c5bc;
+
+      --accent: #0d7377;
+      --accent-deep: #08494c;
+      --accent-soft: #e3f0f0;
+      --accent-bright: #5eb6b9; /* lighter variant for use on dark backgrounds */
+
+      --protect: #2a4a7f;
+      --protect-soft: #eaeff7;
+      --warning-ink: #7a3a0a;
+      --warning-bg: #fff4e6;
+      --warning-rule: #e8a35a;
+
+      --code-bg: #f3f1ec;
+      --code-rule: #d9d5ca;
+      --quote-bar: #c9c5bc;
+
+      --measure: 38rem;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--accent); width: 0%; z-index: 1000;
+      transition: width 0.05s linear;
+    }
+
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem 1.5rem;
+      background: var(--bg);
+    }
+    .site-header-inner {
+      max-width: 64rem; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .wordmark {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      text-decoration: none; color: var(--ink);
+    }
+    .wordmark-main {
+      font-weight: 900; font-size: 1.375rem;
+      letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
+    }
+    .wordmark-accent {
+      font-weight: 500; font-size: 0.95rem;
+      color: var(--accent); letter-spacing: 0.01em;
+    }
+    .site-nav {
+      display: flex; gap: 1.75rem;
+      font-size: 0.875rem; color: var(--ink); font-weight: 500;
+    }
+    .site-nav a {
+      color: inherit; text-decoration: none;
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .site-nav a:hover { border-bottom-color: var(--accent); }
+
+    article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+    /* Breadcrumbs — more prominent now */
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+      font-size: 0.875rem;
+    }
+    .breadcrumbs a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.25rem 0;
+      border-bottom: 1px solid var(--rule-strong);
+      transition: all 0.15s ease;
+    }
+    .breadcrumbs a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .breadcrumbs .sep {
+      color: var(--ink-faded);
+      font-weight: 400;
+    }
+    .breadcrumbs .current {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: clamp(2.25rem, 5.5vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+
+    /* "What you're reading" subtitle */
+    .reading-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+      padding: 0.35rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .reading-label svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    .standfirst {
+      font-weight: 400;
+      font-size: 1.1875rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin-bottom: 2rem;
+      max-width: 36rem;
+    }
+
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 1.5rem;
+      padding: 0.875rem 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.8125rem; color: var(--ink-faded);
+      margin-bottom: 2.5rem;
+    }
+    .meta-item { display: flex; align-items: center; gap: 0.4rem; }
+    .meta-item svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .meta-item strong { color: var(--ink); font-weight: 600; }
+    .meta-item a {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    p { margin-bottom: 1.25rem; color: var(--ink); }
+    p strong { font-weight: 600; }
+
+    a.inline-link {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: background 0.15s ease;
+    }
+    a.inline-link:hover { background: var(--accent-soft); }
+
+    h2 {
+      font-weight: 800;
+      font-size: 1.625rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-top: 3.5rem;
+      margin-bottom: 1.25rem;
+      color: var(--ink);
+    }
+
+    .sub-label {
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--ink);
+      margin-top: 1.5rem;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    .read-first {
+      background: var(--bg-soft);
+      border-left: 4px solid var(--ink);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+    .read-first p { margin-bottom: 0.75rem; font-size: 0.9375rem; }
+    .read-first p:last-child { margin-bottom: 0; }
+    .read-first strong { color: var(--ink); font-weight: 700; }
+
+    .rights-box {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 1.75rem 2rem;
+      margin: 2rem 0;
+    }
+    .rights-box .rights-label {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #d4d2cc;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .rights-box h3 {
+      font-weight: 800; font-size: 1.375rem;
+      letter-spacing: -0.015em; color: var(--bg);
+      margin-bottom: 0.75rem;
+    }
+    .rights-box p { color: var(--bg); font-size: 0.9375rem; margin-bottom: 0.75rem; }
+    .rights-box ul { list-style: none; padding: 0; margin-top: 0.75rem; }
+    .rights-box li {
+      position: relative; padding-left: 1.5rem; margin-bottom: 0.6rem;
+      font-size: 0.9375rem; color: var(--bg);
+    }
+    .rights-box li::before {
+      content: "→"; position: absolute; left: 0;
+      color: var(--accent-bright); font-weight: 700;
+    }
+    .rights-box .source {
+      font-size: 0.75rem; color: #b8b6b1;
+      margin-top: 1rem; margin-bottom: 0;
+    }
+
+    .severity-table {
+      margin: 1rem 0 0.5rem;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .severity-table th,
+    .severity-table td {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid #2c2c2c;
+      color: var(--bg);
+    }
+    .severity-table th {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #d4d2cc;
+      border-bottom-color: #4a4a4a;
+    }
+    .severity-table tr:last-child td { border-bottom: none; }
+    .severity-table .class-cell { font-weight: 700; color: var(--accent-bright); }
+
+    /* SEVERITY PICKER */
+    .severity-picker {
+      margin: 2rem 0 2.5rem;
+      padding: 1.5rem;
+      background: var(--bg-soft);
+      border: 2px solid var(--ink);
+    }
+    .severity-picker-header {
+      margin-bottom: 1rem;
+    }
+    .severity-picker-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .severity-picker-title {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .severity-picker-help {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+    }
+    .severity-options {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .severity-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.875rem;
+      padding: 0.875rem 1rem;
+      background: var(--bg);
+      border: 1.5px solid var(--rule-strong);
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: all 0.12s ease;
+      width: 100%;
+    }
+    .severity-option:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .severity-option.active {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .severity-option-marker {
+      flex-shrink: 0;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 1.5px solid var(--rule-strong);
+      border-radius: 100px;
+      margin-top: 0.15rem;
+      position: relative;
+      transition: all 0.12s ease;
+    }
+    .severity-option:hover .severity-option-marker {
+      border-color: var(--accent);
+    }
+    .severity-option.active .severity-option-marker {
+      border-color: var(--bg);
+      background: var(--bg);
+    }
+    .severity-option.active .severity-option-marker::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      background: var(--ink);
+      border-radius: 100px;
+    }
+    .severity-option-text {
+      flex: 1;
+    }
+    .severity-option-name {
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+    .severity-option.active .severity-option-name { color: var(--bg); }
+    .severity-option-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      display: block;
+    }
+    .severity-option.active .severity-option-desc { color: #c9c5bc; }
+
+    /* Severity context banner — shows after selection */
+    .severity-context {
+      margin: 1.5rem 0 2.5rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      display: none;
+    }
+    .severity-context.visible {
+      display: block;
+    }
+    .severity-context-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .severity-context h3 {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+    .severity-context p {
+      font-size: 0.9375rem;
+      margin-bottom: 0.5rem;
+    }
+    .severity-context p:last-child { margin-bottom: 0; }
+    .severity-context .key-fact {
+      display: block;
+      padding: 0.75rem 0;
+      border-top: 1px solid rgba(13, 115, 119, 0.2);
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+    }
+    .severity-context .key-fact strong {
+      color: var(--accent-deep);
+    }
+
+    .step {
+      margin: 3rem 0;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .step-header { margin-bottom: 1.25rem; }
+    .step-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .step-number {
+      font-weight: 800; font-size: 0.75rem;
+      letter-spacing: 0.08em; color: var(--accent);
+      text-transform: uppercase;
+    }
+    .time-chip {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.75rem; font-weight: 500;
+      color: var(--ink-soft); background: var(--bg-soft);
+      padding: 0.25rem 0.6rem; border-radius: 100px;
+    }
+    .time-chip svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .step-title {
+      font-weight: 800; font-size: 1.625rem;
+      line-height: 1.2; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0;
+    }
+
+    .why-this-matters {
+      color: var(--ink-soft);
+      border-left: 3px solid var(--rule-strong);
+      padding-left: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+
+    .step ol, .step ul { margin-bottom: 1.25rem; padding-left: 1.25rem; }
+    .step li { margin-bottom: 0.6rem; }
+
+    /* Template box */
+    .template {
+      background: var(--code-bg);
+      border: 1px solid var(--code-rule);
+      border-left: 4px solid var(--ink);
+      margin: 1rem 0 1.5rem;
+      position: relative;
+    }
+    .template-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 1rem 0.6rem 1.25rem;
+      border-bottom: 1px solid var(--code-rule);
+      background: rgba(0,0,0,0.025);
+    }
+    .template-label {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink);
+    }
+    .template-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: inherit; font-size: 0.75rem; font-weight: 600;
+      color: var(--ink); background: var(--bg);
+      border: 1px solid var(--ink);
+      padding: 0.35rem 0.75rem;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .copy-btn:hover { background: var(--ink); color: var(--bg); }
+    .copy-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .copy-btn.copied { background: var(--ink); color: var(--bg); }
+    .template-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+      font-size: 0.9375rem; line-height: 1.65;
+      color: var(--ink);
+    }
+    .template-body p { margin-bottom: 0.75rem; color: var(--ink); }
+    .template-body p:last-child { margin-bottom: 0; }
+
+    .fill {
+      display: inline-block;
+      font-family: inherit; font-size: inherit; font-weight: 500;
+      color: var(--accent-deep); background: var(--bg);
+      border: none; border-bottom: 1.5px dashed var(--accent);
+      padding: 0 0.25rem; margin: 0 1px;
+      min-width: 4rem; max-width: 100%;
+      line-height: 1.4;
+      transition: background 0.12s ease;
+    }
+    .fill::placeholder {
+      color: var(--accent); font-style: italic;
+      font-weight: 400; opacity: 0.65;
+    }
+    .fill:focus {
+      outline: none;
+      background: var(--accent-soft);
+      border-bottom-color: var(--accent-deep);
+      border-bottom-style: solid;
+    }
+    .fill.has-value {
+      border-bottom-style: solid;
+      border-bottom-color: var(--ink);
+      color: var(--ink);
+    }
+
+    /* Spoken script box with fillable inputs */
+    .spoken {
+      margin: 1rem 0 1.5rem;
+      padding: 1rem 0 1rem 1.5rem;
+      border-left: 4px solid var(--quote-bar);
+      position: relative;
+    }
+    .spoken-label {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.6rem;
+    }
+    .spoken-label svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .spoken-body {
+      font-size: 1.0625rem; line-height: 1.65;
+      color: var(--ink); font-weight: 400;
+    }
+    .spoken-body p { margin-bottom: 0.6rem; }
+    .spoken-body p:last-child { margin-bottom: 0; }
+
+    /* Fillable inputs in spoken scripts — bigger, more prominent */
+    .spoken .fill {
+      font-size: 1.0625rem;
+      font-weight: 500;
+      color: var(--accent-deep);
+      border-bottom-width: 2px;
+      padding: 0 0.3rem;
+      min-width: 5rem;
+    }
+    .spoken .fill::placeholder {
+      font-size: 1rem;
+    }
+    .spoken .fill.has-value {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .spoken-hint {
+      display: block; margin-top: 0.75rem;
+      font-size: 0.8125rem; color: var(--ink-faded);
+      font-style: italic;
+    }
+
+    /* Reference number capture */
+    .ref-capture {
+      background: var(--bg-soft);
+      border: 1px solid var(--rule-strong);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .ref-capture-label {
+      font-weight: 600; font-size: 0.9375rem;
+      color: var(--ink); flex: 1 1 auto;
+    }
+    .ref-capture input {
+      font-family: inherit; font-size: 1rem; font-weight: 600;
+      color: var(--ink); background: var(--bg);
+      border: 1.5px solid var(--ink);
+      padding: 0.5rem 0.75rem;
+      width: 14rem; max-width: 100%;
+    }
+    .ref-capture input::placeholder { font-weight: 400; color: var(--ink-faded); }
+    .ref-capture input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+    .ref-recall {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.9375rem;
+    }
+    .ref-recall .label {
+      display: block;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 0.25rem;
+    }
+    .ref-recall .number {
+      font-size: 1.125rem; font-weight: 700; color: var(--ink);
+    }
+    .ref-recall .empty {
+      color: var(--ink-faded);
+      font-weight: 400; font-style: italic;
+      font-size: 0.9375rem;
+    }
+
+    /* Callouts */
+    .callout {
+      margin: 2.5rem 0;
+      padding: 1.75rem 2rem;
+      position: relative;
+    }
+    .callout-protect {
+      background: var(--protect-soft);
+      border-left: 4px solid var(--protect);
+    }
+    .callout-warning {
+      background: var(--warning-bg);
+      border-left: 4px solid var(--warning-rule);
+    }
+    .callout-label {
+      font-size: 0.7rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      margin-bottom: 0.5rem; display: block;
+    }
+    .callout-protect .callout-label { color: var(--protect); }
+    .callout-warning .callout-label { color: var(--warning-ink); }
+
+    .callout h3 {
+      margin-top: 0; margin-bottom: 0.75rem;
+      font-weight: 800; font-size: 1.25rem;
+      letter-spacing: -0.015em; color: var(--ink);
+    }
+    .callout p { font-size: 0.9375rem; margin-bottom: 0.85rem; }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout strong { font-weight: 700; color: var(--ink); }
+    .callout ul { margin: 0.75rem 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    .callout li { margin-bottom: 0.5rem; }
+    .callout .resource-list { list-style: none; padding-left: 0; }
+    .callout .resource-list li { padding-left: 1.25rem; position: relative; }
+    .callout .resource-list li::before {
+      content: "•"; position: absolute; left: 0; font-weight: 700;
+    }
+    .callout-protect .resource-list li::before { color: var(--protect); }
+    .callout .sub-label { color: var(--ink); }
+
+    .draft-flag {
+      display: inline-block;
+      font-size: 0.65rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--ink); color: var(--bg);
+      padding: 0.25rem 0.55rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .help-list { list-style: none; padding: 0; margin: 1rem 0 2rem; }
+    .help-list li {
+      padding: 1.125rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .help-list li:last-child { border-bottom: none; }
+    .help-list .name {
+      font-weight: 700; color: var(--ink);
+      display: block; margin-bottom: 0.2rem; font-size: 1rem;
+    }
+    .help-list .phone {
+      font-weight: 700; color: var(--accent-deep);
+      font-size: 1.125rem; letter-spacing: -0.005em;
+    }
+    .help-list .desc {
+      display: block; font-size: 0.875rem;
+      color: var(--ink-soft); margin-top: 0.2rem;
+    }
+
+    .related {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .related-grid { display: grid; gap: 0.5rem; margin-top: 1rem; }
+    .related-link {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      background: var(--bg);
+      border: 1px solid var(--rule-strong);
+      text-decoration: none; color: var(--ink);
+      transition: all 0.15s ease;
+      font-size: 0.9375rem; font-weight: 500;
+    }
+    .related-link:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+    }
+    .related-link::after {
+      content: "→"; margin-left: auto;
+      color: var(--accent); font-weight: 700;
+    }
+
+    .sources {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      font-size: 0.8125rem; color: var(--ink-faded);
+    }
+    .sources h3 {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--ink); margin-bottom: 0.75rem;
+    }
+    .sources ul { list-style: none; padding: 0; }
+    .sources li { margin-bottom: 0.4rem; }
+    .sources a {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--rule-strong);
+    }
+    .verified {
+      margin-top: 1.25rem; padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .disclaimer {
+      margin-top: 2.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-soft);
+      border: 1px dashed var(--rule-strong);
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .disclaimer strong { color: var(--ink); font-weight: 700; }
+
+    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
+    .verify-tag {
+      display: inline-block;
+      background: #c8292e;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      margin: 0 0.15rem;
+      vertical-align: baseline;
+      font-style: normal;
+    }
+    .verify-tag::before { content: "⚑ "; }
+
+    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
+    .verify-tag {
+      display: inline-block;
+      background: #c8292e;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      margin: 0 0.15rem;
+      vertical-align: baseline;
+      font-style: normal;
+    }
+    .verify-tag::before { content: "⚑ "; }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(150%);
+      background: var(--ink); color: var(--bg);
+      padding: 0.875rem 1.5rem;
+      font-size: 0.875rem; font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media print {
+      .progress-bar, .site-header, .related, .meta-item.print-hide, .copy-btn, .toast { display: none; }
+      body { background: white; }
+      .fill { border-bottom: 1px solid #999; }
+    }
+
+    @media (max-width: 600px) {
+      article { padding: 2rem 1.25rem 4rem; }
+      h1 { font-size: 2.25rem; }
+      .step-title { font-size: 1.375rem; }
+      .template-header { flex-wrap: wrap; gap: 0.5rem; }
+      .ref-capture { flex-direction: column; align-items: stretch; }
+      .ref-capture input { width: 100%; }
+      .severity-table { font-size: 0.8125rem; }
+      .severity-table th, .severity-table td { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" id="progress"></div>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="wordmark">
+        <span class="wordmark-main">Tenant Triage</span>
+        <span class="wordmark-accent">NYC</span>
+      </a>
+      <nav class="site-nav">
+        <a href="../index.html">All scenarios</a>
+        <a href="#">About</a>
+        <a href="#">Free help</a>
+      </nav>
+    </div>
+  </header>
+
+  <article>
+
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">All scenarios</a>
+      <span class="sep">/</span>
+      <a href="#">Repairs not being made</a>
+      <span class="sep">/</span>
+      <span class="current">Mold</span>
+    </nav>
+
+    <span class="reading-label">
+      <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Mold remediation guide
+    </span>
+
+    <h1>I have mold in my apartment.</h1>
+
+    <p class="standfirst">A clear, step-by-step plan for getting your landlord to remediate the mold properly &mdash; not just paint over it.</p>
+
+    <div class="meta">
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span><strong>10 min</strong> read</span>
+      </span>
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span>Last verified <strong>April 13, 2026</strong></span>
+      </span>
+      <span class="meta-item print-hide">
+        <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+        <a href="#" onclick="window.print(); return false;">Print this page</a>
+      </span>
+    </div>
+
+    <div class="read-first">
+      <p>Mold is one of the most common &mdash; and most mishandled &mdash; problems in NYC apartments. NYC has specific protections under Local Law 55, and if your mold is over 10 square feet, your landlord may legally be required to hire licensed professionals to fix it.</p>
+      <p><strong>You can choose your situation below to see what applies most to you</strong>, or read the full page to understand the complete picture. Most tenants only need the first two or three steps.</p>
+      <p><strong>Treat this as urgent if:</strong> anyone in your apartment has asthma, a child is under 6, the mold patch is large or growing fast, or you can smell it in the air.</p>
+    </div>
+
+    <div class="rights-box">
+      <span class="rights-label">Know your rights</span>
+      <h3>What NYC law requires</h3>
+      <p>Under <strong>Local Law 55 of 2018</strong>, your landlord must keep your apartment free of mold and fix the underlying conditions that cause it (like leaks). The severity of the violation and the time your landlord has to fix it depends on how much mold is present:</p>
+
+      <table class="severity-table">
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Mold area in one room</th>
+            <th>Days to fix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="class-cell">A</td>
+            <td>Less than 10 sq ft</td>
+            <td>90 days</td>
+          </tr>
+          <tr>
+            <td class="class-cell">B</td>
+            <td>10&ndash;29 sq ft</td>
+            <td>30 days</td>
+          </tr>
+          <tr>
+            <td class="class-cell">C</td>
+            <td>30+ sq ft (immediately hazardous)</td>
+            <td>21 days</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top: 1rem;">If your building has <strong>10 or more apartments</strong>, your landlord is legally required to hire a NYS-licensed mold assessor and a separate licensed mold remediator for any patch over 10 square feet. They cannot just paint over it or have the super wipe it down with bleach.</p>
+      <p class="source">Source: NYC HPD &mdash; Local Law 55 of 2018</p>
+    </div>
+
+    <!-- SEVERITY PICKER -->
+    <div class="severity-picker">
+      <div class="severity-picker-header">
+        <span class="severity-picker-label">Tailor this guide</span>
+        <h3 class="severity-picker-title">How big is the mold patch?</h3>
+        <p class="severity-picker-help">Knowing the size helps you understand how urgent your situation is and what your landlord is legally required to do. If you're not sure, pick "show me everything" and read through the full guide.</p>
+      </div>
+      <div class="severity-options" role="radiogroup" aria-label="Mold severity">
+        <button class="severity-option" data-severity="a" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Small patch — Class A</span>
+            <span class="severity-option-desc">Less than 10 sq ft (smaller than a 3 ft × 3 ft area). Roughly the size of a microwave or smaller.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="b" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Medium patch — Class B</span>
+            <span class="severity-option-desc">10–29 sq ft. Roughly the size of a small dining table or bathroom rug.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="c" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Large patch — Class C</span>
+            <span class="severity-option-desc">30+ sq ft, or affecting multiple rooms. Immediately hazardous.</span>
+          </span>
+        </button>
+        <button class="severity-option active" data-severity="all" role="radio" aria-checked="true">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">I'm not sure — show me everything</span>
+            <span class="severity-option-desc">Default. See the full guide so you can figure it out as you go.</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Severity context banner — appears after picker selection -->
+    <div class="severity-context" id="severity-context">
+      <span class="severity-context-label">For your situation</span>
+      <h3 id="severity-context-title">Class A — Small patch</h3>
+      <div id="severity-context-body">
+        <p>Your landlord has <strong>90 days</strong> to fix the mold once HPD issues a violation.</p>
+        <p>If your building has fewer than 10 units, your landlord can do the cleanup themselves but must follow safe work practices. If your building has 10+ units, the same rule applies for patches under 10 sq ft.</p>
+        <span class="key-fact">
+          <strong>Most important for you:</strong> Even though your patch is small now, <em>mold grows</em>. Document carefully and act fast — what's Class A today could be Class B in a month if the underlying moisture isn't fixed.
+        </span>
+      </div>
+    </div>
+
+    <!-- HPDONLINE LEVERAGE CALLOUT -->
+    <aside class="callout callout-protect">
+      <span class="callout-label">Before you start: look up your building</span>
+      <h3>Check HPDOnline first. You might already have leverage.</h3>
+      <p>Before you message your landlord, spend two minutes on <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link">HPDOnline</a>. Enter your building's address and look at the "Violations" tab. You're looking for:</p>
+      <ul>
+        <li><strong>Existing mold violations on the building</strong> &mdash; open or closed. If mold is a known problem in your building, this is powerful evidence that the condition isn't new and the landlord hasn't been maintaining the property.</li>
+        <li><strong>Any Class B or C violations that were falsely certified as corrected</strong> &mdash; a pattern of false certifications tells you what kind of landlord you're dealing with.</li>
+        <li><strong>Leak-related violations</strong> &mdash; since mold usually comes from water, a history of unfixed leaks makes the mold case much stronger.</li>
+      </ul>
+      <p>Walk into your conversation with the landlord already knowing what's on record. Reference specific violations in your written complaint. It changes the dynamic completely.</p>
+      <p><strong>An honest note:</strong> HPDOnline shows public records, but it's not a complete picture. <span class="verify-tag">Verify</span> Some violations age off, and landlords sometimes fix violations without the paper trail catching up. Use it as a starting point, not the whole story.</p>
+    </aside>
+
+    <!-- HPDONLINE LOOKUP CALLOUT: Pre-Step-1 leverage -->
+    <aside class="callout callout-protect">
+      <span class="callout-label">Before you do anything else</span>
+      <h3>Look up your building's mold history on HPDOnline.</h3>
+      <p>HPD maintains a public database of every housing code violation ever issued in NYC, including mold. <strong>You can look up your building right now</strong> and see whether it has a history of mold problems, whether there are any current open violations, and how your landlord has handled past complaints.</p>
+      <p>Go to <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link">HPDOnline</a> and enter your building's address. Look for the "Violations" tab and filter or scan for "mold." This tells you:</p>
+      <ul>
+        <li><strong>Whether your building has been cited for mold before</strong> &mdash; and how many times</li>
+        <li><strong>Whether there are any currently open mold violations</strong> on the building</li>
+        <li><strong>Whether your landlord typically corrects violations within the legal time frame</strong> or lets them languish</li>
+      </ul>
+      <p>This is leverage. A landlord who has been cited for mold three times in the last five years knows exactly what they're doing when they try to wave you off. Walking in with that knowledge changes the conversation entirely.</p>
+    </aside>
+
+    <h2>What to do, step by step</h2>
+
+    <!-- STEP 1: Document with photos -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 1</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            10&ndash;15 min
+          </span>
+        </div>
+        <h3 class="step-title">Document the mold with photos and measurements.</h3>
+      </div>
+
+      <p class="why-this-matters">The size of the mold patch determines how serious the violation is and how fast your landlord has to fix it. Good photos with a size reference are the single most valuable piece of evidence you can collect, and they're what an HPD inspector and a Housing Court judge will look at.</p>
+
+      <span class="sub-label">How to do it</span>
+      <ol>
+        <li><strong>Take wide shots and close-ups.</strong> A wide shot shows where the mold is in the room. Close-ups show the texture and color.</li>
+        <li><strong>Include something for scale in every photo.</strong> A ruler is best, but a dollar bill (6 inches), a phone, or a soda can will work. Without scale, "10 square feet" becomes a guess.</li>
+        <li><strong>Measure the patch.</strong> Use a tape measure or even a piece of paper of known size. Write down the measurements: "Bedroom ceiling, mold patch approximately 2 ft &times; 3 ft = 6 sq ft."</li>
+        <li><strong>Note the location and date</strong> for each photo. Most phone cameras save this automatically, but write it down too.</li>
+        <li><strong>Photograph the source if you can find it.</strong> Mold usually means a leak or moisture problem somewhere. If you see a water stain on the ceiling above, a damp wall, or condensation around a window, photograph that too.</li>
+      </ol>
+
+      <span class="sub-label">What to save</span>
+      <p>All photos, your written measurements, and any notes about smell or symptoms. Back up the photos somewhere &mdash; email them to yourself, save them to cloud storage, or text them to a friend. Don't risk losing them if your phone breaks.</p>
+    </section>
+
+    <!-- ASTHMA CALLOUT — promoted from sub-section to full callout -->
+    <aside class="callout callout-protect">
+      <span class="callout-label">For asthma sufferers and households with young children</span>
+      <h3>You may qualify for a free home environmental inspection.</h3>
+      <p>If you or your child has asthma and there is mold or pests in your home, you can ask your doctor to refer you for a <strong>free home environmental inspection</strong> through the NYC Health Department's Healthy Neighborhoods Program. This is a separate process from a 311 complaint and gives you an official health assessment that can support your case if things escalate.</p>
+      <p><strong>How to get it:</strong></p>
+      <ul>
+        <li>Talk to your doctor and ask for a referral to the NYC Health Department's environmental inspection program</li>
+        <li>Or call <strong>311</strong> and ask about the Healthy Neighborhoods Program</li>
+      </ul>
+      <p>This pathway is especially powerful because medical evidence makes mold complaints much harder for landlords to dismiss. If anyone in your household has asthma, breathing problems, or is a child under 6, this is worth pursuing in parallel with everything else on this page.</p>
+    </aside>
+
+    <!-- STEP 2: Notify landlord -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 2</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            10 min
+          </span>
+        </div>
+        <h3 class="step-title">Tell your landlord, in writing.</h3>
+      </div>
+
+      <p class="why-this-matters">Most landlords will respond to a written complaint, especially if you mention Local Law 55. Even if they don't, this letter creates the paper trail you need for everything that comes next. A text or a verbal complaint to your super is not enough &mdash; it has to be in writing, and you need a copy.</p>
+
+      <span class="sub-label">How to do it</span>
+      <ol>
+        <li>Write a short, factual message. Email is fine. If you don't have an email for them, send a letter by USPS Certified Mail with Return Receipt &mdash; a few dollars, but proof they received it.</li>
+        <li>Be specific about location, size, and how long the problem has existed.</li>
+        <li>Keep a copy of what you sent and any response.</li>
+        <li>Attach photos if you're sending email.</li>
+      </ol>
+
+      <span class="sub-label">Email template &mdash; fill it in, then copy</span>
+      <div class="template" id="email-template">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email or letter
+          </span>
+          <button class="copy-btn" data-copy-target="email-template-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="email-template-content">
+          <p><strong>Subject:</strong> Mold in apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"></p>
+          <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26">,</p>
+          <p>I am writing to formally report a mold condition in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22">. I first noticed the mold on <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">, and it is located in <input type="text" class="fill" data-field="location" placeholder="bedroom ceiling, bathroom wall, etc." size="32">. The affected area is approximately <input type="text" class="fill" data-field="size" placeholder="size in sq ft" size="14">.</p>
+          <p>Under NYC Local Law 55 of 2018, you are required to remediate this condition and address the underlying cause (such as a leak or moisture source). I have photographs documenting the mold and am happy to provide them upon request.</p>
+          <p>Please respond within 7 days with a plan to inspect and remediate the mold. If the problem is not addressed promptly, I will be filing a complaint with 311 and HPD.</p>
+          <p>Thank you,<br>
+          <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18"><br>
+          <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16"></p>
+        </div>
+      </div>
+
+      <span class="sub-label">What to expect</span>
+      <p>A responsive landlord will acknowledge your message within a few days and arrange to inspect. <strong>What to watch out for:</strong> a landlord who promises to "have someone come paint over it" or "wipe it down with bleach." That's not remediation. Real remediation means finding the source of moisture, fixing it, and properly removing the mold. If your landlord proposes a quick cosmetic fix, push for actual remediation in writing &mdash; or move to Step&nbsp;3.</p>
+    </section>
+
+    <!-- STEP 3: 311 -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 3</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            5&ndash;15 min
+          </span>
+        </div>
+        <h3 class="step-title">File a 311 complaint.</h3>
+      </div>
+
+      <p class="why-this-matters">A 311 complaint triggers an HPD inspection. The inspector will measure the mold, classify the violation, and start the legal clock on your landlord. This is the step that turns a private dispute into an official record.</p>
+
+      <span class="sub-label">How to do it &mdash; pick what's easiest</span>
+      <ul>
+        <li><strong>By phone:</strong> Call <strong>311</strong>. If you're deaf or hard of hearing, use TTY at <strong>(212) 504-4115</strong>.</li>
+        <li><strong>Online:</strong> Go to <a href="https://portal.311.nyc.gov/" class="inline-link">portal.311.nyc.gov</a> and search for "mold."</li>
+        <li><strong>Mobile app:</strong> Download the NYC 311 app (iOS or Android). The app lets you upload your photos directly.</li>
+      </ul>
+
+      <span class="sub-label">What to say on the phone &mdash; fill in your details first</span>
+      <div class="spoken">
+        <span class="spoken-label">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Say it in your own words
+        </span>
+        <div class="spoken-body">
+          <p>"I'd like to file a complaint about mold in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20">. The mold is on my <input type="text" class="fill" data-field="location" placeholder="bedroom ceiling, etc." size="22"> and the patch is approximately <input type="text" class="fill" data-field="size" placeholder="size" size="10">. I first noticed it on <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">. I already contacted my landlord on <input type="text" class="fill" data-field="contacted_date" placeholder="date" size="12"> and the problem hasn't been fixed. I have photos."</p>
+          <p>If anyone in your apartment has asthma, is elderly, or is a young child, mention it: <em>"There is someone with asthma (or a child under 6) living in the apartment."</em></p>
+        </div>
+        <span class="spoken-hint">Fill in the blanks above so you have a complete script to read from on the call. This is a guide, not a word-for-word script &mdash; use your own voice and answer their questions as they come.</span>
+      </div>
+
+      <div class="ref-capture">
+        <label class="ref-capture-label" for="ref-input">After filing, write down your complaint number here so it's saved for the next step:</label>
+        <input type="text" id="ref-input" placeholder="C1-1-XXXXXXXXX" data-field="complaint_ref">
+      </div>
+
+      <span class="sub-label">What to expect</span>
+      <ul>
+        <li>HPD will attempt to contact your landlord first to give them a chance to fix the problem.</li>
+        <li>If the problem isn't fixed, HPD sends an inspector to measure the mold and check the conditions. The inspector will classify the violation as Class A, B, or C based on the size.</li>
+        <li>Once a violation is issued, your landlord has the legally required time to fix it: 90 days for Class A, 30 days for Class B, 21 days for Class C.</li>
+        <li>If your building has 10 or more units and the mold is over 10 square feet, your landlord must hire licensed professionals &mdash; not just send the super.</li>
+      </ul>
+    </section>
+
+    <!-- CALLOUT: Undocumented tenants -->
+    <aside class="callout callout-protect">
+      <span class="draft-flag">Draft &mdash; pending immigration advocacy review</span>
+      <span class="callout-label">For undocumented tenants</span>
+      <h3>Your immigration status does not affect your right to safe housing.</h3>
+
+      <p>NYC law is clear: your landlord must remediate mold regardless of your immigration status, and HPD's job is to enforce that. <strong>NYC agencies including HPD and 311 do not ask about immigration status when you file a housing complaint.</strong></p>
+
+      <p>It is also illegal under NYC Human Rights Law for your landlord to threaten to report you to ICE, deport you, or treat you differently because of your immigration status. If your landlord threatens you in this way, that is itself a crime you can report.</p>
+
+      <p><strong>An honest note:</strong> NYC's protections are strong, but they are city and state protections. Federal immigration enforcement is a separate system. If you are worried about risks specific to your situation, you can talk to a free, confidential immigration legal organization before filing any complaint. You are not alone in asking these questions.</p>
+
+      <span class="sub-label">Free, confidential help</span>
+      <ul class="resource-list">
+        <li><strong>ActionNYC</strong> &mdash; free, safe immigration legal help connected to city services. Call <strong>311</strong> and ask for ActionNYC.</li>
+        <li><strong>Make the Road New York</strong> &mdash; tenant and immigrant rights support: <strong>718-418-7690</strong></li>
+        <li><strong>New York Immigration Coalition</strong> &mdash; referrals to trusted legal help: <strong>212-627-2227</strong></li>
+        <li><strong>NYC Commission on Human Rights</strong> &mdash; if your landlord threatens you with ICE: <strong>212-416-0197</strong></li>
+      </ul>
+    </aside>
+
+    <!-- CALLOUT: Retaliation (with market-tenant note) -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Worried about retaliation?</span>
+      <h3>This is a real fear &mdash; here's what you should know.</h3>
+
+      <p><strong>Retaliation is illegal in New York.</strong> Under NY Real Property Law &sect;&nbsp;223-b, your landlord cannot punish you for making a good-faith complaint about housing conditions. Punishment includes raising your rent, refusing to renew your lease, starting an eviction, reducing services, or harassing you.</p>
+
+      <p><strong>The law specifically protects complaints like this one.</strong> Filing a 311 complaint about mold is exactly the kind of action the anti-retaliation law covers.</p>
+
+      <p><strong>An honest note for market-rate tenants:</strong> If you're not in a rent-stabilized or rent-controlled apartment, you have fewer protections against non-renewal or large rent increases at the end of your lease. The anti-retaliation law still applies, but enforcing it can be harder. If you're worried about this, talk to Met Council or a tenant lawyer <em>before</em> filing the complaint &mdash; they can help you think through the timing and your options.</p>
+
+      <p>If you believe your landlord is retaliating: document everything (dates, what happened, any written communication), and call the Met Council on Housing hotline at <strong>212-979-0611</strong>.</p>
+
+      <p style="margin-top: 1rem;"><a href="#" class="inline-link">Read more: What retaliation looks like and what to do &rarr;</a></p>
+    </aside>
+
+    <!-- STEP 4: Check status -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 4</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            5 min
+          </span>
+        </div>
+        <h3 class="step-title">Check the status and keep a paper trail.</h3>
+      </div>
+
+      <p class="why-this-matters">You need to know whether HPD has actually inspected, what class of violation was issued, and whether your landlord is on track to fix it within the legal time frame. This is also the moment to escalate if things aren't moving.</p>
+
+      <div class="ref-recall" id="ref-recall">
+        <span class="label">Your complaint reference number</span>
+        <span class="number" id="ref-display"><span class="empty">Not entered yet &mdash; you can save it in Step&nbsp;3 above.</span></span>
+      </div>
+
+      <span class="sub-label">How to do it</span>
+      <ol>
+        <li>Go to <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link">HPDOnline</a> and enter your building's address.</li>
+        <li>Look for open mold violations. The phrase HPD uses is "trace and repair the source and abate the nuisance consisting of mold."</li>
+        <li>Note the violation number, date issued, and class (A, B, or C). The class tells you how many days your landlord has.</li>
+        <li>Save a screenshot or print the page.</li>
+      </ol>
+
+      <span class="sub-label">What to expect</span>
+      <p>Violations typically appear online within a few days of the inspection. If your complaint doesn't show up at all, the inspection may not have happened yet, or the inspector didn't find a violation &mdash; in which case, call 311 again and request another inspection.</p>
+
+      <p><strong>Important:</strong> If your landlord "certifies" they fixed the mold but you can still see it, you can challenge the certification. HPD will re-inspect and, if the condition still exists, the violation will be upgraded to a more serious class.</p>
+    </section>
+
+    <!-- STEP 5: Escalate -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 5</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Varies
+          </span>
+        </div>
+        <h3 class="step-title">If nothing's working: escalate.</h3>
+      </div>
+
+      <p class="why-this-matters">By this point, you've given your landlord multiple chances and the city has been involved. If the mold is still there, you have stronger options &mdash; but most involve legal or advocacy help, and you shouldn't try them alone.</p>
+
+      <span class="sub-label">A. Call the Met Council on Housing Tenants' Rights Hotline</span>
+      <p>Free, staffed by trained volunteers, and the best starting point for figuring out what to do next.</p>
+      <ul>
+        <li><strong>Phone:</strong> 212-979-0611</li>
+        <li><strong>Hours:</strong> Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM</li>
+        <li><strong>Heads up:</strong> The hotline is very busy &mdash; call after 4&nbsp;PM if you can, and avoid Mondays.</li>
+      </ul>
+
+      <span class="sub-label">B. Start an HP Action in Housing Court</span>
+      <p>A legal proceeding asking a judge to order your landlord to fix the mold. You can file one yourself or with help from a free legal services organization. An HP Action can result in a court order forcing the landlord to remediate, plus fines.</p>
+
+      <span class="sub-label">C. If you're rent-stabilized or rent-controlled: file for a rent reduction</span>
+      <p>NYS Homes and Community Renewal (DHCR) can order a rent reduction when essential services aren't provided. Use <strong>Form RA-81</strong> for an individual apartment or <strong>Form RA-84</strong> for a building-wide issue. Call DHCR at <strong>833-499-0343</strong> for forms.</p>
+
+      <span class="sub-label">D. If you qualify: free legal representation</span>
+      <p>NYC's Right to Counsel program provides free lawyers to low-income tenants facing housing issues. The Met Council hotline (option A) can help you figure out if you qualify.</p>
+    </section>
+
+    <!-- WARNING: Cosmetic fix -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; about cosmetic fixes</span>
+      <h3>Painting over mold is not remediation.</h3>
+      <p>The single most common landlord shortcut is to send the super to wipe down the mold with bleach and paint over it. <strong>This does not solve the problem.</strong> Mold grows back if the underlying moisture source isn't fixed. If the patch is over 10 square feet and your building has 10+ units, this kind of cosmetic fix is also illegal &mdash; your landlord must hire licensed professionals.</p>
+      <p>If your landlord proposes a cosmetic fix, ask in writing: "What is the source of the moisture, and how will you fix it?" Their answer (or lack of one) tells you whether they're taking the problem seriously.</p>
+    </aside>
+
+    <!-- WARNING: Repair-and-deduct -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; about hiring your own contractor</span>
+      <h3>Don't pay for mold remediation yourself and try to deduct it from rent.</h3>
+      <p>NYC does not have an automatic "repair and deduct" rule for tenants. If you hire your own contractor to remove mold and try to subtract the cost from your rent, your landlord can sue you for nonpayment and start eviction proceedings. Met Council's strong advice: <strong>do not repair and deduct without first consulting a lawyer.</strong></p>
+      <p>If the mold is making your apartment unlivable and your landlord is doing nothing, the right path is an HP Action in Housing Court (Step&nbsp;5B above), not paying for the work yourself.</p>
+    </aside>
+
+    <!-- Free help -->
+    <h2>Free help available</h2>
+    <ul class="help-list">
+      <li>
+        <span class="name">Met Council on Housing Tenants' Rights Hotline</span>
+        <span class="phone">212-979-0611</span>
+        <span class="desc">Free advice from trained volunteers. Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM. Not lawyers, but very knowledgeable.</span>
+      </li>
+      <li>
+        <span class="name">NYC 311</span>
+        <span class="phone">Dial 311</span>
+        <span class="desc">For filing complaints, checking complaint status, and reaching the Healthy Neighborhoods Program.</span>
+      </li>
+      <li>
+        <span class="name">Housing Court Answers</span>
+        <span class="phone">212-962-4795</span>
+        <span class="desc">Help navigating Housing Court, including HP Actions.</span>
+      </li>
+      <li>
+        <span class="name">Legal Services NYC</span>
+        <span class="phone">917-661-4500</span>
+        <span class="desc">Free legal help for low-income tenants, multiple boroughs.</span>
+      </li>
+    </ul>
+
+    <!-- Related -->
+    <section class="related">
+      <h2 style="margin-top: 0;">Related situations</h2>
+      <div class="related-grid">
+        <a href="#" class="related-link">I have a leak that hasn't been fixed</a>
+        <a href="#" class="related-link">I have pests in my apartment</a>
+        <a href="#" class="related-link">I have peeling paint or lead paint concerns</a>
+        <a href="#" class="related-link">My landlord is retaliating against me for complaining</a>
+        <a href="#" class="related-link">I'm in a NYCHA building, not private housing</a>
+      </div>
+    </section>
+
+    <!-- Sources -->
+    <div class="sources">
+      <h3>Sources &amp; verification</h3>
+      <ul>
+        <li><a href="https://www.nyc.gov/site/hpd/services-and-information/indoor-allergen-hazards-mold-and-pests.page">NYC HPD &mdash; Indoor Allergen Hazards (Mold and Pests)</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/help-answers/getting-repairs/">Met Council on Housing &mdash; Getting Repairs</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/program/tenants-rights-hotline/">Met Council on Housing &mdash; Tenants' Rights Hotline</a></li>
+        <li><a href="https://www1.nyc.gov/assets/buildings/local_laws/ll55of2018.pdf">NYC Local Law 55 of 2018 (full text)</a></li>
+        <li><a href="https://www.nyc.gov/site/doh/health/health-topics/mold.page">NYC DOH &mdash; Mold</a></li>
+      </ul>
+      <p class="verified">All sources verified April 13, 2026. <a href="#" class="inline-link">Found an error? Tell us.</a></p>
+    </div>
+
+    <div class="disclaimer">
+      <strong>This isn't legal advice.</strong> Tenant Triage NYC is an independent guide to help you understand your options and take action. We are not lawyers, and this is not an official government resource. If you need legal advice for your specific situation, please contact one of the free legal help organizations listed above.
+    </div>
+
+  </article>
+
+  <div class="toast" id="toast">Copied to clipboard</div>
+
+  <script>
+    // Scroll progress bar
+    window.addEventListener('scroll', function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progress").style.width = scrolled + "%";
+    });
+
+    const formState = {};
+
+    function syncField(fieldName, value) {
+      formState[fieldName] = value;
+      document.querySelectorAll('[data-field="' + fieldName + '"]').forEach(function(input) {
+        if (input.value !== value) input.value = value;
+        if (value && value.trim() !== '') {
+          input.classList.add('has-value');
+        } else {
+          input.classList.remove('has-value');
+        }
+        autoResize(input);
+      });
+      if (fieldName === 'complaint_ref') {
+        const display = document.getElementById('ref-display');
+        if (value && value.trim() !== '') {
+          display.innerHTML = value;
+        } else {
+          display.innerHTML = '<span class="empty">Not entered yet &mdash; you can save it in Step&nbsp;3 above.</span>';
+        }
+      }
+    }
+
+    document.querySelectorAll('.fill, [data-field]').forEach(function(input) {
+      input.addEventListener('input', function() { syncField(this.dataset.field, this.value); });
+    });
+
+    function autoResize(input) {
+      if (!input.classList.contains('fill')) return;
+      const placeholder = input.getAttribute('placeholder') || '';
+      const value = input.value || '';
+      const len = Math.max(value.length, placeholder.length, 4);
+      input.size = len + 1;
+    }
+    document.querySelectorAll('.fill').forEach(function(input) {
+      autoResize(input);
+      input.addEventListener('input', function() { autoResize(this); });
+    });
+
+    // SEVERITY PICKER
+    const severityContent = {
+      a: {
+        title: 'Class A — Small patch (under 10 sq ft)',
+        body: '<p>Your landlord has <strong>90 days</strong> to fix the mold once HPD issues a violation.</p><p>If your building has fewer than 10 units, your landlord can do the cleanup themselves but must follow safe work practices. If your building has 10+ units, the same rule applies for patches under 10 sq ft.</p><span class="key-fact"><strong>Most important for you:</strong> Even though your patch is small now, <em>mold grows</em>. Document carefully and act fast — what is Class A today could be Class B in a month if the underlying moisture isn\'t fixed.</span>'
+      },
+      b: {
+        title: 'Class B — Medium patch (10–29 sq ft)',
+        body: '<p>Your landlord has <strong>30 days</strong> to fix the mold once HPD issues a violation.</p><p>If your building has <strong>10 or more units</strong>, your landlord must hire a NYS-licensed mold assessor and a separate licensed mold remediator. They cannot just have the super wipe it down or paint over it.</p><span class="key-fact"><strong>Most important for you:</strong> When you write to your landlord and when you call 311, specifically mention that the mold patch is over 10 square feet and reference Local Law 55. This signals you know your rights and may speed up their response.</span>'
+      },
+      c: {
+        title: 'Class C — Large patch (30+ sq ft)',
+        body: '<p>Your landlord has <strong>21 days</strong> to fix the mold once HPD issues a violation. Class C is classified as <strong>immediately hazardous</strong>.</p><p>Your landlord is required to hire licensed professionals (a separate assessor and remediator) regardless of building size. The work must follow strict safe-work-practice rules.</p><span class="key-fact"><strong>Most important for you:</strong> This is the most urgent classification. Move through the steps quickly and consider calling Met Council\'s hotline (Step 5A) early — they can help you understand your immediate options. If anyone in your apartment has asthma or breathing problems, treat this as a medical priority too.</span>'
+      },
+      all: null
+    };
+
+    const contextEl = document.getElementById('severity-context');
+    const contextTitle = document.getElementById('severity-context-title');
+    const contextBody = document.getElementById('severity-context-body');
+
+    document.querySelectorAll('.severity-option').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.severity-option').forEach(function(b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-checked', 'false');
+        });
+        this.classList.add('active');
+        this.setAttribute('aria-checked', 'true');
+
+        const severity = this.dataset.severity;
+        const content = severityContent[severity];
+
+        if (content) {
+          contextTitle.textContent = content.title;
+          contextBody.innerHTML = content.body;
+          contextEl.classList.add('visible');
+        } else {
+          contextEl.classList.remove('visible');
+        }
+      });
+    });
+
+    // COPY TO CLIPBOARD
+    function getTemplateText(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return '';
+      const clone = container.cloneNode(true);
+      clone.querySelectorAll('input.fill').forEach(function(input) {
+        const original = container.querySelector('[data-field="' + input.dataset.field + '"]');
+        const value = original.value.trim();
+        const replacement = value || ('[' + (input.getAttribute('placeholder') || input.dataset.field) + ']');
+        const textNode = document.createTextNode(replacement);
+        input.parentNode.replaceChild(textNode, input);
+      });
+      let text = '';
+      clone.querySelectorAll('p').forEach(function(p, index) {
+        if (index > 0) text += '\n\n';
+        const html = p.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        text += tempDiv.textContent.trim();
+      });
+      return text;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 2200);
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const targetId = this.dataset.copyTarget;
+        const text = getTemplateText(targetId);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function() { showCopySuccess(btn); })
+            .catch(function() { fallbackCopy(text, btn); });
+        } else {
+          fallbackCopy(text, btn);
+        }
+      });
+    });
+
+    function fallbackCopy(text, btn) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try { document.execCommand('copy'); showCopySuccess(btn); }
+      catch (err) { showToast('Copy failed — please select and copy manually'); }
+      document.body.removeChild(textarea);
+    }
+
+    function showCopySuccess(btn) {
+      btn.classList.add('copied');
+      const textSpan = btn.querySelector('.copy-btn-text');
+      const originalText = textSpan.textContent;
+      textSpan.textContent = 'Copied!';
+      showToast('Copied to clipboard');
+      setTimeout(function() {
+        btn.classList.remove('copied');
+        textSpan.textContent = originalText;
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>
