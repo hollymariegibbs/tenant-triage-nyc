@@ -3,7 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Find your situation — Tenant Triage NYC</title>
+  <title>Tenant Triage NYC — Free step-by-step guides for NYC housing problems</title>
+  <meta property="og:title" content="Tenant Triage NYC">
+  <meta property="og:description" content="Free, independent step-by-step guides to taking action on housing problems in New York City.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tenanttriage.nyc">
+  <meta property="og:image" content="https://tenanttriage.nyc/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tenant Triage NYC">
+  <meta name="twitter:description" content="Free, independent step-by-step guides to taking action on housing problems in New York City.">
+  <meta name="twitter:image" content="https://tenanttriage.nyc/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
@@ -548,6 +559,24 @@
     }
     .missing a:hover { background: var(--accent-soft); }
 
+    .site-footer {
+      border-top: 2px solid var(--ink);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+    }
+    .site-footer a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule-strong);
+      transition: border-color 0.15s ease;
+    }
+    .site-footer a:hover {
+      border-bottom-color: var(--accent);
+      color: var(--accent-deep);
+    }
+
     @media (max-width: 600px) {
       article { padding: 2rem 1.25rem 4rem; }
       h1 { font-size: 2.25rem; }
@@ -579,7 +608,7 @@
     <div class="hero">
       <span class="reading-label">
         <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35"/><circle cx="11" cy="11" r="8"/></svg>
-        Find your situation
+        Step-by-step guidance
       </span>
       <h1>What's going on with your apartment?</h1>
       <p class="standfirst">Tenant Triage NYC is a free, independent guide to taking action on housing problems in New York City. Find the situation that fits yours below.</p>
@@ -588,7 +617,7 @@
 
     <!-- SEARCH -->
     <section class="search-section">
-      <label class="search-label" for="search-input">Search by your problem</label>
+      <label class="search-label" for="search-input">Search for...</label>
       <div class="search-wrap">
         <div class="search-input-wrap">
           <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
@@ -611,7 +640,7 @@
     <section class="browse-section">
       <div class="section-header">
         <h2 class="section-title">Or browse all scenarios</h2>
-        <span class="section-meta">9 scenarios &middot; 2 ready</span>
+        <span class="section-meta">9 scenarios &middot; 3 ready</span>
       </div>
 
       <div class="category">
@@ -622,7 +651,7 @@
         <ul class="scenario-list">
           <li><a href="scenarios/heat-hot-water.html" class="scenario-item linked">My apartment has no heat or hot water</a></li>
           <li><a href="scenarios/mold.html" class="scenario-item linked">I have mold in my apartment</a></li>
-          <li><span class="scenario-item coming-soon">I have pests &mdash; rats, mice, roaches, or bedbugs</span></li>
+          <li><a href="scenarios/pests.html" class="scenario-item linked">I have pests &mdash; rats, mice, roaches, or bedbugs</a></li>
           <li><span class="scenario-item coming-soon">I have a leak or plumbing problem</span></li>
           <li><span class="scenario-item coming-soon">Appliances or fixtures in my apartment are broken</span></li>
           <li><span class="scenario-item coming-soon">I'm worried about lead paint in my apartment</span></li>
@@ -669,6 +698,10 @@
 
   </article>
 
+  <footer class="site-footer">
+    Made by <a href="https://www.hollymariegibbs.com">Holly Gibbs</a>
+  </footer>
+
   <script>
     // ============================================
     // SEARCH SUGGESTIONS DATA
@@ -690,8 +723,8 @@
       },
       pests: {
         name: 'I have pests — rats, mice, roaches, or bedbugs',
-        url: '#',
-        ready: false,
+        url: 'scenarios/pests.html',
+        ready: true,
         keywords: ['pests', 'pest', 'rats', 'rat', 'mice', 'mouse', 'rodent', 'rodents', 'roach', 'roaches', 'cockroach', 'cockroaches', 'bedbug', 'bedbugs', 'bugs', 'infestation', 'droppings', 'nest', 'vermin', 'bites', 'kitchen', 'laundry']
       },
       leaks: {
