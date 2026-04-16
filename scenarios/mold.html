@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../lookup.css">
   <style>
     :root {
       --bg: #ffffff;
@@ -958,20 +959,23 @@
       </ul>
       <p>Walk into your conversation with the landlord already knowing what's on record. Reference specific violations in your written complaint. It changes the dynamic completely.</p>
       <p><strong>An honest note:</strong> HPDOnline shows public records, but it's not a complete picture. <span class="verify-tag">Verify</span> Some violations age off, and landlords sometimes fix violations without the paper trail catching up. Use it as a starting point, not the whole story.</p>
-    </aside>
 
-    <!-- HPDONLINE LOOKUP CALLOUT: Pre-Step-1 leverage -->
-    <aside class="callout callout-protect">
-      <span class="callout-label">Before you do anything else</span>
-      <h3>Look up your building's mold history on HPDOnline.</h3>
-      <p>HPD maintains a public database of every housing code violation ever issued in NYC, including mold. <strong>You can look up your building right now</strong> and see whether it has a history of mold problems, whether there are any current open violations, and how your landlord has handled past complaints.</p>
-      <p>Go to <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link">HPDOnline</a> and enter your building's address. Look for the "Violations" tab and filter or scan for "mold." This tells you:</p>
-      <ul>
-        <li><strong>Whether your building has been cited for mold before</strong> &mdash; and how many times</li>
-        <li><strong>Whether there are any currently open mold violations</strong> on the building</li>
-        <li><strong>Whether your landlord typically corrects violations within the legal time frame</strong> or lets them languish</li>
-      </ul>
-      <p>This is leverage. A landlord who has been cited for mold three times in the last five years knows exactly what they're doing when they try to wave you off. Walking in with that knowledge changes the conversation entirely.</p>
+      <!-- ADDRESS LOOKUP COMPONENT -->
+      <section class="lookup" id="lookup">
+        <span class="lookup-label">Look it up now</span>
+        <h4>Enter your address to check your building's violation history.</h4>
+        <p class="lookup-intro">HPD maintains a public database of every housing code violation ever issued in NYC. See what's on record for your building without leaving this page.</p>
+        <div class="lookup-input-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
+          <div class="lookup-suggestions" id="lookup-suggestions"></div>
+        </div>
+        <div class="lookup-status" id="lookup-status"></div>
+        <div class="lookup-results" id="lookup-results"></div>
+        <div class="lookup-fallback" id="lookup-fallback" style="display: none;">
+          <strong>Having trouble?</strong> You can also look up your building directly on <a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">HPDOnline</a>.
+        </div>
+      </section>
     </aside>
 
     <h2>What to do, step by step</h2>
@@ -1247,7 +1251,7 @@
       </li>
       <li>
         <span class="name">NYC 311</span>
-        <span class="phone">Dial 311</span>
+        <span class="phone"><a href="tel:311">Dial 311</a></span>
         <span class="desc">For filing complaints, checking complaint status, and reaching the Healthy Neighborhoods Program.</span>
       </li>
       <li>
@@ -1452,6 +1456,12 @@
         textSpan.textContent = originalText;
       }, 2000);
     }
+  </script>
+  <script src="../lookup.js"></script>
+  <script>
+    initLookup({
+      filterKeywords: ['mold', 'mildew', 'fungus', 'moisture', 'damp', 'musty', 'mould']
+    });
   </script>
 
 </body>

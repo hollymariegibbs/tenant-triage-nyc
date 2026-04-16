@@ -1,0 +1,358 @@
+/* ============================================
+   ADDRESS LOOKUP + HPD VIOLATIONS COMPONENT
+   Shared across all scenario pages.
+   ============================================ */
+
+.lookup {
+  margin: 1.5rem 0 0;
+  padding: 1.5rem 1.75rem;
+  background: var(--accent-soft, #e3f0f0);
+  border: 1.5px solid var(--accent, #0d7377);
+}
+
+.lookup-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-deep, #08494c);
+  margin-bottom: 0.35rem;
+}
+
+.lookup h4 {
+  font-weight: 800;
+  font-size: 1.125rem;
+  letter-spacing: -0.015em;
+  color: var(--ink, #111111);
+  margin-bottom: 0.5rem;
+}
+
+.lookup-intro {
+  font-size: 0.9375rem;
+  color: var(--ink-soft, #3d3d3d);
+  margin-bottom: 1rem;
+}
+
+.lookup-input-wrap {
+  position: relative;
+}
+
+.lookup-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: var(--ink, #111111);
+  background: var(--bg, #ffffff);
+  border: 1.5px solid var(--ink, #111111);
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  transition: all 0.15s ease;
+}
+
+.lookup-input::placeholder {
+  color: var(--ink-faded, #6b6b6b);
+  font-weight: 400;
+}
+
+.lookup-input:focus {
+  outline: none;
+  border-color: var(--accent-deep, #08494c);
+  box-shadow: 0 0 0 3px var(--accent-soft, #e3f0f0);
+}
+
+.lookup-input-wrap svg.search-icon {
+  position: absolute;
+  left: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  stroke: var(--ink-faded, #6b6b6b);
+  fill: none;
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+.lookup-suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--bg, #ffffff);
+  border: 1.5px solid var(--ink, #111111);
+  max-height: 18rem;
+  overflow-y: auto;
+  z-index: 100;
+  display: none;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.lookup-suggestions.visible { display: block; }
+
+.lookup-suggestion {
+  display: block;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--rule, #e6e4df);
+  transition: background 0.1s ease;
+  font-size: 0.9375rem;
+}
+.lookup-suggestion:last-child { border-bottom: none; }
+.lookup-suggestion:hover,
+.lookup-suggestion.highlighted {
+  background: var(--accent-soft, #e3f0f0);
+}
+.lookup-suggestion-address {
+  display: block;
+  font-weight: 600;
+  color: var(--ink, #111111);
+}
+.lookup-suggestion-borough {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--ink-faded, #6b6b6b);
+  margin-top: 0.15rem;
+}
+
+.lookup-status {
+  margin-top: 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--ink-soft, #3d3d3d);
+}
+.lookup-status.error {
+  color: var(--warning-ink, #7a3a0a);
+}
+
+/* Results */
+.lookup-results {
+  margin-top: 1rem;
+  display: none;
+}
+.lookup-results.visible { display: block; }
+
+.lookup-results-header {
+  padding: 1rem 1.125rem;
+  background: var(--bg, #ffffff);
+  border: 1.5px solid var(--ink, #111111);
+  margin-bottom: 0.75rem;
+}
+.lookup-results-address {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faded, #6b6b6b);
+  margin-bottom: 0.25rem;
+}
+.lookup-results-building {
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: var(--ink, #111111);
+  margin-bottom: 0.5rem;
+}
+.lookup-results-summary {
+  font-size: 0.9375rem;
+  color: var(--ink, #111111);
+  font-weight: 600;
+}
+.lookup-results-summary.none {
+  color: var(--accent-deep, #08494c);
+}
+.lookup-results-summary.some {
+  color: var(--warning-ink, #7a3a0a);
+}
+
+/* Filter toggle */
+.lookup-filter-toggle {
+  margin-bottom: 0.75rem;
+}
+.lookup-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink-soft, #3d3d3d);
+  background: var(--bg, #ffffff);
+  border: 1.5px solid var(--rule-strong, #c9c5bc);
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+.lookup-filter-btn:hover {
+  border-color: var(--accent, #0d7377);
+  color: var(--accent-deep, #08494c);
+}
+.lookup-filter-btn.active {
+  background: var(--accent-soft, #e3f0f0);
+  border-color: var(--accent, #0d7377);
+  color: var(--accent-deep, #08494c);
+}
+.lookup-filter-hint {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--ink-faded, #6b6b6b);
+}
+
+/* Violation cards */
+.lookup-violation-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.lookup-violation {
+  padding: 0.875rem 1rem;
+  background: var(--bg, #ffffff);
+  border: 1px solid var(--rule-strong, #c9c5bc);
+  margin-bottom: 0.5rem;
+  font-size: 0.9375rem;
+}
+.lookup-violation.state-open {
+  border-left: 3px solid #c8292e;
+}
+.lookup-violation.state-closed {
+  border-left: 3px solid var(--rule-strong, #c9c5bc);
+}
+.lookup-violation.state-dismissed {
+  border-left: 3px solid var(--rule-strong, #c9c5bc);
+  opacity: 0.75;
+}
+
+.lookup-violation-top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.lookup-state-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem 0.25rem 0.5rem;
+  border-radius: 100px;
+  letter-spacing: 0.005em;
+  flex-shrink: 0;
+}
+.lookup-state-pill .state-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 100px;
+  flex-shrink: 0;
+}
+.lookup-state-pill.state-open {
+  background: #fdecec;
+  color: #8c1c20;
+}
+.lookup-state-pill.state-open .state-dot {
+  background: #c8292e;
+}
+.lookup-state-pill.state-closed {
+  background: #ececea;
+  color: var(--ink-soft, #3d3d3d);
+}
+.lookup-state-pill.state-closed .state-dot {
+  background: var(--ink-faded, #6b6b6b);
+}
+.lookup-state-pill.state-dismissed {
+  background: #ececea;
+  color: var(--ink-faded, #6b6b6b);
+  font-style: italic;
+}
+.lookup-state-pill.state-dismissed .state-dot {
+  background: var(--ink-faded, #6b6b6b);
+}
+
+.lookup-class-pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 100px;
+  border: 1.5px solid var(--ink, #111111);
+  background: var(--bg, #ffffff);
+  color: var(--ink, #111111);
+  flex-shrink: 0;
+}
+.lookup-class-pill .class-letter {
+  font-weight: 800;
+  letter-spacing: 0.005em;
+}
+.lookup-class-pill .class-descriptor {
+  font-weight: 500;
+  color: var(--ink-soft, #3d3d3d);
+}
+
+.lookup-violation-date {
+  font-size: 0.75rem;
+  color: var(--ink-faded, #6b6b6b);
+  font-weight: 500;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.lookup-violation-desc {
+  font-size: 0.9375rem;
+  color: var(--ink, #111111);
+  line-height: 1.55;
+}
+
+.lookup-violation-location {
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+  color: var(--ink-faded, #6b6b6b);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Footer */
+.lookup-results-footer {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.lookup-show-more {
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink, #111111);
+  background: var(--bg, #ffffff);
+  border: 1.5px solid var(--ink, #111111);
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+.lookup-show-more:hover {
+  background: var(--ink, #111111);
+  color: var(--bg, #ffffff);
+}
+.lookup-hpd-link {
+  font-size: 0.875rem;
+  color: var(--ink-faded, #6b6b6b);
+}
+.lookup-hpd-link a {
+  color: var(--accent-deep, #08494c);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent, #0d7377);
+}
+
+.lookup-fallback {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--warning-bg, #fff4e6);
+  border-left: 3px solid var(--warning-rule, #e8a35a);
+  font-size: 0.9375rem;
+  color: var(--ink-soft, #3d3d3d);
+}
+.lookup-fallback a {
+  color: var(--accent-deep, #08494c);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent, #0d7377);
+}

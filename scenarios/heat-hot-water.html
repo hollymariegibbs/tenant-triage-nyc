@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../lookup.css">
   <style>
     :root {
       /* Neutrals do most of the work */
@@ -929,6 +930,23 @@
         <li><strong>Whether your landlord typically corrects violations within the legal time frame</strong> or lets them languish</li>
       </ul>
       <p>This is leverage. A landlord with a history of heat violations knows exactly what they're doing when the boiler "mysteriously" stops working every January. Walking in with that knowledge changes the conversation entirely.</p>
+
+      <!-- ADDRESS LOOKUP COMPONENT -->
+      <section class="lookup" id="lookup">
+        <span class="lookup-label">Look it up now</span>
+        <h4>Enter your address to check your building's violation history.</h4>
+        <p class="lookup-intro">HPD maintains a public database of every housing code violation ever issued in NYC. See what's on record for your building without leaving this page.</p>
+        <div class="lookup-input-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
+          <div class="lookup-suggestions" id="lookup-suggestions"></div>
+        </div>
+        <div class="lookup-status" id="lookup-status"></div>
+        <div class="lookup-results" id="lookup-results"></div>
+        <div class="lookup-fallback" id="lookup-fallback" style="display: none;">
+          <strong>Having trouble?</strong> You can also look up your building directly on <a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">HPDOnline</a>.
+        </div>
+      </section>
     </aside>
 
     <h2>What to do, step by step</h2>
@@ -1177,7 +1195,7 @@
       </li>
       <li>
         <span class="name">NYC 311</span>
-        <span class="phone">Dial 311</span>
+        <span class="phone"><a href="tel:311">Dial 311</a></span>
         <span class="desc">For filing complaints, checking complaint status, and reaching the Tenant Helpline.</span>
       </li>
       <li>
@@ -1372,6 +1390,12 @@
         textSpan.textContent = originalText;
       }, 2000);
     }
+  </script>
+  <script src="../lookup.js"></script>
+  <script>
+    initLookup({
+      filterKeywords: ['heat', 'hot water', 'boiler', 'radiator', 'furnace', 'temperature', 'thermostat']
+    });
   </script>
 
 </body>

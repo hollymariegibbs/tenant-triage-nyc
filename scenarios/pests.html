@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../lookup.css">
   <style>
     :root {
       --bg: #ffffff;
@@ -930,6 +931,23 @@
       <p><strong>You can also ask your landlord directly.</strong> For bedbugs specifically, Local Law 69 requires landlords to provide the bedbug history to tenants &mdash; either by posting it in a common area or distributing it at lease signing and renewal. If they haven't, you can request it in writing. Refusing to provide it is itself a Housing Maintenance Code violation you can report to 311.</p>
 
       <p><strong>An honest note:</strong> HPDOnline is a starting point, not a complete picture. <span class="verify-tag">Verify</span> Landlords don't always file accurately or on time, and some violations age off the record. Use it for leverage, not as the whole story.</p>
+
+      <!-- ADDRESS LOOKUP COMPONENT -->
+      <section class="lookup" id="lookup">
+        <span class="lookup-label">Look it up now</span>
+        <h4>Enter your address to check your building's violation history.</h4>
+        <p class="lookup-intro">HPD maintains a public database of every housing code violation ever issued in NYC. See what's on record for your building without leaving this page.</p>
+        <div class="lookup-input-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
+          <div class="lookup-suggestions" id="lookup-suggestions"></div>
+        </div>
+        <div class="lookup-status" id="lookup-status"></div>
+        <div class="lookup-results" id="lookup-results"></div>
+        <div class="lookup-fallback" id="lookup-fallback" style="display: none;">
+          <strong>Having trouble?</strong> You can also look up your building directly on <a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">HPDOnline</a>.
+        </div>
+      </section>
     </aside>
 
     <h2>What to do, step by step</h2>
@@ -1210,7 +1228,7 @@
       </li>
       <li>
         <span class="name">NYC 311</span>
-        <span class="phone">Dial 311</span>
+        <span class="phone"><a href="tel:311">Dial 311</a></span>
         <span class="desc">For filing complaints, checking complaint status, and reaching the Healthy Neighborhoods Program.</span>
       </li>
       <li>
@@ -1413,6 +1431,12 @@
         textSpan.textContent = originalText;
       }, 2000);
     }
+  </script>
+  <script src="../lookup.js"></script>
+  <script>
+    initLookup({
+      filterKeywords: ['pest', 'rat', 'mice', 'mouse', 'roach', 'cockroach', 'bedbug', 'bed bug', 'rodent', 'vermin', 'exterminate', 'infestation']
+    });
   </script>
 
 </body>
