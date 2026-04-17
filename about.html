@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Tenant Triage NYC</title>
+  <meta property="og:title" content="About — Tenant Triage NYC">
+  <meta property="og:description" content="Why this site exists, how it's built, and who's behind it.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tenanttriage.nyc/about.html">
+  <meta property="og:image" content="https://tenanttriage.nyc/og-image.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f3ef;
+      --bg-elevated: #fafaf8;
+      --ink: #111111;
+      --ink-soft: #3d3d3d;
+      --ink-faded: #6b6b6b;
+      --rule: #e6e4df;
+      --rule-strong: #c9c5bc;
+
+      --accent: #0d7377;
+      --accent-deep: #08494c;
+      --accent-soft: #e3f0f0;
+      --accent-bright: #5eb6b9;
+
+      --measure: 38rem;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem 1.5rem;
+      background: var(--bg);
+    }
+    .site-header-inner {
+      max-width: 64rem; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .wordmark {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      text-decoration: none; color: var(--ink);
+    }
+    .wordmark-main {
+      font-weight: 900; font-size: 1.375rem;
+      letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
+    }
+    .wordmark-accent {
+      font-weight: 500; font-size: 0.95rem;
+      color: var(--accent); letter-spacing: 0.01em;
+    }
+    .site-nav {
+      display: flex; gap: 1.75rem;
+      font-size: 0.875rem; color: var(--ink); font-weight: 500;
+    }
+    .site-nav a {
+      color: inherit; text-decoration: none;
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .site-nav a:hover { border-bottom-color: var(--accent); }
+    .site-nav a.current {
+      border-bottom-color: var(--ink);
+    }
+
+    article {
+      max-width: var(--measure);
+      margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      line-height: 1.1;
+      letter-spacing: -0.035em;
+      margin-bottom: 1.25rem;
+      color: var(--ink);
+    }
+
+    .standfirst {
+      font-weight: 400;
+      font-size: 1.1875rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin-bottom: 3rem;
+      max-width: 36rem;
+    }
+
+    h2 {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-top: 3rem;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    h2:first-of-type {
+      margin-top: 0;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--ink-soft);
+      margin-bottom: 1rem;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    p strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    a {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+    a:hover {
+      background: var(--accent-soft);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem 0;
+    }
+    ul li {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--ink-soft);
+      padding: 0.25rem 0 0.25rem 1.25rem;
+      position: relative;
+    }
+    ul li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.85rem;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+    }
+
+    .principles {
+      margin: 1.5rem 0;
+      padding: 1.75rem 2rem;
+      background: var(--bg-soft);
+      border-left: 4px solid var(--accent);
+    }
+    .principles p {
+      margin-bottom: 0.75rem;
+    }
+    .principles p:last-child { margin-bottom: 0; }
+
+    .disclaimer {
+      margin: 3rem 0 0;
+      padding: 1.5rem 1.75rem;
+      background: var(--bg-soft);
+      border: 1px dashed var(--rule-strong);
+    }
+    .disclaimer-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faded);
+      margin-bottom: 0.5rem;
+    }
+    .disclaimer p {
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+      margin-bottom: 0.5rem;
+    }
+
+    .site-footer {
+      border-top: 2px solid var(--ink);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+    }
+    .site-footer a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule-strong);
+      transition: border-color 0.15s ease;
+    }
+    .site-footer a:hover {
+      border-bottom-color: var(--accent);
+      color: var(--accent-deep);
+    }
+
+    @media (max-width: 600px) {
+      article { padding: 2rem 1.25rem 4rem; }
+      h1 { font-size: 2rem; }
+      .principles { padding: 1.25rem 1.25rem; }
+      .disclaimer { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="index.html" class="wordmark">
+        <span class="wordmark-main">Tenant Triage</span>
+        <span class="wordmark-accent">NYC</span>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">All scenarios</a>
+        <a href="about.html" class="current">About</a>
+        <a href="#">Free help</a>
+      </nav>
+    </div>
+  </header>
+
+  <article>
+
+    <h1>About this project</h1>
+    <p class="standfirst">Tenant Triage NYC is a free, independent resource that gives New York City renters clear, step-by-step guidance for dealing with housing problems &mdash; from no heat to mold to eviction notices.</p>
+
+    <h2>Why this exists</h2>
+    <p>New York City has some of the strongest tenant protections in the country. But knowing your rights and knowing <em>what to actually do</em> are two very different things.</p>
+    <p>If you're standing in your apartment with water coming through the ceiling, you don't need a summary of the Housing Maintenance Code. You need to know who to call, what to say, and what to do if they don't respond. That's what this site tries to provide.</p>
+    <p>Most of the information here already exists &mdash; scattered across city agency websites, legal aid PDFs, tenant organizing handouts, and Reddit threads. The problem isn't access to information. It's that the information isn't organized around the moment someone actually needs it, in the order they need to act on it, in language that doesn't require a legal background to understand.</p>
+
+    <h2>How it's built</h2>
+    <p>Every guide on this site follows the same approach:</p>
+
+    <div class="principles">
+      <p><strong>Start from the tenant's situation, not the system's structure.</strong> Guides are organized by what's happening in your apartment &mdash; not by which agency handles what or which law applies.</p>
+      <p><strong>Give people the next concrete action.</strong> Each step tells you exactly what to do, with sample messages, phone scripts, and links to the right forms &mdash; not just what agency to contact.</p>
+      <p><strong>Be honest about what works and what doesn't.</strong> Where the process is slow, or where protections have gaps, the guides say so. Trust is more useful than false reassurance.</p>
+      <p><strong>Write for people under stress.</strong> Clear headings, short paragraphs, no jargon, no legalese. If someone is reading this at midnight in a cold apartment, the writing shouldn't be another barrier.</p>
+    </div>
+
+    <p>Each scenario is researched against current NYC housing law, HPD procedures, and 311 processes, then structured as a step-by-step guide that walks tenants through the process in order of priority. Guides are verified against official city sources and updated when procedures change.</p>
+
+    <h2>Who's behind this</h2>
+    <p>Tenant Triage NYC is designed and built by <a href="https://www.hollymariegibbs.com">Holly Gibbs</a>, a UX designer based in New York City.</p>
+    <p>Holly has a background in journalism, which shaped how this project approaches complex information: start with what matters to the reader, structure it so they can act on it, and never assume they already know how the system works. The same skills that make a good explainer &mdash; clarity, structure, empathy for the audience &mdash; are the ones this project depends on.</p>
+    <p>This is an independent project. It isn't funded by or affiliated with any city agency, landlord group, legal organization, or political campaign. The goal is simply to make information that's already public more usable for the people who need it most.</p>
+
+    <div class="disclaimer">
+      <span class="disclaimer-label">Important</span>
+      <p>Tenant Triage NYC is not a law firm and does not provide legal advice. The information on this site is for general guidance only and may not reflect the most recent legal developments. Every situation is different.</p>
+      <p>If you need legal help, contact <strong>Met Council on Housing</strong> at <strong>212-979-0611</strong> or visit the <a href="https://www.metcouncilonhousing.org">Met Council website</a> to connect with a free tenant rights hotline.</p>
+    </div>
+
+  </article>
+
+  <footer class="site-footer">
+    Made by <a href="https://www.hollymariegibbs.com">Holly Gibbs</a>
+  </footer>
+
+</body>
+</html>
