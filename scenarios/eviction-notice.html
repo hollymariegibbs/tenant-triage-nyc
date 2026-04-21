@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I got an eviction notice — Tenant Triage NYC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../lookup.css">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f3ef;
+      --bg-elevated: #fafaf8;
+      --ink: #111111;
+      --ink-soft: #3d3d3d;
+      --ink-faded: #6b6b6b;
+      --rule: #e6e4df;
+      --rule-strong: #c9c5bc;
+
+      --accent: #0d7377;
+      --accent-deep: #08494c;
+      --accent-soft: #e3f0f0;
+      --accent-bright: #5eb6b9; /* lighter variant for use on dark backgrounds */
+
+      --protect: #2a4a7f;
+      --protect-soft: #eaeff7;
+      --warning-ink: #7a3a0a;
+      --warning-bg: #fff4e6;
+      --warning-rule: #e8a35a;
+
+      --code-bg: #f3f1ec;
+      --code-rule: #d9d5ca;
+      --quote-bar: #c9c5bc;
+
+      --measure: 38rem;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 18px; scroll-behavior: smooth; }
+
+    body {
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      font-size: 1.125rem;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--accent); width: 0%; z-index: 1000;
+      transition: width 0.05s linear;
+    }
+
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem 1.5rem;
+      background: var(--bg);
+    }
+    .site-header-inner {
+      max-width: 64rem; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .wordmark {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      text-decoration: none; color: var(--ink);
+    }
+    .wordmark-main {
+      font-weight: 900; font-size: 1.375rem;
+      letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
+    }
+    .wordmark-accent {
+      font-weight: 500; font-size: 0.95rem;
+      color: var(--accent); letter-spacing: 0.01em;
+    }
+    .site-nav {
+      display: flex; gap: 1.75rem;
+      font-size: 0.875rem; color: var(--ink); font-weight: 500;
+    }
+    .site-nav a {
+      color: inherit; text-decoration: none;
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .site-nav a:hover { border-bottom-color: var(--accent); }
+
+    article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+    /* Breadcrumbs — more prominent now */
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+      font-size: 0.875rem;
+    }
+    .breadcrumbs a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.25rem 0;
+      border-bottom: 1px solid var(--rule-strong);
+      transition: all 0.15s ease;
+    }
+    .breadcrumbs a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .breadcrumbs .sep {
+      color: var(--ink-faded);
+      font-weight: 400;
+    }
+    .breadcrumbs .current {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: clamp(2.25rem, 5.5vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+
+    /* "What you're reading" subtitle */
+    .reading-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+      padding: 0.35rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .reading-label svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    .standfirst {
+      font-weight: 400;
+      font-size: 1.1875rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin-bottom: 2rem;
+      max-width: 36rem;
+    }
+
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 1.5rem;
+      padding: 0.875rem 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.8125rem; color: var(--ink-faded);
+      margin-bottom: 2.5rem;
+    }
+    .meta-item { display: flex; align-items: center; gap: 0.4rem; }
+    .meta-item svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .meta-item strong { color: var(--ink); font-weight: 600; }
+    .meta-item a {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    p { margin-bottom: 1.25rem; color: var(--ink); }
+    p strong { font-weight: 600; }
+
+    a.inline-link {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: background 0.15s ease;
+    }
+    a.inline-link:hover { background: var(--accent-soft); }
+
+    h2 {
+      font-weight: 800;
+      font-size: 1.625rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-top: 3.5rem;
+      margin-bottom: 1.25rem;
+      color: var(--ink);
+    }
+
+    .sub-label {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--ink);
+      margin-top: 1.75rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .read-first {
+      background: var(--bg-soft);
+      border-left: 4px solid var(--ink);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+    .read-first p { margin-bottom: 0.75rem; font-size: 0.9375rem; }
+    .read-first p:last-child { margin-bottom: 0; }
+    .read-first strong { color: var(--ink); font-weight: 700; }
+
+    .rights-box {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 1.75rem 2rem;
+      margin: 2rem 0;
+    }
+    .rights-box .rights-label {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #d4d2cc;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .rights-box h3 {
+      font-weight: 800; font-size: 1.375rem;
+      letter-spacing: -0.015em; color: var(--bg);
+      margin-bottom: 0.75rem;
+    }
+    .rights-box p { color: var(--bg); font-size: 0.9375rem; margin-bottom: 0.75rem; }
+    .rights-box ul { list-style: none; padding: 0; margin-top: 0.75rem; }
+    .rights-box li {
+      position: relative; padding-left: 1.5rem; margin-bottom: 0.6rem;
+      font-size: 0.9375rem; color: var(--bg);
+    }
+    .rights-box li::before {
+      content: "→"; position: absolute; left: 0;
+      color: var(--accent-bright); font-weight: 700;
+    }
+    .rights-box .source {
+      font-size: 0.75rem; color: #b8b6b1;
+      margin-top: 1rem; margin-bottom: 0;
+    }
+
+    .severity-table {
+      margin: 1rem 0 0.5rem;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .severity-table th,
+    .severity-table td {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid #2c2c2c;
+      color: var(--bg);
+    }
+    .severity-table th {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #d4d2cc;
+      border-bottom-color: #4a4a4a;
+    }
+    .severity-table tr:last-child td { border-bottom: none; }
+    .severity-table .class-cell { font-weight: 700; color: var(--accent-bright); }
+
+    /* SEVERITY PICKER */
+    .severity-picker {
+      margin: 2rem 0 2.5rem;
+      padding: 1.5rem;
+      background: var(--bg-soft);
+      border: 2px solid var(--ink);
+    }
+    .severity-picker-header {
+      margin-bottom: 1rem;
+    }
+    .severity-picker-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .severity-picker-title {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .severity-picker-help {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+    }
+    .severity-options {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .severity-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.875rem;
+      padding: 0.875rem 1rem;
+      background: var(--bg);
+      border: 1.5px solid var(--rule-strong);
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: all 0.12s ease;
+      width: 100%;
+    }
+    .severity-option:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .severity-option.active {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .severity-option-marker {
+      flex-shrink: 0;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 1.5px solid var(--rule-strong);
+      border-radius: 100px;
+      margin-top: 0.15rem;
+      position: relative;
+      transition: all 0.12s ease;
+    }
+    .severity-option:hover .severity-option-marker {
+      border-color: var(--accent);
+    }
+    .severity-option.active .severity-option-marker {
+      border-color: var(--bg);
+      background: var(--bg);
+    }
+    .severity-option.active .severity-option-marker::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      background: var(--ink);
+      border-radius: 100px;
+    }
+    .severity-option-text {
+      flex: 1;
+    }
+    .severity-option-name {
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+    .severity-option.active .severity-option-name { color: var(--bg); }
+    .severity-option-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      display: block;
+    }
+    .severity-option.active .severity-option-desc { color: #c9c5bc; }
+
+    /* Severity context banner — shows after selection */
+    .severity-context {
+      margin: 1.5rem 0 2.5rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      display: none;
+    }
+    .severity-context.visible {
+      display: block;
+    }
+    .severity-context-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .severity-context h3 {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+    .severity-context p {
+      font-size: 0.9375rem;
+      margin-bottom: 0.5rem;
+    }
+    .severity-context p:last-child { margin-bottom: 0; }
+    .severity-context .key-fact {
+      display: block;
+      padding: 0.75rem 0;
+      border-top: 1px solid rgba(13, 115, 119, 0.2);
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+    }
+    .severity-context .key-fact strong {
+      color: var(--accent-deep);
+    }
+
+    .step {
+      margin: 3rem 0;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .step-header { margin-bottom: 1.25rem; }
+    .step-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .step-number {
+      font-weight: 800; font-size: 0.75rem;
+      letter-spacing: 0.08em; color: var(--accent);
+      text-transform: uppercase;
+    }
+    .time-chip {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.75rem; font-weight: 500;
+      color: var(--ink-soft); background: var(--bg-soft);
+      padding: 0.25rem 0.6rem; border-radius: 100px;
+    }
+    .time-chip svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .step-title {
+      font-weight: 800; font-size: 1.625rem;
+      line-height: 1.2; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0;
+    }
+
+    .why-this-matters {
+      color: var(--ink-soft);
+      border-left: 3px solid var(--rule-strong);
+      padding-left: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+
+    .step ol, .step ul { margin-bottom: 1.25rem; padding-left: 1.25rem; }
+    .step li { margin-bottom: 0.6rem; }
+
+    /* Template box */
+    .template {
+      background: var(--code-bg);
+      border: 1px solid var(--code-rule);
+      border-left: 4px solid var(--ink);
+      margin: 1rem 0 1.5rem;
+      position: relative;
+    }
+    .template-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 1rem 0.6rem 1.25rem;
+      border-bottom: 1px solid var(--code-rule);
+      background: rgba(0,0,0,0.025);
+    }
+    .template-label {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink);
+    }
+    .template-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: inherit; font-size: 0.75rem; font-weight: 600;
+      color: var(--ink); background: var(--bg);
+      border: 1px solid var(--ink);
+      padding: 0.35rem 0.75rem;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .copy-btn:hover { background: var(--ink); color: var(--bg); }
+    .copy-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .copy-btn.copied { background: var(--ink); color: var(--bg); }
+    .template-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+      font-size: 0.9375rem; line-height: 1.65;
+      color: var(--ink);
+    }
+    .template-body p { margin-bottom: 0.75rem; color: var(--ink); }
+    .template-body p:last-child { margin-bottom: 0; }
+
+    .fill {
+      display: inline-block;
+      font-family: inherit; font-size: inherit; font-weight: 500;
+      color: var(--accent-deep); background: var(--bg);
+      border: none; border-bottom: 1.5px dashed var(--accent);
+      padding: 0 0.25rem; margin: 0 1px;
+      min-width: 4rem; max-width: 100%;
+      line-height: 1.4;
+      transition: background 0.12s ease;
+    }
+    .fill::placeholder {
+      color: var(--accent); font-style: italic;
+      font-weight: 400; opacity: 0.65;
+    }
+    .fill:focus {
+      outline: none;
+      background: var(--accent-soft);
+      border-bottom-color: var(--accent-deep);
+      border-bottom-style: solid;
+    }
+    .fill.has-value {
+      border-bottom-style: solid;
+      border-bottom-color: var(--ink);
+      color: var(--ink);
+    }
+
+    /* Spoken script box with fillable inputs */
+    .spoken {
+      margin: 1rem 0 1.5rem;
+      padding: 1rem 0 1rem 1.5rem;
+      border-left: 4px solid var(--quote-bar);
+      position: relative;
+    }
+    .spoken-label {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.6rem;
+    }
+    .spoken-label svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .spoken-body {
+      font-size: 1.0625rem; line-height: 1.65;
+      color: var(--ink); font-weight: 400;
+    }
+    .spoken-body p { margin-bottom: 0.6rem; }
+    .spoken-body p:last-child { margin-bottom: 0; }
+
+    /* Fillable inputs in spoken scripts — bigger, more prominent */
+    .spoken .fill {
+      font-size: 1.0625rem;
+      font-weight: 500;
+      color: var(--accent-deep);
+      border-bottom-width: 2px;
+      padding: 0 0.3rem;
+      min-width: 5rem;
+    }
+    .spoken .fill::placeholder {
+      font-size: 1rem;
+    }
+    .spoken .fill.has-value {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .spoken-hint {
+      display: block; margin-top: 0.75rem;
+      font-size: 0.8125rem; color: var(--ink-faded);
+      font-style: italic;
+    }
+
+    /* Reference number capture */
+    .ref-capture {
+      background: var(--bg-soft);
+      border: 1px solid var(--rule-strong);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .ref-capture-label {
+      font-weight: 600; font-size: 0.9375rem;
+      color: var(--ink); flex: 1 1 auto;
+    }
+    .ref-capture input {
+      font-family: inherit; font-size: 1rem; font-weight: 600;
+      color: var(--ink); background: var(--bg);
+      border: 1.5px solid var(--ink);
+      padding: 0.5rem 0.75rem;
+      width: 14rem; max-width: 100%;
+    }
+    .ref-capture input::placeholder { font-weight: 400; color: var(--ink-faded); }
+    .ref-capture input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+    .ref-recall {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.9375rem;
+    }
+    .ref-recall .label {
+      display: block;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 0.25rem;
+    }
+    .ref-recall .number {
+      font-size: 1.125rem; font-weight: 700; color: var(--ink);
+    }
+    .ref-recall .empty {
+      color: var(--ink-faded);
+      font-weight: 400; font-style: italic;
+      font-size: 0.9375rem;
+    }
+
+    /* Callouts */
+    .callout {
+      margin: 2.5rem 0;
+      padding: 1.75rem 2rem;
+      position: relative;
+    }
+    .callout-protect {
+      background: var(--protect-soft);
+      border-left: 4px solid var(--protect);
+    }
+    .callout-warning {
+      background: var(--warning-bg);
+      border-left: 4px solid var(--warning-rule);
+    }
+    .callout-label {
+      font-size: 0.7rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      margin-bottom: 0.5rem; display: block;
+    }
+    .callout-protect .callout-label { color: var(--protect); }
+    .callout-warning .callout-label { color: var(--warning-ink); }
+
+    .callout h3 {
+      margin-top: 0; margin-bottom: 0.75rem;
+      font-weight: 800; font-size: 1.25rem;
+      letter-spacing: -0.015em; color: var(--ink);
+    }
+    .callout p { font-size: 0.9375rem; margin-bottom: 0.85rem; }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout strong { font-weight: 700; color: var(--ink); }
+    .callout ul { margin: 0.75rem 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    .callout li { margin-bottom: 0.5rem; }
+    .callout .resource-list { list-style: none; padding-left: 0; }
+    .callout .resource-list li { padding-left: 1.25rem; position: relative; }
+    .callout .resource-list li::before {
+      content: "•"; position: absolute; left: 0; font-weight: 700;
+    }
+    .callout-protect .resource-list li::before { color: var(--protect); }
+    .callout .sub-label { color: var(--ink); }
+
+    .draft-flag {
+      display: inline-block;
+      font-size: 0.65rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--ink); color: var(--bg);
+      padding: 0.25rem 0.55rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .help-list { list-style: none; padding: 0; margin: 1rem 0 2rem; }
+    .help-list li {
+      padding: 1.125rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .help-list li:last-child { border-bottom: none; }
+    .help-list .name {
+      font-weight: 700; color: var(--ink);
+      display: block; margin-bottom: 0.2rem; font-size: 1rem;
+    }
+    .help-list .phone {
+      font-weight: 700; color: var(--accent-deep);
+      font-size: 1.125rem; letter-spacing: -0.005em;
+    }
+    .help-list .desc {
+      display: block; font-size: 0.875rem;
+      color: var(--ink-soft); margin-top: 0.2rem;
+    }
+
+    .related {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .related-grid { display: grid; gap: 0.5rem; margin-top: 1rem; }
+    .related-link {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      background: var(--bg);
+      border: 1px solid var(--rule-strong);
+      text-decoration: none; color: var(--ink);
+      transition: all 0.15s ease;
+      font-size: 0.9375rem; font-weight: 500;
+    }
+    .related-link:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+    }
+    .related-link::after {
+      content: "→"; margin-left: auto;
+      color: var(--accent); font-weight: 700;
+    }
+
+    .sources {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      font-size: 0.8125rem; color: var(--ink-faded);
+    }
+    .sources h3 {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--ink); margin-bottom: 0.75rem;
+    }
+    .sources ul { list-style: none; padding: 0; }
+    .sources li { margin-bottom: 0.4rem; }
+    .sources a {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--rule-strong);
+    }
+    .verified {
+      margin-top: 1.25rem; padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .disclaimer {
+      margin-top: 2.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-soft);
+      border: 1px dashed var(--rule-strong);
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .disclaimer strong { color: var(--ink); font-weight: 700; }
+
+    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
+    .verify-tag {
+      display: inline-block;
+      background: #c8292e;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      margin: 0 0.15rem;
+      vertical-align: baseline;
+      font-style: normal;
+    }
+    .verify-tag::before { content: "⚑ "; }
+
+    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
+    .verify-tag {
+      display: inline-block;
+      background: #c8292e;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      margin: 0 0.15rem;
+      vertical-align: baseline;
+      font-style: normal;
+    }
+    .verify-tag::before { content: "⚑ "; }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(150%);
+      background: var(--ink); color: var(--bg);
+      padding: 0.875rem 1.5rem;
+      font-size: 0.875rem; font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media print {
+      .progress-bar, .site-header, .related, .meta-item.print-hide, .copy-btn, .toast { display: none; }
+      body { background: white; }
+      .fill { border-bottom: 1px solid #999; }
+    }
+
+    @media (max-width: 600px) {
+      article { padding: 2rem 1.25rem 4rem; }
+      h1 { font-size: 2.25rem; }
+      .step-title { font-size: 1.375rem; }
+      .template-header { flex-wrap: wrap; gap: 0.5rem; }
+      .ref-capture { flex-direction: column; align-items: stretch; }
+      .ref-capture input { width: 100%; }
+      .severity-table { font-size: 0.8125rem; }
+      .severity-table th, .severity-table td { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" id="progress"></div>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="wordmark">
+        <span class="wordmark-main">Tenant Triage</span>
+        <span class="wordmark-accent">NYC</span>
+      </a>
+      <nav class="site-nav">
+        <a href="../index.html">All scenarios</a>
+        <a href="../about.html">About</a>
+        <a href="#">Free help</a>
+      </nav>
+    </div>
+  </header>
+
+  <article>
+
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">All scenarios</a>
+      <span class="sep">/</span>
+      <a href="#">Eviction &amp; lease issues</a>
+      <span class="sep">/</span>
+      <span class="current">Eviction notice</span>
+    </nav>
+
+    <span class="reading-label">
+      <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Eviction defense guide
+    </span>
+
+    <h1>I got an eviction notice.</h1>
+
+    <p class="standfirst">In NYC, your landlord cannot evict you without going to court &mdash; and you have a right to a lawyer, often for free. Don't panic, don't move out, and read this carefully.</p>
+
+    <div class="meta">
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span><strong>10 min</strong> read</span>
+      </span>
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span>Last verified <strong>April 21, 2026</strong></span>
+      </span>
+      <span class="meta-item print-hide">
+        <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+        <a href="#" onclick="window.print(); return false;">Print this page</a>
+      </span>
+    </div>
+
+    <div class="read-first">
+      <p>Getting a notice feels like you're about to lose your home right now. In most cases, <strong>you are not.</strong> NYC landlords cannot evict a tenant without filing a case in Housing Court, giving you a chance to appear and defend yourself, and getting a court order plus a marshal's warrant. That process almost always takes weeks to months &mdash; and at every stage, you have rights, defenses, and access to a free lawyer if you qualify.</p>
+      <p><strong>Pick your stage below</strong> to jump to what applies to you, or read the full page to understand the complete picture. The further along the process is, the less time you have &mdash; so identify your stage first.</p>
+      <p><strong>Treat this as an emergency if:</strong> your landlord has locked you out, changed the locks, shut off utilities, removed your belongings, or told you to leave &ldquo;today&rdquo; without a court order. That's an <strong>illegal lockout</strong>, and it's a crime &mdash; call <strong>311</strong> and <strong>NYPD (911)</strong> and say &ldquo;illegal lockout.&rdquo;</p>
+    </div>
+
+    <div class="rights-box">
+      <span class="rights-label">Know your rights</span>
+      <h3>How eviction actually works in NYC</h3>
+      <p>Your landlord <strong>cannot</strong> physically remove you, change your locks, or shut off your utilities to force you out. Every lawful eviction in NYC has to go through Housing Court and end with a city marshal executing a warrant. Here are the stages and how much time each one gives you:</p>
+
+      <table class="severity-table">
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>What it looks like</th>
+            <th>Time you have</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="class-cell">1</td>
+            <td>Pre-court notice: 14-day rent demand, notice to cure, or notice of termination</td>
+            <td>14&ndash;90 days</td>
+          </tr>
+          <tr>
+            <td class="class-cell">2</td>
+            <td>Court petition served: &ldquo;Notice of Petition&rdquo; and petition</td>
+            <td>10 business days before first court date</td>
+          </tr>
+          <tr>
+            <td class="class-cell">3</td>
+            <td>Court date(s) and, if you lose, a judgment and warrant of eviction</td>
+            <td>Varies &mdash; usually weeks</td>
+          </tr>
+          <tr>
+            <td class="class-cell">4</td>
+            <td>Marshal's 14-day notice of eviction</td>
+            <td>14 days minimum before lockout</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top: 1rem;">Your landlord must follow every step in this order, and must prove their case in court. <strong>If you qualify for NYC's Right to Counsel program, you get a free lawyer for the entire case.</strong> Income-eligible tenants in Housing Court are covered regardless of citizenship or immigration status.</p>
+      <p class="source">Source: NY Real Property Actions and Proceedings Law (RPAPL) Article 7; NYC Administrative Code &sect; 26-1301 (Universal Access to Counsel)</p>
+    </div>
+
+    <!-- SEVERITY PICKER -->
+    <div class="severity-picker">
+      <div class="severity-picker-header">
+        <span class="severity-picker-label">Tailor this guide</span>
+        <h3 class="severity-picker-title">What stage are you at?</h3>
+        <p class="severity-picker-help">Your deadline and options depend on how far along the eviction process is. Pick what fits your notice, or choose &ldquo;show me everything&rdquo; to read the full guide.</p>
+      </div>
+      <div class="severity-options" role="radiogroup" aria-label="Eviction stage">
+        <button class="severity-option" data-severity="rent-demand" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">14-day rent demand</span>
+            <span class="severity-option-desc">A written notice saying you owe rent and must pay within 14 days or face eviction proceedings. This is pre-court &mdash; no case has been filed yet.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="cure-terminate" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Notice to cure or notice of termination</span>
+            <span class="severity-option-desc">Landlord claims you violated your lease (e.g., unauthorized occupant, pets, noise). You have a cure period, then potentially a termination notice. Pre-court.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="petition" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Notice of Petition and Petition (court case filed)</span>
+            <span class="severity-option-desc">A court has a case number. This is the real thing. You have a first court date and must appear or you'll lose by default.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="court" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Court date coming up or in progress</span>
+            <span class="severity-option-desc">You've been to court at least once and the case is ongoing, or you have an upcoming date. Get a lawyer before anything else.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="warrant" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Judgment entered / warrant of eviction issued</span>
+            <span class="severity-option-desc">The court has ruled against you. A warrant has been or will be issued. You still have time and options &mdash; but act today.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="marshal" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Marshal's 14-day notice of eviction</span>
+            <span class="severity-option-desc">The final warning before a lockout. You have at least 14 days. Emergency legal help is critical &mdash; and you may still have defenses.</span>
+          </span>
+        </button>
+        <button class="severity-option active" data-severity="all" role="radio" aria-checked="true">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">I'm not sure &mdash; show me everything</span>
+            <span class="severity-option-desc">Default. See the full guide to figure out where you are.</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Severity context banner — appears after picker selection -->
+    <div class="severity-context" id="severity-context">
+      <span class="severity-context-label">For your situation</span>
+      <h3 id="severity-context-title">14-day rent demand</h3>
+      <div id="severity-context-body">
+        <p>Placeholder.</p>
+      </div>
+    </div>
+
+    <!-- HPDONLINE LEVERAGE CALLOUT -->
+    <aside class="callout callout-protect">
+      <span class="callout-label">If conditions in your apartment are bad, look up your building</span>
+      <h3>HPD violations can become a defense or counterclaim in court.</h3>
+      <p>If your landlord is trying to evict you for nonpayment of rent, New York's <strong>warranty of habitability</strong> (Real Property Law &sect; 235-b) lets you argue that rent should be reduced or abated for any period when the apartment had serious unfixed conditions. This doesn't cancel the rent, but it can significantly reduce what you owe, change settlement math, and give you leverage. Open HPD violations are the single strongest piece of evidence.</p>
+      <p>Spend two minutes searching <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a> on the site or in the lookup box just below. Look at the relevant violations for:</p>
+      <ul>
+        <li><strong>Open Class B or C violations</strong> in your unit &mdash; these are the strongest evidence for a habitability defense or counterclaim (leaks, heat, mold, pests, electrical, lead paint).</li>
+        <li><strong>Repeat violations on the same conditions</strong> &mdash; shows the landlord knew and didn't fix.</li>
+        <li><strong>Violations that were falsely certified as corrected</strong> &mdash; strong credibility evidence against the landlord.</li>
+      </ul>
+      <p>Bring printouts or screenshots to every court appearance. Your lawyer will know what to do with them.</p>
+      <p><strong>An honest note:</strong> HPDOnline shows public records, but it's not a complete picture. Some violations age off, and landlords sometimes fix violations without the paper trail catching up. Use it as a starting point, not the whole story.</p>
+
+      <!-- ADDRESS LOOKUP COMPONENT -->
+      <section class="lookup" id="lookup">
+        <span class="lookup-label">Look it up now</span>
+        <h4>Enter your address to check your building's violation history.</h4>
+        <p class="lookup-intro">HPD maintains a public database of every housing code violation ever issued in NYC. See what's on record for your building without leaving this page.</p>
+        <div class="lookup-input-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
+          <div class="lookup-suggestions" id="lookup-suggestions"></div>
+        </div>
+        <div class="lookup-status" id="lookup-status"></div>
+        <div class="lookup-results" id="lookup-results"></div>
+        <div class="lookup-fallback" id="lookup-fallback" style="display: none;">
+          <strong>Having trouble?</strong> You can also look up your building directly on <a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">HPDOnline</a>.
+        </div>
+      </section>
+    </aside>
+
+    <h2>What to do, step by step</h2>
+
+    <!-- STEP 1: Document with photos -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 1</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            10&ndash;15 min
+          </span>
+        </div>
+        <h3 class="step-title">Read the notice carefully &mdash; and keep every paper.</h3>
+      </div>
+
+      <p class="why-this-matters">A notice is a legal document, and the specific wording tells you exactly what stage you're at, what deadline applies, and what defenses you may have. It also tells you whether the notice is valid &mdash; landlord errors in notices are a common reason evictions get dismissed. You cannot afford to lose or ignore any paper you receive, even if it looks like junk mail.</p>
+
+      <span class="sub-label">What to look for &mdash; and capture it in this checklist</span>
+      <p>As you read, fill in the checklist below. It captures everything a lawyer or legal advocate will need from you, and it will stay filled in for later steps on this page.</p>
+      <div class="template" id="intake-template-step1">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Intake checklist
+          </span>
+          <button class="copy-btn" data-copy-target="intake-template-step1-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="intake-template-step1-content">
+          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
+          <p><strong>Type of notice I received:</strong> <input type="text" class="fill" data-field="notice_type" placeholder="14-day rent demand, petition, etc." size="30"></p>
+          <p><strong>Date I received it:</strong> <input type="text" class="fill" data-field="notice_date" placeholder="date" size="12"></p>
+          <p><strong>Court index number (if any):</strong> <input type="text" class="fill" data-field="index_no" placeholder="L&amp;T 123456/YY" size="18"></p>
+          <p><strong>First court date (if any):</strong> <input type="text" class="fill" data-field="court_date" placeholder="date" size="12"></p>
+          <p><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26"></p>
+          <p><strong>Landlord's attorney (if listed):</strong> <input type="text" class="fill" data-field="attorney" placeholder="name" size="26"></p>
+          <p><strong>Reason for eviction:</strong> <input type="text" class="fill" data-field="reason" placeholder="nonpayment / lease violation / holdover" size="32"></p>
+          <p><strong>Amount demanded (if any):</strong> $<input type="text" class="fill" data-field="amount" placeholder="amount" size="10"></p>
+          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10"> &mdash; Household size: <input type="text" class="fill" data-field="household_size" placeholder="#" size="4"></p>
+          <p><strong>Rent-regulated?</strong> <input type="text" class="fill" data-field="regulated" placeholder="rent-stabilized / rent-controlled / market / NYCHA / Section 8 / unknown" size="40"></p>
+        </div>
+      </div>
+
+      <span class="sub-label">What to save and how</span>
+      <p>Every paper your landlord or a process server gives you. Every envelope (postmarks matter). Every lease, rent receipt, text message, and email. <strong>Photograph everything</strong> front and back, save it to your phone, and back it up to cloud storage or email it to yourself. Papers get lost. Evidence that's only on your kitchen table is evidence you can't use.</p>
+
+      <p><strong>Don't sign anything</strong> the landlord, their attorney, or a process server hands you beyond acknowledging receipt. If you're asked to sign a &ldquo;stipulation,&rdquo; a payment plan, or anything that ends with the word &ldquo;agreement&rdquo; &mdash; stop, take a photo, and call a lawyer before signing.</p>
+    </section>
+
+    <!-- DON'T SELF-EVICT CALLOUT -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; do not leave on your own</span>
+      <h3>Your landlord cannot force you out without a court order.</h3>
+      <p>It is illegal in NYC for a landlord to pressure you to leave, change locks, remove your belongings, shut off heat or electricity, or threaten you into moving. Only a <strong>city marshal</strong>, with a <strong>warrant of eviction</strong> signed by a Housing Court judge, can lawfully remove you from your apartment &mdash; and the marshal must give you a 14-day written notice before doing so.</p>
+      <p><strong>If your landlord says things like:</strong></p>
+      <ul>
+        <li>&ldquo;You have to be out by Friday.&rdquo;</li>
+        <li>&ldquo;Sign this and I'll give you time to move.&rdquo;</li>
+        <li>&ldquo;If you leave now I'll return your deposit.&rdquo;</li>
+        <li>&ldquo;The court already decided, you're out.&rdquo;</li>
+      </ul>
+      <p>&hellip; do not move out based on that alone. Ask to see the <strong>marshal's 14-day notice of eviction</strong> &mdash; if there isn't one, you are not required to leave. Moving out voluntarily gives up rights that a court process would protect, including the right to contest the case and the right to your security deposit.</p>
+      <p>If your landlord has already locked you out, changed locks, or removed your things: that is an <strong>illegal lockout</strong>, a criminal offense, and possibly a civil claim worth significant money. Call <strong>311</strong> and <strong>NYPD (911)</strong>, say &ldquo;illegal lockout,&rdquo; and contact legal help immediately.</p>
+    </aside>
+
+    <!-- STEP 2: Notify landlord -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 2</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            10 min
+          </span>
+        </div>
+        <h3 class="step-title">Get a lawyer &mdash; today if you can.</h3>
+      </div>
+
+      <p class="why-this-matters">NYC's <strong>Universal Access to Counsel</strong> program (often called &ldquo;Right to Counsel&rdquo;) provides a free attorney to any tenant in Housing Court whose income is at or below 200% of the federal poverty level. Tenants with lawyers win their cases or get far better settlements more than 80% of the time; tenants without lawyers usually lose. Immigration status does not affect eligibility &mdash; city-funded legal services are available to all qualified tenants regardless of citizenship or status. <strong>This is the most important thing you can do after reading the notice.</strong></p>
+
+      <span class="sub-label">How to get free legal help</span>
+      <ol>
+        <li><strong>Call Housing Court Answers at <a href="tel:2129624795" class="inline-link">212-962-4795</a>.</strong> They are a nonprofit that helps every NYC tenant connect to the right legal services provider for their borough and case type. This is usually the fastest single call you can make.</li>
+        <li><strong>Or go to the courthouse.</strong> Every Housing Courthouse has a <strong>Help Center</strong> staffed by court attorneys who can explain the process and a <strong>Right to Counsel intake table</strong> that screens you for free-lawyer eligibility on the spot. Go early on the day of your court date, or any weekday before.</li>
+        <li><strong>Call a legal services provider directly</strong> if you already know which one serves your borough. (See the &ldquo;Free help&rdquo; list near the bottom of this page.)</li>
+        <li><strong>If your income is above the Right to Counsel threshold,</strong> Housing Court Answers and Met Council can still refer you to sliding-scale legal services, clinics, and pro bono programs. You may also consider a private tenant attorney &mdash; the cost is almost always lower than losing your home.</li>
+      </ol>
+
+      <span class="sub-label">What to have ready when you call</span>
+      <p>Your intake checklist from Step 1 will auto-populate here &mdash; so you can read from it while on the phone. If anything is still blank, you can fill it in either place.</p>
+      <div class="template" id="intake-template-step2">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Intake checklist (same as Step 1)
+          </span>
+          <button class="copy-btn" data-copy-target="intake-template-step2-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="intake-template-step2-content">
+          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
+          <p><strong>Type of notice I received:</strong> <input type="text" class="fill" data-field="notice_type" placeholder="14-day rent demand, petition, etc." size="30"></p>
+          <p><strong>Date I received it:</strong> <input type="text" class="fill" data-field="notice_date" placeholder="date" size="12"></p>
+          <p><strong>Court index number (if any):</strong> <input type="text" class="fill" data-field="index_no" placeholder="L&amp;T 123456/YY" size="18"></p>
+          <p><strong>First court date (if any):</strong> <input type="text" class="fill" data-field="court_date" placeholder="date" size="12"></p>
+          <p><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26"></p>
+          <p><strong>Landlord's attorney (if listed):</strong> <input type="text" class="fill" data-field="attorney" placeholder="name" size="26"></p>
+          <p><strong>Reason for eviction:</strong> <input type="text" class="fill" data-field="reason" placeholder="nonpayment / lease violation / holdover" size="32"></p>
+          <p><strong>Amount demanded (if any):</strong> $<input type="text" class="fill" data-field="amount" placeholder="amount" size="10"></p>
+          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10"> &mdash; Household size: <input type="text" class="fill" data-field="household_size" placeholder="#" size="4"></p>
+          <p><strong>Rent-regulated?</strong> <input type="text" class="fill" data-field="regulated" placeholder="rent-stabilized / rent-controlled / market / NYCHA / Section 8 / unknown" size="40"></p>
+        </div>
+      </div>
+
+      <span class="sub-label">What to expect</span>
+      <p>Intake usually takes 15&ndash;30 minutes on the phone. If you qualify, you'll be connected with a legal services provider who will assign your case to an attorney. That attorney will represent you at every court appearance and help negotiate with the landlord's attorney. Free legal services are busy, but Housing Court cases are handled urgently &mdash; same-day or next-day intake is common when a court date is imminent.</p>
+    </section>
+
+    <!-- STEP 3: 311 -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 3</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            5&ndash;15 min
+          </span>
+        </div>
+        <h3 class="step-title">Show up to court &mdash; and respond properly to pre-court notices.</h3>
+      </div>
+
+      <p class="why-this-matters">Housing Court cases are won and lost on one thing more than any other: <strong>whether the tenant shows up</strong>. If you miss your court date without a reason the court accepts, the landlord gets a <strong>default judgment</strong>, which almost always ends in eviction. If you're pre-court (a rent demand, notice to cure, notice of termination), responding properly and on time can prevent a court case from being filed at all.</p>
+
+      <span class="sub-label">If you have a court date (Notice of Petition, Petition)</span>
+      <ol>
+        <li><strong>Confirm the date, time, and courthouse.</strong> NYC Housing Court has a dedicated courthouse in every borough, and you must attend the one listed on your legal papers. Most first appearances happen 10&ndash;14 days after service. Write it in multiple places and set a phone alarm.</li>
+        <li><strong>Show up early.</strong> Lines and security screening can take 20&ndash;40 minutes. Get there at least an hour before your scheduled time. Bring photo ID and every document you've collected.</li>
+        <li><strong>Check in at the clerk's desk</strong> with your court index number. Then go to the <strong>Help Center</strong> and the <strong>Right to Counsel intake table</strong>. If you aren't already represented, ask to be screened on the spot.</li>
+        <li><strong>Do not sign anything without a lawyer.</strong> The landlord's attorney will likely approach you in the hallway and offer a &ldquo;stipulation&rdquo; (a written settlement). Even if it sounds reasonable, ask for an adjournment (a continuance) to speak with a lawyer. Judges grant adjournments for this purpose regularly.</li>
+      </ol>
+
+      <span class="sub-label" id="courthouse-addresses">NYC Housing Court addresses</span>
+      <p>If you've lost your papers, here's where to go by borough:</p>
+      <ul>
+        <li><strong>Manhattan</strong> &mdash; New York County Housing Court, 111 Centre Street, New York, NY 10013</li>
+        <li><strong>Bronx</strong> &mdash; Bronx County Housing Court, 1118 Grand Concourse, Bronx, NY 10456</li>
+        <li><strong>Brooklyn</strong> &mdash; Kings County Housing Court, 141 Livingston Street, Brooklyn, NY 11201</li>
+        <li><strong>Queens</strong> &mdash; Queens County Housing Court, 89-17 Sutphin Boulevard, Jamaica, NY 11435</li>
+        <li><strong>Staten Island</strong> &mdash; Richmond County Housing Court, 927 Castleton Avenue, Staten Island, NY 10310</li>
+      </ul>
+      <p>Some Upper Manhattan cases may be heard at the <strong>Harlem Community Justice Center</strong>, 170 East 121st Street.</p>
+      <p>If you've lost your index number or want to double-check your next date, you can look up your case on the <a href="https://iapps.courts.state.ny.us/webcivilLocal/LCMain" class="inline-link" target="_blank" rel="noopener">NYS eCourts WebCivil Local portal</a>. Search by index number for the fastest result; search by party name if you don't have the number. <strong>Note:</strong> closed landlord-tenant cases remain visible on WebCivil Local for only about 14 days after they're decided &mdash; for older records, visit the Clerk's Office in person.</p>
+
+      <span class="sub-label">If you cannot make your court date</span>
+      <p>Call the court's clerk immediately to request an <strong>adjournment</strong>, and follow up in writing (email or letter). Document your reason (illness, work obligation, hospitalization, family emergency). Showing up late is always better than not showing up at all.</p>
+
+      <span class="sub-label">If you're pre-court (demand notice, notice to cure, notice of termination)</span>
+      <ul>
+        <li><strong>For a 14-day rent demand:</strong> Paying the full amount demanded within 14 days generally stops a nonpayment case from being filed. But if you dispute any of the amount (you made payments the landlord hasn't credited; there are conditions in the apartment that should reduce the rent; you don't actually owe it), <strong>don't pay without a lawyer's advice</strong> &mdash; once you pay, your defenses go away.</li>
+        <li><strong>For a notice to cure:</strong> If the landlord claims you violated the lease, you generally have a cure period (often 10 days) to fix the problem. Fix it in writing with proof (e.g., removed unauthorized occupant with a signed statement; got a pet approved or rehomed). Respond to the landlord in writing confirming what you did.</li>
+        <li><strong>Get a lawyer even pre-court.</strong> Right to Counsel traditionally starts once a court case is filed, but legal services providers and Met Council can still advise you at the notice stage and help you respond correctly.</li>
+      </ul>
+
+      <div class="ref-capture">
+        <label class="ref-capture-label" for="ref-input">Save your court index number and/or next court date here so it's saved for the next step:</label>
+        <input type="text" id="ref-input" placeholder="L&amp;T 123456/YY — date" data-field="complaint_ref">
+      </div>
+
+      <span class="sub-label">What to expect at the first court appearance</span>
+      <ul>
+        <li>First appearances are usually procedural. The judge will confirm you have notice, check whether you have an attorney, and set a next date if you need time to get one.</li>
+        <li>If you request a lawyer (Right to Counsel intake), the judge will usually adjourn the case 2&ndash;4 weeks to let you get represented. This is normal and expected.</li>
+        <li>No decision is typically made at the first appearance unless you voluntarily agree to one in a stipulation. <strong>Do not agree to anything without a lawyer.</strong></li>
+      </ul>
+
+      <aside class="callout callout-protect">
+        <span class="callout-label">What to wear to court</span>
+        <h3>Dress respectfully and comfortably.</h3>
+        <p>Judges don't require a suit, but they notice effort. Aim for neat, clean, and modest &mdash; similar to what you'd wear to a job interview, a doctor's appointment, or a meeting with your child's teacher. Comfortable shoes matter; you'll be on your feet and in line more than you'd think.</p>
+        <p><strong>Good:</strong> button-down shirt, polo, or sweater; trousers, slacks, or a modest dress/skirt; closed-toe shoes. A plain jacket or cardigan if you have one.</p>
+        <p><strong>Avoid:</strong> tank tops, ripped or sagging jeans, shorts, pajamas or loungewear, clothing with profanity or offensive imagery, sunglasses indoors, and hats (except head coverings worn for religious reasons, which are always permitted). Don't wear anything you couldn't clear through courthouse security &mdash; heavy chains, belts with large buckles, or anything sharp will slow you down.</p>
+        <p>Bring a <strong>folder or envelope</strong> to keep your papers organized. Ziploc bags work. Nothing signals &ldquo;I'm prepared&rdquo; to a judge like a tenant who can produce the right document without rummaging.</p>
+      </aside>
+    </section>
+
+    <!-- CALLOUT: Undocumented tenants -->
+    <aside class="callout callout-protect">
+      <span class="draft-flag">Draft &mdash; pending immigration advocacy review</span>
+      <span class="callout-label">For undocumented tenants</span>
+      <h3>Your immigration status does not affect your right to safe housing.</h3>
+
+      <p>NYC law is clear: your eviction protections and your right to a free court-appointed attorney do not depend on your immigration status. <strong>Housing Court, Right to Counsel intake, and NYC legal services providers do not ask about immigration status</strong>, and court records are not shared with federal immigration authorities.</p>
+
+      <p>It is also illegal under NYC Human Rights Law for your landlord to threaten to report you to ICE, deport you, or treat you differently because of your immigration status. If your landlord threatens you in this way, that is itself a crime you can report.</p>
+
+      <p><strong>An honest note:</strong> NYC's protections are strong, but they are city and state protections. Federal immigration enforcement is a separate system. If you are worried about risks specific to your situation, you can talk to a free, confidential immigration legal organization before filing any complaint. You are not alone in asking these questions.</p>
+
+      <span class="sub-label">Free, confidential help</span>
+      <ul class="resource-list">
+        <li><strong>ActionNYC</strong> &mdash; free, safe immigration legal help connected to city services. Call <strong>311</strong> and ask for ActionNYC.</li>
+        <li><strong>Make the Road New York</strong> &mdash; tenant and immigrant rights support: <strong>718-418-7690</strong></li>
+        <li><strong>New York Immigration Coalition</strong> &mdash; referrals to trusted legal help: <strong>212-627-2227</strong></li>
+        <li><strong>NYC Commission on Human Rights</strong> &mdash; if your landlord threatens you with ICE: <strong>212-416-0197</strong></li>
+      </ul>
+    </aside>
+
+    <!-- CALLOUT: Retaliation (with market-tenant note) -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Worried about retaliation?</span>
+      <h3>This is a real fear &mdash; here's what you should know.</h3>
+
+      <p><strong>Retaliation is illegal in New York.</strong> Under NY Real Property Law &sect;&nbsp;223-b, your landlord cannot punish you for making a good-faith complaint about housing conditions. Punishment includes raising your rent, refusing to renew your lease, starting an eviction, reducing services, or harassing you.</p>
+
+      <p><strong>This matters in eviction cases.</strong> If your landlord served an eviction notice within six months of you complaining about conditions, requesting repairs, filing a 311 complaint, joining a tenants' organization, or asserting any tenant right, the law presumes the eviction is retaliatory. A retaliation defense can defeat a holdover case entirely.</p>
+
+      <p><strong>An honest note for market-rate tenants:</strong> If you're not in a rent-stabilized or rent-controlled apartment, you have fewer protections against non-renewal or large rent increases at the end of your lease. The anti-retaliation law still applies, but enforcing it can be harder. If you're worried about this, talk to Met Council or a tenant lawyer <em>before</em> filing the complaint &mdash; they can help you think through the timing and your options.</p>
+
+      <p>If you believe your landlord is retaliating: document everything (dates, what happened, any written communication), and call the Met Council on Housing hotline at <strong>212-979-0611</strong>.</p>
+
+      <p style="margin-top: 1rem;"><a href="#" class="inline-link">Read more: What retaliation looks like and what to do &rarr;</a></p>
+    </aside>
+
+    <!-- STEP 4: Check status -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 4</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            5 min
+          </span>
+        </div>
+        <h3 class="step-title">Know your defenses and options.</h3>
+      </div>
+
+      <p class="why-this-matters">Eviction cases have more defenses than most tenants realize, and NYC has rental assistance programs that can cover arrears in nonpayment cases. Your lawyer will screen for these, but it helps to know what might apply so you can raise them yourself during intake and while gathering evidence.</p>
+
+      <div class="ref-recall" id="ref-recall">
+        <span class="label">Your court index number / court date</span>
+        <span class="number" id="ref-display"><span class="empty">Not entered yet &mdash; you can save it in the court step above.</span></span>
+      </div>
+
+      <span class="sub-label">A. Rental assistance (nonpayment cases)</span>
+      <ul>
+        <li><strong>One-Shot Deal (HRA):</strong> Emergency grant through the NYC Human Resources Administration to pay back rent and prevent eviction. Income-based. Apply through <a href="https://www.nyc.gov/site/hra/help/emergency-assistance.page" class="inline-link" target="_blank" rel="noopener">ACCESS HRA</a> or at an HRA center.</li>
+        <li><strong><a href="https://www.nyc.gov/site/hra/help/cityfheps.page" class="inline-link" target="_blank" rel="noopener">CityFHEPS</a> (NYC) / <a href="https://otda.ny.gov/programs/temporary-assistance/FHEPS/" class="inline-link" target="_blank" rel="noopener">FHEPS</a> (NY State):</strong> Ongoing rent subsidies for eligible households, often used to restart stalled cases. Your legal services attorney or HRA caseworker can screen you.</li>
+        <li><strong><a href="https://www.nyc.gov/site/rentfreeze/index.page" class="inline-link" target="_blank" rel="noopener">SCRIE / DRIE</a>:</strong> Senior Citizen Rent Increase Exemption and Disability Rent Increase Exemption &mdash; freeze rent for qualifying rent-regulated tenants.</li>
+        <li><strong><a href="https://www.nyc.gov/site/hra/help/cash-assistance.page" class="inline-link" target="_blank" rel="noopener">Public assistance / cash assistance</a>:</strong> If you've lost income, applying may also stop or delay the case while your application is processed.</li>
+      </ul>
+
+      <span class="sub-label">B. Common defenses</span>
+      <ul>
+        <li><strong>Warranty of habitability (RPL &sect; 235-b).</strong> If the apartment had serious unfixed conditions, your rent can be reduced or abated for the period the conditions existed. Open HPD violations are the strongest evidence (see the callout above).</li>
+        <li><strong>Improper or defective notice.</strong> Eviction notices must comply with strict form and service requirements. Common defects that can dismiss a case:
+          <ul>
+            <li><strong>Wrong notice type</strong> for the claim (e.g., a termination notice where a cure notice was required).</li>
+            <li><strong>Wrong cure period</strong> (most lease-violation cases require at least a 10-day cure period; rent demands require 14 days).</li>
+            <li><strong>Wrong tenure period</strong> on a holdover termination (30-, 60-, or 90-day notice depends on how long you've occupied the unit).</li>
+            <li><strong>Improper service</strong> (NY requires attempted personal delivery, then &ldquo;nail-and-mail&rdquo; if unsuccessful; leaving it with a doorman or sliding it under the door alone isn't enough).</li>
+            <li><strong>Missing required information</strong> (lack of specific allegations, unclear amount owed, missing dates, missing signature, wrong signer).</li>
+            <li><strong>Wrong parties named</strong> (wrong tenant, wrong landlord, missing necessary parties).</li>
+            <li><strong>Wrong apartment address.</strong></li>
+          </ul>
+          Your lawyer will review every piece of paper for these. Even one defect can dismiss the case.
+        </li>
+        <li><strong>Wrong amount demanded.</strong> Nonpayment cases require exact accounting. Late fees that aren't legally chargeable, uncredited payments, or bundled charges that include non-rent items can invalidate the demand.</li>
+        <li><strong>Rent-regulated status.</strong> If your apartment is rent-stabilized or rent-controlled, non-renewal alone is not a valid reason to evict you. Your landlord can only evict for specific grounds spelled out in the Rent Stabilization Code.
+          <p style="margin-top: 0.5rem;"><strong>Grounds that don't require prior DHCR approval</strong> (<a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2524.3" class="inline-link" target="_blank" rel="noopener">9 NYCRR &sect; 2524.3</a>):</p>
+          <ul>
+            <li>Violation of a substantial lease obligation, after a proper notice to cure (&sect; 2524.3(a))</li>
+            <li>Nuisance, serious damage caused by malice or gross negligence, or persistent harassment of the owner or other occupants (&sect; 2524.3(b))</li>
+            <li>Illegal occupancy &mdash; the tenant's occupancy violates law or exposes the owner to civil/criminal penalties (&sect; 2524.3(c))</li>
+            <li>Immoral or unlawful use of the apartment (&sect; 2524.3(d))</li>
+            <li>Unreasonable refusal of access for repairs, inspections, or showings (&sect; 2524.3(e))</li>
+            <li>Refusal to sign a renewal lease offered at the legal regulated rent on the same terms (&sect; 2524.3(f))</li>
+            <li>Violation of subletting rules (&sect; 2524.3(h))</li>
+          </ul>
+          <p><strong>Grounds that do require prior DHCR approval:</strong> using the apartment as a non-primary residence, owner or immediate-family occupancy, and demolition or substantial rehabilitation (<a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2524.4" class="inline-link" target="_blank" rel="noopener">&sect; 2524.4</a>, <a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2524.5" class="inline-link" target="_blank" rel="noopener">&sect; 2524.5</a>).</p>
+          <p><strong>Nonpayment of rent</strong> is handled separately as a summary proceeding under the Real Property Actions and Proceedings Law &mdash; it isn't one of the &sect;&nbsp;2524.3 grounds.</p>
+          <p>If you're not sure whether you're regulated, ask your lawyer to check your <strong>rent history</strong> with <a href="https://hcr.ny.gov/" class="inline-link" target="_blank" rel="noopener">DHCR</a>. Many apartments are stabilized without the tenant or landlord realizing it.</p>
+        </li>
+        <li><strong>Retaliation.</strong> See the retaliation callout above.</li>
+        <li><strong>Discrimination.</strong> Evictions based on race, national origin, disability, source of income (including Section 8 or other subsidies), family status, gender identity, immigration status, or other protected characteristics are illegal under NYC Human Rights Law.</li>
+      </ul>
+
+      <span class="sub-label">C. Stipulations and settlements</span>
+      <p>Most Housing Court cases end in a <strong>stipulation of settlement</strong> &mdash; a written agreement signed in court. Stipulations can be tenant-friendly (time to pay, money waived, repairs ordered) or very dangerous (agreeing to a judgment and warrant with a payment plan that defaults on the first missed payment). <strong>Never sign a stipulation without a lawyer reading it.</strong> If the landlord's attorney pressures you, tell the judge you want time to consult counsel.</p>
+    </section>
+
+    <!-- STEP 5: Escalate -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 5</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Varies
+          </span>
+        </div>
+        <h3 class="step-title">If you lose or a warrant is issued: emergency options.</h3>
+      </div>
+
+      <p class="why-this-matters">Even after a judgment and warrant, you still have options &mdash; and a marshal cannot lock you out until at least 14 days after serving a written notice of eviction. Every option below is time-sensitive, so move the same day you realize the case has gone against you. Many require legal help to execute correctly.</p>
+
+      <span class="sub-label">A. Order to Show Cause (OSC)</span>
+      <p>If you didn't appear in court (default judgment), received incorrect notice, had an emergency, or new facts have come up (e.g., rental assistance approved), you can file an <strong>Order to Show Cause</strong> asking the judge to reopen the case and stop the eviction. A judge can grant a <strong>temporary stay</strong> that pauses the marshal while the motion is heard.</p>
+
+      <p><strong>How to file &mdash; in person, same day:</strong></p>
+      <ol>
+        <li><strong>Go to the Housing Courthouse</strong> in the borough where your case was filed (see the <a href="#courthouse-addresses" class="inline-link">borough-by-borough addresses in Step 3 above</a>, or look up your case on <a href="https://iapps.courts.state.ny.us/webcivilLocal/LCMain" class="inline-link" target="_blank" rel="noopener">WebCivil Local</a>).</li>
+        <li><strong>Go to the Help Center.</strong> Every Housing Courthouse has a Help Center staffed by court attorneys who assist unrepresented tenants. They will walk you through filling out the OSC form and the supporting affidavit.</li>
+        <li><strong>Fill out the OSC form and affidavit.</strong> The affidavit is where you explain <em>why</em> you're asking the court to reopen the case: default because you never got notice, medical emergency, new rental assistance approval, newly discovered evidence, etc. Be specific and attach any proof.</li>
+        <li><strong>Ask for a temporary stay</strong> of the warrant in the OSC itself. Write something like: &ldquo;I request a temporary stay of execution of the warrant pending the hearing on this motion.&rdquo; A judge can sign this the same day.</li>
+        <li><strong>File the papers with the Clerk's Office.</strong> The Help Center will direct you. There's no filing fee for tenants in nonpayment and holdover cases.</li>
+        <li><strong>Serve the landlord or their attorney</strong> with a copy of the signed OSC before the hearing date. The Help Center will explain how.</li>
+      </ol>
+
+      <p><strong>What to bring:</strong></p>
+      <ul>
+        <li>Photo ID</li>
+        <li>Every court paper you have (Notice of Petition, Petition, any prior stipulations, judgment of possession, warrant of eviction)</li>
+        <li>The marshal's 14-day notice if you've received one</li>
+        <li>Proof of your reason for the OSC: medical records, a rental assistance approval letter, a bank statement showing a payment the landlord didn't credit, etc.</li>
+        <li>A pen and your phone (for photos of your filed copies)</li>
+      </ul>
+
+      <span class="sub-label">B. Cure the nonpayment (if nonpayment case)</span>
+      <p>In most nonpayment cases, paying the full amount owed &mdash; rent plus any court-ordered additional amounts &mdash; stops the eviction, even after a warrant has been issued. Your lawyer or legal services can help you get a formal <strong>Good Cause Stipulation</strong> confirming the payment cured the case. Rental assistance (HRA One-Shot Deal, Cityfheps, faith-based funds) often covers this.</p>
+
+      <span class="sub-label">C. Call 311 and ask about HRA Homebase</span>
+      <p><strong>Homebase</strong> is NYC's homelessness prevention program. They provide short-term rental assistance, mediation with landlords, and emergency services to households at imminent risk of eviction. Every borough has Homebase offices. Call <strong>311</strong> and ask for Homebase.</p>
+
+      <span class="sub-label">D. Met Council on Housing Tenants' Rights Hotline</span>
+      <ul>
+        <li><strong>Phone:</strong> <a href="tel:2129790611" class="inline-link">212-979-0611</a></li>
+        <li><strong>Hours:</strong> Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM</li>
+        <li><strong>Heads up:</strong> The hotline is very busy &mdash; call after 4&nbsp;PM if you can, and avoid Mondays.</li>
+      </ul>
+
+      <span class="sub-label">E. If a marshal's 14-day notice has been served</span>
+      <p>Don't wait. Same-day action is critical at this stage, and judges routinely stop or delay evictions when a tenant files an Order to Show Cause with new information, a rental assistance approval, or documented hardship.</p>
+
+      <p><strong>Today, in this order:</strong></p>
+      <ol>
+        <li><strong>Go to the Housing Courthouse</strong> in the borough your case was filed in (see the <a href="#courthouse-addresses" class="inline-link">borough addresses in Step 3 above</a>).</li>
+        <li><strong>Go straight to the Help Center</strong> and say: &ldquo;I have a marshal's 14-day notice and I need to file an Order to Show Cause for a stay of the warrant.&rdquo; They will prioritize you.</li>
+        <li><strong>Fill out the OSC</strong> with your reason (same as above: new rental assistance, payment made, default you can explain, medical or family emergency, improper service). Specifically request a <strong>temporary stay of the warrant</strong> so the marshal cannot execute while the motion is pending.</li>
+        <li><strong>Call legal help on the way there or immediately after filing:</strong> Housing Court Answers (<a href="tel:2129624795" class="inline-link">212-962-4795</a>), Legal Services NYC, or Legal Aid. Mention the marshal's notice &mdash; it moves you up in the intake queue.</li>
+        <li><strong>Call 311 for HRA Homebase</strong> to apply for emergency funds. Homebase can sometimes approve assistance the same day for imminent evictions.</li>
+      </ol>
+
+      <p><strong>Bring all the same documents listed in option A above,</strong> plus the marshal's 14-day notice itself.</p>
+
+      <p><strong>If you're locked out without a marshal:</strong> that is an <strong>illegal lockout</strong>. Call <strong>311</strong> and <strong>NYPD (911)</strong> immediately, say those words, and contact legal help. You have a right to immediate restoration of possession.</p>
+    </section>
+
+    <!-- WARNING: Don't sign stipulations without a lawyer -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; about stipulations</span>
+      <h3>Never sign a stipulation of settlement without a lawyer reading it.</h3>
+      <p>A stipulation is a contract that the court enforces like a judgment. Once you sign, the terms are binding, and many stipulations are written by landlord's attorneys to guarantee an eviction if a tenant misses any payment or condition by a single day. Common traps:</p>
+      <ul>
+        <li><strong>&ldquo;Self-executing&rdquo; warrant language</strong> &mdash; one missed payment triggers eviction without another court appearance.</li>
+        <li><strong>Payment schedules you can't realistically meet.</strong> Landlord's attorneys will propose numbers that sound generous but actually double your normal rent for months.</li>
+        <li><strong>Waiver of defenses.</strong> You agree to give up warranty of habitability, retaliation, rent regulation defenses, or counterclaims you would otherwise have.</li>
+        <li><strong>Move-out dates in exchange for time.</strong> You promise to move by a specific date even if circumstances change.</li>
+      </ul>
+      <p>If you're in the hallway at court and the landlord's attorney hands you a stipulation, <strong>tell the judge you want to speak with a lawyer before signing anything.</strong> Judges grant this routinely. If you've already signed a stipulation that you now regret or didn't understand, a lawyer can sometimes file an Order to Show Cause to vacate it.</p>
+    </aside>
+
+    <!-- WARNING: Don't pay the landlord directly if conditions are bad -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; paying rent in a nonpayment case</span>
+      <h3>Don't pay back rent directly to your landlord without a signed receipt and ideally legal advice.</h3>
+      <p>If you owe rent and the landlord is demanding payment, you may be tempted to pay in cash or by check to end the case. Before you do:</p>
+      <ul>
+        <li><strong>Get every payment in writing.</strong> A signed receipt from the landlord or their attorney with the date, amount, and what it's paying for (rent month, arrears, fees).</li>
+        <li><strong>Know what you're waiving.</strong> Once you pay &ldquo;without protest,&rdquo; you often give up the right to later argue that the amount was wrong or that warranty of habitability should reduce it.</li>
+        <li><strong>Consider paying into court instead.</strong> In a filed case, you can often deposit disputed rent with the court clerk, which preserves your defenses while showing good faith. Your lawyer will handle this.</li>
+      </ul>
+      <p>If the landlord refuses to accept partial payment or demands cash only, document the refusal &mdash; it's useful evidence and may invalidate their claim.</p>
+    </aside>
+
+    <!-- Free help -->
+    <h2>Free help available</h2>
+    <ul class="help-list">
+      <li>
+        <span class="name">Housing Court Answers</span>
+        <span class="phone">212-962-4795</span>
+        <span class="desc">The single best call for any NYC tenant facing an eviction notice. They'll connect you to Right to Counsel intake and the right legal services provider for your borough and case type.</span>
+      </li>
+      <li>
+        <span class="name">Legal Services NYC</span>
+        <span class="phone">917-661-4500</span>
+        <span class="desc">Free legal help for low-income tenants across all five boroughs. Right to Counsel provider.</span>
+      </li>
+      <li>
+        <span class="name">Legal Aid Society &mdash; Tenant Rights</span>
+        <span class="phone">212-577-3300</span>
+        <span class="desc">Free legal representation for tenants in eviction cases. Right to Counsel provider, covers all boroughs.</span>
+      </li>
+      <li>
+        <span class="name">Met Council on Housing Tenants' Rights Hotline</span>
+        <span class="phone">212-979-0611</span>
+        <span class="desc">Free advice from trained volunteers. Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM. Not lawyers, but very knowledgeable about strategy, negotiation, and the big picture.</span>
+      </li>
+      <li>
+        <span class="name">HRA / 311 (Homebase, One-Shot Deal, Cityfheps)</span>
+        <span class="phone"><a href="tel:311">Dial 311</a></span>
+        <span class="desc">For homelessness prevention (Homebase), emergency rent grants, and ongoing rental subsidies.</span>
+      </li>
+    </ul>
+
+    <!-- Related -->
+    <section class="related">
+      <h2 style="margin-top: 0;">Related situations</h2>
+      <div class="related-grid">
+        <a href="#" class="related-link">My landlord won't renew my lease</a>
+        <a href="#" class="related-link">My landlord is retaliating against me for complaining</a>
+        <a href="leaks-plumbing.html" class="related-link">I have a leak or plumbing problem</a>
+        <a href="mold.html" class="related-link">I have mold in my apartment</a>
+        <a href="#" class="related-link">I'm in a NYCHA building, not private housing</a>
+      </div>
+    </section>
+
+    <!-- Sources -->
+    <div class="sources">
+      <h3>Sources &amp; verification</h3>
+      <ul>
+        <li><a href="https://www.nycourts.gov/courts/nyc/housing/" target="_blank" rel="noopener">NY State Unified Court System &mdash; NYC Housing Court</a></li>
+        <li><a href="https://housingcourtanswers.org/" target="_blank" rel="noopener">Housing Court Answers &mdash; tenant resources</a></li>
+        <li><a href="https://www.nyc.gov/site/hra/help/evictions-prevention.page" target="_blank" rel="noopener">NYC HRA &mdash; Eviction Prevention and Homelessness Services</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/help-answers/" target="_blank" rel="noopener">Met Council on Housing &mdash; Help &amp; Answers</a></li>
+        <li><a href="https://www.legalservicesnyc.org/" target="_blank" rel="noopener">Legal Services NYC &mdash; Right to Counsel</a></li>
+        <li><a href="https://www.nyc.gov/site/hra/help/access-hra.page" target="_blank" rel="noopener">ACCESS HRA &mdash; rental assistance applications</a></li>
+      </ul>
+      <p class="verified">All sources verified <span class="verify-tag">Verify</span> date before publishing. <a href="#" class="inline-link">Found an error? Tell us.</a></p>
+    </div>
+
+    <div class="disclaimer">
+      <strong>This isn't legal advice.</strong> Tenant Triage NYC is an independent guide to help you understand your options and take action. We are not lawyers, and this is not an official government resource. If you need legal advice for your specific situation, please contact one of the free legal help organizations listed above.
+    </div>
+
+  </article>
+
+  <div class="toast" id="toast">Copied to clipboard</div>
+
+  <script>
+    // Scroll progress bar
+    window.addEventListener('scroll', function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progress").style.width = scrolled + "%";
+    });
+
+    const formState = {};
+
+    function syncField(fieldName, value) {
+      formState[fieldName] = value;
+      document.querySelectorAll('[data-field="' + fieldName + '"]').forEach(function(input) {
+        if (input.value !== value) input.value = value;
+        if (value && value.trim() !== '') {
+          input.classList.add('has-value');
+        } else {
+          input.classList.remove('has-value');
+        }
+        autoResize(input);
+      });
+      if (fieldName === 'complaint_ref') {
+        const display = document.getElementById('ref-display');
+        if (value && value.trim() !== '') {
+          display.innerHTML = value;
+        } else {
+          display.innerHTML = '<span class="empty">Not entered yet &mdash; you can save it in the court step above.</span>';
+        }
+      }
+    }
+
+    document.querySelectorAll('.fill, [data-field]').forEach(function(input) {
+      input.addEventListener('input', function() { syncField(this.dataset.field, this.value); });
+    });
+
+    function autoResize(input) {
+      if (!input.classList.contains('fill')) return;
+      const placeholder = input.getAttribute('placeholder') || '';
+      const value = input.value || '';
+      const len = Math.max(value.length, placeholder.length, 4);
+      input.size = len + 1;
+    }
+    document.querySelectorAll('.fill').forEach(function(input) {
+      autoResize(input);
+      input.addEventListener('input', function() { autoResize(this); });
+    });
+
+    // EVICTION STAGE PICKER
+    const severityContent = {
+      'rent-demand': {
+        title: '14-day rent demand',
+        body: '<p>This is <strong>pre-court</strong>. No case has been filed yet. A 14-day rent demand is your landlord\'s required first step before filing a nonpayment eviction in Housing Court.</p><p>You generally have three options during the 14 days: <strong>pay the amount demanded</strong> (ends the process), <strong>dispute the amount</strong> in writing (and document why &mdash; uncredited payments, conditions reducing rent, wrong total), or <strong>apply for rental assistance</strong> (HRA One-Shot Deal) to cover the arrears.</p><span class="key-fact"><strong>Most important for you:</strong> Don\'t pay the full amount without checking it first, and don\'t pay in cash without a signed receipt. If you\'re considering rental assistance or disputing the amount, get legal advice right now &mdash; while you\'re still pre-court, options like One-Shot Deals and negotiated settlements are easier to arrange.</span>'
+      },
+      'cure-terminate': {
+        title: 'Notice to cure or notice of termination',
+        body: '<p>Your landlord is claiming you violated the lease (e.g., unauthorized occupant, pets, alleged noise, alleged illegal use). This is pre-court and is part of a <strong>holdover</strong> process, not nonpayment.</p><p>A notice to cure gives you a set period (often 10 days) to fix the alleged violation. If you believe you have violated the lease, <strong>fix it with documentation</strong> (e.g., person moves out with a signed statement, pet rehomed with receipt) and send the landlord written proof. If the cure period ends without a fix, a notice of termination follows, then a court petition.</p><span class="key-fact"><strong>Most important for you:</strong> Holdover cases can have notice defects that dismiss them entirely &mdash; wrong form, wrong cure period, wrong service, missing allegations. A lawyer can often spot these quickly. Even if the allegation is true, a cure in writing within the cure period usually stops the process.</span>'
+      },
+      petition: {
+        title: 'Notice of Petition and Petition',
+        body: '<p>This is the real thing: a Housing Court case has been filed. You have an <strong>index number</strong> and a <strong>first court date</strong>, usually 10&ndash;14 days out. You must appear or you will lose by default.</p><p>Right to Counsel is now active. Call Housing Court Answers at <strong>212-962-4795</strong> today, or go to the courthouse\'s Help Center and Right to Counsel intake table. If you\'re income-qualified, an attorney will be assigned to your case and appear with you.</p><span class="key-fact"><strong>Most important for you:</strong> <em>Show up</em>. Bring every paper, a photo ID, and a list of the conditions in your apartment (with photos if possible). Ask for an adjournment to get a lawyer if you don\'t already have one. Judges grant that routinely. Do not sign any stipulation in the hallway before speaking with a lawyer.</span>'
+      },
+      court: {
+        title: 'Ongoing court case or upcoming court date',
+        body: '<p>You\'ve been to court at least once and the case is ongoing. At this stage, your case is either being continued (repeated adjournments while settlement is negotiated or motion is briefed), proceeding toward trial, or both.</p><p>If you don\'t already have a lawyer, fix that first &mdash; Right to Counsel can be activated at any point in the case, not just the first appearance. If you do have a lawyer, make sure they know everything: every condition in the apartment, every prior complaint, every rental assistance application, any harassment or retaliation.</p><span class="key-fact"><strong>Most important for you:</strong> Stipulations (written settlements signed in court) are how most cases resolve. A well-negotiated stipulation buys you time, forgiven rent, or repairs. A bad one sets you up for a self-executing eviction. Do not sign any stipulation without a lawyer reading it. If the landlord pressures you in the hallway, tell the judge you want to consult counsel.</span>'
+      },
+      warrant: {
+        title: 'Judgment entered / warrant of eviction issued',
+        body: '<p>A judgment has been entered against you and the court has authorized a warrant of eviction. You still have time, but the window is closing. The marshal cannot physically evict until at least 14 days after serving a written notice of eviction &mdash; that notice may not have arrived yet.</p><p>Options at this stage: <strong>Order to Show Cause</strong> to reopen the case (if you defaulted, had new information, or the judgment was based on wrong facts); <strong>paying the full amount owed</strong> in a nonpayment case (generally stops the eviction); <strong>emergency rental assistance</strong> (HRA Homebase, One-Shot Deal, faith-based funds); <strong>stay of execution</strong> (a judge can pause the marshal for hardship reasons).</p><span class="key-fact"><strong>Most important for you:</strong> Go to the courthouse Help Center today and ask about filing an Order to Show Cause. Bring your papers. Call Housing Court Answers and Met Council on your way there. Every day at this stage matters.</span>'
+      },
+      marshal: {
+        title: 'Marshal\'s 14-day notice of eviction',
+        body: '<p>This is the final warning before a lockout. The marshal will not execute before the 14 days are up, and you still have legal options.</p><p><strong>Today:</strong> Take the marshal\'s notice to the courthouse and file an <strong>Order to Show Cause</strong>. Bring every document you have. A judge can issue a <strong>temporary stay</strong> that pauses the marshal while your motion is heard. Call Housing Court Answers (<strong>212-962-4795</strong>), a legal services provider, and Met Council today.</p><span class="key-fact"><strong>Most important for you:</strong> If you\'re in a nonpayment case and can pay the full amount owed, doing so generally stops the eviction &mdash; even at this stage. HRA One-Shot Deal and Homebase can often approve emergency funds same-day for imminent eviction cases. Do not wait for the last day. Evictions have been stopped hours before, but only with fast, correct legal filing.</span>'
+      },
+      all: null
+    };
+
+    const contextEl = document.getElementById('severity-context');
+    const contextTitle = document.getElementById('severity-context-title');
+    const contextBody = document.getElementById('severity-context-body');
+
+    document.querySelectorAll('.severity-option').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.severity-option').forEach(function(b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-checked', 'false');
+        });
+        this.classList.add('active');
+        this.setAttribute('aria-checked', 'true');
+
+        const severity = this.dataset.severity;
+        const content = severityContent[severity];
+
+        if (content) {
+          contextTitle.textContent = content.title;
+          contextBody.innerHTML = content.body;
+          contextEl.classList.add('visible');
+        } else {
+          contextEl.classList.remove('visible');
+        }
+      });
+    });
+
+    // COPY TO CLIPBOARD
+    function getTemplateText(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return '';
+      const clone = container.cloneNode(true);
+      clone.querySelectorAll('input.fill').forEach(function(input) {
+        const original = container.querySelector('[data-field="' + input.dataset.field + '"]');
+        const value = original.value.trim();
+        const replacement = value || ('[' + (input.getAttribute('placeholder') || input.dataset.field) + ']');
+        const textNode = document.createTextNode(replacement);
+        input.parentNode.replaceChild(textNode, input);
+      });
+      let text = '';
+      clone.querySelectorAll('p').forEach(function(p, index) {
+        if (index > 0) text += '\n\n';
+        const html = p.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        text += tempDiv.textContent.trim();
+      });
+      return text;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 2200);
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const targetId = this.dataset.copyTarget;
+        const text = getTemplateText(targetId);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function() { showCopySuccess(btn); })
+            .catch(function() { fallbackCopy(text, btn); });
+        } else {
+          fallbackCopy(text, btn);
+        }
+      });
+    });
+
+    function fallbackCopy(text, btn) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try { document.execCommand('copy'); showCopySuccess(btn); }
+      catch (err) { showToast('Copy failed — please select and copy manually'); }
+      document.body.removeChild(textarea);
+    }
+
+    function showCopySuccess(btn) {
+      btn.classList.add('copied');
+      const textSpan = btn.querySelector('.copy-btn-text');
+      const originalText = textSpan.textContent;
+      textSpan.textContent = 'Copied!';
+      showToast('Copied to clipboard');
+      setTimeout(function() {
+        btn.classList.remove('copied');
+        textSpan.textContent = originalText;
+      }, 2000);
+    }
+  </script>
+  <script src="../lookup.js"></script>
+  <script>
+    initLookup({
+      filterKeywords: ['eviction', 'evict', 'notice', 'petition', 'holdover', 'nonpayment', 'rent demand', 'termination', 'marshal', 'warrant', 'housing court', 'stipulation', 'lockout', 'right to counsel', 'habitability', 'ERAP', 'one-shot', 'cityfheps']
+    });
+  </script>
+
+</body>
+</html>
