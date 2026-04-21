@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>I have pests in my apartment — Tenant Triage NYC</title>
+  <title>Appliances or fixtures in my apartment are broken — Tenant Triage NYC</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
@@ -194,11 +194,11 @@
     }
 
     .sub-label {
-      font-weight: 600;
-      font-size: 0.875rem;
+      font-weight: 700;
+      font-size: 1.125rem;
       color: var(--ink);
       margin-top: 1.5rem;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
       display: block;
     }
 
@@ -237,7 +237,7 @@
       font-size: 0.9375rem; color: var(--bg);
     }
     .rights-box li::before {
-      content: "→"; position: absolute; left: 0;
+      content: "\2192"; position: absolute; left: 0;
       color: var(--accent-bright); font-weight: 700;
     }
     .rights-box .source {
@@ -269,6 +269,7 @@
     .severity-table tr:last-child td { border-bottom: none; }
     .severity-table .class-cell { font-weight: 700; color: var(--accent-bright); }
 
+    /* SEVERITY PICKER */
     .severity-picker {
       margin: 2rem 0 2.5rem;
       padding: 1.5rem;
@@ -448,6 +449,7 @@
     .step ol, .step ul { margin-bottom: 1.25rem; padding-left: 1.25rem; }
     .step li { margin-bottom: 0.6rem; }
 
+    /* Template box */
     .template {
       background: var(--code-bg);
       border: 1px solid var(--code-rule);
@@ -514,6 +516,7 @@
       color: var(--ink);
     }
 
+    /* Spoken script box */
     .spoken {
       margin: 1rem 0 1.5rem;
       padding: 1rem 0 1rem 1.5rem;
@@ -557,6 +560,7 @@
       font-style: italic;
     }
 
+    /* Reference number capture */
     .ref-capture {
       background: var(--bg-soft);
       border: 1px solid var(--rule-strong);
@@ -602,6 +606,7 @@
       font-size: 0.9375rem;
     }
 
+    /* Callouts */
     .callout {
       margin: 2.5rem 0;
       padding: 1.75rem 2rem;
@@ -636,7 +641,7 @@
     .callout .resource-list { list-style: none; padding-left: 0; }
     .callout .resource-list li { padding-left: 1.25rem; position: relative; }
     .callout .resource-list li::before {
-      content: "•"; position: absolute; left: 0; font-weight: 700;
+      content: "\2022"; position: absolute; left: 0; font-weight: 700;
     }
     .callout-protect .resource-list li::before { color: var(--protect); }
     .callout .sub-label { color: var(--ink); }
@@ -690,7 +695,7 @@
       color: var(--accent-deep);
     }
     .related-link::after {
-      content: "→"; margin-left: auto;
+      content: "\2192"; margin-left: auto;
       color: var(--accent); font-weight: 700;
     }
 
@@ -727,7 +732,6 @@
     }
     .disclaimer strong { color: var(--ink); font-weight: 700; }
 
-    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
     .verify-tag {
       display: inline-block;
       background: #c8292e;
@@ -741,7 +745,7 @@
       vertical-align: baseline;
       font-style: normal;
     }
-    .verify-tag::before { content: "⚑ "; }
+    .verify-tag::before { content: "\2691 "; }
 
     .toast {
       position: fixed; bottom: 2rem; left: 50%;
@@ -798,17 +802,17 @@
       <span class="sep">/</span>
       <a href="#">Repairs not being made</a>
       <span class="sep">/</span>
-      <span class="current">Pests</span>
+      <span class="current">Appliances &amp; fixtures</span>
     </nav>
 
     <span class="reading-label">
       <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-      Pest infestation guide
+      Appliance &amp; fixture guide
     </span>
 
-    <h1>I have pests in my apartment.</h1>
+    <h1>Something in my apartment is broken.</h1>
 
-    <p class="standfirst">A clear, step-by-step plan for making your landlord do real pest control &mdash; not a can of spray and an empty promise.</p>
+    <p class="standfirst">Stove, fridge, outlets, lights, locks, windows, doors, smoke detectors &mdash; your landlord is legally required to keep all of them in working order. Here's how to get it fixed.</p>
 
     <div class="meta">
       <span class="meta-item">
@@ -817,7 +821,7 @@
       </span>
       <span class="meta-item">
         <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        <span>Last verified <strong>April 13, 2026</strong></span>
+        <span>Last verified <strong>April 21, 2026</strong></span>
       </span>
       <span class="meta-item print-hide">
         <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
@@ -826,91 +830,113 @@
     </div>
 
     <div class="read-first">
-      <p>NYC has some of the strongest pest protections in the country, and your landlord is legally required to handle this &mdash; not you. The single most common problem tenants face isn't the pests themselves. It's landlords who try to handle the problem on the cheap: sending the super with a can of spray, scattering traps, or telling you to "just keep it clean."</p>
-      <p><strong>That's not pest control.</strong> Under Local Law 55, your landlord must use Integrated Pest Management (IPM), which means sealing up entry points, removing nests, treating the conditions that attract pests, and &mdash; when pesticides are needed &mdash; hiring a licensed exterminator.</p>
-      <p><strong>Treat this as urgent if:</strong> you have bedbugs (they spread fast to neighbors), you're seeing rats, anyone in your apartment has asthma, or there's a young child in the home. Skip ahead to Step&nbsp;3 and mention these factors when you file your complaint.</p>
+      <p>In NYC, your landlord is required to provide and maintain a working stove and refrigerator, functioning electrical outlets and lights, operable windows, secure locks on entry doors and windows, and working smoke and carbon monoxide detectors. When any of these stops working, it's not an inconvenience you have to live with &mdash; it's a housing code violation, and you have real tools to get it fixed.</p>
+      <p><strong>Pick your situation below</strong> to jump to what applies to you, or read the full page to understand the complete picture. Most tenants only need the first two or three steps.</p>
+      <p><strong>Treat this as an emergency and call 911 first if:</strong> you smell gas, there's smoke or sparks from an outlet, your entry door won't lock and you feel unsafe, or a broken window is exposing you to the weather in a dangerous way. For gas, also call Con Edison at <strong>1-800-752-6633</strong> or National Grid at <strong>1-718-643-4050</strong>.</p>
     </div>
 
     <div class="rights-box">
       <span class="rights-label">Know your rights</span>
       <h3>What NYC law requires</h3>
-      <p>Under <strong>Local Law 55 of 2018</strong>, your landlord must keep your apartment free of pests. The HPD violation class depends on the pest:</p>
+      <p>Under the NYC Housing Maintenance Code, your landlord must provide and maintain specific appliances and fixtures in working order. The severity of the HPD violation depends on the problem:</p>
 
       <table class="severity-table">
         <thead>
           <tr>
             <th>Class</th>
-            <th>Pest type</th>
-            <th>Days to fix</th>
+            <th>Condition</th>
+            <th>Time to fix</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="class-cell">C</td>
-            <td>Mice, rats, or cockroaches</td>
-            <td>21 days</td>
+            <td>Gas leak, no working stove, no entry door lock, missing or broken smoke/CO detector, dangerous electrical condition</td>
+            <td>24 hours</td>
           </tr>
           <tr>
             <td class="class-cell">B</td>
-            <td>Bedbugs</td>
+            <td>Broken refrigerator, non-functioning outlets or lights, window that won't open or close, broken window lock</td>
             <td>30 days</td>
           </tr>
           <tr>
-            <td class="class-cell">B</td>
-            <td>Other pests (flies, ants, etc.)</td>
-            <td>30 days</td>
+            <td class="class-cell">A</td>
+            <td>Minor defect that doesn't affect safety or habitability &mdash; e.g., cosmetic fixture damage</td>
+            <td>90 days</td>
           </tr>
         </tbody>
       </table>
 
-      <p style="margin-top: 1rem;"><strong>Your landlord must use Integrated Pest Management (IPM):</strong> seal entry points, remove nests, fix underlying conditions (leaks, cracks, holes around pipes), and hire a NYS DEC-licensed pest professional for any pesticide application. Having the super spray bug spray is not legal pest control.</p>
-      <p class="source">Source: NYC HPD &mdash; Local Law 55 of 2018, Indoor Allergen Hazards</p>
+      <p style="margin-top: 1rem;">Specifically, your landlord is required to provide and maintain: <strong>a working stove/range with oven, a working refrigerator, adequate electrical outlets and lighting in every room, operable windows with working locks, a secure entry door with a working lock and peephole, and working smoke and carbon monoxide detectors</strong>. If any of these is missing or broken, that's a violation &mdash; not a lease negotiation.</p>
+      <p class="source">Source: NYC Housing Maintenance Code &sect;&sect; 27-2005, 27-2033, 27-2040, 27-2043.1, 27-2045, 27-2046.1; NY Multiple Dwelling Law &sect; 78</p>
     </div>
 
-    <!-- PEST TYPE PICKER -->
+    <!-- SEVERITY PICKER -->
     <div class="severity-picker">
       <div class="severity-picker-header">
         <span class="severity-picker-label">Tailor this guide</span>
-        <h3 class="severity-picker-title">What kind of pest do you have?</h3>
-        <p class="severity-picker-help">Different pests have different legal classifications and different best practices. Pick what you're dealing with, or choose "show me everything" to see the full guide.</p>
+        <h3 class="severity-picker-title">What's broken?</h3>
+        <p class="severity-picker-help">Different problems have different urgency levels and different violation classes. Pick what you're dealing with, or choose "show me everything" to see the full guide.</p>
       </div>
-      <div class="severity-options" role="radiogroup" aria-label="Pest type">
-        <button class="severity-option" data-severity="rodents" role="radio" aria-checked="false">
+      <div class="severity-options" role="radiogroup" aria-label="Broken item type">
+        <button class="severity-option" data-severity="stove" role="radio" aria-checked="false">
           <span class="severity-option-marker"></span>
           <span class="severity-option-text">
-            <span class="severity-option-name">Mice or rats</span>
-            <span class="severity-option-desc">Class C violation &mdash; immediately hazardous, 21 days to fix.</span>
+            <span class="severity-option-name">Stove, oven, or range isn't working</span>
+            <span class="severity-option-desc">Typically Class B or C &mdash; a working cooking appliance is required by law. If you smell gas, call 911 first.</span>
           </span>
         </button>
-        <button class="severity-option" data-severity="roaches" role="radio" aria-checked="false">
+        <button class="severity-option" data-severity="fridge" role="radio" aria-checked="false">
           <span class="severity-option-marker"></span>
           <span class="severity-option-text">
-            <span class="severity-option-name">Cockroaches</span>
-            <span class="severity-option-desc">Class C violation &mdash; immediately hazardous, 21 days to fix.</span>
+            <span class="severity-option-name">Refrigerator isn't working</span>
+            <span class="severity-option-desc">Class B &mdash; your landlord is required to provide a working fridge.</span>
           </span>
         </button>
-        <button class="severity-option" data-severity="bedbugs" role="radio" aria-checked="false">
+        <button class="severity-option" data-severity="electrical" role="radio" aria-checked="false">
           <span class="severity-option-marker"></span>
           <span class="severity-option-text">
-            <span class="severity-option-name">Bedbugs</span>
-            <span class="severity-option-desc">Class B violation &mdash; 30 days to fix. Has its own extra rules under Local Law 69.</span>
+            <span class="severity-option-name">Outlets, lights, or wiring aren't working</span>
+            <span class="severity-option-desc">Class B normally; Class C if there's sparking, burning smell, or shock risk. Call 911 for any electrical emergency.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="locks" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Entry door or window lock is broken</span>
+            <span class="severity-option-desc">Class C if you can't secure your apartment. Your landlord must fix it within 24 hours.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="windows" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Window won't open or close, or is broken</span>
+            <span class="severity-option-desc">Typically Class B. Broken glass or a window you can't close in winter can be classed as Class C.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="detectors" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Smoke or carbon monoxide detector is missing or broken</span>
+            <span class="severity-option-desc">Class C &mdash; immediately hazardous. Landlord must install/repair within 24 hours.</span>
           </span>
         </button>
         <button class="severity-option active" data-severity="all" role="radio" aria-checked="true">
           <span class="severity-option-marker"></span>
           <span class="severity-option-text">
             <span class="severity-option-name">I'm not sure &mdash; show me everything</span>
-            <span class="severity-option-desc">Default. See the full guide with context for every pest type.</span>
+            <span class="severity-option-desc">Default. See the full guide so you can figure it out as you go.</span>
           </span>
         </button>
       </div>
     </div>
 
+    <!-- Severity context banner -->
     <div class="severity-context" id="severity-context">
       <span class="severity-context-label">For your situation</span>
-      <h3 id="severity-context-title">Class C &mdash; Mice or rats</h3>
+      <h3 id="severity-context-title">Stove or oven</h3>
       <div id="severity-context-body">
-        <p>Your landlord has <strong>21 days</strong> to fix the problem once HPD issues a violation.</p>
+        <p>Placeholder</p>
       </div>
     </div>
 
@@ -920,17 +946,11 @@
       <h3>Check HPDOnline first. You might already have leverage.</h3>
       <p>Before you message your landlord, spend two minutes searching <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a> on the site or in the lookup box just below. Look at the relevant violations for:</p>
       <ul>
-        <li><strong>Existing pest violations on the building</strong> &mdash; open or closed. A history of pest violations tells you whether the problem is building-wide and whether your landlord has a pattern of ignoring them.</li>
-        <li><strong>Violations that were falsely certified as corrected</strong> &mdash; a pattern of false certifications tells you exactly what kind of landlord you're dealing with.</li>
+        <li><strong>Existing violations for the same kind of problem</strong> &mdash; broken stove, missing smoke detector, defective wiring, broken window, bad locks. If other units have had the same issue, you're not an edge case, and your landlord has a pattern.</li>
+        <li><strong>Open electrical, gas, or detector violations</strong> &mdash; these are Class C and take precedence. A landlord ignoring an open Class C violation is a landlord who will also ignore yours until you push.</li>
+        <li><strong>Violations that were falsely certified as corrected</strong> &mdash; a pattern of false certifications tells you what kind of landlord you're dealing with.</li>
       </ul>
-
-      <p><strong>If you have bedbugs, there's an extra layer:</strong> under <strong>Local Law 69 of 2017</strong>, landlords of multi-unit buildings must file an annual bedbug history report with HPD, and these reports are public. On HPDOnline, look for the "Bed Bug Annual Report" section. This tells you whether your building has a history of bedbug infestations, and whether your landlord has even filed the required report &mdash; not filing is itself a Housing Maintenance Code violation.</p>
-
       <p>Walk into your conversation with the landlord already knowing what's on record. Reference specific violations in your written complaint. It changes the dynamic completely.</p>
-
-      <p><strong>You can also ask your landlord directly.</strong> For bedbugs specifically, Local Law 69 requires landlords to provide the bedbug history to tenants &mdash; either by posting it in a common area or distributing it at lease signing and renewal. If they haven't, you can request it in writing. Refusing to provide it is itself a Housing Maintenance Code violation you can report to 311.</p>
-
-      <p><strong>An honest note:</strong> HPDOnline is a starting point, not a complete picture. <span class="verify-tag">Verify</span> Landlords don't always file accurately or on time, and some violations age off the record. Use it for leverage, not as the whole story.</p>
 
       <!-- ADDRESS LOOKUP COMPONENT -->
       <section class="lookup" id="lookup">
@@ -962,37 +982,24 @@
             10&ndash;15 min
           </span>
         </div>
-        <h3 class="step-title">Document the infestation with photos and notes.</h3>
+        <h3 class="step-title">Document what's broken with photos and video.</h3>
       </div>
 
-      <p class="why-this-matters">An HPD inspector may not be able to see pests directly during a visit &mdash; especially bedbugs, which hide during the day. Your photos and written records become the evidence that an infestation exists, even if nothing is visible the moment the inspector walks in.</p>
+      <p class="why-this-matters">Appliances and fixtures can be "fixed" temporarily &mdash; a stove burner that lights sometimes, an outlet that works when plugged in slowly, a window lock that holds if you don't touch it. Your photos and video become the evidence that the problem is real, even if it looks fine during the inspection. They also pin down when you reported it, which matters for every deadline that comes next.</p>
 
       <span class="sub-label">How to do it</span>
       <ol>
-        <li><strong>Photograph the pests themselves if you can.</strong> Live pests, dead pests, droppings, egg casings, chew marks on food packaging, grease trails along walls (for roaches or rats), bite marks on your skin (for bedbugs).</li>
-        <li><strong>Photograph where they're getting in.</strong> Holes around pipes, cracks in walls or floors, gaps under doors, broken window screens. This matters a lot because IPM requires sealing these.</li>
-        <li><strong>Keep a running log.</strong> Every sighting, every bite, every droppings find. Date, time, location in the apartment, what you saw.</li>
-        <li><strong>Photograph any conditions that are attracting them:</strong> standing water, holes in the wall, garbage storage issues in the common areas, food debris in the super's domain.</li>
-        <li><strong>For bedbugs specifically:</strong> photograph the bites in sequence over a few days to show a pattern, and check your mattress seams, box spring, and headboard crevices for live bugs or rust-colored stains.</li>
+        <li><strong>Photograph the broken item and the whole room it's in.</strong> Wide shot first so it's clearly your apartment, then close-ups of the actual defect. Include the make and model if you can find a label &mdash; sometimes this is written on the inside of the oven door or the back of the fridge.</li>
+        <li><strong>Record a short video showing it not working.</strong> Turn the burner on &mdash; no flame. Flip the light switch &mdash; nothing. Try to lock the window &mdash; it won't catch. Short clips (10&ndash;20 seconds) are more convincing than still photos for anything mechanical or electrical.</li>
+        <li><strong>For gas stoves:</strong> if you smell gas, stop, leave the apartment, and call <strong>911</strong> and the gas company. Do not photograph a suspected gas leak &mdash; your safety comes first. Document after the gas is turned off.</li>
+        <li><strong>For electrical issues:</strong> photograph any visible damage (scorch marks, discolored outlets, frayed wire, a melted plug). If anything sparked, burned, or gave you a shock, note the date and time &mdash; but don't test it again.</li>
+        <li><strong>Keep a running log.</strong> Every time the problem reappears: date, time, what happened. "March 3, 8 PM: tried to use oven for dinner, wouldn't heat past 200F." "March 5: noticed burn mark getting larger around outlet." A log with five entries across two weeks is much stronger than one photo.</li>
+        <li><strong>Document the impact.</strong> If your fridge is broken, photograph the food you had to throw out. If your stove doesn't work, save takeout receipts. If your window won't close, log indoor temperatures. Keep receipts.</li>
       </ol>
 
       <span class="sub-label">What to save</span>
-      <p>All photos, your written log, any pest sightings from neighbors (if they'll share), and any medical records if you've seen a doctor for bites or allergic reactions. Back everything up somewhere &mdash; email the photos to yourself or save them to cloud storage.</p>
+      <p>All photos and video, your written log, any receipts for replacement food or meals you had to buy, and a list of makes/models for the broken appliances. Back everything up &mdash; email the files to yourself or save them to cloud storage. Don't risk losing them if your phone breaks.</p>
     </section>
-
-    <!-- ASTHMA CALLOUT — pest-specific framing -->
-    <aside class="callout callout-protect">
-      <span class="callout-label">For asthma sufferers and households with young children</span>
-      <h3>Cockroach and mouse allergens are major asthma triggers.</h3>
-      <p>If you or a child in your apartment has asthma, roach and rodent infestations are more than a nuisance &mdash; they can directly make asthma worse. This matters because NYC has a specific free resource for exactly this situation: the Health Department's <strong>Healthy Neighborhoods Program</strong> offers a free in-home environmental inspection when a doctor refers you.</p>
-      <p>The inspection gives you an official health assessment that documents the connection between the pests and the asthma symptoms. That documentation is powerful evidence in any 311 complaint or Housing Court case that comes later.</p>
-      <p><strong>How to get it:</strong></p>
-      <ul>
-        <li>Ask your doctor to refer you to NYC Health Department's Healthy Neighborhoods Program</li>
-        <li>Or call <strong>311</strong> and ask about the Healthy Neighborhoods Program directly</li>
-      </ul>
-      <p>This is worth pursuing in parallel with everything else on this page if anyone in your household has asthma, breathing problems, or is a child under 6.</p>
-    </aside>
 
     <!-- STEP 2: Notify landlord -->
     <section class="step">
@@ -1007,15 +1014,15 @@
         <h3 class="step-title">Tell your landlord, in writing.</h3>
       </div>
 
-      <p class="why-this-matters">Most landlords will respond to a written complaint, especially if you reference Local Law 55 and the IPM requirements. Even if they don't, this letter creates the paper trail you need for everything that follows. A text or a verbal complaint to your super is not enough.</p>
+      <p class="why-this-matters">Most landlords will respond to a clear written complaint about a required appliance or fixture, because they know it's a code violation. Even if they don't respond, this letter creates the paper trail you need for everything that comes next. A text or a verbal complaint to your super is not enough &mdash; it has to be in writing, and you need a copy.</p>
 
       <span class="sub-label">How to do it</span>
       <ol>
         <li>Write a short, factual message. Email is fine. If you don't have an email for them, send a letter by USPS Certified Mail with Return Receipt.</li>
-        <li>Be specific about the type of pest, where you've seen them, and how long the problem has existed.</li>
-        <li>Explicitly ask for IPM-compliant treatment by a licensed exterminator &mdash; not just a can of spray.</li>
-        <li>If you suspect the pests are coming from a neighboring apartment, say so. Your landlord has an obligation to inspect and treat neighboring units.</li>
+        <li>Be specific about what's broken, when it stopped working, and how it's affecting you.</li>
+        <li>State clearly that it's a required appliance or fixture under the Housing Maintenance Code. Landlords pay attention when you name the law.</li>
         <li>Attach photos if you're sending email.</li>
+        <li>Keep a copy of what you sent and any response.</li>
       </ol>
 
       <span class="sub-label">Email template &mdash; fill it in, then copy</span>
@@ -1031,11 +1038,11 @@
           </button>
         </div>
         <div class="template-body" id="email-template-content">
-          <p><strong>Subject:</strong> Pest infestation at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"></p>
+          <p><strong>Subject:</strong> Broken <input type="text" class="fill" data-field="item" placeholder="stove, fridge, window lock, etc." size="24"> at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"></p>
           <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26">,</p>
-          <p>I am writing to formally report a pest infestation in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22">. I have been seeing <input type="text" class="fill" data-field="pest_type" placeholder="mice / roaches / bedbugs / etc." size="26"> in <input type="text" class="fill" data-field="location" placeholder="kitchen, bedroom, etc." size="22"> since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">. I have photographs documenting the infestation and am happy to provide them upon request.</p>
-          <p>Under NYC Local Law 55 of 2018, you are required to use Integrated Pest Management (IPM) to address this infestation. This includes sealing points of entry, removing nests and waste, addressing underlying conditions, and using a NYS DEC-licensed pest professional for any pesticide application. Please do not have the building super or another unlicensed person spray or treat the apartment.</p>
-          <p>Please respond within 7 days with a plan to inspect and treat the apartment, and to inspect neighboring units if the infestation may have spread. If the problem is not addressed promptly, I will be filing a complaint with 311 and HPD.</p>
+          <p>I am writing to formally report that the <input type="text" class="fill" data-field="item" placeholder="stove, fridge, window lock, etc." size="24"> in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"> is not working. The problem is <input type="text" class="fill" data-field="description" placeholder="describe what's wrong, e.g. oven won't heat above 200F" size="46"> and it has been this way since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">.</p>
+          <p>This condition is affecting my household: <input type="text" class="fill" data-field="impact" placeholder="unable to cook, food spoiling, no secure lock, etc." size="48">. I have photographs and video documenting the problem.</p>
+          <p>Under the NYC Housing Maintenance Code, you are required to provide and maintain this appliance/fixture in working order. Please arrange for inspection and repair immediately. If the problem is not addressed promptly, I will be filing a complaint with 311 and HPD.</p>
           <p>Thank you,<br>
           <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18"><br>
           <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16"></p>
@@ -1043,7 +1050,7 @@
       </div>
 
       <span class="sub-label">What to expect</span>
-      <p>A responsive landlord will acknowledge your message within a few days and schedule a professional exterminator. <strong>What to watch out for:</strong> a landlord who sends the super with a can of spray, puts down a few traps, or tells you to "keep it cleaner." None of that is legal pest control under NYC law. If your landlord proposes a shortcut, push back in writing &mdash; or move to Step&nbsp;3.</p>
+      <p>A responsive landlord will acknowledge your message within a day or two and schedule a repair or replacement. <strong>What to watch out for:</strong> a landlord who says "I'll get you a used one from another unit" and then never does, or who sends the super to look at it and leaves with no timeline. Get any promise in writing, with a date. If your landlord stops responding or keeps pushing the repair, move to Step&nbsp;3.</p>
     </section>
 
     <!-- STEP 3: 311 -->
@@ -1059,12 +1066,12 @@
         <h3 class="step-title">File a 311 complaint.</h3>
       </div>
 
-      <p class="why-this-matters">A 311 complaint triggers an HPD inspection. The inspector will check for signs of the infestation and, if they find evidence, issue a violation that starts the legal clock on your landlord. Even if the inspector doesn't see a live pest during the visit, droppings, damage, or other evidence is enough to issue a violation.</p>
+      <p class="why-this-matters">A 311 complaint triggers an HPD inspection. The inspector will verify what's broken and issue a violation with a real legal deadline &mdash; 24 hours, 30 days, or 90 days depending on the class. For safety issues (gas, electrical, missing detectors, broken entry locks), this is what puts urgent pressure on your landlord.</p>
 
       <span class="sub-label">How to do it &mdash; pick what's easiest</span>
       <ul>
         <li><strong>By phone:</strong> Call <strong>311</strong>. If you're deaf or hard of hearing, use TTY at <strong>(212) 504-4115</strong>.</li>
-        <li><strong>Online:</strong> Go to <a href="https://portal.311.nyc.gov/" class="inline-link" target="_blank" rel="noopener">portal.311.nyc.gov</a> and search for the specific pest (e.g., "mice," "rats," "cockroaches," or "bedbugs").</li>
+        <li><strong>Online:</strong> Go to <a href="https://portal.311.nyc.gov/" class="inline-link" target="_blank" rel="noopener">portal.311.nyc.gov</a> and search for the specific item &mdash; "stove," "refrigerator," "electrical," "smoke detector," "window," or "door lock."</li>
         <li><strong>Mobile app:</strong> Download the NYC 311 app (iOS or Android). The app lets you upload your photos directly.</li>
       </ul>
 
@@ -1075,8 +1082,9 @@
           Say it in your own words
         </span>
         <div class="spoken-body">
-          <p>"I'd like to file a complaint about a pest infestation in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20">. I've been seeing <input type="text" class="fill" data-field="pest_type" placeholder="mice / roaches / bedbugs" size="22"> in <input type="text" class="fill" data-field="location" placeholder="kitchen, bedroom, etc." size="22"> since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">. I already contacted my landlord on <input type="text" class="fill" data-field="contacted_date" placeholder="date" size="12"> and the problem hasn't been resolved. I have photos."</p>
-          <p>If anyone in your apartment has asthma, is elderly, or is a young child, mention it: <em>"There is someone with asthma (or a child under 6) living in the apartment."</em></p>
+          <p>"I'd like to file a complaint about a broken <input type="text" class="fill" data-field="item" placeholder="stove, fridge, window lock, etc." size="22"> in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20">. The problem is <input type="text" class="fill" data-field="description" placeholder="describe what's wrong" size="28"> and it's been this way since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">. I already contacted my landlord on <input type="text" class="fill" data-field="contacted_date" placeholder="date" size="12"> and the problem hasn't been fixed. I have photos and video."</p>
+          <p>If it's a safety issue: <em>"This is a safety issue. I can't cook/secure my apartment/my smoke detector is missing."</em></p>
+          <p>If anyone in your apartment is elderly, disabled, pregnant, or a young child, mention it &mdash; this can affect prioritization, especially for heat/cooking and safety items.</p>
         </div>
         <span class="spoken-hint">Fill in the blanks above so you have a complete script to read from on the call. This is a guide, not a word-for-word script &mdash; use your own voice and answer their questions as they come.</span>
       </div>
@@ -1089,19 +1097,19 @@
       <span class="sub-label">What to expect</span>
       <ul>
         <li>HPD may contact your landlord first to give them a chance to fix the problem.</li>
-        <li>If the problem isn't fixed, HPD sends an inspector to check for evidence of pests.</li>
-        <li>Once a violation is issued, your landlord has the legally required time to fix it: 21 days for mice/rats/roaches (Class C), 30 days for bedbugs or other pests (Class B).</li>
-        <li>Your landlord must use IPM and hire a licensed exterminator for pesticide use &mdash; not have the super do it.</li>
+        <li>If the problem isn't fixed, HPD sends an inspector to verify the condition. The inspector will classify the violation.</li>
+        <li>Once a violation is issued, your landlord has the legally required time to fix it: 24 hours for Class C (gas, no working stove, entry lock, missing detector, dangerous electrical), 30 days for Class B (broken fridge, bad outlets, window issues), or 90 days for Class A.</li>
+        <li>For safety emergencies (gas smell, electrical hazard, apartment you can't lock): 311 can escalate your complaint. Make sure to say it's an emergency, and for gas, always call 911 and the gas company first.</li>
       </ul>
     </section>
 
-    <!-- UNDOCUMENTED TENANTS CALLOUT -->
+    <!-- CALLOUT: Undocumented tenants -->
     <aside class="callout callout-protect">
       <span class="draft-flag">Draft &mdash; pending immigration advocacy review</span>
       <span class="callout-label">For undocumented tenants</span>
       <h3>Your immigration status does not affect your right to safe housing.</h3>
 
-      <p>NYC law is clear: your landlord must exterminate pests regardless of your immigration status, and HPD's job is to enforce that. <strong>NYC agencies including HPD and 311 do not ask about immigration status when you file a housing complaint.</strong></p>
+      <p>NYC law is clear: your landlord must provide and repair required appliances and fixtures regardless of your immigration status, and HPD's job is to enforce that. <strong>NYC agencies including HPD and 311 do not ask about immigration status when you file a housing complaint.</strong></p>
 
       <p>It is also illegal under NYC Human Rights Law for your landlord to threaten to report you to ICE, deport you, or treat you differently because of your immigration status. If your landlord threatens you in this way, that is itself a crime you can report.</p>
 
@@ -1116,14 +1124,14 @@
       </ul>
     </aside>
 
-    <!-- RETALIATION CALLOUT -->
+    <!-- CALLOUT: Retaliation -->
     <aside class="callout callout-warning">
       <span class="callout-label">Worried about retaliation?</span>
       <h3>This is a real fear &mdash; here's what you should know.</h3>
 
       <p><strong>Retaliation is illegal in New York.</strong> Under NY Real Property Law &sect;&nbsp;223-b, your landlord cannot punish you for making a good-faith complaint about housing conditions. Punishment includes raising your rent, refusing to renew your lease, starting an eviction, reducing services, or harassing you.</p>
 
-      <p><strong>The law specifically protects complaints like this one.</strong> Filing a 311 complaint about pests is exactly the kind of action the anti-retaliation law covers.</p>
+      <p><strong>The law specifically protects complaints like this one.</strong> Filing a 311 complaint about a broken appliance or fixture is exactly the kind of action the anti-retaliation law covers.</p>
 
       <p><strong>An honest note for market-rate tenants:</strong> If you're not in a rent-stabilized or rent-controlled apartment, you have fewer protections against non-renewal or large rent increases at the end of your lease. The anti-retaliation law still applies, but enforcing it can be harder. If you're worried about this, talk to Met Council or a tenant lawyer <em>before</em> filing the complaint &mdash; they can help you think through the timing and your options.</p>
 
@@ -1145,7 +1153,7 @@
         <h3 class="step-title">Check the status and keep a paper trail.</h3>
       </div>
 
-      <p class="why-this-matters">You need to know whether HPD has actually inspected, what class of violation was issued, and whether your landlord is on track to fix it within the legal time frame.</p>
+      <p class="why-this-matters">You need to know whether HPD has actually inspected, what class of violation was issued, and whether your landlord is on track to fix it within the legal time frame. This is also the moment to escalate if things aren't moving.</p>
 
       <div class="ref-recall" id="ref-recall">
         <span class="label">Your complaint reference number</span>
@@ -1155,15 +1163,15 @@
       <span class="sub-label">How to do it</span>
       <ol>
         <li>Go to <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a> and enter your building's address.</li>
-        <li>Look for open pest violations. They'll be classified by pest type.</li>
+        <li>Look for open violations that match your complaint. Common HPD language includes "provide an adequate gas/electric range," "provide a refrigerator in good repair," "repair the defective electric outlet," "install a hardwired smoke/CO detector," "provide a self-closing and self-locking entrance door," or "replace the broken window pane."</li>
         <li>Note the violation number, date issued, and class. The class tells you how many days your landlord has.</li>
         <li>Save a screenshot or print the page.</li>
       </ol>
 
       <span class="sub-label">What to expect</span>
-      <p>Violations typically appear online within a few days of the inspection. If your complaint doesn't show up at all, the inspection may not have happened yet, or the inspector didn't find evidence &mdash; in which case, call 311 again and request another inspection.</p>
+      <p>Violations typically appear online within a few days of the inspection. If your complaint doesn't show up at all, the inspection may not have happened yet, or the inspector didn't find a violation &mdash; in which case, call 311 again and request another inspection.</p>
 
-      <p><strong>Important:</strong> If your landlord "certifies" they fixed the problem but you're still seeing pests, you can challenge the certification. HPD will re-inspect and, if the condition still exists, the violation will be upgraded.</p>
+      <p><strong>Important:</strong> If your landlord "certifies" they fixed the problem but it's still broken, you can challenge the certification. HPD will re-inspect and, if the condition still exists, the violation will be upgraded to a more serious class. False certifications are a pattern &mdash; if it happens once, check the building's history for more.</p>
     </section>
 
     <!-- STEP 5: Escalate -->
@@ -1179,7 +1187,7 @@
         <h3 class="step-title">If nothing's working: escalate.</h3>
       </div>
 
-      <p class="why-this-matters">By this point, you've given your landlord multiple chances and the city has been involved. If the pests are still there, you have stronger options &mdash; but most involve legal or advocacy help, and you shouldn't try them alone.</p>
+      <p class="why-this-matters">By this point, you've given your landlord multiple chances and the city has been involved. If the problem still isn't fixed, you have stronger options &mdash; but most involve legal or advocacy help, and you shouldn't try them alone.</p>
 
       <span class="sub-label">A. Call the Met Council on Housing Tenants' Rights Hotline</span>
       <p>Free, staffed by trained volunteers, and the best starting point for figuring out what to do next.</p>
@@ -1190,7 +1198,7 @@
       </ul>
 
       <span class="sub-label">B. Start an HP Action in Housing Court</span>
-      <p>A legal proceeding asking a judge to order your landlord to fix the infestation. You can file one yourself or with help from a free legal services organization. An HP Action can result in a court order forcing the landlord to exterminate, plus fines.</p>
+      <p>A legal proceeding asking a judge to order your landlord to make the repairs. You can file one yourself or with help from a free legal services organization. An HP Action can result in a court order forcing the landlord to replace appliances, fix wiring, install detectors, or repair locks &mdash; plus fines if they ignore the order.</p>
 
       <span class="sub-label">C. If you're rent-stabilized or rent-controlled: file for a rent reduction</span>
       <p>NYS Homes and Community Renewal (DHCR) can order a rent reduction when essential services aren't provided. Use <strong>Form RA-81</strong> for an individual apartment or <strong>Form RA-84</strong> for a building-wide issue. Call DHCR at <strong>833-499-0343</strong> for forms.</p>
@@ -1199,24 +1207,47 @@
       <p>NYC's Right to Counsel program provides free lawyers to low-income tenants facing housing issues. The Met Council hotline (option A) can help you figure out if you qualify.</p>
     </section>
 
-    <!-- WARNING: The super-with-spray shortcut -->
-    <aside class="callout callout-warning">
-      <span class="callout-label">Important &mdash; about cheap shortcuts</span>
-      <h3>A can of spray from the super is not pest control.</h3>
-      <p>The most common landlord shortcut is to hand the super a can of hardware-store pesticide and call it done. <strong>This is not legal under Local Law 55.</strong> Pesticide application requires a NYS Department of Environmental Conservation-licensed professional. Integrated Pest Management also requires sealing entry points, removing nests, and addressing the conditions that attract pests &mdash; not just spraying.</p>
-      <p>If your landlord proposes a DIY approach, ask in writing: "Who is your licensed pest professional, and what is the IPM plan for this apartment and neighboring units?" Their answer (or lack of one) tells you whether they're taking the problem seriously.</p>
+    <!-- CALLOUT: What's NOT covered -->
+    <aside class="callout callout-protect">
+      <span class="callout-label">Important &mdash; what's <em>not</em> required</span>
+      <h3>Not every appliance is covered. Here's what your landlord doesn't have to provide.</h3>
+      <p>NYC law requires landlords to provide and maintain a specific list of appliances and fixtures &mdash; but it's shorter than most tenants assume. The following are generally <strong>not required</strong> unless your lease specifically includes them:</p>
+      <ul>
+        <li><strong>Dishwasher</strong></li>
+        <li><strong>Microwave</strong></li>
+        <li><strong>In-unit washer or dryer</strong></li>
+        <li><strong>Air conditioner</strong> (though your landlord can't unreasonably prevent you from installing one safely)</li>
+        <li><strong>Garbage disposal</strong></li>
+        <li><strong>Ceiling fans</strong></li>
+        <li><strong>A specific brand, finish, or style of appliance</strong> &mdash; the law requires "working," not "new" or "matching"</li>
+      </ul>
+      <p><strong>But check your lease.</strong> If your lease lists a dishwasher or washer/dryer as part of the unit, your landlord is contractually on the hook to keep it working &mdash; even though the Housing Maintenance Code wouldn't require it on its own. In that case, a broken dishwasher is a breach of contract, and you have options in civil court (not HPD).</p>
+      <p><strong>Also:</strong> if your landlord provided something voluntarily (say, an AC unit that was already installed when you moved in), removing it without cause can still be considered a reduction of services, especially in rent-stabilized apartments. When in doubt, call the Met Council hotline.</p>
     </aside>
 
-    <!-- WARNING: Repair-and-deduct trap -->
+    <!-- WARNING: Gas safety -->
     <aside class="callout callout-warning">
-      <span class="callout-label">Important &mdash; about hiring your own exterminator</span>
-      <h3>Don't hire your own exterminator and try to deduct it from rent.</h3>
-      <p>NYC does not have an automatic "repair and deduct" rule for tenants. Pest infestations are stressful and expensive, and it's tempting to just hire your own exterminator and subtract the cost from your rent. <strong>Don't.</strong> If you withhold rent without following the right legal process, your landlord can sue you for nonpayment and start eviction proceedings. <span class="verify-tag">Verify</span></p>
-      <p>If the infestation is making your apartment unlivable and your landlord is doing nothing, the right path is an HP Action in Housing Court (Step&nbsp;5B above), not paying for extermination yourself.</p>
+      <span class="callout-label">Important &mdash; gas safety</span>
+      <h3>If you smell gas, leave first. Then call.</h3>
+      <p>A gas smell in your apartment is always an emergency, even if the stove looks fine. Do not turn on lights, do not use appliances, do not light anything. Leave the apartment, get to fresh air, and then call <strong>911</strong> and your gas utility: <strong>Con Edison at 1-800-752-6633</strong> or <strong>National Grid at 1-718-643-4050</strong>. The gas company will come at any hour for a suspected leak, free of charge.</p>
+      <p>Once the gas is off and the utility has cleared the apartment, <em>then</em> you document, notify your landlord in writing, and file your 311 complaint. A gas leak is a Class C violation &mdash; your landlord has 24 hours to repair and restore service safely.</p>
     </aside>
 
+    <!-- WARNING: Electrical safety -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; electrical safety</span>
+      <h3>Sparks, burning smells, and shocks are emergencies.</h3>
+      <p>If an outlet sparks, you smell burning plastic, or anyone in your household gets a shock from an appliance or fixture, stop using it immediately and <strong>flip the breaker</strong> for that circuit if you can do so safely. Call <strong>911</strong> if there's smoke or flame. Even if nothing caught fire, this is a Class C condition and your landlord must address it within 24 hours.</p>
+      <p>Don't reset the outlet and keep using it &mdash; damaged wiring behind a wall is a fire risk that gets worse every time power runs through it. Document the damage (photos, video), turn the circuit off, and file your 311 complaint the same day.</p>
+    </aside>
 
-
+    <!-- WARNING: Repair-and-deduct -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; about buying your own replacement</span>
+      <h3>Don't replace a broken appliance yourself and try to deduct it from rent.</h3>
+      <p>NYC does not have an automatic "repair and deduct" rule for tenants. If you buy your own stove or fridge and try to subtract the cost from your rent, your landlord can sue you for nonpayment and start eviction proceedings. Met Council's strong advice: <strong>do not repair and deduct without first consulting a lawyer.</strong></p>
+      <p>If a broken appliance or fixture is making your apartment unlivable and your landlord is doing nothing, the right path is an HP Action in Housing Court (Step&nbsp;5B above), not paying for the work yourself. The only real exception is something like buying batteries for a smoke detector &mdash; the landlord provides the unit; the tenant maintains the batteries.</p>
+    </aside>
 
     <!-- Free help -->
     <h2>Free help available</h2>
@@ -1229,7 +1260,7 @@
       <li>
         <span class="name">NYC 311</span>
         <span class="phone"><a href="tel:311">Dial 311</a></span>
-        <span class="desc">For filing complaints, checking complaint status, and reaching the Healthy Neighborhoods Program.</span>
+        <span class="desc">For filing complaints, checking complaint status, and emergency plumbing issues.</span>
       </li>
       <li>
         <span class="name">Housing Court Answers</span>
@@ -1247,10 +1278,11 @@
     <section class="related">
       <h2 style="margin-top: 0;">Related situations</h2>
       <div class="related-grid">
+        <a href="heat-hot-water.html" class="related-link">My apartment has no heat or hot water</a>
+        <a href="leaks-plumbing.html" class="related-link">I have a leak or plumbing problem</a>
         <a href="mold.html" class="related-link">I have mold in my apartment</a>
-        <a href="#" class="related-link">I have a leak that hasn't been fixed</a>
+        <a href="pests.html" class="related-link">I have pests &mdash; rats, mice, roaches, or bedbugs</a>
         <a href="#" class="related-link">My landlord is retaliating against me for complaining</a>
-        <a href="#" class="related-link">I'm in a NYCHA building, not private housing</a>
       </div>
     </section>
 
@@ -1258,13 +1290,13 @@
     <div class="sources">
       <h3>Sources &amp; verification</h3>
       <ul>
-        <li><a href="https://www.nyc.gov/site/hpd/services-and-information/indoor-allergen-hazards-mold-and-pests.page" target="_blank" rel="noopener">NYC HPD &mdash; Indoor Allergen Hazards (Mold and Pests)</a></li>
+        <li><a href="https://www.nyc.gov/site/hpd/services-and-information/maintenance-and-repair.page" target="_blank" rel="noopener">NYC HPD &mdash; Maintenance and Repair</a></li>
         <li><a href="https://www.metcouncilonhousing.org/help-answers/getting-repairs/" target="_blank" rel="noopener">Met Council on Housing &mdash; Getting Repairs</a></li>
-        <li><a href="https://www.metcouncilonhousing.org/help-answers/bedbugs/" target="_blank" rel="noopener">Met Council on Housing &mdash; Bedbugs</a></li>
-        <li><a href="https://www1.nyc.gov/assets/buildings/local_laws/ll55of2018.pdf" target="_blank" rel="noopener">NYC Local Law 55 of 2018 (full text)</a></li>
-        <li>NYC Local Law 69 of 2017 &mdash; Bedbug Disclosure</li>
+        <li><a href="https://www.metcouncilonhousing.org/program/tenants-rights-hotline/" target="_blank" rel="noopener">Met Council on Housing &mdash; Tenants' Rights Hotline</a></li>
+        <li><a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-16153" target="_blank" rel="noopener">NYC Housing Maintenance Code &mdash; Subchapter 2 (Maintenance, Services and Utilities)</a></li>
+        <li><a href="https://www.nyc.gov/site/fdny/codes/fire-safety/smoke-alarms-carbon-monoxide-alarms.page" target="_blank" rel="noopener">FDNY &mdash; Smoke Alarms and Carbon Monoxide Alarms</a></li>
       </ul>
-      <p class="verified">All sources verified April 13, 2026. <a href="#" class="inline-link">Found an error? Tell us.</a></p>
+      <p class="verified">All sources verified <span class="verify-tag">Verify</span> date before publishing. <a href="#" class="inline-link">Found an error? Tell us.</a></p>
     </div>
 
     <div class="disclaimer">
@@ -1276,6 +1308,7 @@
   <div class="toast" id="toast">Copied to clipboard</div>
 
   <script>
+    // Scroll progress bar
     window.addEventListener('scroll', function() {
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -1322,19 +1355,31 @@
       input.addEventListener('input', function() { autoResize(this); });
     });
 
-    // PEST TYPE PICKER
+    // BROKEN ITEM PICKER
     const severityContent = {
-      rodents: {
-        title: 'Mice or rats',
-        body: '<p>Mice and rats are <strong>Class C violations</strong> &mdash; immediately hazardous. Your landlord has <strong>21 days</strong> to fix the problem once HPD issues a violation.</p><p>Your landlord must use IPM: seal entry points (rodents can squeeze through holes the size of a dime for mice, a quarter for rats), remove nesting materials, address food and water sources, and use a licensed pest professional for bait or traps where needed.</p><span class="key-fact"><strong>Most important for you:</strong> Rodents usually enter through holes around pipes, gaps under doors, and cracks in walls or floors. Photograph every entry point you can find &mdash; this is the evidence that your landlord is obligated to seal, not just trap. Sealing is the actual fix; traps alone are just cleanup.</span>'
+      stove: {
+        title: 'Stove, oven, or range isn\'t working',
+        body: '<p>A working cooking appliance is required by law. If the stove is <em>completely</em> non-functional and there\'s no alternative way to cook, that\'s a <strong>Class C violation</strong> (24 hours). A stove where some burners work or the oven heats unreliably is typically <strong>Class B</strong> (30 days).</p><p>This applies whether your stove is gas or electric. For gas: if you smell gas at any point, leave the apartment and call 911 and your gas utility first, before anything else. A gas leak is always a Class C emergency.</p><span class="key-fact"><strong>Most important for you:</strong> Document what works and what doesn\'t, specifically. "All four burners ignite but only one heats" is more useful than "stove is broken." Keep receipts for takeout or groceries you couldn\'t prepare at home &mdash; you may be able to claim them in an HP Action or rent abatement.</span>'
       },
-      roaches: {
-        title: 'Cockroaches',
-        body: '<p>Cockroaches are <strong>Class C violations</strong> &mdash; immediately hazardous. Your landlord has <strong>21 days</strong> to fix the problem once HPD issues a violation.</p><p>Cockroaches are common asthma triggers, especially for children. If anyone in your apartment has asthma, mention it explicitly in your complaint &mdash; the Healthy Neighborhoods Program (Step&nbsp;1) can add a medical pathway to your case.</p><span class="key-fact"><strong>Most important for you:</strong> Roaches almost always spread between apartments through shared walls, pipes, and outlets. Ask your landlord to inspect neighboring units. A single-apartment treatment that doesn\'t address the source is almost certain to fail within weeks.</span>'
+      fridge: {
+        title: 'Refrigerator isn\'t working',
+        body: '<p>A working refrigerator is required by the NYC Housing Maintenance Code. A broken fridge is typically a <strong>Class B violation</strong> (30 days), but if it\'s completely dead and food is spoiling fast &mdash; especially in summer &mdash; you can push for faster repair as a health issue.</p><p>Your landlord must either repair or replace. "I\'ll get you a used one from upstairs" is only acceptable if it actually works. A fridge that keeps food cool but not cold, or that freezes everything in the crisper, is still broken.</p><span class="key-fact"><strong>Most important for you:</strong> Photograph any food you had to throw out, and keep receipts. If you had to buy a cooler and ice, or eat out for a week, those costs are documentable. For families with babies on formula or anyone with medications that need refrigeration, mention that when you call 311 &mdash; it can raise the urgency.</span>'
       },
-      bedbugs: {
-        title: 'Bedbugs',
-        body: '<p>Bedbugs are a <strong>Class B violation</strong>. Your landlord has <strong>30 days</strong> to fix the problem once HPD issues a violation.</p><p>Bedbugs have their own rules under <strong>Local Law 69 of 2017</strong>: landlords of multi-unit buildings must file annual bedbug history reports with HPD and must disclose the previous year\'s infestations to tenants. You have the right to request this history from your landlord.</p><p>Treatment must be done by a licensed professional &mdash; heat treatment, pesticide application, or a combination. DIY or super-with-spray approaches rarely work for bedbugs and are not legal under Local Law 55.</p><span class="key-fact"><strong>Most important for you:</strong> Bedbugs spread to neighboring apartments through walls and outlets. Demand building-wide inspection and treatment if you suspect the infestation extends beyond your unit. Don\'t throw out your mattress without documenting it first &mdash; a professional may be able to treat it.</span>'
+      electrical: {
+        title: 'Outlets, lights, or wiring aren\'t working',
+        body: '<p>Dead outlets or fixtures are typically <strong>Class B</strong> (30 days). But anything that looks dangerous &mdash; scorch marks, sparking, burning smell, a shock from an appliance, exposed wire, or frequent breaker trips &mdash; is <strong>Class C</strong> (24 hours) because it\'s a fire risk.</p><p>Every room is required to have adequate outlets and lighting. A bedroom with one working outlet and a ceiling light that doesn\'t turn on isn\'t up to code, even if the rest of your apartment is fine.</p><span class="key-fact"><strong>Most important for you:</strong> If you ever see a spark, smell burning plastic, or get shocked, flip the breaker for that circuit immediately and leave it off. Document with photos. Don\'t keep using the outlet "just carefully." Electrical damage inside walls is invisible, progressive, and the most common cause of apartment fires.</span>'
+      },
+      locks: {
+        title: 'Entry door or window lock is broken',
+        body: '<p>A working entry door lock is a <strong>Class C violation</strong> (24 hours). NYC law requires your apartment entry door to be self-closing, self-locking, and secure. If you can\'t lock your door &mdash; or the building\'s front door lock is broken &mdash; your landlord must fix it within a day.</p><p>Window locks on windows accessible from fire escapes, rooftops, or the ground floor are also required. A broken window lock on a ground-floor unit is Class C; on an upper floor less accessible to entry, it\'s usually Class B.</p><span class="key-fact"><strong>Most important for you:</strong> This is the scenario where calling 311 and telling them you feel unsafe is both true and effective &mdash; HPD prioritizes safety-related entry issues. If you genuinely feel at risk, NYPD can sometimes help in the interim, but the landlord is still legally responsible for the fix. Keep your documentation and your 311 complaint number.</span>'
+      },
+      windows: {
+        title: 'Window won\'t open or close, or is broken',
+        body: '<p>Operable windows are required in all habitable rooms. A window you can\'t open is a ventilation issue and typically <strong>Class B</strong> (30 days). A window you can\'t close is often <strong>Class C</strong> in cold weather because it compromises heat and weather protection, or anytime if it creates a safety risk.</p><p>Broken glass is always Class C if it poses an injury risk. If you have a child under 10, <strong>window guards</strong> are required by law (Local Law 1) and must be installed by the landlord at no cost.</p><span class="key-fact"><strong>Most important for you:</strong> For broken glass, photograph it, then cover the opening with plastic sheeting and tape to prevent further injury while you wait. Don\'t try to replace glass yourself &mdash; it\'s the landlord\'s responsibility, and DIY glass work is dangerous. If you have young children and no window guards, file a 311 complaint specifically for window guards &mdash; it\'s a known violation the city takes seriously.</span>'
+      },
+      detectors: {
+        title: 'Smoke or carbon monoxide detector is missing or broken',
+        body: '<p>Missing or non-functional smoke and CO detectors are <strong>Class C violations</strong> (24 hours) &mdash; immediately hazardous. Your landlord is required to install them and replace them when they fail. Tenants are responsible for replacing batteries, but not the units themselves.</p><p>NYC law requires at least one smoke detector on each level and within 15 feet of each sleeping area. CO detectors are required within 15 feet of every sleeping area in any apartment with fuel-burning appliances (gas stove, boiler) or an attached garage. Hardwired detectors with a battery backup are required in buildings constructed or substantially renovated after certain dates.</p><span class="key-fact"><strong>Most important for you:</strong> If a detector is missing, broken, or past its expiration date (usually printed on the back &mdash; 10 years for smoke, 7 for CO), file a 311 complaint right away. You should never "just deal with it" because working detectors are, in very direct terms, the thing that wakes you up in time to get out. If your landlord refuses and you can\'t wait, you can buy a battery-operated detector for $20&ndash;40 as a stopgap &mdash; but still file the complaint, because the <em>installed</em> unit is their legal obligation.</span>'
       },
       all: null
     };
@@ -1416,7 +1461,7 @@
       document.body.appendChild(textarea);
       textarea.select();
       try { document.execCommand('copy'); showCopySuccess(btn); }
-      catch (err) { showToast('Copy failed — please select and copy manually'); }
+      catch (err) { showToast('Copy failed \u2014 please select and copy manually'); }
       document.body.removeChild(textarea);
     }
 
@@ -1435,7 +1480,7 @@
   <script src="../lookup.js"></script>
   <script>
     initLookup({
-      filterKeywords: ['pest', 'rat', 'mice', 'mouse', 'roach', 'cockroach', 'bedbug', 'bed bug', 'rodent', 'vermin', 'exterminate', 'infestation']
+      filterKeywords: ['stove', 'oven', 'range', 'refrigerator', 'fridge', 'outlet', 'electric', 'wiring', 'light', 'lighting', 'lock', 'window', 'door', 'smoke', 'detector', 'alarm', 'carbon monoxide', 'appliance', 'fixture', 'gas']
     });
   </script>
 

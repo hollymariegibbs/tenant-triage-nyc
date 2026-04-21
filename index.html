@@ -38,11 +38,11 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { font-size: 18px; scroll-behavior: smooth; }
 
     body {
       font-family: "Public Sans", system-ui, -apple-system, sans-serif;
-      font-size: 18px;
+      font-size: 1.125rem;
       line-height: 1.65;
       color: var(--ink);
       background: var(--bg);
@@ -640,7 +640,7 @@
     <section class="browse-section">
       <div class="section-header">
         <h2 class="section-title">Or browse all scenarios</h2>
-        <span class="section-meta">9 scenarios &middot; 4 ready</span>
+        <span class="section-meta">9 scenarios &middot; 7 ready</span>
       </div>
 
       <div class="category">
@@ -653,8 +653,8 @@
           <li><a href="scenarios/mold.html" class="scenario-item linked">I have mold in my apartment</a></li>
           <li><a href="scenarios/pests.html" class="scenario-item linked">I have pests &mdash; rats, mice, roaches, or bedbugs</a></li>
           <li><a href="scenarios/leaks-plumbing.html" class="scenario-item linked">I have a leak or plumbing problem</a></li>
-          <li><span class="scenario-item coming-soon">Appliances or fixtures in my apartment are broken</span></li>
-          <li><span class="scenario-item coming-soon">I'm worried about lead paint in my apartment</span></li>
+          <li><a href="scenarios/appliances.html" class="scenario-item linked">Appliances or fixtures in my apartment are broken</a></li>
+          <li><a href="scenarios/lead-paint.html" class="scenario-item linked">I'm worried about lead paint in my apartment</a></li>
         </ul>
       </div>
 
@@ -664,7 +664,7 @@
           <p class="category-desc">Problems with your lease, your tenancy, or notices from your landlord.</p>
         </div>
         <ul class="scenario-list">
-          <li><span class="scenario-item coming-soon">I got an eviction notice</span></li>
+          <li><a href="scenarios/eviction-notice.html" class="scenario-item linked">I got an eviction notice</a></li>
           <li><span class="scenario-item coming-soon">My landlord won't renew my lease</span></li>
         </ul>
       </div>
@@ -699,7 +699,7 @@
   </article>
 
   <footer class="site-footer">
-    Made by <a href="https://www.hollymariegibbs.com">Holly Gibbs</a>
+    Made by <a href="https://www.hollymariegibbs.com" target="_blank" rel="noopener">Holly Gibbs</a>
   </footer>
 
   <script>
@@ -735,21 +735,21 @@
       },
       broken: {
         name: 'Appliances or fixtures in my apartment are broken',
-        url: '#',
-        ready: false,
-        keywords: ['broken', 'break', 'appliance', 'appliances', 'fixture', 'fixtures', 'fridge', 'refrigerator', 'stove', 'oven', 'range', 'dishwasher', 'microwave', 'outlet', 'outlets', 'light', 'lights', 'fixture', 'door', 'lock', 'window', 'windows', 'doesnt', 'working']
+        url: 'scenarios/appliances.html',
+        ready: true,
+        keywords: ['broken', 'break', 'appliance', 'appliances', 'fixture', 'fixtures', 'fridge', 'refrigerator', 'stove', 'oven', 'range', 'dishwasher', 'microwave', 'outlet', 'outlets', 'light', 'lights', 'fixture', 'door', 'lock', 'window', 'windows', 'doesnt', 'working', 'smoke', 'detector', 'alarm', 'carbon monoxide', 'electrical', 'wiring', 'gas']
       },
       lead: {
         name: "I'm worried about lead paint in my apartment",
-        url: '#',
-        ready: false,
-        keywords: ['lead', 'paint', 'peeling', 'chipping', 'chips', 'child', 'children', 'kids', 'baby', 'toddler', 'pregnant', 'exposure', 'poisoning', 'dust', 'old', 'prewar', 'wall', 'walls']
+        url: 'scenarios/lead-paint.html',
+        ready: true,
+        keywords: ['lead', 'paint', 'peeling', 'chipping', 'chalking', 'chips', 'child', 'children', 'kids', 'baby', 'toddler', 'pregnant', 'exposure', 'poisoning', 'dust', 'old', 'prewar', 'wall', 'walls', 'window trough', 'door frame', 'sill', 'BLL', 'blood lead']
       },
       eviction: {
         name: 'I got an eviction notice',
-        url: '#',
-        ready: false,
-        keywords: ['eviction', 'evict', 'evicted', 'evicting', 'notice', 'petition', 'court', 'marshal', 'sheriff', 'out', 'leave', 'kick', 'kicked', 'served', 'papers', 'summons']
+        url: 'scenarios/eviction-notice.html',
+        ready: true,
+        keywords: ['eviction', 'evict', 'evicted', 'evicting', 'notice', 'petition', 'court', 'marshal', 'sheriff', 'out', 'leave', 'kick', 'kicked', 'served', 'papers', 'summons', 'holdover', 'nonpayment', 'rent demand', 'termination', 'warrant', 'housing court', 'stipulation', 'lockout', 'right to counsel', 'habitability', 'one-shot', 'cityfheps']
       },
       lease: {
         name: "My landlord won't renew my lease",
