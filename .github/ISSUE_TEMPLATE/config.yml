@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: I need help with a housing problem right now
+    url: https://www.metcouncilonhousing.org/help-answers/
+    about: Call Met Council on Housing's Tenants' Rights Hotline at 212-979-0611. This site cannot give legal advice — GitHub issues are for fixing the site itself.

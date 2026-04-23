@@ -1,0 +1,46 @@
+name: Report an error on a page
+description: Something on a Tenant Triage NYC page is wrong, out of date, or missing important info.
+title: "[Error] "
+labels: ["content", "error-report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for flagging this. Fill in what's off and we'll fix it.
+
+        **This isn't a place to ask for legal help.** If you need advice on your own housing situation, please call [Met Council on Housing](https://www.metcouncilonhousing.org/help-answers/) at **212-979-0611**.
+
+  - type: input
+    id: page-url
+    attributes:
+      label: Which page?
+      description: The URL of the page with the error. (If you clicked "Found an error?" from the site, this should already be filled in.)
+      placeholder: https://tenanttriage.nyc/scenarios/example.html
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-is-wrong
+    attributes:
+      label: What's wrong?
+      description: Describe what you saw that's incorrect, out of date, or unclear.
+      placeholder: |
+        e.g., "The phone number for Housing Court Answers is listed as 212-962-4795 but I called it and got a disconnect message."
+    validations:
+      required: true
+
+  - type: textarea
+    id: should-say
+    attributes:
+      label: What should it say instead?
+      description: Optional — if you know the correct info, paste it here. Links to official sources (city agency pages, statute text, etc.) are extra helpful.
+      placeholder: |
+        e.g., "The current number is 212-962-4795 extension 1, with the main switchboard being 212-962-4795. Source: https://housingcourtanswers.org/contact"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        Thanks. We read every report and try to fix issues quickly. You can subscribe to this thread (bell icon, top right after submitting) to be notified when it's fixed.
