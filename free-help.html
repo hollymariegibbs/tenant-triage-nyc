@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free help for NYC tenants — Tenant Triage NYC</title>
+  <meta property="og:title" content="Free help for NYC tenants — Tenant Triage NYC">
+  <meta property="og:description" content="Every free organization, hotline, and resource NYC tenants can use for housing problems — all in one place.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tenanttriage.nyc/free-help.html">
+  <meta property="og:image" content="https://tenanttriage.nyc/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free help for NYC tenants — Tenant Triage NYC">
+  <meta name="twitter:description" content="Every free organization, hotline, and resource NYC tenants can use for housing problems — all in one place.">
+  <meta name="twitter:image" content="https://tenanttriage.nyc/og-image.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f3ef;
+      --bg-elevated: #fafaf8;
+      --ink: #111111;
+      --ink-soft: #3d3d3d;
+      --ink-faded: #6b6b6b;
+      --rule: #e6e4df;
+      --rule-strong: #c9c5bc;
+
+      --accent: #0d7377;
+      --accent-deep: #08494c;
+      --accent-soft: #e3f0f0;
+      --accent-bright: #5eb6b9;
+
+      --protect: #2a4a7f;
+      --protect-soft: #eaeff7;
+
+      --measure: 42rem;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 18px; scroll-behavior: smooth; }
+
+    body {
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      font-size: 1.125rem;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem 1.5rem;
+      background: var(--bg);
+    }
+    .site-header-inner {
+      max-width: 64rem; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .wordmark {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      text-decoration: none; color: var(--ink);
+    }
+    .wordmark-main {
+      font-weight: 900; font-size: 1.375rem;
+      letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
+    }
+    .wordmark-accent {
+      font-weight: 500; font-size: 0.95rem;
+      color: var(--accent); letter-spacing: 0.01em;
+    }
+    .site-nav {
+      display: flex; gap: 1.75rem;
+      font-size: 0.875rem; color: var(--ink); font-weight: 500;
+    }
+    .site-nav a,
+    .site-nav a:visited {
+      color: var(--ink); text-decoration: none;
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .site-nav a:hover { border-bottom-color: var(--accent); }
+    .site-nav a.current { border-bottom-color: var(--ink); }
+
+    article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+    /* Sticky sidebar layout — desktop only */
+    .layout {
+      max-width: 72rem;
+      margin: 0 auto;
+      padding: 0;
+      display: block;
+    }
+    .layout > article {
+      max-width: var(--measure);
+      margin: 0 auto;
+    }
+    .toc-sidebar { display: none; }
+
+    @media (min-width: 901px) {
+      .layout {
+        display: grid;
+        grid-template-columns: 15rem minmax(0, var(--measure)) 1fr;
+        column-gap: 3rem;
+        align-items: start;
+        padding: 3rem 1.5rem 6rem;
+      }
+      .layout > article {
+        grid-column: 2;
+        padding: 0;
+        margin: 0;
+      }
+      .toc-sidebar {
+        display: block;
+        grid-column: 1;
+        position: sticky;
+        top: 2rem;
+        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+        padding-right: 0.5rem;
+        font-size: 0.875rem;
+        align-self: start;
+        /* Thin scrollbar on webkit */
+      }
+      .toc-sidebar::-webkit-scrollbar { width: 4px; }
+      .toc-sidebar::-webkit-scrollbar-thumb { background: var(--rule-strong); border-radius: 2px; }
+      /* Hide the inline ToC when sidebar is visible */
+      article > nav.toc { display: none; }
+    }
+
+    .toc-sidebar-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faded);
+      margin-bottom: 0.75rem;
+      padding-left: 0.75rem;
+    }
+    .toc-sidebar nav {
+      display: block;
+    }
+    .toc-sidebar .toc-group {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.25rem 0;
+    }
+    .toc-sidebar .toc-section-link {
+      display: block;
+      font-weight: 700;
+      font-size: 0.8125rem;
+      color: var(--ink);
+      letter-spacing: 0.01em;
+      padding: 0.35rem 0.75rem;
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .toc-sidebar .toc-section-link:hover {
+      color: var(--accent-deep);
+    }
+    .toc-sidebar .toc-section-link.active {
+      color: var(--accent-deep);
+      border-left-color: var(--accent);
+    }
+    .toc-sidebar .toc-sub {
+      list-style: none;
+      padding: 0;
+      margin: 0.15rem 0 0;
+    }
+    .toc-sidebar .toc-sub li { padding: 0; }
+    .toc-sidebar .toc-sub li::before { content: none; }
+    .toc-sidebar .toc-sub a {
+      display: block;
+      font-weight: 400;
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      line-height: 1.4;
+      padding: 0.28rem 0.75rem 0.28rem 1.25rem;
+      border-left: 2px solid transparent;
+      text-decoration: none;
+      transition: color 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+    }
+    .toc-sidebar .toc-sub a:hover {
+      color: var(--accent-deep);
+    }
+    .toc-sidebar .toc-sub a.active {
+      color: var(--accent-deep);
+      font-weight: 600;
+      border-left-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    /* Scroll offset so jumped-to items aren't jammed against top edge */
+    .help-list > li[id^="org-"] { scroll-margin-top: 1.25rem; }
+
+    .breadcrumbs {
+      display: flex; align-items: center; gap: 0.5rem;
+      flex-wrap: wrap; margin-bottom: 1.75rem; font-size: 0.875rem;
+    }
+    .breadcrumbs a {
+      color: var(--ink-soft); text-decoration: none; font-weight: 500;
+      padding: 0.25rem 0; border-bottom: 1px solid var(--rule-strong);
+      transition: all 0.15s ease;
+    }
+    .breadcrumbs a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .breadcrumbs .sep { color: var(--ink-faded); font-weight: 400; }
+    .breadcrumbs .current { color: var(--ink); font-weight: 600; }
+
+    .reading-label {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent-deep); background: var(--accent-soft);
+      padding: 0.35rem 0.75rem; margin-bottom: 1rem;
+    }
+    .reading-label svg {
+      width: 12px; height: 12px;
+      stroke: currentColor; fill: none; stroke-width: 2.5;
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: clamp(2.25rem, 5.5vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+
+    .standfirst {
+      font-weight: 400;
+      font-size: 1.1875rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin-bottom: 2rem;
+      max-width: 36rem;
+    }
+
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 1.5rem;
+      padding: 0.875rem 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.8125rem; color: var(--ink-faded);
+      margin-bottom: 2rem;
+    }
+    .meta-item { display: flex; align-items: center; gap: 0.4rem; }
+    .meta-item svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .meta-item strong { color: var(--ink); font-weight: 600; }
+    .meta-item a {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    @media print { .print-hide { display: none !important; } }
+
+    p { margin-bottom: 1.25rem; color: var(--ink); }
+    p strong { font-weight: 600; }
+
+    a.inline-link {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: background 0.15s ease;
+    }
+    a.inline-link:hover { background: var(--accent-soft); }
+
+    .intro-note {
+      background: var(--bg-soft);
+      border-left: 4px solid var(--ink);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+      font-size: 0.9375rem;
+    }
+    .intro-note p { margin-bottom: 0; color: var(--ink-soft); }
+    .intro-note strong { color: var(--ink); }
+
+    /* Table of contents */
+    .toc {
+      background: var(--bg);
+      border: 2px solid var(--ink);
+      padding: 1.25rem 1.5rem 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .toc-label {
+      display: block;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 0.5rem;
+    }
+    .toc ol {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      counter-reset: toc;
+    }
+    .toc li {
+      counter-increment: toc;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.9375rem;
+    }
+    .toc li:last-child { border-bottom: none; }
+    .toc li::before {
+      content: counter(toc) ". ";
+      color: var(--accent);
+      font-weight: 700;
+      margin-right: 0.25rem;
+    }
+    .toc a {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.12s ease;
+    }
+    .toc a:hover { border-bottom-color: var(--accent); color: var(--accent-deep); }
+
+    h2 {
+      font-weight: 800;
+      font-size: 1.625rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-top: 3.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      scroll-margin-top: 1.5rem;
+    }
+    .section-intro {
+      font-size: 0.9375rem;
+      color: var(--ink-faded);
+      margin-bottom: 1rem;
+    }
+
+    /* Help list — richer than the scenario-page version */
+    .help-list { list-style: none; padding: 0; margin: 1rem 0 2rem; }
+    .help-list li {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .help-list li:last-child { border-bottom: none; }
+    .help-list .name {
+      font-weight: 700; color: var(--ink);
+      display: block; margin-bottom: 0.4rem; font-size: 1.0625rem;
+    }
+    .help-list .phone,
+    .help-list .url {
+      display: block;
+      font-weight: 700; color: var(--accent-deep);
+      font-size: 1.125rem; letter-spacing: -0.005em;
+      margin-bottom: 0.35rem;
+    }
+    .help-list .phone a,
+    .help-list .phone a:visited,
+    .help-list .url a,
+    .help-list .url a:visited {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 2px solid var(--accent-soft);
+      transition: border-color 0.15s ease;
+    }
+    .help-list .phone a:hover,
+    .help-list .url a:hover { border-bottom-color: var(--accent); }
+    .help-list .hours {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      margin-bottom: 0.5rem;
+    }
+    .help-list .hours strong { color: var(--ink); font-weight: 600; }
+    .help-list .desc {
+      display: block; font-size: 0.9375rem;
+      color: var(--ink-soft); line-height: 1.55;
+      margin-bottom: 0.5rem;
+    }
+    .help-list .desc:last-child { margin-bottom: 0; }
+    .help-list .desc strong { color: var(--ink); font-weight: 600; }
+    .help-list .tip {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      background: var(--bg-soft);
+      padding: 0.6rem 0.85rem;
+      border-left: 3px solid var(--accent);
+      margin-top: 0.5rem;
+    }
+    .help-list .tip strong { color: var(--ink); font-weight: 700; }
+    /* Catch-all for any anchor inside a help-list item — keeps orphan links (in .tip, .hours, .desc, etc.) from falling through to browser-default blue. Specific rules (.phone a, .url a, .office-phone a, .form-number a, .email a) still win by specificity. */
+    .help-list a,
+    .help-list a:visited {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-soft);
+      transition: border-color 0.15s ease;
+    }
+    .help-list a:hover { border-bottom-color: var(--accent); }
+    .help-list .forms {
+      display: block;
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+      margin-top: 0.35rem;
+    }
+    .help-list .forms strong { color: var(--ink-soft); font-weight: 600; }
+    .help-list .email {
+      display: block;
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+      margin-bottom: 0.35rem;
+    }
+    .help-list .email strong { color: var(--ink); font-weight: 600; }
+    .help-list .email a {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-soft);
+    }
+    .help-list .email a:hover { border-bottom-color: var(--accent); }
+    .help-list .address {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      margin-bottom: 0.5rem;
+    }
+    .help-list .address strong { color: var(--ink); font-weight: 600; }
+    .help-list a.inline-link {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    /* Nested sub-sections inside a help-list item (borough offices, specialized services) */
+    .help-list .sub-section {
+      margin-top: 0.9rem;
+      padding-top: 0.85rem;
+      border-top: 1px dashed var(--rule);
+    }
+    .help-list .sub-section-label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.8125rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 0.55rem;
+    }
+    .help-list .office-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .help-list .office-list li {
+      padding: 0.55rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "name  phone"
+        "addr  addr";
+      column-gap: 1rem;
+      row-gap: 0.2rem;
+      align-items: baseline;
+    }
+    .help-list .office-list li:last-child { border-bottom: none; }
+    .help-list .office-list .office-name {
+      grid-area: name;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+    .help-list .office-list .office-phone {
+      grid-area: phone;
+      justify-self: end;
+      font-weight: 700;
+      color: var(--accent-deep);
+      font-size: 0.9375rem;
+      white-space: nowrap;
+    }
+    .help-list .office-list .office-phone a,
+    .help-list .office-list .office-phone a:visited {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-soft);
+    }
+    .help-list .office-list .office-phone a:hover { border-bottom-color: var(--accent); }
+    .help-list .office-list .office-address {
+      grid-area: addr;
+      color: var(--ink-faded);
+      font-size: 0.8125rem;
+      line-height: 1.45;
+    }
+    @media (max-width: 600px) {
+      .help-list .office-list li {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "name"
+          "phone"
+          "addr";
+        row-gap: 0.15rem;
+      }
+      .help-list .office-list .office-phone { justify-self: start; }
+    }
+
+    /* Forms list — row-card layout (document metaphor) */
+    .help-list .forms-grid {
+      list-style: none;
+      padding: 0;
+      margin: 0.35rem 0 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.55rem;
+    }
+    .help-list .forms-grid li {
+      padding: 0.85rem 1.1rem;
+      background: var(--bg-elevated);
+      border: 1px solid var(--rule-strong);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      display: grid;
+      grid-template-columns: auto minmax(5.5rem, 7.5rem) 1fr;
+      column-gap: 0.85rem;
+      align-items: center;
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+    }
+    .help-list .forms-grid li::before { content: none; }
+    .help-list .forms-grid .form-icon {
+      position: static;
+      width: 16px;
+      height: 16px;
+      stroke: var(--accent-deep);
+      fill: none;
+      stroke-width: 1.75;
+      opacity: 0.55;
+      flex-shrink: 0;
+    }
+    .help-list .forms-grid .form-number {
+      display: block;
+      font-weight: 800;
+      font-size: 0.9375rem;
+      color: var(--accent-deep);
+      letter-spacing: -0.005em;
+      margin-bottom: 0;
+      padding-right: 0;
+    }
+    .help-list .forms-grid .form-number a,
+    .help-list .forms-grid .form-number a:visited {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-soft);
+      transition: border-color 0.15s ease;
+    }
+    .help-list .forms-grid .form-number a:hover {
+      border-bottom-color: var(--accent-deep);
+    }
+    .help-list .forms-grid li {
+      transition: box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+    .help-list .forms-grid li:has(.form-number a:hover) {
+      border-color: var(--accent);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    }
+    .help-list .forms-grid .form-desc {
+      display: block;
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+    }
+    .help-list .forms-grid .form-desc strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+    @media (max-width: 600px) {
+      .help-list .forms-grid li {
+        grid-template-columns: auto 1fr;
+        row-gap: 0.3rem;
+      }
+      .help-list .forms-grid .form-desc {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* Detail list — labeled bullets for "how to access" / "key services" style sub-sections */
+    .help-list .detail-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .help-list .detail-list li {
+      padding: 0.35rem 0 0.35rem 1.35rem;
+      border: none;
+      display: block;
+      position: relative;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+    .help-list .detail-list li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      top: 0.35rem;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+    .help-list .detail-list li strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .help-list .detail-list li a {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-soft);
+    }
+    .help-list .detail-list li a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    /* Eligibility / qualifications block — for Right to Counsel specifics */
+    .help-list .eligibility {
+      margin: 1.25rem 0;
+      padding: 0.85rem 1rem;
+      background: var(--bg-soft);
+      border-left: 3px solid var(--accent);
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+    }
+    .help-list .eligibility strong { color: var(--ink); font-weight: 700; }
+    .help-list .eligibility ul {
+      list-style: none;
+      padding: 0;
+      margin: 0.35rem 0 0;
+    }
+    .help-list .eligibility li {
+      padding: 0.2rem 0 0.2rem 1.1rem;
+      position: relative;
+      border: none;
+      display: block;
+      font-size: 0.875rem;
+    }
+    .help-list .eligibility li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Section framing: immigration draft flag, etc. */
+    .section-flag {
+      display: inline-block;
+      font-size: 0.65rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--ink); color: var(--bg);
+      padding: 0.3rem 0.6rem;
+      margin: 0.25rem 0 1rem;
+    }
+
+    /* Verify tag — same pattern as scenario pages */
+    .verify-tag {
+      display: inline-block;
+      background: #c8292e;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      margin: 0 0.15rem;
+      vertical-align: baseline;
+      font-style: normal;
+    }
+    .verify-tag::before { content: "⚑ "; }
+
+    /* Bottom CTA callout */
+    .cta-callout {
+      margin: 4rem 0 2.5rem;
+      padding: 2rem 2rem;
+      background: var(--protect-soft);
+      border-left: 4px solid var(--protect);
+    }
+    .cta-callout .callout-label {
+      font-size: 0.7rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--protect);
+      margin-bottom: 0.5rem; display: block;
+    }
+    .cta-callout h3 {
+      margin-top: 0; margin-bottom: 0.75rem;
+      font-weight: 800; font-size: 1.375rem;
+      letter-spacing: -0.015em; color: var(--ink);
+    }
+    .cta-callout p {
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+      margin-bottom: 1.25rem;
+    }
+    .cta-callout p:last-of-type { margin-bottom: 1.25rem; }
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--ink);
+      color: var(--bg);
+      text-decoration: none;
+      padding: 0.875rem 1.25rem;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      letter-spacing: -0.005em;
+      transition: background 0.15s ease;
+    }
+    .cta-button:hover { background: var(--accent-deep); }
+    .cta-button::after { content: "→"; font-weight: 700; }
+
+    .disclaimer {
+      margin-top: 2.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-soft);
+      border: 1px dashed var(--rule-strong);
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .disclaimer strong { color: var(--ink); font-weight: 700; }
+
+    .site-footer {
+      border-top: 2px solid var(--ink);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+    }
+    .site-footer a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule-strong);
+      transition: border-color 0.15s ease;
+    }
+    .site-footer a:hover { border-bottom-color: var(--accent); color: var(--accent-deep); }
+
+    @media (max-width: 600px) {
+      article { padding: 2rem 1.25rem 4rem; }
+      .toc { padding: 1rem 1.25rem 1.25rem; }
+      .cta-callout { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="index.html" class="wordmark">
+        <span class="wordmark-main">Tenant Triage</span>
+        <span class="wordmark-accent">NYC</span>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">All scenarios</a>
+        <a href="about.html">About</a>
+        <a href="free-help.html" class="current">Free help</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <aside class="toc-sidebar" aria-label="On this page">
+      <span class="toc-sidebar-label">On this page</span>
+      <nav>
+        <ul class="toc-group">
+          <li><a href="#general" class="toc-section-link" data-toc-target="general">1. General tenant help</a>
+            <ul class="toc-sub">
+              <li><a href="#org-met-council" data-toc-target="org-met-council">Met Council on Housing</a></li>
+              <li><a href="#org-311" data-toc-target="org-311">NYC 311</a></li>
+              <li><a href="#org-hpd-online" data-toc-target="org-hpd-online">HPDOnline</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="toc-group">
+          <li><a href="#legal" class="toc-section-link" data-toc-target="legal">2. Legal help</a>
+            <ul class="toc-sub">
+              <li><a href="#org-housing-court-answers" data-toc-target="org-housing-court-answers">Housing Court Answers</a></li>
+              <li><a href="#org-legal-services-nyc" data-toc-target="org-legal-services-nyc">Legal Services NYC</a></li>
+              <li><a href="#org-legal-aid" data-toc-target="org-legal-aid">Legal Aid Society</a></li>
+              <li><a href="#org-right-to-counsel" data-toc-target="org-right-to-counsel">Right to Counsel</a></li>
+              <li><a href="#org-dhcr" data-toc-target="org-dhcr">NYS DHCR</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="toc-group">
+          <li><a href="#undocumented" class="toc-section-link" data-toc-target="undocumented">3. Undocumented tenants</a>
+            <ul class="toc-sub">
+              <li><a href="#org-actionnyc" data-toc-target="org-actionnyc">ActionNYC / MOIA</a></li>
+              <li><a href="#org-make-the-road" data-toc-target="org-make-the-road">Make the Road NY</a></li>
+              <li><a href="#org-nyic" data-toc-target="org-nyic">NY Immigration Coalition</a></li>
+              <li><a href="#org-cchr" data-toc-target="org-cchr">NYC Human Rights Commission</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="toc-group">
+          <li><a href="#health" class="toc-section-link" data-toc-target="health">4. Health-related</a>
+            <ul class="toc-sub">
+              <li><a href="#org-healthy-neighborhoods" data-toc-target="org-healthy-neighborhoods">Healthy Neighborhoods</a></li>
+              <li><a href="#org-poison-control" data-toc-target="org-poison-control">Poison Control</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="toc-group">
+          <li><a href="#tools" class="toc-section-link" data-toc-target="tools">5. Other tools</a>
+            <ul class="toc-sub">
+              <li><a href="#org-justfix" data-toc-target="org-justfix">JustFix</a></li>
+              <li><a href="#org-lookup" data-toc-target="org-lookup">Tenant Triage Lookup</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article>
+
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="index.html">All scenarios</a>
+      <span class="sep">/</span>
+      <span class="current">Free help</span>
+    </nav>
+
+    <span class="reading-label">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Tenant resources reference
+    </span>
+
+    <h1>Free help for NYC tenants.</h1>
+
+    <p class="standfirst">Every NYC tenant has a list of real organizations &mdash; hotlines, city agencies, legal services &mdash; that exist to help with housing problems. Almost all are free. Most don't require proof of income or immigration status just to call. This page is the full list.</p>
+
+    <div class="meta">
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span><strong>Reference page</strong> &mdash; not a step-by-step guide</span>
+      </span>
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span>Last verified <strong>April 23, 2026</strong></span>
+      </span>
+      <span class="meta-item print-hide">
+        <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+        <a href="#" onclick="window.print(); return false;">Print this page</a>
+      </span>
+    </div>
+
+    <div class="intro-note">
+      <p>If you already know what's going wrong, our <a href="index.html" class="inline-link">step-by-step scenario guides</a> walk you through <em>when</em> and <em>how</em> to use these resources in the right order. This page is the master list &mdash; useful if you landed here first, or if you want to skip straight to a phone number.</p>
+    </div>
+
+    <nav class="toc" aria-label="On this page">
+      <span class="toc-label">On this page</span>
+      <ol>
+        <li><a href="#general">General tenant help</a></li>
+        <li><a href="#legal">Legal help</a></li>
+        <li><a href="#undocumented">For undocumented tenants</a></li>
+        <li><a href="#health">Health-related resources</a></li>
+        <li><a href="#tools">Other useful tools</a></li>
+      </ol>
+    </nav>
+
+    <!-- SECTION 1: GENERAL -->
+    <h2 id="general">General tenant help</h2>
+    <p class="section-intro">Start here if you don't know where to start.</p>
+    <ul class="help-list">
+      <li id="org-met-council">
+        <span class="name">Met Council on Housing &mdash; Tenants' Rights Hotline</span>
+        <span class="phone"><a href="tel:2129790611">212-979-0611</a></span>
+        <span class="hours"><strong>Hours:</strong> Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Tue 5:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM</span>
+        <span class="desc">Free advice from trained volunteers on any NYC housing issue &mdash; repairs, rent regulation, harassment, eviction, Housing Court strategy, landlord tactics. Not lawyers, but deeply knowledgeable. <strong>Best first call for most tenants.</strong></span>
+        <span class="tip"><strong>Tip:</strong> Call after 4&nbsp;PM if you can. Avoid Mondays. Volunteer-staffed, so the hotline occasionally closes on short notice &mdash; try again the next shift.</span>
+      </li>
+      <li id="org-311">
+        <span class="name">NYC 311</span>
+        <span class="phone"><a href="tel:311">311</a> <span class="hours-inline" style="font-size: 0.875rem; font-weight: 400; color: var(--ink-faded);">(or 212-NEW-YORK from outside NYC)</span></span>
+        <span class="hours"><strong>Hours:</strong> 24/7 &middot; <strong>Online:</strong> <a href="https://portal.311.nyc.gov/" class="inline-link" target="_blank" rel="noopener">portal.311.nyc.gov</a> &middot; <strong>App:</strong> NYC 311 (iOS / Android)</span>
+        <span class="hours"><strong>TTY / hearing-impaired:</strong> dial <strong>711</strong> (NY Relay Service) or <a href="tel:2126399675">212-639-9675</a>.</span>
+        <span class="desc">File complaints about heat, hot water, mold, pests, leaks, lead paint, and other housing conditions. Complaints trigger HPD inspections and create a public paper trail. Also routes you to other city services (ActionNYC, Healthy Neighborhoods Program, Homebase, and more).</span>
+        <span class="tip"><strong>Tip:</strong> Save the complaint number the system gives you &mdash; it's how you (or your lawyer) track what happens next.</span>
+      </li>
+      <li id="org-hpd-online">
+        <span class="name">HPDOnline</span>
+        <span class="url"><a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">hpdonline.nyc.gov/hpdonline</a></span>
+        <span class="desc">Look up any NYC building's violation history, open complaints, registration status, and bedbug reports. <strong>Free, public, no account needed.</strong> This is where you check whether your landlord has been cited before, whether your complaint resulted in a violation, and what class (A, B, or C) each violation is.</span>
+        <span class="tip"><strong>Tip:</strong> Print or screenshot relevant violations when you find them &mdash; the database updates, and snapshots are useful evidence in Housing Court.</span>
+      </li>
+    </ul>
+
+    <!-- SECTION 2: LEGAL -->
+    <h2 id="legal">Legal help</h2>
+    <p class="section-intro">For tenants who need a lawyer or are going to Housing Court.</p>
+    <ul class="help-list">
+      <li id="org-housing-court-answers">
+        <span class="name">Housing Court Answers</span>
+        <span class="phone"><a href="tel:2129624795">212-962-4795</a> &middot; <a href="tel:7185571379">718-557-1379</a></span>
+        <span class="hours"><strong>Hours:</strong> Mon&ndash;Fri 9:00&nbsp;AM &ndash; 5:00&nbsp;PM</span>
+        <span class="email"><strong>Email:</strong> <a href="mailto:info@hcanswers.org">info@hcanswers.org</a></span>
+        <span class="address"><strong>Main office:</strong> 50 Broad Street, New York, NY 10004</span>
+        <span class="desc">A nonprofit that helps NYC tenants navigate Housing Court &mdash; including how to file an <strong>HP Action</strong> (a legal proceeding to force your landlord to make repairs). Not lawyers, but they'll walk you through the forms and the process, and connect you with the right legal services provider for your borough and case type.</span>
+      </li>
+      <li id="org-legal-services-nyc">
+        <span class="name">Legal Services NYC</span>
+        <span class="phone"><a href="tel:9176614500">917-661-4500</a></span>
+        <span class="hours"><strong>Intake hours:</strong> Mon&ndash;Fri 9:30&nbsp;AM &ndash; 4:00&nbsp;PM &mdash; intake specialists are available in any language.</span>
+        <span class="desc">Free legal representation for low-income tenants across all five boroughs. Can represent you in Housing Court, eviction proceedings, and rent disputes. Right to Counsel provider.</span>
+        <span class="hours"><strong>Who qualifies:</strong> Income-based eligibility. Call the main intake line to check &mdash; intake is usually same-day or next-day if a court date is imminent.</span>
+        <div class="sub-section">
+          <span class="sub-section-label">Borough offices (for existing clients or direct contact)</span>
+          <ul class="office-list">
+            <li>
+              <span class="office-name">Bronx</span>
+              <span class="office-phone"><a href="tel:7189283700">718-928-3700</a></span>
+            </li>
+            <li>
+              <span class="office-name">Brooklyn</span>
+              <span class="office-phone"><a href="tel:7182375500">718-237-5500</a></span>
+            </li>
+            <li>
+              <span class="office-name">Manhattan</span>
+              <span class="office-phone"><a href="tel:6464423100">646-442-3100</a></span>
+            </li>
+            <li>
+              <span class="office-name">Queens</span>
+              <span class="office-phone"><a href="tel:3475922200">347-592-2200</a></span>
+            </li>
+            <li>
+              <span class="office-name">Staten Island</span>
+              <span class="office-phone"><a href="tel:7182336480">718-233-6480</a></span>
+            </li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <span class="sub-section-label">Specialized assistance</span>
+          <ul class="office-list">
+            <li>
+              <span class="office-name">Front desk (non-legal)</span>
+              <span class="office-phone"><a href="tel:6464423600">646-442-3600</a></span>
+            </li>
+            <li>
+              <span class="office-name">Unemployment Insurance Project</span>
+              <span class="office-phone"><a href="tel:6464423332">646-442-3332</a></span>
+            </li>
+            <li>
+              <span class="office-name">Student Debt Legal Hotline</span>
+              <span class="office-phone"><a href="tel:7182375564">718-237-5564</a></span>
+            </li>
+            <li>
+              <span class="office-name">Bankruptcy Assistance</span>
+              <span class="office-phone"><a href="tel:6464423600">646-442-3600</a></span>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li id="org-legal-aid">
+        <span class="name">Legal Aid Society &mdash; Tenant Rights</span>
+        <span class="phone"><a href="tel:2125773300">212-577-3300</a></span>
+        <span class="desc">Free legal representation for tenants in eviction cases and related matters, including a dedicated NYCHA unit. Right to Counsel provider; covers all boroughs. The main line is best for general questions about eligibility &mdash; if you already know what type of case you have, call the specialized line below.</span>
+        <span class="tip"><strong>Tip:</strong> You can also call <strong>311</strong> and ask for the &ldquo;Tenant Helpline&rdquo; &mdash; it routes to city-funded tenant legal help including Legal Aid.</span>
+        <div class="sub-section">
+          <span class="sub-section-label">Specialized housing helplines</span>
+          <ul class="office-list">
+            <li>
+              <span class="office-name">Housing Justice Unit<br><span style="font-weight:400; color:var(--ink-faded); font-size:0.8125rem;">Group advocacy, tenant associations<br>Mon&ndash;Fri 10:00&nbsp;AM &ndash; 4:00&nbsp;PM</span></span>
+              <span class="office-phone"><a href="tel:2125777988">212-577-7988</a></span>
+            </li>
+            <li>
+              <span class="office-name">Homeless Rights Project<br><span style="font-weight:400; color:var(--ink-faded); font-size:0.8125rem;">Emergency housing, shelter, relocation<br>Mon&ndash;Fri 10:00&nbsp;AM &ndash; 3:00&nbsp;PM</span></span>
+              <span class="office-phone"><a href="tel:8006499125">800-649-9125</a></span>
+            </li>
+            <li>
+              <span class="office-name">Public Housing Unit<br><span style="font-weight:400; color:var(--ink-faded); font-size:0.8125rem;">NYCHA tenants</span></span>
+              <span class="office-phone"><a href="tel:2122983450">212-298-3450</a></span>
+            </li>
+            <li>
+              <span class="office-name">Foreclosure Prevention (Queens)</span>
+              <span class="office-phone"><a href="tel:7182988979">718-298-8979</a></span>
+            </li>
+            <li>
+              <span class="office-name">Foreclosure Prevention (Bronx)</span>
+              <span class="office-phone"><a href="tel:6463401908">646-340-1908</a></span>
+            </li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <span class="sub-section-label">Neighborhood offices (for existing clients / tenant defense)</span>
+          <ul class="office-list">
+            <li>
+              <span class="office-name">Manhattan</span>
+              <span class="office-phone"><a href="tel:2124263000">212-426-3000</a></span>
+            </li>
+            <li>
+              <span class="office-name">Bronx</span>
+              <span class="office-phone"><a href="tel:7189914600">718-991-4600</a></span>
+            </li>
+            <li>
+              <span class="office-name">Brooklyn</span>
+              <span class="office-phone"><a href="tel:7187223100">718-722-3100</a></span>
+            </li>
+            <li>
+              <span class="office-name">Queens</span>
+              <span class="office-phone"><a href="tel:7182862450">718-286-2450</a></span>
+            </li>
+            <li>
+              <span class="office-name">Staten Island</span>
+              <span class="office-phone"><a href="tel:3474225333">347-422-5333</a></span>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li id="org-right-to-counsel">
+        <span class="name">NYC Right to Counsel (Universal Access to Legal Services Law)</span>
+        <span class="desc"><strong>What it is:</strong> NYC law guarantees free legal representation to eligible tenants in covered eviction proceedings. Services are free, <strong>available citywide in every ZIP code</strong>, and available regardless of immigration status. You don't need to find a lawyer yourself &mdash; the court will connect you with one if you qualify.</span>
+        <div class="eligibility">
+          <strong>Who qualifies for full legal representation:</strong>
+          <ul>
+            <li><strong>Seniors (age 60+):</strong> all NYC residents 60 and older, regardless of income. (Codified via Local Law 20, August 2023.)</li>
+            <li><strong>Income-eligible households:</strong> at or below <strong>200%</strong> of the Federal Poverty Guidelines. For 2025&ndash;2026, that's roughly <strong>$53,300</strong> for a family of three or <strong>$62,000</strong> for a family of four.</li>
+            <li><strong>Immigration status is not a factor</strong> &mdash; all qualified tenants are covered regardless of status.</li>
+          </ul>
+        </div>
+        <div class="eligibility">
+          <strong>Covered case types:</strong>
+          <ul>
+            <li>Eviction cases in NYC Housing Court &mdash; non-payment or holdover.</li>
+            <li>NYCHA administrative proceedings regarding termination of tenancy.</li>
+            <li>Illegal lockouts by a landlord.</li>
+          </ul>
+          <p style="margin:0.5rem 0 0; font-size:0.875rem;"><strong>HP Actions are not part of core Right to Counsel.</strong> If you're the tenant suing your landlord for repairs, you generally don't get an automatic free lawyer. <em>However,</em> NYC's Office of Civil Justice (OCJ) partners with nonprofits under the <strong>Anti-Harassment and Tenant Protection (AHTP)</strong> program to provide free legal help for certain high-priority HP cases: illegal lockouts, critical or emergency repairs (life-threatening conditions, loss of heat or hot water), and documented landlord harassment.</p>
+        </div>
+        <span class="desc"><strong>If you earn too much and are under 60:</strong> you're still entitled to <strong>brief legal assistance</strong> &mdash; typically a one-time consultation or advice session with a provider. You may not get ongoing representation, but you can still get your question answered.</span>
+        <div class="sub-section">
+          <span class="sub-section-label">How to access for eviction cases</span>
+          <ul class="detail-list">
+            <li><strong>Call <a href="tel:311">311</a></strong> and ask for &ldquo;Right to Counsel&rdquo; or the &ldquo;Tenant Helpline.&rdquo;</li>
+            <li><strong>Call Housing Court Answers</strong> at <a href="tel:2129624795">212-962-4795</a> or <a href="tel:7185571379">718-557-1379</a>, Mon&ndash;Fri 9&nbsp;AM &ndash; 5&nbsp;PM &mdash; or email OCJ at <a href="mailto:civiljustice@hra.nyc.gov">civiljustice@hra.nyc.gov</a>.</li>
+            <li><strong>At court,</strong> ask the Housing Court judge to assign counsel on your first court date &mdash; or visit the courthouse Help Center and Right to Counsel intake table before your appearance.</li>
+            <li><strong>Online:</strong> check the eligibility chart at NYS Courts' <a href="https://ww2.nycourts.gov/courts/nyc/housing/freelawyerqualify.shtml" target="_blank" rel="noopener">Free Lawyers for Tenants</a> page, or visit NYC HRA's <a href="https://www.nyc.gov/site/hra/help/legal-services-for-tenants.page" target="_blank" rel="noopener">Legal Services for Tenants</a>.</li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <span class="sub-section-label">How to seek help for HP Actions (suing for repairs)</span>
+          <ul class="detail-list">
+            <li><strong>Call <a href="tel:311">311</a> and ask for &ldquo;Tenant Legal Assistance.&rdquo;</strong> HRA Legal Services may screen you for the AHTP program &mdash; especially if your case involves emergency repairs, an illegal lockout, or harassment.</li>
+            <li><strong>Contact a legal services provider directly</strong> &mdash; <a href="tel:2125773300">Legal Aid Society (212-577-3300)</a> or <a href="tel:9176614500">Legal Services NYC (917-661-4500)</a>. They may take on HP cases depending on current capacity and how severe the conditions are.</li>
+            <li><strong>You can file an HP Action yourself</strong> at the Housing Court Clerk's office without a lawyer. HPD's <a href="https://www.nyc.gov/site/hpd/services-and-information/tenants-rights-legal-assistance.page" target="_blank" rel="noopener">Tenants' Rights Legal Assistance</a> page has instructions for self-filing.</li>
+          </ul>
+        </div>
+      </li>
+      <li id="org-dhcr">
+        <span class="name">NYS Homes &amp; Community Renewal (DHCR) &mdash; Office of Rent Administration</span>
+        <span class="phone"><a href="tel:8334990343">833-499-0343</a> <span style="font-size:0.875rem; font-weight:400; color:var(--ink-faded);">(&ldquo;Rent InfoLine&rdquo;)</span></span>
+        <span class="hours"><strong>Automated:</strong> 24/7 in English and Spanish &middot; <strong>Live agents:</strong> Mon&ndash;Fri 9:00&nbsp;AM &ndash; 5:00&nbsp;PM &middot; <strong>Borough offices:</strong> Mon&ndash;Fri 9:00&nbsp;AM &ndash; 4:00&nbsp;PM (by appointment, closed on city holidays)</span>
+        <span class="desc">The state agency that enforces rent stabilization and rent control laws. Serves both tenants and building owners. Can order rent reductions when essential services aren't provided, handle overcharge complaints, and issue orders on succession rights and major capital improvement increases.</span>
+        <span class="desc"><strong>Who this is for:</strong> Rent-stabilized and rent-controlled tenants (and any tenant who isn't sure). If you're not sure whether you're regulated, request your apartment's certified <strong>rent history</strong> through DHCR (<a href="https://hcr.ny.gov/form-rec-1" target="_blank" rel="noopener" class="inline-link">Form REC-1</a>) or use JustFix's free rent history tool in Section 5.</span>
+        <div class="sub-section">
+          <span class="sub-section-label">Key services</span>
+          <ul class="detail-list">
+            <li><strong>Rent histories</strong> &mdash; request a certified copy of your apartment's rent history to check for overcharges (<a href="https://hcr.ny.gov/form-rec-1" target="_blank" rel="noopener">Form REC-1</a>).</li>
+            <li><strong>Overcharge complaints</strong> &mdash; file a formal complaint if you believe your rent exceeds the legal regulated amount (<a href="https://hcr.ny.gov/form-ra-89" target="_blank" rel="noopener">Form RA-89</a>).</li>
+            <li><strong>Lease &amp; services</strong> &mdash; help with lease renewals, reduction in essential building services, and harassment complaints.</li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <span class="sub-section-label">Borough rent offices (appointments)</span>
+          <ul class="office-list">
+            <li>
+              <span class="office-name">Bronx</span>
+              <span class="office-phone"><a href="tel:7184300880">718-430-0880</a></span>
+              <span class="office-address">1 Fordham Plaza, 4th Floor</span>
+            </li>
+            <li>
+              <span class="office-name">Brooklyn</span>
+              <span class="office-phone"><a href="tel:7187224778">718-722-4778</a></span>
+              <span class="office-address">55 Hanson Place, 6th Floor</span>
+            </li>
+            <li>
+              <span class="office-name">Lower Manhattan</span>
+              <span class="office-phone"><a href="tel:2124806238">212-480-6238</a></span>
+              <span class="office-address">25 Beaver Street, 2nd Floor</span>
+            </li>
+            <li>
+              <span class="office-name">Upper Manhattan</span>
+              <span class="office-phone"><a href="tel:2129618930">212-961-8930</a></span>
+              <span class="office-address">163 West 125th Street, 5th Floor</span>
+            </li>
+            <li>
+              <span class="office-name">Queens</span>
+              <span class="office-phone"><a href="tel:7184824041">718-482-4041</a></span>
+              <span class="office-address">92-31 Union Hall Street, 6th Floor</span>
+            </li>
+            <li>
+              <span class="office-name">Westchester</span>
+              <span class="office-phone"><a href="tel:9149484434">914-948-4434</a></span>
+              <span class="office-address">75 South Broadway, 3rd Floor, White Plains</span>
+            </li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <span class="sub-section-label">Common DHCR forms</span>
+          <ul class="forms-grid">
+            <li>
+              <svg class="form-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              <span class="form-number"><a href="https://hcr.ny.gov/form-ra-81" target="_blank" rel="noopener">RA-81</a></span>
+              <span class="form-desc">Application for rent reduction based on decreased service(s) &mdash; <strong>individual apartment</strong>.</span>
+            </li>
+            <li>
+              <svg class="form-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              <span class="form-number"><a href="https://hcr.ny.gov/form-ra-84" target="_blank" rel="noopener">RA-84</a></span>
+              <span class="form-desc">Application for rent reduction based on decreased service(s) &mdash; <strong>building-wide</strong>.</span>
+            </li>
+            <li>
+              <svg class="form-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              <span class="form-number"><a href="https://hcr.ny.gov/form-hhw-1" target="_blank" rel="noopener">HHW-1</a></span>
+              <span class="form-desc"><strong>Failure to provide heat and/or hot water</strong> &mdash; tenant application for rent reduction.</span>
+            </li>
+            <li>
+              <svg class="form-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              <span class="form-number"><a href="https://hcr.ny.gov/form-ra-90" target="_blank" rel="noopener">RA-90</a></span>
+              <span class="form-desc">Tenant's complaint of owner's <strong>failure to renew lease</strong> and/or furnish a signed copy.</span>
+            </li>
+            <li>
+              <svg class="form-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              <span class="form-number"><a href="https://hcr.ny.gov/form-ra-89" target="_blank" rel="noopener">RA-89</a></span>
+              <span class="form-desc"><strong>Rent overcharge application</strong> &mdash; if your legal rent is lower than what you're being charged. (Use <a href="https://hcr.ny.gov/form-ra-89c" target="_blank" rel="noopener" class="inline-link">RA-89C</a> as a continuation for additional apartments or periods.)</span>
+            </li>
+            <li>
+              <svg class="form-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              <span class="form-number"><a href="https://hcr.ny.gov/form-ra-60h" target="_blank" rel="noopener">RA-60H</a></span>
+              <span class="form-desc">Tenant's statement of complaint &mdash; <strong>harassment</strong> (illegal owner conduct intended to force you out).</span>
+            </li>
+            <li>
+              <svg class="form-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              <span class="form-number"><a href="https://hcr.ny.gov/form-ra-22.1" target="_blank" rel="noopener">RA-22.1</a></span>
+              <span class="form-desc">Tenant affirmation of <strong>non-compliance</strong> &mdash; if the owner fails to follow a previous DHCR order to restore services.</span>
+            </li>
+            <li>
+              <svg class="form-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              <span class="form-number"><a href="https://hcr.ny.gov/form-rec-1" target="_blank" rel="noopener">REC-1</a></span>
+              <span class="form-desc">Request for records access &mdash; <strong>certified rent history</strong>.</span>
+            </li>
+          </ul>
+        </div>
+        <span class="tip"><strong>Filing tip:</strong> For RA-81 and RA-84, DHCR generally requires proof that you first notified the owner in writing about the issue and gave them a chance to fix it. For HHW-1 (heat and hot water), include a city inspector's report &mdash; call 311 first to trigger an inspection. Many forms can be submitted online through the <strong><a href="https://rent.hcr.ny.gov/" target="_blank" rel="noopener" class="inline-link">DHCR Rent Connect</a></strong> portal, which DHCR recommends over paper filing where available.</span>
+      </li>
+    </ul>
+
+    <!-- SECTION 3: UNDOCUMENTED -->
+    <h2 id="undocumented">For undocumented tenants</h2>
+    <span class="section-flag">Draft &mdash; pending immigration advocacy review</span>
+    <p class="section-intro">In New York City, you have the same legal rights as any other tenant regardless of your immigration status. It is illegal for a landlord to use your documentation status as a tool for harassment, discrimination, or eviction. The organizations below provide free, confidential help and do not share your information with federal immigration authorities.</p>
+
+    <div class="intro-note">
+      <p><strong>Key protections for undocumented tenants:</strong></p>
+      <ul style="list-style: none; padding: 0; margin: 0.5rem 0 0;">
+        <li style="position: relative; padding: 0.25rem 0 0.25rem 1.25rem; font-size: 0.9375rem; color: var(--ink-soft);"><span style="position:absolute; left:0; color: var(--accent); font-weight:700;">→</span> <strong>Protection from ICE threats.</strong> It is a crime in New York (Class A misdemeanor) for a landlord to threaten to call ICE to intimidate, harass, or retaliate against you. Using terms like &ldquo;illegal alien&rdquo; to demean or humiliate you also violates NYC Human Rights Law and can result in significant fines.</li>
+        <li style="position: relative; padding: 0.25rem 0 0.25rem 1.25rem; font-size: 0.9375rem; color: var(--ink-soft);"><span style="position:absolute; left:0; color: var(--accent); font-weight:700;">→</span> <strong>Safe housing (warranty of habitability).</strong> You have the right to a safe, livable home with essential services like heat and hot water. Your landlord cannot refuse repairs because of your immigration status.</li>
+        <li style="position: relative; padding: 0.25rem 0 0.25rem 1.25rem; font-size: 0.9375rem; color: var(--ink-soft);"><span style="position:absolute; left:0; color: var(--accent); font-weight:700;">→</span> <strong>Legal eviction process.</strong> You cannot be locked out or have your belongings removed without a court order signed by a judge &mdash; even if you don't have a written lease, as long as you've lived in the unit more than 30 days.</li>
+        <li style="position: relative; padding: 0.25rem 0 0.25rem 1.25rem; font-size: 0.9375rem; color: var(--ink-soft);"><span style="position:absolute; left:0; color: var(--accent); font-weight:700;">→</span> <strong>Rent regulation.</strong> If you live in a rent-stabilized apartment, you are entitled to all legal protections &mdash; including guaranteed lease renewals and limits on rent increases &mdash; regardless of status.</li>
+        <li style="position: relative; padding: 0.25rem 0 0.25rem 1.25rem; font-size: 0.9375rem; color: var(--ink-soft);"><span style="position:absolute; left:0; color: var(--accent); font-weight:700;">→</span> <strong>Right to organize.</strong> You have the legal right to join or form a tenant association to advocate for better building conditions without fear of retaliation.</li>
+      </ul>
+    </div>
+    <ul class="help-list">
+      <li id="org-actionnyc">
+        <span class="name">ActionNYC / Mayor's Office of Immigrant Affairs (MOIA) Hotline</span>
+        <span class="phone"><a href="tel:8003540365">1-800-354-0365</a> <span style="font-size:0.875rem; font-weight:400; color:var(--ink-faded);">(or call 311 and ask for ActionNYC)</span></span>
+        <span class="hours"><strong>Hours:</strong> Mon&ndash;Fri 9:00&nbsp;AM &ndash; 6:00&nbsp;PM</span>
+        <span class="desc">Free, safe immigration legal help connected to city services. Can help you understand your rights before filing a housing complaint &mdash; and before signing anything your landlord puts in front of you. Appointments book through the MOIA hotline or 311.</span>
+      </li>
+      <li id="org-make-the-road">
+        <span class="name">Make the Road New York</span>
+        <span class="phone"><a href="tel:7184187690">718-418-7690</a></span>
+        <span class="desc">Tenant and immigrant rights support: community organizing, legal services (employment, immigration, housing, benefits), and advocacy. Call your local neighborhood center for direct access to legal services.</span>
+        <div class="sub-section">
+          <span class="sub-section-label">Neighborhood centers</span>
+          <ul class="office-list">
+            <li>
+              <span class="office-name">Brooklyn (Bushwick)</span>
+              <span class="office-phone"><a href="tel:7184187690">718-418-7690</a></span>
+              <span class="office-address">301 Grove Street, Brooklyn, NY 11237</span>
+            </li>
+            <li>
+              <span class="office-name">Queens (Corona)</span>
+              <span class="office-phone"><a href="tel:7185658500">718-565-8500</a></span>
+              <span class="office-address">104-19 Roosevelt Avenue, Corona, NY 11368</span>
+            </li>
+            <li>
+              <span class="office-name">Staten Island (Port Richmond)</span>
+              <span class="office-phone"><a href="tel:7187271222">718-727-1222</a></span>
+              <span class="office-address">161 Port Richmond Avenue, Staten Island, NY 10302</span>
+            </li>
+            <li>
+              <span class="office-name">Westchester (White Plains)</span>
+              <span class="office-phone"><a href="tel:9149488466">914-948-8466</a></span>
+              <span class="office-address">46 Waller Avenue, White Plains, NY 10605</span>
+            </li>
+            <li>
+              <span class="office-name">Long Island (Brentwood)</span>
+              <span class="office-phone"><a href="tel:6312312220">631-231-2220</a></span>
+              <span class="office-address">1090 Suffolk Avenue, Brentwood, NY 11717</span>
+            </li>
+          </ul>
+        </div>
+        <span class="tip"><strong>Health Services Helpline:</strong> <a href="tel:18663652724">1-866-365-2724</a> (extension 1) for help with health insurance coverage or renewals.</span>
+      </li>
+      <li id="org-nyic">
+        <span class="name">New York Immigration Coalition (NYIC)</span>
+        <span class="phone"><a href="tel:2126272227">212-627-2227</a></span>
+        <span class="email"><strong>Email:</strong> <a href="mailto:info@nyic.org">info@nyic.org</a></span>
+        <span class="address"><strong>Address:</strong> 131 W 33rd Street, Suite 610, New York, NY 10001</span>
+        <span class="desc">NYIC is an <strong>advocacy organization</strong> &mdash; it does not provide direct legal services itself. If you need immediate legal help or referrals to a trusted attorney, NYIC recommends the two hotlines below.</span>
+        <div class="sub-section">
+          <span class="sub-section-label">Hotlines NYIC recommends</span>
+          <ul class="office-list">
+            <li>
+              <span class="office-name">New Americans Hotline<br><span style="font-weight:400; color:var(--ink-faded); font-size:0.8125rem;">Toll-free, 200+ languages &middot; managed by Catholic Charities<br>Mon&ndash;Fri 9:00&nbsp;AM &ndash; 8:00&nbsp;PM</span></span>
+              <span class="office-phone"><a href="tel:18005667636">1-800-566-7636</a></span>
+            </li>
+            <li>
+              <span class="office-name">ActionNYC / MOIA Hotline<br><span style="font-weight:400; color:var(--ink-faded); font-size:0.8125rem;">Free, safe immigration legal help and appointments via NYC.gov<br>Mon&ndash;Fri 9:00&nbsp;AM &ndash; 6:00&nbsp;PM</span></span>
+              <span class="office-phone"><a href="tel:18003540365">1-800-354-0365</a></span>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li id="org-cchr">
+        <span class="name">NYC Commission on Human Rights (CCHR)</span>
+        <span class="phone"><a href="tel:2124160197">212-416-0197</a> <span style="font-size:0.875rem; font-weight:400; color:var(--ink-faded);">(intake appointments)</span></span>
+        <span class="hours"><strong>Live assistance:</strong> Mon&ndash;Fri 9:00&nbsp;AM &ndash; 5:00&nbsp;PM (excluding holidays) &middot; <strong>Online reporting:</strong> 24/7 via the Report Discrimination form on the official CCHR website</span>
+        <span class="desc">Enforces NYC Human Rights Law. If your landlord <strong>threatens to report you to ICE</strong>, refuses to make repairs because of your national origin, or discriminates against you based on immigration status, this is the agency that investigates. Also handles source-of-income discrimination (Section 8, HASA, CityFHEPS).</span>
+        <span class="tip"><strong>Tip:</strong> You can also call <strong>311</strong> and say &ldquo;Human Rights&rdquo; to reach the Commission.</span>
+        <div class="sub-section">
+          <span class="sub-section-label">Borough community service centers</span>
+          <ul class="office-list">
+            <li>
+              <span class="office-name">Manhattan (main office)</span>
+              <span class="office-phone"><a href="tel:2123067450">212-306-7450</a></span>
+              <span class="office-address">22 Reade Street</span>
+            </li>
+            <li>
+              <span class="office-name">Brooklyn</span>
+              <span class="office-phone"><a href="tel:7187223130">718-722-3130</a></span>
+              <span class="office-address">25 Chapel Street, Suite 1001</span>
+            </li>
+            <li>
+              <span class="office-name">Bronx</span>
+              <span class="office-phone"><a href="tel:7185796900">718-579-6900</a></span>
+              <span class="office-address">1932 Arthur Avenue, Room 203A</span>
+            </li>
+            <li>
+              <span class="office-name">Queens</span>
+              <span class="office-phone"><a href="tel:7186572465">718-657-2465</a></span>
+              <span class="office-address">153-01 Jamaica Avenue, 2nd Floor</span>
+            </li>
+            <li>
+              <span class="office-name">Staten Island</span>
+              <span class="office-phone"><a href="tel:7183908506">718-390-8506</a></span>
+              <span class="office-address">60 Bay Street, 7th Floor</span>
+            </li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <span class="sub-section-label">Specialized lines</span>
+          <ul class="office-list">
+            <li>
+              <span class="office-name">Law Enforcement Bureau<br><span style="font-weight:400; color:var(--ink-faded); font-size:0.8125rem;">Accessibility accommodations for existing hearings</span></span>
+              <span class="office-phone"><a href="tel:2123067450">212-306-7450</a></span>
+            </li>
+            <li>
+              <span class="office-name">Director of Mediation<br><span style="font-weight:400; color:var(--ink-faded); font-size:0.8125rem;">CCHR's free mediation program</span></span>
+              <span class="office-phone"><a href="tel:2124160228">212-416-0228</a></span>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+
+    <!-- SECTION 4: HEALTH -->
+    <h2 id="health">Health-related resources</h2>
+    <p class="section-intro">For tenants whose health is affected by housing conditions.</p>
+    <ul class="help-list">
+      <li id="org-healthy-neighborhoods">
+        <span class="name">NYC Health Dept &mdash; Healthy Neighborhoods Program</span>
+        <span class="hours"><strong>How to access:</strong> Ask your doctor for a referral, or call 311 and ask for the Healthy Neighborhoods Program.</span>
+        <span class="desc">Free in-home environmental inspection for households where someone has asthma and there are environmental triggers &mdash; mold, pests, dust, smoke. Produces an <strong>official health assessment</strong> that can support an HPD complaint or Housing Court case.</span>
+        <span class="desc"><strong>Who this is for:</strong> Households with asthma sufferers, especially children under 6.</span>
+      </li>
+      <li id="org-poison-control">
+        <span class="name">NYC Poison Control Center</span>
+        <span class="phone"><a href="tel:2127647667">212-POISONS (212-764-7667)</a></span>
+        <span class="hours"><strong>Online chat:</strong> click the &ldquo;Chat With Us&rdquo; button on the <a href="https://www.nyc.gov/site/doh/health/health-topics/poison-control.page" target="_blank" rel="noopener">NYC DOH Poison Control</a> page.</span>
+        <span class="desc">Guidance on lead exposure risks and next steps if you suspect lead paint exposure, especially for children under 6. Also a first call if anyone in your household has ingested peeling paint chips or is showing symptoms of exposure.</span>
+      </li>
+    </ul>
+
+    <!-- SECTION 5: TOOLS -->
+    <h2 id="tools">Other useful tools</h2>
+    <p class="section-intro">Non-phone resources that tenants should know about.</p>
+    <ul class="help-list">
+      <li id="org-justfix">
+        <span class="name">JustFix</span>
+        <span class="url"><a href="https://justfix.org/" target="_blank" rel="noopener">justfix.org</a></span>
+        <span class="desc">Free self-service tools for NYC tenants &mdash; send a <strong>certified complaint letter</strong> to your landlord, look up your <strong>rent history</strong> to check whether you're rent-stabilized, and start an <strong>HP Action</strong> in Housing Court. Not a substitute for a lawyer, but a powerful set of DIY tools built specifically for NYC tenants.</span>
+      </li>
+      <li id="org-lookup">
+        <span class="name">Tenant Triage NYC Address Lookup</span>
+        <span class="desc">Built into every repair-scenario page on this site. Enter your address and see your building's <strong>HPD violation history</strong> from public city data &mdash; open violations, status, and class. Uses NYC Open Data and NYC Planning Labs GeoSearch. No account or signup needed.</span>
+        <span class="desc"><a href="index.html" class="inline-link">Browse scenarios to try it &rarr;</a></span>
+      </li>
+    </ul>
+
+    <!-- CTA back to scenarios -->
+    <aside class="cta-callout">
+      <span class="callout-label">Not sure which of these you need?</span>
+      <h3>Let us point you to the right one.</h3>
+      <p>If you can describe what's going wrong in a sentence or two, our step-by-step guides will tell you exactly which of these resources to use and in what order &mdash; along with sample letters, phone scripts, and what to expect from each call.</p>
+      <a href="index.html" class="cta-button">Browse all scenarios</a>
+    </aside>
+
+    <div class="disclaimer">
+      <strong>This isn't legal advice.</strong> Tenant Triage NYC is an independent guide to help NYC tenants find free resources. We are not lawyers and we are not affiliated with any of the organizations listed above. Phone numbers, hours, and eligibility rules change &mdash; please verify directly with the organization before relying on details here. If something on this page is out of date, <a href="#" class="inline-link">tell us</a> and we'll fix it.
+    </div>
+
+    </article>
+
+  </div>
+
+  <footer class="site-footer">
+    Made by <a href="https://www.hollymariegibbs.com" target="_blank" rel="noopener">Holly Gibbs</a>
+  </footer>
+
+  <script>
+    // Scroll-spy for sticky sidebar ToC: highlight the link for whichever
+    // section/org is currently in the upper part of the viewport.
+    (function () {
+      var sidebar = document.querySelector('.toc-sidebar');
+      if (!sidebar) return;
+
+      var links = sidebar.querySelectorAll('a[data-toc-target]');
+      if (!links.length) return;
+
+      var linkById = {};
+      links.forEach(function (a) {
+        linkById[a.getAttribute('data-toc-target')] = a;
+      });
+
+      var targets = [];
+      Object.keys(linkById).forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) targets.push(el);
+      });
+
+      function clearActive() {
+        links.forEach(function (a) { a.classList.remove('active'); });
+      }
+
+      // Track the most-recently-entered element. IntersectionObserver fires
+      // for every element whose intersection changes, so we track positions.
+      var activeId = null;
+
+      var observer = new IntersectionObserver(function (entries) {
+        // Of all currently-visible targets, pick the one nearest the top
+        // of the "active zone" (roughly the top third of the viewport).
+        var visible = targets
+          .map(function (t) {
+            var rect = t.getBoundingClientRect();
+            return { id: t.id, top: rect.top, bottom: rect.bottom };
+          })
+          .filter(function (r) { return r.bottom > 0 && r.top < window.innerHeight; });
+
+        if (!visible.length) return;
+
+        // Prefer an element whose top has already passed the 30% viewport line
+        var activeZone = window.innerHeight * 0.3;
+        var candidates = visible.filter(function (r) { return r.top <= activeZone; });
+        var pick = (candidates.length ? candidates[candidates.length - 1] : visible[0]);
+
+        if (pick.id !== activeId) {
+          activeId = pick.id;
+          clearActive();
+          var link = linkById[activeId];
+          if (link) link.classList.add('active');
+        }
+      }, {
+        rootMargin: '0px 0px -60% 0px',
+        threshold: [0, 0.25, 0.5, 0.75, 1]
+      });
+
+      targets.forEach(function (t) { observer.observe(t); });
+    })();
+  </script>
+
+</body>
+</html>
