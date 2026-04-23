@@ -1,0 +1,37 @@
+name: Suggest a missing scenario
+description: A housing problem that isn't covered yet — tell us what we should build a guide for.
+title: "[Suggest] "
+labels: ["scenario-request", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for flagging this. Tell us about the situation and we'll prioritize building a guide.
+
+        **This isn't a place to ask for legal help.** If you need advice on your own housing situation, please call [Met Council on Housing](https://www.metcouncilonhousing.org/help-answers/) at **212-979-0611**.
+
+  - type: textarea
+    id: situation
+    attributes:
+      label: What's the housing problem?
+      description: Describe the situation the way a tenant would experience it — short title first, then any detail.
+      placeholder: |
+        e.g., "My landlord is trying to show my apartment to prospective new tenants while I'm still living there, and they keep giving me short notice."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Anything else we should know?
+      description: Optional — personal experience, resources you've already tried, relevant laws, whether this is common, etc.
+      placeholder: |
+        e.g., "I know RPL §235 says something about reasonable notice but I couldn't find a clear tenant-facing explainer anywhere."
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        Thanks. We build scenarios in rough order of how many people are affected and how hard the existing resources are to navigate. You can subscribe to this thread (bell icon, top right after submitting) to be notified when a guide is published.
