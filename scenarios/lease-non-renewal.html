@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My landlord won't renew my lease — Tenant Triage NYC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../lookup.css">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f3ef;
+      --bg-elevated: #fafaf8;
+      --ink: #111111;
+      --ink-soft: #3d3d3d;
+      --ink-faded: #6b6b6b;
+      --rule: #e6e4df;
+      --rule-strong: #c9c5bc;
+
+      --accent: #0d7377;
+      --accent-deep: #08494c;
+      --accent-soft: #e3f0f0;
+      --accent-bright: #5eb6b9; /* lighter variant for use on dark backgrounds */
+
+      --protect: #2a4a7f;
+      --protect-soft: #eaeff7;
+      --warning-ink: #7a3a0a;
+      --warning-bg: #fff4e6;
+      --warning-rule: #e8a35a;
+
+      --code-bg: #f3f1ec;
+      --code-rule: #d9d5ca;
+      --quote-bar: #c9c5bc;
+
+      --measure: 38rem;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 18px; scroll-behavior: smooth; }
+
+    body {
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      font-size: 1.125rem;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--accent); width: 0%; z-index: 1000;
+      transition: width 0.05s linear;
+    }
+
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem 1.5rem;
+      background: var(--bg);
+    }
+    .site-header-inner {
+      max-width: 64rem; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .wordmark {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      text-decoration: none; color: var(--ink);
+    }
+    .wordmark-main {
+      font-weight: 900; font-size: 1.375rem;
+      letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
+    }
+    .wordmark-accent {
+      font-weight: 500; font-size: 0.95rem;
+      color: var(--accent); letter-spacing: 0.01em;
+    }
+    .site-nav {
+      display: flex; gap: 1.75rem;
+      font-size: 0.875rem; color: var(--ink); font-weight: 500;
+    }
+    .site-nav a {
+      color: inherit; text-decoration: none;
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .site-nav a:hover { border-bottom-color: var(--accent); }
+
+    article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+    /* Breadcrumbs — more prominent now */
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+      font-size: 0.875rem;
+    }
+    .breadcrumbs a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.25rem 0;
+      border-bottom: 1px solid var(--rule-strong);
+      transition: all 0.15s ease;
+    }
+    .breadcrumbs a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .breadcrumbs .sep {
+      color: var(--ink-faded);
+      font-weight: 400;
+    }
+    .breadcrumbs .current {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: clamp(2.25rem, 5.5vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+
+    /* "What you're reading" subtitle */
+    .reading-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+      padding: 0.35rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .reading-label svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    .standfirst {
+      font-weight: 400;
+      font-size: 1.1875rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin-bottom: 2rem;
+      max-width: 36rem;
+    }
+
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 1.5rem;
+      padding: 0.875rem 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.8125rem; color: var(--ink-faded);
+      margin-bottom: 2.5rem;
+    }
+    .meta-item { display: flex; align-items: center; gap: 0.4rem; }
+    .meta-item svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .meta-item strong { color: var(--ink); font-weight: 600; }
+    .meta-item a {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    p { margin-bottom: 1.25rem; color: var(--ink); }
+    p strong { font-weight: 600; }
+
+    a.inline-link {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: background 0.15s ease;
+    }
+    a.inline-link:hover { background: var(--accent-soft); }
+
+    h2 {
+      font-weight: 800;
+      font-size: 1.625rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-top: 3.5rem;
+      margin-bottom: 1.25rem;
+      color: var(--ink);
+    }
+
+    .sub-label {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--ink);
+      margin-top: 1.75rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .read-first {
+      background: var(--bg-soft);
+      border-left: 4px solid var(--ink);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+    .read-first p { margin-bottom: 0.75rem; font-size: 0.9375rem; }
+    .read-first p:last-child { margin-bottom: 0; }
+    .read-first strong { color: var(--ink); font-weight: 700; }
+
+    .rights-box {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 1.75rem 2rem;
+      margin: 2rem 0;
+    }
+    .rights-box .rights-label {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #d4d2cc;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .rights-box h3 {
+      font-weight: 800; font-size: 1.375rem;
+      letter-spacing: -0.015em; color: var(--bg);
+      margin-bottom: 0.75rem;
+    }
+    .rights-box p { color: var(--bg); font-size: 0.9375rem; margin-bottom: 0.75rem; }
+    .rights-box ul { list-style: none; padding: 0; margin-top: 0.75rem; }
+    .rights-box li {
+      position: relative; padding-left: 1.5rem; margin-bottom: 0.6rem;
+      font-size: 0.9375rem; color: var(--bg);
+    }
+    .rights-box li::before {
+      content: "→"; position: absolute; left: 0;
+      color: var(--accent-bright); font-weight: 700;
+    }
+    .rights-box .source {
+      font-size: 0.75rem; color: #b8b6b1;
+      margin-top: 1rem; margin-bottom: 0;
+    }
+
+    .severity-table {
+      margin: 1rem 0 0.5rem;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .severity-table th,
+    .severity-table td {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid #2c2c2c;
+      color: var(--bg);
+    }
+    .severity-table th {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #d4d2cc;
+      border-bottom-color: #4a4a4a;
+    }
+    .severity-table tr:last-child td { border-bottom: none; }
+    .severity-table .class-cell { font-weight: 700; color: var(--accent-bright); }
+
+    /* SEVERITY PICKER */
+    .severity-picker {
+      margin: 2rem 0 2.5rem;
+      padding: 1.5rem;
+      background: var(--bg-soft);
+      border: 2px solid var(--ink);
+    }
+    .severity-picker-header {
+      margin-bottom: 1rem;
+    }
+    .severity-picker-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .severity-picker-title {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .severity-picker-help {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+    }
+    .severity-options {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .severity-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.875rem;
+      padding: 0.875rem 1rem;
+      background: var(--bg);
+      border: 1.5px solid var(--rule-strong);
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: all 0.12s ease;
+      width: 100%;
+    }
+    .severity-option:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .severity-option.active {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .severity-option-marker {
+      flex-shrink: 0;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 1.5px solid var(--rule-strong);
+      border-radius: 100px;
+      margin-top: 0.15rem;
+      position: relative;
+      transition: all 0.12s ease;
+    }
+    .severity-option:hover .severity-option-marker {
+      border-color: var(--accent);
+    }
+    .severity-option.active .severity-option-marker {
+      border-color: var(--bg);
+      background: var(--bg);
+    }
+    .severity-option.active .severity-option-marker::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      background: var(--ink);
+      border-radius: 100px;
+    }
+    .severity-option-text {
+      flex: 1;
+    }
+    .severity-option-name {
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+    .severity-option.active .severity-option-name { color: var(--bg); }
+    .severity-option-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      display: block;
+    }
+    .severity-option.active .severity-option-desc { color: #c9c5bc; }
+
+    /* Severity context banner — shows after selection */
+    .severity-context {
+      margin: 1.5rem 0 2.5rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      display: none;
+    }
+    .severity-context.visible {
+      display: block;
+    }
+    .severity-context-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .severity-context h3 {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+    .severity-context p {
+      font-size: 0.9375rem;
+      margin-bottom: 0.5rem;
+    }
+    .severity-context p:last-child { margin-bottom: 0; }
+    .severity-context .key-fact {
+      display: block;
+      padding: 0.75rem 0;
+      border-top: 1px solid rgba(13, 115, 119, 0.2);
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+    }
+    .severity-context .key-fact strong {
+      color: var(--accent-deep);
+    }
+
+    .step {
+      margin: 3rem 0;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .step-header { margin-bottom: 1.25rem; }
+    .step-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .step-number {
+      font-weight: 800; font-size: 0.75rem;
+      letter-spacing: 0.08em; color: var(--accent);
+      text-transform: uppercase;
+    }
+    .time-chip {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.75rem; font-weight: 500;
+      color: var(--ink-soft); background: var(--bg-soft);
+      padding: 0.25rem 0.6rem; border-radius: 100px;
+    }
+    .time-chip svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .step-title {
+      font-weight: 800; font-size: 1.625rem;
+      line-height: 1.2; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0;
+    }
+
+    .why-this-matters {
+      color: var(--ink-soft);
+      border-left: 3px solid var(--rule-strong);
+      padding-left: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+
+    .step ol, .step ul { margin-bottom: 1.25rem; padding-left: 1.25rem; }
+    .step li { margin-bottom: 0.6rem; }
+
+    /* Template box */
+    .template {
+      background: var(--code-bg);
+      border: 1px solid var(--code-rule);
+      border-left: 4px solid var(--ink);
+      margin: 1rem 0 1.5rem;
+      position: relative;
+    }
+    .template-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 1rem 0.6rem 1.25rem;
+      border-bottom: 1px solid var(--code-rule);
+      background: rgba(0,0,0,0.025);
+    }
+    .template-label {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink);
+    }
+    .template-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: inherit; font-size: 0.75rem; font-weight: 600;
+      color: var(--ink); background: var(--bg);
+      border: 1px solid var(--ink);
+      padding: 0.35rem 0.75rem;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .copy-btn:hover { background: var(--ink); color: var(--bg); }
+    .copy-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .copy-btn.copied { background: var(--ink); color: var(--bg); }
+    .template-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+      font-size: 0.9375rem; line-height: 1.65;
+      color: var(--ink);
+    }
+    .template-body p { margin-bottom: 0.75rem; color: var(--ink); }
+    .template-body p:last-child { margin-bottom: 0; }
+
+    .fill {
+      display: inline-block;
+      font-family: inherit; font-size: inherit; font-weight: 500;
+      color: var(--accent-deep); background: var(--bg);
+      border: none; border-bottom: 1.5px dashed var(--accent);
+      padding: 0 0.25rem; margin: 0 1px;
+      min-width: 4rem; max-width: 100%;
+      line-height: 1.4;
+      transition: background 0.12s ease;
+    }
+    .fill::placeholder {
+      color: var(--accent); font-style: italic;
+      font-weight: 400; opacity: 0.65;
+    }
+    .fill:focus {
+      outline: none;
+      background: var(--accent-soft);
+      border-bottom-color: var(--accent-deep);
+      border-bottom-style: solid;
+    }
+    .fill.has-value {
+      border-bottom-style: solid;
+      border-bottom-color: var(--ink);
+      color: var(--ink);
+    }
+
+    /* Spoken script box with fillable inputs */
+    .spoken {
+      margin: 1rem 0 1.5rem;
+      padding: 1rem 0 1rem 1.5rem;
+      border-left: 4px solid var(--quote-bar);
+      position: relative;
+    }
+    .spoken-label {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.6rem;
+    }
+    .spoken-label svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .spoken-body {
+      font-size: 1.0625rem; line-height: 1.65;
+      color: var(--ink); font-weight: 400;
+    }
+    .spoken-body p { margin-bottom: 0.6rem; }
+    .spoken-body p:last-child { margin-bottom: 0; }
+
+    /* Fillable inputs in spoken scripts — bigger, more prominent */
+    .spoken .fill {
+      font-size: 1.0625rem;
+      font-weight: 500;
+      color: var(--accent-deep);
+      border-bottom-width: 2px;
+      padding: 0 0.3rem;
+      min-width: 5rem;
+    }
+    .spoken .fill::placeholder {
+      font-size: 1rem;
+    }
+    .spoken .fill.has-value {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .spoken-hint {
+      display: block; margin-top: 0.75rem;
+      font-size: 0.8125rem; color: var(--ink-faded);
+      font-style: italic;
+    }
+
+    /* Reference number capture */
+    .ref-capture {
+      background: var(--bg-soft);
+      border: 1px solid var(--rule-strong);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .ref-capture-label {
+      font-weight: 600; font-size: 0.9375rem;
+      color: var(--ink); flex: 1 1 auto;
+    }
+    .ref-capture input {
+      font-family: inherit; font-size: 1rem; font-weight: 600;
+      color: var(--ink); background: var(--bg);
+      border: 1.5px solid var(--ink);
+      padding: 0.5rem 0.75rem;
+      width: 14rem; max-width: 100%;
+    }
+    .ref-capture input::placeholder { font-weight: 400; color: var(--ink-faded); }
+    .ref-capture input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+    .ref-recall {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.9375rem;
+    }
+    .ref-recall .label {
+      display: block;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 0.25rem;
+    }
+    .ref-recall .number {
+      font-size: 1.125rem; font-weight: 700; color: var(--ink);
+    }
+    .ref-recall .empty {
+      color: var(--ink-faded);
+      font-weight: 400; font-style: italic;
+      font-size: 0.9375rem;
+    }
+
+    /* Callouts */
+    .callout {
+      margin: 2.5rem 0;
+      padding: 1.75rem 2rem;
+      position: relative;
+    }
+    .callout-protect {
+      background: var(--protect-soft);
+      border-left: 4px solid var(--protect);
+    }
+    .callout-warning {
+      background: var(--warning-bg);
+      border-left: 4px solid var(--warning-rule);
+    }
+    .callout-label {
+      font-size: 0.7rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      margin-bottom: 0.5rem; display: block;
+    }
+    .callout-protect .callout-label { color: var(--protect); }
+    .callout-warning .callout-label { color: var(--warning-ink); }
+
+    .callout h3 {
+      margin-top: 0; margin-bottom: 0.75rem;
+      font-weight: 800; font-size: 1.25rem;
+      letter-spacing: -0.015em; color: var(--ink);
+    }
+    .callout p { font-size: 0.9375rem; margin-bottom: 0.85rem; }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout strong { font-weight: 700; color: var(--ink); }
+    .callout ul { margin: 0.75rem 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    .callout li { margin-bottom: 0.5rem; }
+    .callout .resource-list { list-style: none; padding-left: 0; }
+    .callout .resource-list li { padding-left: 1.25rem; position: relative; }
+    .callout .resource-list li::before {
+      content: "•"; position: absolute; left: 0; font-weight: 700;
+    }
+    .callout-protect .resource-list li::before { color: var(--protect); }
+    .callout .sub-label { color: var(--ink); }
+
+    .draft-flag {
+      display: inline-block;
+      font-size: 0.65rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--ink); color: var(--bg);
+      padding: 0.25rem 0.55rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .help-list { list-style: none; padding: 0; margin: 1rem 0 2rem; }
+    .help-list li {
+      padding: 1.125rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .help-list li:last-child { border-bottom: none; }
+    .help-list .name {
+      font-weight: 700; color: var(--ink);
+      display: block; margin-bottom: 0.2rem; font-size: 1rem;
+    }
+    .help-list .phone {
+      font-weight: 700; color: var(--accent-deep);
+      font-size: 1.125rem; letter-spacing: -0.005em;
+    }
+    .help-list .desc {
+      display: block; font-size: 0.875rem;
+      color: var(--ink-soft); margin-top: 0.2rem;
+    }
+
+    .related {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .related-grid { display: grid; gap: 0.5rem; margin-top: 1rem; }
+    .related-link {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      background: var(--bg);
+      border: 1px solid var(--rule-strong);
+      text-decoration: none; color: var(--ink);
+      transition: all 0.15s ease;
+      font-size: 0.9375rem; font-weight: 500;
+    }
+    .related-link:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+    }
+    .related-link::after {
+      content: "→"; margin-left: auto;
+      color: var(--accent); font-weight: 700;
+    }
+
+    .sources {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      font-size: 0.8125rem; color: var(--ink-faded);
+    }
+    .sources h3 {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--ink); margin-bottom: 0.75rem;
+    }
+    .sources ul { list-style: none; padding: 0; }
+    .sources li { margin-bottom: 0.4rem; }
+    .sources a {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--rule-strong);
+    }
+    .verified {
+      margin-top: 1.25rem; padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .disclaimer {
+      margin-top: 2.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-soft);
+      border: 1px dashed var(--rule-strong);
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .disclaimer strong { color: var(--ink); font-weight: 700; }
+
+    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
+    .verify-tag {
+      display: inline-block;
+      background: #c8292e;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      margin: 0 0.15rem;
+      vertical-align: baseline;
+      font-style: normal;
+    }
+    .verify-tag::before { content: "⚑ "; }
+
+    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
+    .verify-tag {
+      display: inline-block;
+      background: #c8292e;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      margin: 0 0.15rem;
+      vertical-align: baseline;
+      font-style: normal;
+    }
+    .verify-tag::before { content: "⚑ "; }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(150%);
+      background: var(--ink); color: var(--bg);
+      padding: 0.875rem 1.5rem;
+      font-size: 0.875rem; font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media print {
+      .progress-bar, .site-header, .related, .meta-item.print-hide, .copy-btn, .toast { display: none; }
+      body { background: white; }
+      .fill { border-bottom: 1px solid #999; }
+    }
+
+    @media (max-width: 600px) {
+      article { padding: 2rem 1.25rem 4rem; }
+      h1 { font-size: 2.25rem; }
+      .step-title { font-size: 1.375rem; }
+      .template-header { flex-wrap: wrap; gap: 0.5rem; }
+      .ref-capture { flex-direction: column; align-items: stretch; }
+      .ref-capture input { width: 100%; }
+      .severity-table { font-size: 0.8125rem; }
+      .severity-table th, .severity-table td { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" id="progress"></div>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="wordmark">
+        <span class="wordmark-main">Tenant Triage</span>
+        <span class="wordmark-accent">NYC</span>
+      </a>
+      <nav class="site-nav">
+        <a href="../index.html">All scenarios</a>
+        <a href="../about.html">About</a>
+        <a href="../free-help.html">Free help</a>
+      </nav>
+    </div>
+  </header>
+
+  <article>
+
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">All scenarios</a>
+      <span class="sep">/</span>
+      <a href="#">Eviction &amp; lease issues</a>
+      <span class="sep">/</span>
+      <span class="current">Lease won't be renewed</span>
+    </nav>
+
+    <span class="reading-label">
+      <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Lease renewal &amp; rent increase guide
+    </span>
+
+    <h1>My landlord won't renew my lease.</h1>
+
+    <p class="standfirst">In NYC, a landlord refusing to renew is not the same as evicting you. You don't have to leave just because your lease ends &mdash; and depending on whether your apartment is rent-regulated or covered by Good Cause Eviction, your landlord may not be allowed to refuse at all.</p>
+
+    <div class="meta">
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span><strong>10 min</strong> read</span>
+      </span>
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span>Last verified <strong>April 23, 2026</strong></span>
+      </span>
+      <span class="meta-item print-hide">
+        <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+        <a href="#" onclick="window.print(); return false;">Print this page</a>
+      </span>
+    </div>
+
+    <div class="read-first">
+      <p>A landlord saying &ldquo;I'm not renewing your lease&rdquo; is not an eviction. <strong>Your lease ending does not mean you have to leave.</strong> If you stay past the expiration date, your landlord's only legal option is to file a <strong>holdover</strong> case in Housing Court &mdash; the same multi-week to multi-month process described in our <a href="eviction-notice.html" class="inline-link">eviction notice guide</a>. Until a judge rules and a marshal serves a warrant, you do not have to move.</p>
+      <p><strong>What you can do depends on your apartment's status.</strong> If you're <strong>rent-stabilized or rent-controlled</strong>, your landlord almost certainly <em>cannot lawfully refuse to renew</em> &mdash; renewal at the legal regulated rent is a right, not a favor. If you're <strong>market-rate</strong>, NYC's new <strong>Good Cause Eviction</strong> law (in effect since 2024) may still require your landlord to have a lawful reason to refuse and may cap rent increases. <strong>Pick your status below</strong> to jump to the rules that apply to you.</p>
+      <p><strong>Treat this as an emergency if:</strong> your landlord has locked you out, changed the locks, shut off utilities, removed your belongings, or told you to leave &ldquo;today.&rdquo; That's an <strong>illegal lockout</strong>, and it's a crime &mdash; call <strong>311</strong> and <strong>NYPD (911)</strong> and say &ldquo;illegal lockout.&rdquo;</p>
+    </div>
+
+    <div class="rights-box">
+      <span class="rights-label">Know your rights</span>
+      <h3>What &ldquo;won't renew&rdquo; actually means in NYC</h3>
+      <p>Three things to hold in your head:</p>
+      <ul>
+        <li><strong>Your lease ending is not an eviction.</strong> If you stay, the landlord must file a <strong>holdover</strong> case in Housing Court and win it. That takes months and you can defend it.</li>
+        <li><strong>How much your landlord is allowed to refuse depends on your apartment's status.</strong> Rent-regulated tenants generally have a right to renew. Some market-rate tenants are now covered by Good Cause Eviction. Others have weaker protections.</li>
+        <li><strong>Notice of non-renewal or rent increase has minimum timing.</strong> Under NY Real Property Law &sect;&nbsp;226-c, landlords must give written advance notice based on how long you've lived there.</li>
+      </ul>
+
+      <table class="severity-table">
+        <thead>
+          <tr>
+            <th>Tenancy length</th>
+            <th>Minimum advance notice required</th>
+            <th>Applies to</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="class-cell">&lt; 1 year</td>
+            <td>30 days</td>
+            <td>Non-renewal or rent increase &gt; 5%</td>
+          </tr>
+          <tr>
+            <td class="class-cell">1&ndash;2 years</td>
+            <td>60 days</td>
+            <td>Non-renewal or rent increase &gt; 5%</td>
+          </tr>
+          <tr>
+            <td class="class-cell">2+ years</td>
+            <td>90 days</td>
+            <td>Non-renewal or rent increase &gt; 5%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top: 1rem;">If your landlord did not give the required written notice, the non-renewal or rent increase is not enforceable &mdash; you have the right to stay at the prior rent and terms until proper notice is given and the period runs. If a holdover case is later filed, defective notice is a defense.</p>
+      <p class="source">Sources: NY Real Property Law &sect;&nbsp;226-c (notice of rent increase or non-renewal); NY Real Property Law &sect;&nbsp;235-e (lease renewal procedures); NY Housing Stability and Tenant Protection Act of 2019 (HSTPA).</p>
+    </div>
+
+    <!-- SEVERITY PICKER -->
+    <div class="severity-picker">
+      <div class="severity-picker-header">
+        <span class="severity-picker-label">Tailor this guide</span>
+        <h3 class="severity-picker-title">What kind of apartment do you have?</h3>
+        <p class="severity-picker-help">Your right to renew &mdash; and how much your landlord can raise the rent &mdash; depends on whether your apartment is rent-regulated, covered by Good Cause Eviction, or fully market-rate. Pick the one that fits, or choose &ldquo;show me everything&rdquo; to read the full guide.</p>
+      </div>
+      <div class="severity-options" role="radiogroup" aria-label="Apartment status">
+        <button class="severity-option" data-severity="stabilized" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Rent-stabilized</span>
+            <span class="severity-option-desc">Your landlord must offer renewal at the legal regulated rent. Refusal to renew is itself a violation in almost all cases. Many tenants are stabilized without knowing it.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="controlled" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Rent-controlled</span>
+            <span class="severity-option-desc">Strongest protections in the system. Tenancy continues automatically; renewal isn't really a thing. If your landlord is trying to push you out, that's likely unlawful.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="gce" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Market-rate &mdash; covered by Good Cause Eviction</span>
+            <span class="severity-option-desc">Most NYC market-rate units are covered. Landlord must have a lawful reason to refuse renewal, and rent increases above a set threshold are presumptively unreasonable.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="exempt" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Market-rate &mdash; exempt from Good Cause</span>
+            <span class="severity-option-desc">E.g., owner-occupied buildings of 10 or fewer units, condos/co-ops, very new construction, or rents above the luxury threshold. You have weaker protections, but still have notice rights and anti-retaliation rights.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="month-to-month" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Month-to-month (no current lease)</span>
+            <span class="severity-option-desc">You've been on a rolling tenancy. NY law still requires advance written notice of termination based on how long you've lived there.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="subsidized" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">NYCHA, Section 8, or other subsidized</span>
+            <span class="severity-option-desc">Your tenancy is governed by federal program rules in addition to NY landlord-tenant law. Termination requires program-specific grounds and notice.</span>
+          </span>
+        </button>
+        <button class="severity-option active" data-severity="all" role="radio" aria-checked="true">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">I'm not sure &mdash; show me everything</span>
+            <span class="severity-option-desc">Default. Step 1 will help you figure out which one applies to you.</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Severity context banner — appears after picker selection -->
+    <div class="severity-context" id="severity-context">
+      <span class="severity-context-label">For your situation</span>
+      <h3 id="severity-context-title">Rent-stabilized</h3>
+      <div id="severity-context-body">
+        <p>Placeholder.</p>
+      </div>
+    </div>
+
+    <!-- HPDONLINE LEVERAGE CALLOUT -->
+    <aside class="callout callout-protect">
+      <span class="callout-label">If your landlord files a holdover, your building's history matters</span>
+      <h3>HPD violations are evidence of retaliation and a defense in any holdover case.</h3>
+      <p>If a landlord refuses to renew shortly after a tenant complains about conditions, that timing is often the heart of a <strong>retaliation defense</strong> under <a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" class="inline-link" target="_blank" rel="noopener">RPL &sect;&nbsp;223-b</a>. Open HPD violations on your unit or building are the single best documentary evidence that a complaint or repair request preceded the non-renewal.</p>
+      <p>If a holdover case is later filed, the <strong>warranty of habitability</strong> (RPL &sect;&nbsp;235-b) also lets you argue that rent should be reduced or abated for any period when the apartment had serious unfixed conditions &mdash; useful leverage in settlement.</p>
+      <p>Spend two minutes searching <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a> below. Look for:</p>
+      <ul>
+        <li><strong>Open Class B or C violations</strong> in your unit &mdash; the strongest evidence for both retaliation and habitability (leaks, heat, mold, pests, electrical, lead paint).</li>
+        <li><strong>Violations dated near or after your last complaint</strong> &mdash; helps build the timeline that supports a retaliation defense.</li>
+        <li><strong>Violations falsely certified as corrected</strong> &mdash; credibility evidence against the landlord.</li>
+      </ul>
+      <p>Save printouts or screenshots in the same folder as your renewal correspondence.</p>
+      <p><strong>An honest note:</strong> HPDOnline shows public records, but it's not a complete picture. Some violations age off, and landlords sometimes fix violations without the paper trail catching up. Use it as a starting point, not the whole story.</p>
+
+      <!-- ADDRESS LOOKUP COMPONENT -->
+      <section class="lookup" id="lookup">
+        <span class="lookup-label">Look it up now</span>
+        <h4>Enter your address to check your building's violation history.</h4>
+        <p class="lookup-intro">HPD maintains a public database of every housing code violation ever issued in NYC. See what's on record for your building without leaving this page.</p>
+        <div class="lookup-input-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
+          <div class="lookup-suggestions" id="lookup-suggestions"></div>
+        </div>
+        <div class="lookup-status" id="lookup-status"></div>
+        <div class="lookup-results" id="lookup-results"></div>
+        <div class="lookup-fallback" id="lookup-fallback" style="display: none;">
+          <strong>Having trouble?</strong> You can also look up your building directly on <a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">HPDOnline</a>.
+        </div>
+      </section>
+    </aside>
+
+    <h2>What to do, step by step</h2>
+
+    <!-- STEP 1: Confirm your apartment's status -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 1</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            15&ndash;30 min
+          </span>
+        </div>
+        <h3 class="step-title">Confirm your apartment's status &mdash; start with DHCR.</h3>
+      </div>
+
+      <p class="why-this-matters">Everything else depends on this. <strong>Many NYC tenants are rent-stabilized without knowing it</strong> &mdash; landlords sometimes don't disclose it, lease forms don't say so clearly, and the only authoritative record is a <strong>rent history</strong> kept by NYS Homes &amp; Community Renewal (DHCR). If you're regulated, your landlord can't refuse renewal. If you're market-rate, you'll need to know whether Good Cause Eviction covers your building. Both checks take a few minutes.</p>
+
+      <span class="sub-label">A. Pull your DHCR rent history (the authoritative answer)</span>
+      <ol>
+        <li><strong>Request your rent history online</strong> at <a href="https://hcr.ny.gov/rent-regulation" class="inline-link" target="_blank" rel="noopener">hcr.ny.gov</a> via the &ldquo;Request Your Apartment&rsquo;s Rent History&rdquo; portal. You'll get a multi-year record showing whether the apartment has ever been registered as rent-stabilized, the registered legal rent each year, and any deregulation events. Free. Usually delivered by email within a few minutes to a few days.</li>
+        <li><strong>Read it for these tells:</strong>
+          <ul>
+            <li>If any year shows a registered legal rent, the apartment is (or was) <strong>rent-stabilized</strong>. If recent years show no registration, the landlord may have deregulated improperly &mdash; a tenant lawyer can check.</li>
+            <li>If the registered legal rent is much lower than what you're paying, you may have a <strong>rent overcharge</strong> claim worth pursuing in addition to the renewal issue.</li>
+            <li>If no rent history exists at all and the building has 6+ units built before 1974, ask DHCR or a lawyer whether registration was required.</li>
+          </ul>
+        </li>
+        <li><strong>If you can't get a clear answer:</strong> call DHCR's Office of Rent Administration at <a href="tel:7187395600" class="inline-link">718-739-5600</a> or Met Council on Housing at <a href="tel:2129790611" class="inline-link">212-979-0611</a>.</li>
+      </ol>
+
+      <span class="sub-label">B. If DHCR shows you're not regulated &mdash; check Good Cause coverage</span>
+      <p>NY's Good Cause Eviction law (NYS L. 2024, ch. 56, Part HH; codified at <a href="https://www.nysenate.gov/legislation/laws/RPP/A6-A" class="inline-link" target="_blank" rel="noopener">Real Property Law Article 6-A</a>) applies automatically to most NYC market-rate apartments unless the unit falls into one of the statutory exemptions below:</p>
+      <ul>
+        <li><strong>Owner-occupied buildings of 10 or fewer units</strong> &mdash; the owner has to actually live in the building as their primary residence. (Distinct from the small-landlord exemption below.)</li>
+        <li><strong>Small landlord (10 or fewer units statewide)</strong> &mdash; if your landlord owns 10 or fewer residential units total in New York State, even across multiple buildings, the unit is exempt whether or not the owner lives on site.</li>
+        <li><strong>Newly built buildings</strong> &mdash; exempt if the initial certificate of occupancy was issued on or after <strong>January 1, 2009</strong>, for <strong>30 years</strong> from that CO date.</li>
+        <li><strong>Condos and co-ops</strong> &mdash; units in buildings under cooperative or condominium ownership are exempt.</li>
+        <li><strong>Apartments above the luxury threshold</strong> &mdash; rent exceeding 245% of the local Fair Market Rent. Current NYC thresholds (Oct 2025 &ndash; Sept 2026):
+          <ul>
+            <li>Studio: $5,846</li>
+            <li>1-bedroom: $6,005</li>
+            <li>2-bedroom: $6,742</li>
+            <li>3-bedroom: $8,413</li>
+            <li>4-bedroom: $9,065</li>
+          </ul>
+        </li>
+        <li><strong>Already-regulated apartments</strong> &mdash; rent-stabilized and rent-controlled units are excluded from Good Cause because they already have stronger protections under those laws.</li>
+        <li><strong>Affordable-housing programs</strong> &mdash; units subject to specific regulatory agreements (e.g., LIHTC, 421-a) are generally exempt.</li>
+        <li><strong>Employment-based housing</strong> &mdash; units provided as part of an employment contract (e.g., a live-in super) are exempt.</li>
+      </ul>
+
+      <span class="sub-label">How to verify a building's age, unit count, and ownership</span>
+      <ol>
+        <li><strong><a href="https://zola.planning.nyc.gov/" class="inline-link" target="_blank" rel="noopener">NYC ZoLa</a> (Zoning &amp; Land Use Map)</strong> &mdash; best starting point. Search your address; the Tax Lot panel typically shows the year built, number of residential units, and the <strong>BBL (Borough-Block-Lot) number</strong> you'll need for ACRIS.</li>
+        <li><strong><a href="https://a836-acris.nyc.gov/CP/" class="inline-link" target="_blank" rel="noopener">ACRIS</a> (Automated City Register Information System)</strong> &mdash; the official database for deeds and property documents in Manhattan, Brooklyn, Queens, and the Bronx. Use it to identify the legal owner (often an LLC) and trace ownership history back to 1966. <strong>Staten Island is not in ACRIS</strong> &mdash; use the <a href="https://www.richmondcountyclerk.com/" class="inline-link" target="_blank" rel="noopener">Richmond County Clerk</a> instead.</li>
+        <li><strong>DOB records for Certificate of Occupancy (CO) date:</strong>
+          <ul>
+            <li>For COs issued <em>before</em> March 1, 2021: use the <a href="https://a810-bisweb.nyc.gov/bisweb/bispi00.jsp" class="inline-link" target="_blank" rel="noopener">DOB BIS</a> (Building Information System) &mdash; search your address, then &ldquo;View Certificates of Occupancy.&rdquo;</li>
+            <li>For COs issued <em>on or after</em> March 1, 2021: use the <a href="https://a810-dobnow.nyc.gov/publish/Index.html" class="inline-link" target="_blank" rel="noopener">DOB NOW Public Portal</a>.</li>
+            <li>Buildings built <strong>before 1938</strong> may not have a CO at all &mdash; look for a &ldquo;Letter of No Objection&rdquo; (LNO) in the same records. The CO (or LNO) lists the exact legal number of apartments per floor, which is the authoritative count.</li>
+          </ul>
+        </li>
+        <li><strong><a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPD Online</a></strong> &mdash; for the most accurate <em>current</em> unit count and landlord registration. Landlords of buildings with 3 or more units must register annually; HPD Online shows the owner's contact info and the reported number of apartments.</li>
+      </ol>
+
+      <span class="sub-label">C. Capture what you've found in this checklist</span>
+      <p>Fill it in as you go. It will auto-populate the checklist in later steps and gives a lawyer or hotline volunteer the whole picture in 30 seconds.</p>
+      <div class="template" id="intake-template-step1">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Intake checklist
+          </span>
+          <button class="copy-btn" data-copy-target="intake-template-step1-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="intake-template-step1-content">
+          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
+          <p><strong>Date I moved in:</strong> <input type="text" class="fill" data-field="move_in_date" placeholder="month/year" size="14"> &mdash; <strong>Years here:</strong> <input type="text" class="fill" data-field="years_here" placeholder="#" size="4"></p>
+          <p><strong>Current lease end date:</strong> <input type="text" class="fill" data-field="lease_end_date" placeholder="date" size="12"></p>
+          <p><strong>Apartment status (best guess):</strong> <input type="text" class="fill" data-field="status_guess" placeholder="rent-stabilized / market+GCE / market+exempt / NYCHA / Section 8 / month-to-month / unknown" size="60"></p>
+          <p><strong>DHCR rent history requested?</strong> <input type="text" class="fill" data-field="dhcr_status" placeholder="yes/no &mdash; date requested" size="28"></p>
+          <p><strong>Building unit count + year built:</strong> <input type="text" class="fill" data-field="building_facts" placeholder="e.g., 24 units, 1928" size="28"></p>
+          <p><strong>Type of notice received:</strong> <input type="text" class="fill" data-field="notice_type" placeholder="non-renewal / rent increase / both / verbal only / none yet" size="42"></p>
+          <p><strong>Date notice was delivered:</strong> <input type="text" class="fill" data-field="notice_date" placeholder="date" size="12"> &mdash; <strong>How:</strong> <input type="text" class="fill" data-field="notice_method" placeholder="mail / hand / text / posted" size="22"></p>
+          <p><strong>Current monthly rent:</strong> $<input type="text" class="fill" data-field="current_rent" placeholder="amount" size="10"> &mdash; <strong>New rent demanded (if any):</strong> $<input type="text" class="fill" data-field="new_rent" placeholder="amount" size="10"></p>
+          <p><strong>Reason landlord gave (if any):</strong> <input type="text" class="fill" data-field="reason" placeholder="e.g., owner use, sale, no reason given" size="36"></p>
+          <p><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26"></p>
+          <p><strong>Landlord's attorney (if listed):</strong> <input type="text" class="fill" data-field="attorney" placeholder="name" size="26"></p>
+          <p><strong>Repairs requested or 311 complaints in last 12 months?</strong> <input type="text" class="fill" data-field="complaints_recent" placeholder="brief list with dates" size="44"></p>
+          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10"> &mdash; <strong>Household size:</strong> <input type="text" class="fill" data-field="household_size" placeholder="#" size="4"></p>
+        </div>
+      </div>
+
+      <span class="sub-label">What to save and how</span>
+      <p>Every paper your landlord gives or sends you. Every envelope (postmarks prove delivery date). Every prior lease, rent receipt, text message, and email. <strong>Photograph everything</strong> front and back, save it to your phone, and back it up to cloud storage or email it to yourself.</p>
+
+      <p><strong>Don't sign anything</strong> beyond a return receipt. If your landlord hands you a &ldquo;new lease,&rdquo; a &ldquo;buyout offer,&rdquo; a &ldquo;cash-for-keys&rdquo; agreement, or anything to surrender the apartment &mdash; stop, take a photo, and call a tenant lawyer before signing. Rent-stabilized buyouts in particular are routinely worth far more than landlords initially offer.</p>
+    </section>
+
+    <!-- DON'T SELF-EVICT CALLOUT -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; your lease ending is not an order to move</span>
+      <h3>You are not required to leave when your lease expires.</h3>
+      <p>If you stay past the lease end date, your tenancy doesn't disappear &mdash; you become a <strong>holdover tenant</strong>, and your landlord's only legal path to remove you is to file a <strong>holdover proceeding</strong> in NYC Housing Court. That case takes <strong>weeks to months</strong>, you have a right to appear and defend, and if you're income-qualified you have a <strong>right to a free lawyer</strong> under NYC's Universal Access to Counsel program.</p>
+      <p><strong>If your landlord says things like:</strong></p>
+      <ul>
+        <li>&ldquo;Your lease is up &mdash; you have to be out by Friday.&rdquo;</li>
+        <li>&ldquo;Sign this and I'll give you 30 extra days.&rdquo;</li>
+        <li>&ldquo;I'm not renewing, so don't pay rent next month.&rdquo;</li>
+        <li>&ldquo;I'll keep your deposit if you don't leave.&rdquo;</li>
+      </ul>
+      <p>&hellip; do not move out and do not stop paying rent on those statements alone. Moving out voluntarily gives up rights you'd otherwise have in any holdover case. <strong>Keep paying rent</strong> at the prior amount (use a method that creates a paper trail &mdash; check, money order, or app) even if your landlord says they won't accept it; if they refuse, save the proof. Continued payment preserves your tenancy and prevents your case from being framed as nonpayment.</p>
+      <p>If your landlord has already locked you out, changed locks, or removed your things: that is an <strong>illegal lockout</strong>, a criminal offense, and a civil claim worth significant money. Call <strong>311</strong> and <strong>NYPD (911)</strong>, say &ldquo;illegal lockout,&rdquo; and contact legal help immediately.</p>
+    </aside>
+
+    <!-- STEP 2: Read notice + calculate deadline -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 2</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            10&ndash;15 min
+          </span>
+        </div>
+        <h3 class="step-title">Read the notice and calculate the deadline.</h3>
+      </div>
+
+      <p class="why-this-matters">A non-renewal or rent-increase notice is a legal document with strict timing rules. Defective notice is one of the most common reasons holdover cases are dismissed. Spending fifteen minutes on this now can buy you months of additional tenancy &mdash; or end the matter entirely.</p>
+
+      <span class="sub-label">A. What &ldquo;notice&rdquo; counts</span>
+      <p>Under <a href="https://www.nysenate.gov/legislation/laws/RPP/226-C" class="inline-link" target="_blank" rel="noopener">RPL &sect;&nbsp;226-c</a>, a landlord must give formal <strong>written</strong> advance notice in two situations:</p>
+      <ul>
+        <li><strong>Non-renewal</strong> &mdash; if they don't intend to offer you a new lease.</li>
+        <li><strong>Rent increase of 5% or more</strong> &mdash; even if they <em>are</em> offering a renewal. Any bump of 5% or more triggers the same notice rules.</li>
+      </ul>
+      <p><strong>What counts as &ldquo;notice&rdquo;:</strong> a formal written document that clearly states the intent (non-renewal or increase) and the effective date. A verbal conversation, a text message, or an informal email is generally not legally sufficient to start the clock. Email may or may not count depending on what your lease specifically allows.</p>
+      <p><strong>The &ldquo;actual notice&rdquo; rule:</strong> the legal clock (30, 60, or 90 days) doesn't start until you have <em>actually received</em> the written notice &mdash; not the date typed on it. Save the envelope, the postmark, and/or the delivery receipt. That's your proof.</p>
+      <p><strong>What happens if the landlord's notice is late:</strong> if your landlord sends a notice that gives you less time than the statute requires (e.g., 30 days when you're entitled to 90), the non-renewal or increase <strong>cannot take effect until the full required window has passed from the date you received the written notice</strong>. During that gap you are legally entitled to stay at the current rent and terms.</p>
+
+      <span class="sub-label">B. Calculate the required notice window</span>
+      <p>The minimum notice the landlord must give is based on how long you've lived in the apartment as of the date the notice is delivered (not the date written on it):</p>
+      <ul>
+        <li><strong>Less than 1 year:</strong> 30 days</li>
+        <li><strong>1 to less than 2 years:</strong> 60 days</li>
+        <li><strong>2 years or more:</strong> 90 days</li>
+      </ul>
+      <p>Count the days from the date the notice was actually delivered to the date the landlord wants the change to take effect (rent increase) or to the lease end date (non-renewal). If the gap is less than the required minimum, <strong>the notice is defective</strong> &mdash; the landlord has to start over with proper notice and a new effective date.</p>
+
+      <span class="sub-label">C. Read the notice for these specific things</span>
+      <ul>
+        <li><strong>What it actually says it is.</strong> A &ldquo;Notice of Non-Renewal,&rdquo; a &ldquo;Notice of Termination,&rdquo; or a &ldquo;Notice of Rent Increase&rdquo; are different things and trigger different rules. Verbal statements aren't legal notice.</li>
+        <li><strong>The date it was delivered to you</strong> &mdash; not just the date typed on the page. Save the envelope (postmark) or screenshot the email.</li>
+        <li><strong>Who signed it</strong> &mdash; the owner of record, a managing agent, or an attorney? If signed by an agent, was a written authorization attached or referenced?</li>
+        <li><strong>What &ldquo;reason&rdquo; the landlord gave</strong>, if any. If you're rent-stabilized or covered by Good Cause, the landlord must state a lawful reason from a closed list (Steps 4&ndash;5 explain those lists). &ldquo;I changed my mind&rdquo; is not a lawful reason.</li>
+        <li><strong>Whether the proposed effective date matches a full rental period.</strong> Most leases run month-to-month after expiration; non-renewal generally has to take effect on the last day of a rental month, not mid-month.</li>
+      </ul>
+
+      <span class="sub-label">D. Save your deadline so it carries to later steps</span>
+      <div class="ref-capture">
+        <label class="ref-capture-label" for="ref-input">Save the effective date the landlord is asking for &mdash; or your current lease end date if no notice yet:</label>
+        <input type="text" id="ref-input" placeholder="e.g., June 30, 2026 — non-renewal effective date" data-field="complaint_ref">
+      </div>
+
+      <span class="sub-label">E. Carry your intake forward</span>
+      <p>Your intake checklist from Step 1 is auto-populated here. Add anything new, then move on.</p>
+      <div class="template" id="intake-template-step2">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Intake checklist (same as Step 1)
+          </span>
+          <button class="copy-btn" data-copy-target="intake-template-step2-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="intake-template-step2-content">
+          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
+          <p><strong>Date I moved in:</strong> <input type="text" class="fill" data-field="move_in_date" placeholder="month/year" size="14"> &mdash; <strong>Years here:</strong> <input type="text" class="fill" data-field="years_here" placeholder="#" size="4"></p>
+          <p><strong>Current lease end date:</strong> <input type="text" class="fill" data-field="lease_end_date" placeholder="date" size="12"></p>
+          <p><strong>Apartment status (best guess):</strong> <input type="text" class="fill" data-field="status_guess" placeholder="rent-stabilized / market+GCE / market+exempt / NYCHA / Section 8 / month-to-month / unknown" size="60"></p>
+          <p><strong>DHCR rent history requested?</strong> <input type="text" class="fill" data-field="dhcr_status" placeholder="yes/no &mdash; date requested" size="28"></p>
+          <p><strong>Building unit count + year built:</strong> <input type="text" class="fill" data-field="building_facts" placeholder="e.g., 24 units, 1928" size="28"></p>
+          <p><strong>Type of notice received:</strong> <input type="text" class="fill" data-field="notice_type" placeholder="non-renewal / rent increase / both / verbal only / none yet" size="42"></p>
+          <p><strong>Date notice was delivered:</strong> <input type="text" class="fill" data-field="notice_date" placeholder="date" size="12"> &mdash; <strong>How:</strong> <input type="text" class="fill" data-field="notice_method" placeholder="mail / hand / text / posted" size="22"></p>
+          <p><strong>Current monthly rent:</strong> $<input type="text" class="fill" data-field="current_rent" placeholder="amount" size="10"> &mdash; <strong>New rent demanded (if any):</strong> $<input type="text" class="fill" data-field="new_rent" placeholder="amount" size="10"></p>
+          <p><strong>Reason landlord gave (if any):</strong> <input type="text" class="fill" data-field="reason" placeholder="e.g., owner use, sale, no reason given" size="36"></p>
+          <p><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26"></p>
+          <p><strong>Landlord's attorney (if listed):</strong> <input type="text" class="fill" data-field="attorney" placeholder="name" size="26"></p>
+          <p><strong>Repairs requested or 311 complaints in last 12 months?</strong> <input type="text" class="fill" data-field="complaints_recent" placeholder="brief list with dates" size="44"></p>
+          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10"> &mdash; <strong>Household size:</strong> <input type="text" class="fill" data-field="household_size" placeholder="#" size="4"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: Respond in writing -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 3</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            20&ndash;30 min
+          </span>
+        </div>
+        <h3 class="step-title">Respond in writing &mdash; and stay put.</h3>
+      </div>
+
+      <p class="why-this-matters">A short, clear written response from you accomplishes three things at once: it asserts your rights so the landlord can't later claim you abandoned them, it puts the landlord (and their attorney) on notice that they will need to prove their case in court, and it creates a paper trail that becomes evidence if a holdover is filed. <strong>You do not need to respond before consulting Met Council or a lawyer if you can reach one in time</strong> &mdash; but a same-week written response is far better than silence.</p>
+
+      <span class="sub-label">A. What your letter should do (in plain English)</span>
+      <ul>
+        <li><strong>Acknowledge what you received</strong> and the date you received it.</li>
+        <li><strong>State that you intend to remain in possession</strong> of the apartment past the lease end date.</li>
+        <li><strong>If you're rent-stabilized:</strong> demand a renewal lease at the legal regulated rent under <a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2523.5" class="inline-link" target="_blank" rel="noopener">9 NYCRR &sect;&nbsp;2523.5</a>, and explicitly choose a one-year or two-year term. (Step 4, section C has the full renewal-rights framework.)</li>
+        <li><strong>If you're covered by Good Cause:</strong> ask the landlord to state in writing the lawful &ldquo;good cause&rdquo; ground from the statute and to provide the calculation justifying any rent increase above the local presumptive threshold.</li>
+        <li><strong>If the notice was defective</strong> (wrong period, wrong delivery, wrong effective date): state that and ask the landlord to withdraw it.</li>
+        <li><strong>Confirm you will continue paying rent</strong> at the prior amount in the meantime.</li>
+        <li><strong>Send by a method that proves delivery</strong> &mdash; certified mail with return receipt, or email if your lease specifies email is valid. Keep copies of everything.</li>
+      </ul>
+
+      <span class="sub-label">B. Sample letter you can copy and adapt</span>
+      <div class="template" id="response-letter">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Sample tenant response letter
+          </span>
+          <button class="copy-btn" data-copy-target="response-letter-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="response-letter-content">
+          <p>To: <input type="text" class="fill" data-field="landlord" placeholder="landlord / management company name" size="36"></p>
+          <p>From: [Your name], tenant of <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
+          <p>Date: [Today's date]</p>
+          <p>Re: Your notice dated <input type="text" class="fill" data-field="notice_date" placeholder="date on notice" size="14"> regarding non-renewal / rent increase &mdash; received <input type="text" class="fill" data-field="notice_date" placeholder="date received" size="14"></p>
+          <p>I am writing to acknowledge receipt of your notice and to confirm in writing that I intend to remain in possession of the above apartment, where I have lived since <input type="text" class="fill" data-field="move_in_date" placeholder="month/year" size="14">.</p>
+          <p>[<strong>Choose the paragraph(s) that apply to your situation:</strong>]</p>
+          <p><strong>If you believe you are rent-stabilized:</strong> Based on my review (including DHCR records), I have reason to believe my apartment is subject to the Rent Stabilization Code. Under 9 NYCRR &sect;&nbsp;2523.5, I am entitled to a renewal lease at the legal regulated rent on the same terms as my prior lease, for either one or two years at my election. Please send me a renewal lease offer within the time required by law.</p>
+          <p><strong>If you believe Good Cause Eviction applies:</strong> My understanding is that this apartment is subject to NY's Good Cause Eviction Law (NYS L. 2024, ch. 56, Part HH). Please state in writing the lawful &ldquo;good cause&rdquo; ground on which you rely, and (if applicable) the calculation justifying any rent increase above the local presumptive reasonable threshold.</p>
+          <p><strong>If the notice appears defective:</strong> The notice does not appear to comply with RPL &sect;&nbsp;226-c, which requires <input type="text" class="fill" data-field="notice_required_days" placeholder="30/60/90" size="6"> days' written advance notice based on my length of tenancy of <input type="text" class="fill" data-field="years_here" placeholder="#" size="4"> years. Please withdraw the current notice; I reserve all rights and defenses if you proceed without correcting it.</p>
+          <p>I will continue to pay the previously agreed rent of $<input type="text" class="fill" data-field="current_rent" placeholder="amount" size="10"> per month while this is being resolved. Please direct any further communication on this matter in writing.</p>
+          <p>Sincerely,</p>
+          <p>[Your signature]<br>[Your printed name]<br>[Phone]<br>[Email]</p>
+        </div>
+      </div>
+
+      <span class="sub-label">C. Send it by a method that proves delivery</span>
+      <ul>
+        <li><strong>Certified mail with return receipt requested.</strong> Costs ~$10 at any USPS counter; gives you a green card signed by the recipient. This is the gold standard.</li>
+        <li><strong>Keep a stamped copy</strong> for yourself by mailing one to your own address at the same time, unopened.</li>
+        <li><strong>If your lease allows email service:</strong> send and BCC yourself; save the sent record.</li>
+        <li><strong>Photograph the envelope and the contents</strong> before mailing.</li>
+      </ul>
+
+      <span class="sub-label">D. Keep paying rent</span>
+      <p>Pay the previously agreed rent on time, by a method that creates a record (check, money order, online portal). If your landlord refuses to accept it, document the refusal &mdash; save the bounced-back envelope, the screenshot of the rejected portal payment, the text saying &ldquo;don't pay me.&rdquo; Continued payment preserves your tenancy and prevents the case from being reframed as nonpayment.</p>
+
+      <p>If your landlord is no longer cashing your checks, ask Met Council or a lawyer about <strong>paying rent into escrow</strong> &mdash; a court-recognized way to keep your obligation current while a dispute is pending.</p>
+    </section>
+
+    <!-- CALLOUT: Undocumented tenants -->
+    <aside class="callout callout-protect">
+      <span class="draft-flag">Draft &mdash; pending immigration advocacy review</span>
+      <span class="callout-label">For undocumented tenants</span>
+      <h3>Your immigration status does not affect your right to a renewal &mdash; or to defend a holdover.</h3>
+
+      <p>NYC law is clear: your right to remain in your apartment, your right to renewal where the law requires it, and your right to a free court-appointed attorney in any holdover case do not depend on your immigration status. <strong>Housing Court, Right to Counsel intake, and NYC legal services providers do not ask about immigration status</strong>, and court records are not shared with federal immigration authorities.</p>
+
+      <p>It is illegal under NYC Human Rights Law for your landlord to threaten to report you to ICE, deport you, or treat you differently because of your immigration status. Refusing to renew because of immigration status is itself a discrimination claim you can bring at the NYC Commission on Human Rights.</p>
+
+      <p><strong>An honest note:</strong> NYC's protections are strong, but they are city and state protections. Federal immigration enforcement is a separate system. If you are worried about risks specific to your situation, you can talk to a free, confidential immigration legal organization before filing any complaint. You are not alone in asking these questions.</p>
+
+      <span class="sub-label">Free, confidential help</span>
+      <ul class="resource-list">
+        <li><strong>ActionNYC</strong> &mdash; free, safe immigration legal help connected to city services. Call <strong>311</strong> and ask for ActionNYC.</li>
+        <li><strong>Make the Road New York</strong> &mdash; tenant and immigrant rights support: <strong>718-418-7690</strong></li>
+        <li><strong>New York Immigration Coalition</strong> &mdash; referrals to trusted legal help: <strong>212-627-2227</strong></li>
+        <li><strong>NYC Commission on Human Rights</strong> &mdash; if your landlord threatens you with ICE: <strong>212-416-0197</strong></li>
+      </ul>
+    </aside>
+
+    <!-- CALLOUT: Retaliation (centerpiece for non-renewal) -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">If you complained about conditions in the last year, read this</span>
+      <h3>Non-renewal in retaliation for a good-faith complaint is presumed unlawful.</h3>
+
+      <p>Under <a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" class="inline-link" target="_blank" rel="noopener">NY Real Property Law &sect;&nbsp;223-b</a>, if your landlord refuses to renew, raises the rent, starts a holdover, reduces services, or harasses you within <strong>one year</strong> of you doing any of the following in good faith, the law <em>presumes</em> the action is retaliatory and the burden shifts to your landlord to prove a non-retaliatory reason (HSTPA expanded the presumption window from 6 months to 1 year).</p>
+      <ul>
+        <li>Made a complaint to a government agency (311, HPD, DHCR, DOB, FDNY).</li>
+        <li>Requested repairs in writing or filed a habitability complaint.</li>
+        <li>Joined or organized a tenants' association.</li>
+        <li>Brought or threatened legal action to enforce a tenant right.</li>
+        <li>Refused to consent to something the landlord wasn't entitled to demand.</li>
+      </ul>
+
+      <p><strong>What this means in practice:</strong> If you have a non-renewal notice and a 311 complaint or HPD violation from the past year, that combination is itself a defense in any holdover case &mdash; and often the basis to negotiate the non-renewal away entirely. Save the dates and any reference numbers.</p>
+
+      <p><strong>An honest note for market-rate tenants exempt from Good Cause:</strong> &sect;&nbsp;223-b applies to you too &mdash; but proving retaliation can be harder when the landlord has wider latitude to refuse renewal. Talk to Met Council or a tenant lawyer before filing any new complaint <em>after</em> you receive a non-renewal notice; the timing matters.</p>
+
+      <p>If you believe your landlord is retaliating: document the complaint history (dates, agency, reference numbers, any written confirmation), and call the Met Council on Housing hotline at <strong>212-979-0611</strong>.</p>
+
+      <p style="margin-top: 1rem;"><a href="#" class="inline-link">Read more: What retaliation looks like and what to do &rarr;</a></p>
+    </aside>
+
+    <!-- STEP 4: Build your evidence file -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 4</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            30&ndash;60 min
+          </span>
+        </div>
+        <h3 class="step-title">Build your retaliation and habitability file.</h3>
+      </div>
+
+      <p class="why-this-matters">If a holdover case is filed, the evidence that wins it is almost never assembled in the courthouse hallway &mdash; it's assembled now, before anyone files anything. The two most powerful defenses in non-renewal cases are <strong>retaliation</strong> (the timing pattern of complaints + non-renewal) and <strong>warranty of habitability</strong> (conditions in the apartment). Both depend on documents you already have or can pull in an afternoon.</p>
+
+      <div class="ref-recall" id="ref-recall">
+        <span class="label">Your effective date / lease end date</span>
+        <span class="number" id="ref-display"><span class="empty">Not entered yet &mdash; you can save it in the previous step.</span></span>
+      </div>
+
+      <span class="sub-label">A. Build the retaliation timeline</span>
+      <p>Make a one-page timeline. For each entry, capture the date, what happened, and where the proof lives (folder, screenshot, agency reference number).</p>
+      <ul>
+        <li>Every <strong>repair request</strong> you've made &mdash; written, text, email, building portal.</li>
+        <li>Every <strong>311 complaint</strong> &mdash; you can pull a history at <a href="https://portal.311.nyc.gov/" class="inline-link" target="_blank" rel="noopener">311 Online</a>. Save the complaint reference numbers.</li>
+        <li>Every <strong>HPD violation</strong> on the building or unit &mdash; from <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a> (see the callout above).</li>
+        <li>Any <strong>tenants' association</strong> activity, petitions, or letters you signed.</li>
+        <li>Any <strong>prior court actions</strong>, DHCR filings, or rent overcharge disputes.</li>
+        <li>The date of the non-renewal notice or rent-increase notice.</li>
+      </ul>
+      <p>The pattern that wins: complaint or repair request → followed within 12 months by non-renewal, large rent increase, reduction in services, or a holdover filing. Under <a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" class="inline-link" target="_blank" rel="noopener">RPL &sect;&nbsp;223-b</a>, that timing alone shifts the burden to the landlord.</p>
+
+      <span class="sub-label">B. Document conditions in the apartment now</span>
+      <p>Walk through your apartment with your phone and photograph or video <strong>every</strong> unfixed condition: leaks, peeling paint, missing window guards, broken fixtures, mice droppings, mold, gaps in baseboards, broken locks, no heat/hot water. For each:</p>
+      <ul>
+        <li>Date-stamped photo or video (your phone usually does this automatically &mdash; verify the timestamp shows in metadata).</li>
+        <li>One-line note: what room, what's wrong, when it started, when you reported it, who you told.</li>
+        <li>Save to a single folder (cloud + local) with the date in the folder name.</li>
+      </ul>
+      <p>Conditions documented now support a <strong>warranty of habitability defense</strong> (RPL &sect;&nbsp;235-b) in any later holdover case &mdash; rent can be reduced or abated for the period conditions existed.</p>
+
+      <span class="sub-label">C. If you're rent-stabilized: your renewal rights (and what happens if the landlord refuses)</span>
+
+      <p><strong>What your landlord is required to do.</strong> Under <a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2523.5" class="inline-link" target="_blank" rel="noopener">9 NYCRR &sect;&nbsp;2523.5</a>, the rules for offering a renewal are specific:</p>
+      <ul>
+        <li><strong>Window to offer.</strong> The landlord must mail a renewal offer to you <strong>between 90 and 150 days</strong> before your current lease expires.</li>
+        <li><strong>Same terms.</strong> The renewal must be on the <em>same terms and conditions</em> as your original lease &mdash; the landlord cannot unilaterally add new rules or unfavorable riders.</li>
+        <li><strong>Legal regulated rent.</strong> The new rent is capped at the legal regulated rent, limited to the percentage increase set annually by the <a href="https://rentguidelinesboard.cityofnewyork.us/" class="inline-link" target="_blank" rel="noopener">NYC Rent Guidelines Board</a>.</li>
+        <li><strong>Your choice of term.</strong> You &mdash; not the landlord &mdash; choose whether the renewal is for one year or two years.</li>
+      </ul>
+
+      <p><strong>What happens if your landlord doesn't offer a renewal on time or on proper terms:</strong></p>
+      <ul>
+        <li><strong>Your old lease stays in effect.</strong> Your prior rent and terms continue until the landlord properly offers a compliant renewal. You do not have to move, and you do not have to pay an increased rent until a compliant renewal is tendered.</li>
+        <li><strong>You become a &ldquo;statutory tenant&rdquo;</strong> &mdash; with all the same protections you had under your written lease, including the right to remain in possession. Failure to offer a renewal is not a ground for eviction.</li>
+        <li><strong>File DHCR Form RA-90</strong> (Tenant's Complaint of Owner's Failure to Renew Lease) with the Office of Rent Administration. This is free, administrative, and often resolves the issue without court.</li>
+      </ul>
+
+      <p><strong>When the landlord <em>can</em> refuse to renew &mdash; the statutory grounds are very narrow.</strong> Even if your landlord claims a lawful reason, double-check it against the actual statutory list. Under <a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2524.3" class="inline-link" target="_blank" rel="noopener">9 NYCRR &sect;&nbsp;2524.3</a>, the only grounds that <em>don't</em> require prior DHCR approval are:</p>
+      <ul>
+        <li>Violation of a substantial lease obligation, after a proper notice to cure (&sect;&nbsp;2524.3(a))</li>
+        <li>Nuisance, serious damage from malice/gross negligence, or persistent harassment (&sect;&nbsp;2524.3(b))</li>
+        <li>Illegal occupancy that exposes the owner to liability (&sect;&nbsp;2524.3(c))</li>
+        <li>Immoral or unlawful use of the apartment (&sect;&nbsp;2524.3(d))</li>
+        <li>Unreasonable refusal of access for repairs/inspections (&sect;&nbsp;2524.3(e))</li>
+        <li>Refusal to sign a renewal at the legal regulated rent on the same terms (&sect;&nbsp;2524.3(f))</li>
+        <li>Violation of subletting rules (&sect;&nbsp;2524.3(h))</li>
+      </ul>
+      <p>Grounds that <em>do</em> require prior DHCR approval (<a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2524.4" class="inline-link" target="_blank" rel="noopener">&sect;&nbsp;2524.4</a>, <a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2524.5" class="inline-link" target="_blank" rel="noopener">&sect;&nbsp;2524.5</a>): non-primary residence, owner/immediate-family occupancy, and demolition or substantial rehabilitation. If your landlord cites one of these but hasn't shown you a DHCR order, that's a defense.</p>
+
+      <span class="sub-label">D. If you're covered by Good Cause: check the rent-increase math</span>
+      <p>Good Cause Eviction caps presumptively reasonable rent increases at the lesser of <strong>10%</strong> or <strong>5% + the local CPI</strong> for the relevant region. If your landlord is asking for more, they have to justify it with documented increases in costs. Save their math (or non-response) for evidence.</p>
+
+      <span class="sub-label">E. Watch for discrimination</span>
+      <p>Refusing renewal because of race, national origin, disability, source of income (including Section 8 or HASA vouchers), family status, gender identity, sexual orientation, age, immigration status, or any other class protected by NYC Human Rights Law is a separate violation enforceable through the <a href="https://www.nyc.gov/site/cchr/index.page" class="inline-link" target="_blank" rel="noopener">NYC Commission on Human Rights</a> (212-416-0197). Source-of-income discrimination is a particularly common form of unlawful non-renewal.</p>
+    </section>
+
+    <!-- STEP 5: Get legal help and prep for a possible holdover -->
+    <section class="step">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 5</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            15&ndash;30 min
+          </span>
+        </div>
+        <h3 class="step-title">Get legal help &mdash; and prep for a possible holdover.</h3>
+      </div>
+
+      <p class="why-this-matters">Most non-renewal disputes don't reach a courtroom &mdash; they resolve through written exchanges, DHCR action, or settlement once the landlord realizes you'll defend. But you should treat a holdover filing as plausible from day one. NYC's <strong>Universal Access to Counsel</strong> (Right to Counsel) provides a free attorney to any income-eligible tenant once a holdover case is filed, regardless of immigration status. Tenants with lawyers win or get dramatically better outcomes more than 80% of the time. Get on the right list now.</p>
+
+      <span class="sub-label">A. Call Met Council and Housing Court Answers now</span>
+      <ol>
+        <li><strong>Met Council on Housing Tenants' Rights Hotline</strong> &mdash; <a href="tel:2129790611" class="inline-link">212-979-0611</a> (Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM). Trained volunteers can talk through your specific situation, explain your status, and help you draft your response letter. The hotline is very busy &mdash; call after 4&nbsp;PM if you can, and avoid Mondays.</li>
+        <li><strong>Housing Court Answers</strong> &mdash; <a href="tel:2129624795" class="inline-link">212-962-4795</a>. Best for connecting you with the right legal services provider for your borough and case type. They handle pre-court non-renewal questions too.</li>
+        <li><strong>If your apartment is rent-stabilized:</strong> file a <strong>failure-to-renew complaint with DHCR</strong> (<a href="https://hcr.ny.gov/form-ra-90" class="inline-link" target="_blank" rel="noopener">Form RA-90</a>). This is administrative and free. A DHCR complaint creates a record and often pressures the landlord to send the renewal you were entitled to.</li>
+        <li><strong>If your income is above the Right to Counsel threshold,</strong> Met Council can refer you to sliding-scale legal services, clinics, and pro bono programs. A consult with a private tenant attorney for a non-renewal dispute is often a few hundred dollars and can save tens of thousands.</li>
+      </ol>
+
+      <span class="sub-label">B. What happens if your landlord files a holdover</span>
+      <p>If the landlord files a Housing Court holdover after you stay past the lease end date:</p>
+      <ul>
+        <li>You'll be served with a <strong>Notice of Petition and Petition</strong>. The first court date is usually 10&ndash;14 days out.</li>
+        <li>Right to Counsel intake is available at every Housing Courthouse on the day of your first appearance &mdash; ask for it.</li>
+        <li>You can use everything you built in Steps 1&ndash;4 (your DHCR rent history, your timeline, your evidence file, your written response letter) as the foundation of your defense.</li>
+        <li>Detailed walkthrough: see our <a href="eviction-notice.html" class="inline-link">eviction notice guide</a>, especially the courthouse-by-borough addresses and what to expect at the first appearance.</li>
+      </ul>
+
+      <span class="sub-label">C. Subsidized tenants: don't skip the administrative grievance</span>
+      <p>If you're in NYCHA, project-based Section 8, or have an HCV voucher, your landlord (or NYCHA) generally must offer an <strong>administrative grievance/hearing</strong> with specific deadlines before any termination. Missing the grievance window can forfeit defenses you'd otherwise have in Housing Court later.</p>
+      <ul>
+        <li><strong>NYCHA tenants:</strong> Legal Aid Society's NYCHA unit &mdash; <a href="tel:2125773300" class="inline-link">212-577-3300</a>.</li>
+        <li><strong>Section 8 voucher holders:</strong> source-of-income discrimination is illegal under NYC Human Rights Law &mdash; non-renewal because of your voucher is a separate claim.</li>
+      </ul>
+
+      <span class="sub-label">D. Watch for &ldquo;cash for keys&rdquo; or buyout offers</span>
+      <p>Some landlords skip the legal route and offer money to move out. <strong>Do not sign anything without legal advice.</strong> For rent-stabilized tenants, buyouts are routinely worth multiples of what landlords initially offer &mdash; and the right to remain often has more value than any cash offer. Even for market-rate tenants, a written buyout typically asks you to waive every claim you have, including any retaliation, habitability, or discrimination claim. Take a photo of any offer, then call Met Council before signing.</p>
+    </section>
+
+    <!-- WARNING: Buyout / surrender agreement traps -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; about buyouts and surrender agreements</span>
+      <h3>Don't sign a buyout, &ldquo;cash for keys,&rdquo; or surrender agreement without a tenant lawyer reading it.</h3>
+      <p>If your landlord offers money to leave, that offer is itself evidence that <strong>your right to remain has real value</strong> &mdash; usually more than the first number on the page. Common traps in landlord-drafted surrender agreements:</p>
+      <ul>
+        <li><strong>Total release of claims</strong> &mdash; you agree to give up any retaliation, habitability, rent overcharge, deposit, or discrimination claim, even ones you don't yet know you have.</li>
+        <li><strong>Sealed terms (NDA)</strong> &mdash; you can't tell other tenants in your building. This makes systemic harassment patterns harder to surface.</li>
+        <li><strong>Move-out dates with self-executing penalties</strong> &mdash; if you're not out by 11:59 PM on day X, the money is forfeit and the landlord gets a stipulated judgment for use and occupancy.</li>
+        <li><strong>&ldquo;Voluntary&rdquo; framing on a deregulation event</strong> &mdash; for rent-stabilized apartments, certain landlord-tenant agreements can be used to argue the unit was vacated voluntarily and is eligible for deregulation. Met Council and tenant attorneys see this routinely.</li>
+      </ul>
+      <p>For rent-stabilized tenants in particular: standard buyouts are routinely worth 10&ndash;30x the landlord's opening offer, and sometimes much more. Take a photo of any written offer, then call Met Council (<strong>212-979-0611</strong>) or a tenant attorney before signing. There is no honest reason for a landlord to demand a same-day signature.</p>
+    </aside>
+
+    <!-- WARNING: Stipulation in any later holdover -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">If a holdover gets filed &mdash; about stipulations</span>
+      <h3>Never sign a stipulation of settlement in court without a lawyer reading it.</h3>
+      <p>If a holdover proceeding does get filed, most cases end in a <strong>stipulation of settlement</strong> &mdash; a written agreement signed in court that the judge enforces like a judgment. Stipulations can be tenant-friendly (more time, repairs ordered, money waived) or very dangerous. Common traps:</p>
+      <ul>
+        <li><strong>&ldquo;Self-executing&rdquo; warrant language</strong> &mdash; one missed condition triggers eviction without another court appearance.</li>
+        <li><strong>Waiver of defenses</strong> &mdash; you agree to give up warranty of habitability, retaliation, or rent regulation defenses you would otherwise have.</li>
+        <li><strong>Move-out dates in exchange for time</strong> &mdash; you promise to be out by a specific date even if circumstances change.</li>
+      </ul>
+      <p>If you're in the hallway at court and the landlord's attorney hands you a stipulation, <strong>tell the judge you want to speak with a lawyer before signing anything.</strong> Judges grant this routinely. If you've already signed a stipulation you now regret, a lawyer can sometimes file an Order to Show Cause to vacate it.</p>
+    </aside>
+
+    <!-- Free help -->
+    <h2>Free help available</h2>
+    <ul class="help-list">
+      <li>
+        <span class="name">Met Council on Housing Tenants' Rights Hotline</span>
+        <span class="phone">212-979-0611</span>
+        <span class="desc">The first call for almost any non-renewal or rent-stabilization question. Trained volunteers with deep expertise in regulated tenancies, retaliation, and buyout negotiation. Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM. Call after 4&nbsp;PM and avoid Mondays if you can.</span>
+      </li>
+      <li>
+        <span class="name">NYS Homes &amp; Community Renewal (DHCR) &mdash; Office of Rent Administration</span>
+        <span class="phone">718-739-5600</span>
+        <span class="desc">Authoritative answers on rent regulation, rent histories, failure-to-renew complaints (Form RA-90), and rent overcharge complaints. Free.</span>
+      </li>
+      <li>
+        <span class="name">Housing Court Answers</span>
+        <span class="phone">212-962-4795</span>
+        <span class="desc">Best single call to find the right legal services provider for your borough &mdash; especially if a holdover gets filed.</span>
+      </li>
+      <li>
+        <span class="name">Legal Services NYC</span>
+        <span class="phone">917-661-4500</span>
+        <span class="desc">Free legal representation for low-income tenants across all five boroughs. Right to Counsel provider.</span>
+      </li>
+      <li>
+        <span class="name">Legal Aid Society &mdash; Tenant Rights</span>
+        <span class="phone">212-577-3300</span>
+        <span class="desc">Free legal representation including a dedicated NYCHA unit. Right to Counsel provider, all boroughs.</span>
+      </li>
+      <li>
+        <span class="name">NYC Commission on Human Rights</span>
+        <span class="phone">212-416-0197</span>
+        <span class="desc">If your non-renewal involves discrimination &mdash; including source-of-income (Section 8) discrimination or immigration-status threats.</span>
+      </li>
+      <li>
+        <span class="name">HRA / 311 (Homebase, One-Shot Deal, Cityfheps)</span>
+        <span class="phone"><a href="tel:311">Dial 311</a></span>
+        <span class="desc">Homelessness prevention (Homebase), emergency rent grants, and ongoing rental subsidies. Useful if a non-renewal turns into a holdover and you need a back-up plan.</span>
+      </li>
+    </ul>
+
+    <!-- Related -->
+    <section class="related">
+      <h2 style="margin-top: 0;">Related situations</h2>
+      <div class="related-grid">
+        <a href="eviction-notice.html" class="related-link">I got an eviction notice</a>
+        <a href="#" class="related-link">My landlord is retaliating against me for complaining</a>
+        <a href="leaks-plumbing.html" class="related-link">I have a leak or plumbing problem</a>
+        <a href="mold.html" class="related-link">I have mold in my apartment</a>
+        <a href="#" class="related-link">I'm in a NYCHA building, not private housing</a>
+      </div>
+    </section>
+
+    <!-- Sources -->
+    <div class="sources">
+      <h3>Sources &amp; verification</h3>
+      <ul>
+        <li><a href="https://www.nysenate.gov/legislation/laws/RPP/226-C" target="_blank" rel="noopener">NY Real Property Law &sect;&nbsp;226-c &mdash; notice of rent increase or non-renewal</a></li>
+        <li><a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" target="_blank" rel="noopener">NY Real Property Law &sect;&nbsp;223-b &mdash; retaliation (1-year presumption window per HSTPA)</a></li>
+        <li><a href="https://www.nysenate.gov/legislation/laws/RPP/235-B" target="_blank" rel="noopener">NY Real Property Law &sect;&nbsp;235-b &mdash; warranty of habitability</a></li>
+        <li><a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2523.5" target="_blank" rel="noopener">9 NYCRR &sect;&nbsp;2523.5 &mdash; renewal lease procedures (rent-stabilized)</a></li>
+        <li><a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2524.3" target="_blank" rel="noopener">9 NYCRR &sect;&nbsp;2524.3 &mdash; grounds for refusal of renewal (no DHCR approval)</a></li>
+        <li><a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2524.4" target="_blank" rel="noopener">9 NYCRR &sect;&nbsp;2524.4 &mdash; grounds requiring prior DHCR approval</a></li>
+        <li><a href="https://hcr.ny.gov/good-cause-eviction" target="_blank" rel="noopener">NYS Good Cause Eviction Law</a> &mdash; Chapter 56 of the Laws of 2024, Part HH (effective April 20, 2024; notice requirement effective August 18, 2024)</li>
+        <li><a href="https://hcr.ny.gov/" target="_blank" rel="noopener">NYS Homes &amp; Community Renewal (DHCR) &mdash; rent regulation portal</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/help-answers/" target="_blank" rel="noopener">Met Council on Housing &mdash; Help &amp; Answers</a></li>
+        <li><a href="https://housingcourtanswers.org/" target="_blank" rel="noopener">Housing Court Answers &mdash; tenant resources</a></li>
+      </ul>
+      <p class="verified">All sources verified April 23, 2026. <a href="#" class="inline-link">Found an error? Tell us.</a></p>
+    </div>
+
+    <div class="disclaimer">
+      <strong>This isn't legal advice.</strong> Tenant Triage NYC is an independent guide to help you understand your options and take action. We are not lawyers, and this is not an official government resource. If you need legal advice for your specific situation, please contact one of the free legal help organizations listed above.
+    </div>
+
+  </article>
+
+  <div class="toast" id="toast">Copied to clipboard</div>
+
+  <script>
+    // Scroll progress bar
+    window.addEventListener('scroll', function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progress").style.width = scrolled + "%";
+    });
+
+    const formState = {};
+
+    function syncField(fieldName, value) {
+      formState[fieldName] = value;
+      document.querySelectorAll('[data-field="' + fieldName + '"]').forEach(function(input) {
+        if (input.value !== value) input.value = value;
+        if (value && value.trim() !== '') {
+          input.classList.add('has-value');
+        } else {
+          input.classList.remove('has-value');
+        }
+        autoResize(input);
+      });
+      if (fieldName === 'complaint_ref') {
+        const display = document.getElementById('ref-display');
+        if (value && value.trim() !== '') {
+          display.innerHTML = value;
+        } else {
+          display.innerHTML = '<span class="empty">Not entered yet &mdash; you can save it in the court step above.</span>';
+        }
+      }
+    }
+
+    document.querySelectorAll('.fill, [data-field]').forEach(function(input) {
+      input.addEventListener('input', function() { syncField(this.dataset.field, this.value); });
+    });
+
+    function autoResize(input) {
+      if (!input.classList.contains('fill')) return;
+      const placeholder = input.getAttribute('placeholder') || '';
+      const value = input.value || '';
+      const len = Math.max(value.length, placeholder.length, 4);
+      input.size = len + 1;
+    }
+    document.querySelectorAll('.fill').forEach(function(input) {
+      autoResize(input);
+      input.addEventListener('input', function() { autoResize(this); });
+    });
+
+    // EVICTION STAGE PICKER
+    const severityContent = {
+      stabilized: {
+        title: 'Rent-stabilized',
+        body: '<p>If your apartment is rent-stabilized, your landlord is required to offer you a renewal lease at the legal regulated rent on the same terms as your previous lease &mdash; for either one or two years, your choice. Refusing to renew is a violation of the Rent Stabilization Code, and the only lawful exceptions are very narrow grounds in <a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2524.3" class="inline-link" target="_blank" rel="noopener">9 NYCRR &sect;&sect;&nbsp;2524.3&ndash;2524.5</a> (e.g., owner/family use, demolition, substantial lease violation after notice to cure).</p><p>The landlord must mail the renewal offer in a specific window (commonly described as 90&ndash;150 days before the current lease expires). If they didn\'t, you have a remedy at <strong>NYS Homes &amp; Community Renewal (DHCR)</strong>: file a <strong>failure-to-renew complaint</strong> (DHCR Form RA-90).</p><span class="key-fact"><strong>Most important for you:</strong> Don\'t move and don\'t accept any &ldquo;buyout&rdquo; offer until you\'ve confirmed your status with a tenant attorney or Met Council. Rent-stabilized tenants are routinely pressured into giving up rights worth tens of thousands of dollars. Pull your DHCR rent history (Step 1) before you do anything else.</span>'
+      },
+      controlled: {
+        title: 'Rent-controlled',
+        body: '<p>Rent control covers a small number of NYC tenants who have continuously occupied an apartment in a pre-1947 building since before July 1, 1971 (or are protected family members of such a tenant). If that\'s you, your tenancy continues automatically &mdash; there is generally no &ldquo;renewal&rdquo; to refuse.</p><p>Your landlord can only remove you on grounds spelled out in the Rent Control Law, which are very narrow (owner-occupancy with strict requirements, demolition with DHCR approval, certain lease violations). Rent increases are capped by the Maximum Base Rent (MBR) system administered by DHCR.</p><span class="key-fact"><strong>Most important for you:</strong> Talk to a rent-control-experienced tenant attorney before signing anything &mdash; and immediately if your landlord is demanding you sign a &ldquo;new lease&rdquo; (rent-controlled tenants don\'t sign leases). Met Council on Housing has decades of rent-control expertise: <strong>212-979-0611</strong>.</span>'
+      },
+      gce: {
+        title: 'Market-rate — covered by Good Cause Eviction',
+        body: '<p>NY\'s <strong>Good Cause Eviction</strong> law (enacted April 20, 2024) automatically applies to most NYC market-rate rentals. If you\'re covered, your landlord must have one of the lawful &ldquo;good causes&rdquo; in the statute to refuse to renew &mdash; e.g., nonpayment of a reasonable rent, lease violation after notice to cure, owner/family use with strict conditions, or withdrawal of the unit from the rental market. Refusing &ldquo;just because&rdquo; is not a lawful reason.</p><p>Good Cause also caps rent increases: any increase above the lesser of <strong>10%</strong> or <strong>5% + the local CPI</strong> is presumptively unreasonable and the landlord has to justify it.</p><p><strong>Mandatory notice (effective August 18, 2024):</strong> NYC landlords must include a <strong>Good Cause Eviction Law Notice</strong> in every new lease, renewal, and non-renewal notice &mdash; stating whether the unit is covered or exempt, and if exempt, the specific reason why. If you didn\'t get such a notice with your last lease or your current non-renewal, that\'s evidence your landlord may not be complying.</p><span class="key-fact"><strong>Most important for you:</strong> If your landlord is refusing to renew or asking for an increase above the threshold, ask in writing for the lawful reason, the calculation, and the Good Cause Eviction Notice. Save their response (or non-response). If they file a holdover case later, those documents are your defense. Step 5 lays out the rest.</span>'
+      },
+      exempt: {
+        title: 'Market-rate — exempt from Good Cause',
+        body: '<p>Good Cause has carve-outs. The most common in NYC: <strong>owner-occupied buildings of 10 or fewer units</strong>; <strong>small landlords</strong> (owns 10 or fewer residential units statewide); condos and co-ops; buildings with a certificate of occupancy issued on or after January 1, 2009 (exempt for 30 years); and apartments renting above the &ldquo;luxury threshold&rdquo; of 245% of the local Fair Market Rent. If your apartment is exempt, your landlord generally <em>can</em> refuse to renew without giving a reason &mdash; and can raise the rent without a cap.</p><p>You still have important rights: (1) <strong>RPL &sect;&nbsp;226-c notice</strong> &mdash; 30/60/90 days based on tenancy length; (2) <strong>RPL &sect;&nbsp;223-b anti-retaliation</strong> &mdash; non-renewal within 1 year of a good-faith complaint is presumptively retaliatory; (3) <strong>holdover process</strong> &mdash; even if non-renewal is lawful, the landlord still has to file in Housing Court and you can defend.</p><span class="key-fact"><strong>Most important for you:</strong> Confirm exemption is real (Step 1) before assuming it. Many landlords <em>claim</em> exemption to discourage tenants who would actually be covered &mdash; and as of August 18, 2024, NYC landlords must state the specific reason for exemption in the Good Cause Eviction Law Notice attached to your lease or renewal. If you complained about conditions, requested repairs, or filed a 311 complaint in the last year, that\'s a retaliation defense even here. Talk to Met Council before moving.</span>'
+      },
+      'month-to-month': {
+        title: 'Month-to-month tenant',
+        body: '<p>Without a current written lease, you\'re a <strong>month-to-month tenant</strong>. Your landlord can end your tenancy by giving written notice under <a href="https://www.nysenate.gov/legislation/laws/RPP/226-C" class="inline-link" target="_blank" rel="noopener">RPL &sect;&nbsp;226-c</a>: 30 days if you\'ve lived there less than a year, 60 days if 1&ndash;2 years, 90 days if more than 2 years.</p><p>If your apartment is rent-stabilized, you\'re still entitled to a renewal lease even though you\'ve been month-to-month &mdash; check your status before assuming you\'re unregulated. If your apartment is market-rate, Good Cause Eviction may still require a lawful reason for non-renewal (see the GCE option above).</p><span class="key-fact"><strong>Most important for you:</strong> Defective notice is the most common defense at this stage. Count the days from the date the notice was actually delivered &mdash; not the date written on it &mdash; and confirm it covers a full rental period (typically ending the last day of a month). One day short means the notice has to start over.</span>'
+      },
+      subsidized: {
+        title: 'NYCHA, Section 8, or other subsidized',
+        body: '<p>If you live in <strong>NYCHA</strong> public housing, a <strong>project-based Section 8</strong> building, or your rent is paid in part with a <strong>Section 8 voucher (HCV)</strong>, federal program rules govern your tenancy on top of NY landlord-tenant law. Termination requires a <strong>specific lawful ground</strong>, written notice with reasons, and an <strong>administrative grievance/hearing</strong> right before any court case can begin.</p><p>For Section 8 voucher holders: source-of-income discrimination is illegal under NYC Human Rights Law &mdash; a private landlord refusing to renew because you have a voucher is a violation enforceable through NYC Commission on Human Rights.</p><span class="key-fact"><strong>Most important for you:</strong> Don\'t skip the administrative grievance step &mdash; if you don\'t request a grievance/hearing in time, you can lose defenses you would otherwise have in Housing Court later. NYCHA tenants: contact <strong>Legal Aid Society NYCHA Unit</strong>. Voucher holders: contact <strong>Met Council</strong> or <strong>Legal Services NYC</strong>.</span>'
+      },
+      all: null
+    };
+
+    const contextEl = document.getElementById('severity-context');
+    const contextTitle = document.getElementById('severity-context-title');
+    const contextBody = document.getElementById('severity-context-body');
+
+    document.querySelectorAll('.severity-option').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.severity-option').forEach(function(b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-checked', 'false');
+        });
+        this.classList.add('active');
+        this.setAttribute('aria-checked', 'true');
+
+        const severity = this.dataset.severity;
+        const content = severityContent[severity];
+
+        if (content) {
+          contextTitle.textContent = content.title;
+          contextBody.innerHTML = content.body;
+          contextEl.classList.add('visible');
+        } else {
+          contextEl.classList.remove('visible');
+        }
+      });
+    });
+
+    // COPY TO CLIPBOARD
+    function getTemplateText(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return '';
+      const clone = container.cloneNode(true);
+      clone.querySelectorAll('input.fill').forEach(function(input) {
+        const original = container.querySelector('[data-field="' + input.dataset.field + '"]');
+        const value = original.value.trim();
+        const replacement = value || ('[' + (input.getAttribute('placeholder') || input.dataset.field) + ']');
+        const textNode = document.createTextNode(replacement);
+        input.parentNode.replaceChild(textNode, input);
+      });
+      let text = '';
+      clone.querySelectorAll('p').forEach(function(p, index) {
+        if (index > 0) text += '\n\n';
+        const html = p.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        text += tempDiv.textContent.trim();
+      });
+      return text;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 2200);
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const targetId = this.dataset.copyTarget;
+        const text = getTemplateText(targetId);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function() { showCopySuccess(btn); })
+            .catch(function() { fallbackCopy(text, btn); });
+        } else {
+          fallbackCopy(text, btn);
+        }
+      });
+    });
+
+    function fallbackCopy(text, btn) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try { document.execCommand('copy'); showCopySuccess(btn); }
+      catch (err) { showToast('Copy failed — please select and copy manually'); }
+      document.body.removeChild(textarea);
+    }
+
+    function showCopySuccess(btn) {
+      btn.classList.add('copied');
+      const textSpan = btn.querySelector('.copy-btn-text');
+      const originalText = textSpan.textContent;
+      textSpan.textContent = 'Copied!';
+      showToast('Copied to clipboard');
+      setTimeout(function() {
+        btn.classList.remove('copied');
+        textSpan.textContent = originalText;
+      }, 2000);
+    }
+  </script>
+  <script src="../lookup.js"></script>
+  <script>
+    initLookup({
+      filterKeywords: ['lease', 'renewal', 'non-renewal', 'renew', 'rent increase', 'rent stabilized', 'rent stabilization', 'rent controlled', 'good cause', 'GCE', 'DHCR', '226-c', '223-b', '235-b', 'retaliation', 'holdover', 'buyout', 'cash for keys', 'overcharge', 'habitability']
+    });
+  </script>
+
+</body>
+</html>
