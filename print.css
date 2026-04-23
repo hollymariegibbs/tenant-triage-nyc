@@ -1,0 +1,567 @@
+/*
+ * Print stylesheet — loaded via <link rel="stylesheet" href="print.css" media="print">.
+ *
+ * Goals:
+ *   - Strip interactive UI (sidebar, severity picker, HPD lookup, toasts,
+ *     copy buttons, print-this-page links, related-scenario grids).
+ *   - Flatten decorative chrome (dark rights-box, colored callout boxes,
+ *     SVG icons).
+ *   - Preserve the intake checklist as a printable fill-in form.
+ *   - Comfortable typography (10.5pt / 1.4) — readable on paper.
+ *   - Break long sections (.step, .callout, rights-box body) across pages
+ *     naturally; keep small atomic blocks (tables, help-list items,
+ *     intake checklist) whole.
+ *
+ * Loaded AFTER the inline <style> block on each page so it wins the
+ * cascade and these values actually take effect in print.
+ */
+
+@page {
+  size: auto;
+  margin: 0.75in 0.7in;
+}
+
+/* -------- Baseline typography -------- */
+
+html {
+  font-size: 10.5pt;
+}
+body {
+  color: #000;
+  background: #fff;
+  font-family: "Public Sans", system-ui, sans-serif;
+  line-height: 1.4;
+  orphans: 3;
+  widows: 3;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Keep small headings attached to the content that follows. Generic
+ * h1/h2/h3 deliberately NOT included: when a major section heading
+ * sits at the bottom of a page, forcing it to the next page wastes
+ * 30-50% of the current page. Orphans: 3 prevents truly-alone. */
+.step-header,
+.step-title,
+.callout-label,
+.callout h3,
+.rights-box h3,
+.sub-label {
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+/* -------- Hide interactive / navigational UI -------- */
+
+.site-header,
+.site-footer,
+.progress-bar,
+.breadcrumbs,
+.reading-label,
+.toc-sidebar,
+.severity-picker,
+.severity-context,
+.lookup,
+.ref-capture,
+.ref-recall,
+.toast,
+.copy-btn,
+.print-hide,
+.related,
+.cta-callout,
+nav.toc,
+.verify-tag,
+.draft-flag {
+  display: none !important;
+}
+
+#intake-template-step2 {
+  display: none !important;
+}
+
+/* Collapse sidebar grid layout — full-width article */
+.layout {
+  display: block !important;
+  max-width: none !important;
+  padding: 0 !important;
+  grid-template-columns: none !important;
+  column-gap: 0 !important;
+}
+.layout > article,
+article {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  grid-column: auto !important;
+}
+
+/* -------- Headings -------- */
+
+h1 {
+  font-size: 22pt;
+  line-height: 1.1;
+  margin: 0 0 0.25rem;
+  color: #000;
+}
+.standfirst {
+  font-size: 12pt;
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+  max-width: none;
+  color: #333;
+}
+h2 {
+  font-size: 15pt;
+  line-height: 1.2;
+  margin-top: 1.25rem;
+  margin-bottom: 0.4rem;
+  color: #000;
+}
+h3 {
+  font-size: 12.5pt;
+  line-height: 1.25;
+  margin-bottom: 0.3rem;
+  color: #000;
+}
+.sub-label {
+  font-size: 11pt;
+  font-weight: 700;
+  color: #000;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+/* -------- Body text -------- */
+
+p {
+  margin-bottom: 0.6rem;
+  color: #000;
+}
+p strong { font-weight: 700; color: #000; }
+
+ul, ol {
+  margin: 0.35rem 0 0.6rem 1.3rem;
+}
+li {
+  margin-bottom: 0.2rem;
+  font-size: 10.5pt;
+  line-height: 1.4;
+}
+
+/* -------- Links -------- */
+
+a,
+a.inline-link {
+  color: #000 !important;
+  text-decoration: underline !important;
+  border-bottom: none !important;
+  background: transparent !important;
+}
+
+/* -------- Meta bar -------- */
+
+.meta {
+  display: block;
+  padding: 0.35rem 0;
+  margin-bottom: 0.9rem;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #bbb;
+  font-size: 9pt;
+  color: #333;
+}
+.meta-item {
+  display: inline-block;
+  margin-right: 1.25rem;
+}
+.meta-item svg { display: none; }
+.meta-item strong { color: #000; }
+
+/* -------- Read-first box -------- */
+
+.read-first {
+  background: transparent !important;
+  border-left: 3px solid #000;
+  padding: 0.4rem 0 0.4rem 0.85rem;
+  margin: 0.6rem 0 1rem;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+.read-first p {
+  font-size: 10pt;
+  margin-bottom: 0.45rem;
+}
+.read-first p:last-child { margin-bottom: 0; }
+
+/* -------- Rights box — let it split, keep the table whole -------- */
+
+.rights-box {
+  background: transparent !important;
+  color: #000 !important;
+  padding: 0.6rem 0;
+  margin: 0.75rem 0;
+  border-top: 1.5px solid #000;
+  border-bottom: 1.5px solid #000;
+  /* Allowed to break; the severity table below has its own avoid rule. */
+}
+.rights-box .rights-label {
+  color: #555 !important;
+  font-size: 9pt;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+.rights-box h3 {
+  color: #000 !important;
+  font-size: 13pt;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+.rights-box p,
+.rights-box li,
+.rights-box strong {
+  color: #000 !important;
+  font-size: 10pt;
+}
+.rights-box li::before { color: #333 !important; }
+.rights-box .source {
+  font-size: 9pt;
+  color: #555 !important;
+  margin-top: 0.4rem;
+}
+
+/* Severity table — don't split across pages or mid-row */
+.severity-table {
+  font-size: 9.5pt;
+  margin: 0.4rem 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+.severity-table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+.severity-table th {
+  color: #333 !important;
+  border-bottom-color: #000 !important;
+  padding: 0.3rem 0.5rem;
+}
+.severity-table td {
+  color: #000 !important;
+  border-bottom-color: #ccc !important;
+  padding: 0.3rem 0.5rem;
+}
+.severity-table .class-cell {
+  color: #000 !important;
+  font-weight: 700;
+}
+
+/* -------- Callouts -------- */
+
+.callout {
+  background: transparent !important;
+  border-left: 2px solid #000 !important;
+  padding: 0.4rem 0 0.4rem 0.85rem;
+  margin: 0.75rem 0;
+  /* Callouts are often half-page or longer — let them break naturally. */
+}
+.callout-label {
+  color: #444 !important;
+  font-size: 9pt;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+.callout h3 {
+  font-size: 12pt;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+  color: #000 !important;
+}
+.callout p,
+.callout li {
+  font-size: 10pt;
+  color: #000 !important;
+}
+.callout ul {
+  margin: 0.35rem 0 0.5rem 1.25rem;
+}
+
+/* -------- Steps -------- */
+
+.step {
+  margin: 0.9rem 0;
+  /* Steps span 1–2 pages — let them break naturally. */
+}
+.step-header {
+  margin-bottom: 0.35rem;
+}
+.step-meta {
+  display: block;
+  font-size: 9pt;
+  color: #555;
+  margin-bottom: 0.15rem;
+}
+.step-number {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #000;
+  margin-right: 0.75rem;
+}
+.time-chip { color: #555; font-size: 9pt; }
+.time-chip svg { display: none; }
+.step-title {
+  font-size: 13pt;
+  font-weight: 700;
+  margin: 0.15rem 0 0.4rem;
+  color: #000 !important;
+}
+.why-this-matters {
+  font-size: 10pt;
+  color: #333;
+  border-left: 2px solid #aaa;
+  padding: 0.15rem 0 0.15rem 0.7rem;
+  margin-bottom: 0.7rem;
+}
+
+/* -------- Intake template — printable fill-in form -------- */
+
+.template {
+  border: 1px solid #888;
+  padding: 0.5rem 0.75rem;
+  margin: 0.5rem 0 1rem;
+  background: transparent !important;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+.template-header {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+.template-label {
+  font-weight: 700;
+  font-size: 9.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #000;
+}
+.template-label svg { display: none; }
+.template-body p {
+  margin: 0 0 0.55rem;
+  line-height: 1.6;
+  font-size: 10pt;
+  color: #000;
+}
+.template-body p strong { color: #000; }
+.template input.fill {
+  border: none !important;
+  border-bottom: 1px solid #666 !important;
+  background: transparent !important;
+  color: #000 !important;
+  font-size: 10pt;
+  font-family: inherit;
+  padding: 0 0.25rem !important;
+  min-width: 8rem;
+  outline: none;
+}
+.template input.fill::placeholder {
+  color: #888 !important;
+  opacity: 1;
+  font-style: italic;
+}
+
+/* -------- Free help list -------- */
+
+.help-list {
+  font-size: 10pt;
+  margin: 0.5rem 0 1rem;
+}
+.help-list li {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #ccc;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+.help-list li:last-child { border-bottom: none; }
+.help-list .name {
+  display: block;
+  font-weight: 700;
+  color: #000 !important;
+  font-size: 10.5pt;
+  margin-bottom: 0.15rem;
+}
+.help-list .phone,
+.help-list .url {
+  display: block;
+  color: #000 !important;
+  font-weight: 700;
+  font-size: 10.5pt;
+  margin-bottom: 0.2rem;
+}
+.help-list .hours,
+.help-list .email,
+.help-list .address {
+  display: block;
+  color: #333 !important;
+  font-size: 9.5pt;
+  margin-bottom: 0.2rem;
+}
+.help-list .desc {
+  display: block;
+  color: #333 !important;
+  font-size: 9.5pt;
+  line-height: 1.4;
+}
+.help-list .tip {
+  display: block;
+  font-size: 9pt;
+  color: #444 !important;
+  background: transparent !important;
+  border-left: 2px solid #999;
+  padding: 0.25rem 0.5rem;
+  margin: 0.3rem 0;
+}
+.help-list .forms {
+  display: block;
+  font-size: 9pt;
+  color: #555 !important;
+  margin-top: 0.3rem;
+}
+
+.help-list .sub-section {
+  margin-top: 0.5rem;
+  padding-top: 0.35rem;
+  border-top: 1px dashed #ccc;
+}
+.help-list .sub-section-label {
+  font-size: 8.5pt;
+  letter-spacing: 0.05em;
+  color: #000;
+  font-weight: 700;
+}
+.help-list .office-list li {
+  padding: 0.25rem 0;
+  font-size: 9.5pt;
+  border-bottom: none;
+}
+.help-list .office-list .office-name { font-weight: 700; color: #000; }
+.help-list .office-list .office-phone { color: #000 !important; font-weight: 700; }
+.help-list .office-list .office-address {
+  color: #444 !important;
+  font-size: 9pt;
+}
+
+.help-list .eligibility {
+  background: transparent !important;
+  border-left: 2px solid #000 !important;
+  padding: 0.3rem 0 0.3rem 0.7rem;
+  margin: 0.4rem 0;
+  font-size: 9.5pt;
+}
+
+.help-list .detail-list li {
+  padding: 0.2rem 0 0.2rem 1.1rem;
+  border-bottom: none;
+  font-size: 10pt;
+}
+.help-list .detail-list li::before {
+  content: "→";
+  color: #000 !important;
+  font-weight: 700;
+}
+
+.help-list .forms-grid {
+  display: block !important;
+  margin: 0.3rem 0;
+}
+.help-list .forms-grid li {
+  display: block !important;
+  padding: 0.25rem 0;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  page-break-inside: avoid;
+}
+.help-list .forms-grid .form-icon { display: none; }
+.help-list .forms-grid .form-number {
+  display: inline;
+  font-weight: 700;
+  color: #000 !important;
+  font-size: 10pt;
+  margin-right: 0.5rem;
+}
+.help-list .forms-grid .form-desc {
+  display: inline;
+  color: #333 !important;
+  font-size: 10pt;
+}
+
+/* -------- Sources -------- */
+
+.sources {
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #000;
+  font-size: 9pt;
+  color: #333;
+}
+.sources h3 {
+  font-size: 9pt;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #000;
+  margin-bottom: 0.3rem;
+}
+.sources ul { margin: 0 0 0 1rem; }
+.sources li {
+  margin-bottom: 0.2rem;
+  font-size: 9pt;
+}
+.verified {
+  margin-top: 0.6rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid #ccc;
+  font-size: 8.5pt;
+  color: #555;
+}
+
+/* -------- Disclaimer -------- */
+
+.disclaimer {
+  margin-top: 1rem;
+  padding: 0.45rem 0.6rem;
+  background: transparent !important;
+  border: 1px dashed #999;
+  font-size: 9pt;
+  color: #333;
+  line-height: 1.4;
+}
+.disclaimer strong { color: #000; }
+
+/* -------- Free-help-specific -------- */
+
+.intro-note {
+  background: transparent !important;
+  border-left: 2px solid #000;
+  padding: 0.3rem 0 0.3rem 0.7rem;
+  margin: 0.5rem 0 0.75rem;
+  font-size: 10pt;
+}
+.section-intro {
+  font-size: 9.5pt;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+.section-flag {
+  display: none !important;
+}
+
+/* Defensive */
+pre, code {
+  font-size: 9pt;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
