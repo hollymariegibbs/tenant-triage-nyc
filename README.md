@@ -251,7 +251,7 @@ Tenant Triage NYC is an independent public-interest guide. It is not legal advic
 
 ## License
 
-[TODO — add a license. Content licensing matters here because the guides may be shared, reproduced, or adapted by tenant organizations. Likely: MIT for the code, CC BY-SA 4.0 or CC BY 4.0 for the content.]
+[MIT](LICENSE) 
 
 ---
 
