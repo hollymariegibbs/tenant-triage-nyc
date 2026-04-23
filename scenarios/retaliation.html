@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My landlord is retaliating against me for complaining — Tenant Triage NYC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../lookup.css">
+  <link rel="stylesheet" href="../sidebar.css">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f3ef;
+      --bg-elevated: #fafaf8;
+      --ink: #111111;
+      --ink-soft: #3d3d3d;
+      --ink-faded: #6b6b6b;
+      --rule: #e6e4df;
+      --rule-strong: #c9c5bc;
+
+      --accent: #0d7377;
+      --accent-deep: #08494c;
+      --accent-soft: #e3f0f0;
+      --accent-bright: #5eb6b9; /* lighter variant for use on dark backgrounds */
+
+      --protect: #2a4a7f;
+      --protect-soft: #eaeff7;
+      --warning-ink: #7a3a0a;
+      --warning-bg: #fff4e6;
+      --warning-rule: #e8a35a;
+
+      --code-bg: #f3f1ec;
+      --code-rule: #d9d5ca;
+      --quote-bar: #c9c5bc;
+
+      --measure: 38rem;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 18px; scroll-behavior: smooth; }
+
+    body {
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      font-size: 1.125rem;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--accent); width: 0%; z-index: 1000;
+      transition: width 0.05s linear;
+    }
+
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem 1.5rem;
+      background: var(--bg);
+    }
+    .site-header-inner {
+      max-width: 64rem; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .wordmark {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      text-decoration: none; color: var(--ink);
+    }
+    .wordmark-main {
+      font-weight: 900; font-size: 1.375rem;
+      letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
+    }
+    .wordmark-accent {
+      font-weight: 500; font-size: 0.95rem;
+      color: var(--accent); letter-spacing: 0.01em;
+    }
+    .site-nav {
+      display: flex; gap: 1.75rem;
+      font-size: 0.875rem; color: var(--ink); font-weight: 500;
+    }
+    .site-nav a {
+      color: inherit; text-decoration: none;
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .site-nav a:hover { border-bottom-color: var(--accent); }
+
+    article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+    /* Breadcrumbs — more prominent now */
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+      font-size: 0.875rem;
+    }
+    .breadcrumbs a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.25rem 0;
+      border-bottom: 1px solid var(--rule-strong);
+      transition: all 0.15s ease;
+    }
+    .breadcrumbs a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .breadcrumbs .sep {
+      color: var(--ink-faded);
+      font-weight: 400;
+    }
+    .breadcrumbs .current {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: clamp(2.25rem, 5.5vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+
+    /* "What you're reading" subtitle */
+    .reading-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+      padding: 0.35rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .reading-label svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    .standfirst {
+      font-weight: 400;
+      font-size: 1.1875rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin-bottom: 2rem;
+      max-width: 36rem;
+    }
+
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 1.5rem;
+      padding: 0.875rem 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.8125rem; color: var(--ink-faded);
+      margin-bottom: 2.5rem;
+    }
+    .meta-item { display: flex; align-items: center; gap: 0.4rem; }
+    .meta-item svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .meta-item strong { color: var(--ink); font-weight: 600; }
+    .meta-item a {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    p { margin-bottom: 1.25rem; color: var(--ink); }
+    p strong { font-weight: 600; }
+
+    a.inline-link {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: background 0.15s ease;
+    }
+    a.inline-link:hover { background: var(--accent-soft); }
+
+    h2 {
+      font-weight: 800;
+      font-size: 1.625rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-top: 3.5rem;
+      margin-bottom: 1.25rem;
+      color: var(--ink);
+    }
+
+    .sub-label {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--ink);
+      margin-top: 1.75rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .read-first {
+      background: var(--bg-soft);
+      border-left: 4px solid var(--ink);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+    .read-first p { margin-bottom: 0.75rem; font-size: 0.9375rem; }
+    .read-first p:last-child { margin-bottom: 0; }
+    .read-first strong { color: var(--ink); font-weight: 700; }
+
+    .rights-box {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 1.75rem 2rem;
+      margin: 2rem 0;
+    }
+    .rights-box .rights-label {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #d4d2cc;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .rights-box h3 {
+      font-weight: 800; font-size: 1.375rem;
+      letter-spacing: -0.015em; color: var(--bg);
+      margin-bottom: 0.75rem;
+    }
+    .rights-box p { color: var(--bg); font-size: 0.9375rem; margin-bottom: 0.75rem; }
+    .rights-box ul { list-style: none; padding: 0; margin-top: 0.75rem; }
+    .rights-box li {
+      position: relative; padding-left: 1.5rem; margin-bottom: 0.6rem;
+      font-size: 0.9375rem; color: var(--bg);
+    }
+    .rights-box li::before {
+      content: "→"; position: absolute; left: 0;
+      color: var(--accent-bright); font-weight: 700;
+    }
+    .rights-box .source {
+      font-size: 0.75rem; color: #b8b6b1;
+      margin-top: 1rem; margin-bottom: 0;
+    }
+
+    .severity-table {
+      margin: 1rem 0 0.5rem;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .severity-table th,
+    .severity-table td {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid #2c2c2c;
+      color: var(--bg);
+    }
+    .severity-table th {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #d4d2cc;
+      border-bottom-color: #4a4a4a;
+    }
+    .severity-table tr:last-child td { border-bottom: none; }
+    .severity-table .class-cell { font-weight: 700; color: var(--accent-bright); }
+
+    /* SEVERITY PICKER */
+    .severity-picker {
+      margin: 2rem 0 2.5rem;
+      padding: 1.5rem;
+      background: var(--bg-soft);
+      border: 2px solid var(--ink);
+    }
+    .severity-picker-header {
+      margin-bottom: 1rem;
+    }
+    .severity-picker-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .severity-picker-title {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .severity-picker-help {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+    }
+    .severity-options {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .severity-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.875rem;
+      padding: 0.875rem 1rem;
+      background: var(--bg);
+      border: 1.5px solid var(--rule-strong);
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: all 0.12s ease;
+      width: 100%;
+    }
+    .severity-option:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .severity-option.active {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .severity-option-marker {
+      flex-shrink: 0;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 1.5px solid var(--rule-strong);
+      border-radius: 100px;
+      margin-top: 0.15rem;
+      position: relative;
+      transition: all 0.12s ease;
+    }
+    .severity-option:hover .severity-option-marker {
+      border-color: var(--accent);
+    }
+    .severity-option.active .severity-option-marker {
+      border-color: var(--bg);
+      background: var(--bg);
+    }
+    .severity-option.active .severity-option-marker::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      background: var(--ink);
+      border-radius: 100px;
+    }
+    .severity-option-text {
+      flex: 1;
+    }
+    .severity-option-name {
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+    .severity-option.active .severity-option-name { color: var(--bg); }
+    .severity-option-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      display: block;
+    }
+    .severity-option.active .severity-option-desc { color: #c9c5bc; }
+
+    /* Severity context banner — shows after selection */
+    .severity-context {
+      margin: 1.5rem 0 2.5rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      display: none;
+    }
+    .severity-context.visible {
+      display: block;
+    }
+    .severity-context-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .severity-context h3 {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+    .severity-context p {
+      font-size: 0.9375rem;
+      margin-bottom: 0.5rem;
+    }
+    .severity-context p:last-child { margin-bottom: 0; }
+    .severity-context ul {
+      margin: 0.5rem 0 0.75rem;
+      padding-left: 1.25rem;
+      font-size: 0.9375rem;
+    }
+    .severity-context li {
+      margin-bottom: 0.35rem;
+      line-height: 1.55;
+    }
+    .severity-context .key-fact {
+      display: block;
+      padding: 0.75rem 0;
+      border-top: 1px solid rgba(13, 115, 119, 0.2);
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+    }
+    .severity-context .key-fact strong {
+      color: var(--accent-deep);
+    }
+
+    .step {
+      margin: 3rem 0;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .step-header { margin-bottom: 1.25rem; }
+    .step-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .step-number {
+      font-weight: 800; font-size: 0.75rem;
+      letter-spacing: 0.08em; color: var(--accent);
+      text-transform: uppercase;
+    }
+    .time-chip {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.75rem; font-weight: 500;
+      color: var(--ink-soft); background: var(--bg-soft);
+      padding: 0.25rem 0.6rem; border-radius: 100px;
+    }
+    .time-chip svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .step-title {
+      font-weight: 800; font-size: 1.625rem;
+      line-height: 1.2; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0;
+    }
+
+    .why-this-matters {
+      color: var(--ink-soft);
+      border-left: 3px solid var(--rule-strong);
+      padding-left: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+
+    .step ol, .step ul { margin-bottom: 1.25rem; padding-left: 1.75rem; }
+    .step li { margin-bottom: 0.6rem; }
+    .step li ul, .step li ol { margin-top: 0.5rem; margin-bottom: 0.5rem; padding-left: 1.5rem; }
+
+    /* Template box */
+    .template {
+      background: var(--code-bg);
+      border: 1px solid var(--code-rule);
+      border-left: 4px solid var(--ink);
+      margin: 1rem 0 1.5rem;
+      position: relative;
+    }
+    .template-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 1rem 0.6rem 1.25rem;
+      border-bottom: 1px solid var(--code-rule);
+      background: rgba(0,0,0,0.025);
+    }
+    .template-label {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink);
+    }
+    .template-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: inherit; font-size: 0.75rem; font-weight: 600;
+      color: var(--ink); background: var(--bg);
+      border: 1px solid var(--ink);
+      padding: 0.35rem 0.75rem;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .copy-btn:hover { background: var(--ink); color: var(--bg); }
+    .copy-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
+    .copy-btn.copied { background: var(--ink); color: var(--bg); }
+    .template-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+      font-size: 0.9375rem; line-height: 1.65;
+      color: var(--ink);
+    }
+    .template-body p { margin-bottom: 0.75rem; color: var(--ink); }
+    .template-body p:last-child { margin-bottom: 0; }
+
+    .fill {
+      display: inline-block;
+      font-family: inherit; font-size: inherit; font-weight: 500;
+      color: var(--accent-deep); background: var(--bg);
+      border: none; border-bottom: 1.5px dashed var(--accent);
+      padding: 0 0.25rem; margin: 0 1px;
+      min-width: 4rem; max-width: 100%;
+      line-height: 1.4;
+      transition: background 0.12s ease;
+    }
+    .fill::placeholder {
+      color: var(--accent); font-style: italic;
+      font-weight: 400; opacity: 0.65;
+    }
+    .fill:focus {
+      outline: none;
+      background: var(--accent-soft);
+      border-bottom-color: var(--accent-deep);
+      border-bottom-style: solid;
+    }
+    .fill.has-value {
+      border-bottom-style: solid;
+      border-bottom-color: var(--ink);
+      color: var(--ink);
+    }
+
+    /* Spoken script box with fillable inputs */
+    .spoken {
+      margin: 1rem 0 1.5rem;
+      padding: 1rem 0 1rem 1.5rem;
+      border-left: 4px solid var(--quote-bar);
+      position: relative;
+    }
+    .spoken-label {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.6rem;
+    }
+    .spoken-label svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .spoken-body {
+      font-size: 1.0625rem; line-height: 1.65;
+      color: var(--ink); font-weight: 400;
+    }
+    .spoken-body p { margin-bottom: 0.6rem; }
+    .spoken-body p:last-child { margin-bottom: 0; }
+
+    /* Fillable inputs in spoken scripts — bigger, more prominent */
+    .spoken .fill {
+      font-size: 1.0625rem;
+      font-weight: 500;
+      color: var(--accent-deep);
+      border-bottom-width: 2px;
+      padding: 0 0.3rem;
+      min-width: 5rem;
+    }
+    .spoken .fill::placeholder {
+      font-size: 1rem;
+    }
+    .spoken .fill.has-value {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .spoken-hint {
+      display: block; margin-top: 0.75rem;
+      font-size: 0.8125rem; color: var(--ink-faded);
+      font-style: italic;
+    }
+
+    /* Reference number capture */
+    .ref-capture {
+      background: var(--bg-soft);
+      border: 1px solid var(--rule-strong);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .ref-capture-label {
+      font-weight: 600; font-size: 0.9375rem;
+      color: var(--ink); flex: 1 1 auto;
+    }
+    .ref-capture input {
+      font-family: inherit; font-size: 1rem; font-weight: 600;
+      color: var(--ink); background: var(--bg);
+      border: 1.5px solid var(--ink);
+      padding: 0.5rem 0.75rem;
+      width: 14rem; max-width: 100%;
+    }
+    .ref-capture input::placeholder { font-weight: 400; color: var(--ink-faded); }
+    .ref-capture input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+    .ref-recall {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.9375rem;
+    }
+    .ref-recall .label {
+      display: block;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 0.25rem;
+    }
+    .ref-recall .number {
+      font-size: 1.125rem; font-weight: 700; color: var(--ink);
+    }
+    .ref-recall .empty {
+      color: var(--ink-faded);
+      font-weight: 400; font-style: italic;
+      font-size: 0.9375rem;
+    }
+
+    /* Callouts */
+    .callout {
+      margin: 2.5rem 0;
+      padding: 1.75rem 2rem;
+      position: relative;
+    }
+    .callout-protect {
+      background: var(--protect-soft);
+      border-left: 4px solid var(--protect);
+    }
+    .callout-warning {
+      background: var(--warning-bg);
+      border-left: 4px solid var(--warning-rule);
+    }
+    .callout-label {
+      font-size: 0.7rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      margin-bottom: 0.5rem; display: block;
+    }
+    .callout-protect .callout-label { color: var(--protect); }
+    .callout-warning .callout-label { color: var(--warning-ink); }
+
+    .callout h3 {
+      margin-top: 0; margin-bottom: 0.75rem;
+      font-weight: 800; font-size: 1.25rem;
+      letter-spacing: -0.015em; color: var(--ink);
+    }
+    .callout p { font-size: 0.9375rem; margin-bottom: 0.85rem; }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout strong { font-weight: 700; color: var(--ink); }
+    .callout ul { margin: 0.75rem 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    .callout li { margin-bottom: 0.5rem; text-wrap: pretty; }
+    .callout p { text-wrap: pretty; }
+    .callout .resource-list { list-style: none; padding-left: 0; }
+    .callout .resource-list li { padding-left: 1.25rem; position: relative; }
+    .callout .resource-list li::before {
+      content: "•"; position: absolute; left: 0; font-weight: 700;
+    }
+    .callout-protect .resource-list li::before { color: var(--protect); }
+    .callout .sub-label { color: var(--ink); }
+
+    .draft-flag {
+      display: inline-block;
+      font-size: 0.65rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--ink); color: var(--bg);
+      padding: 0.25rem 0.55rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .help-list { list-style: none; padding: 0; margin: 1rem 0 2rem; }
+    .help-list li {
+      padding: 1.125rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .help-list li:last-child { border-bottom: none; }
+    .help-list .name {
+      font-weight: 700; color: var(--ink);
+      display: block; margin-bottom: 0.2rem; font-size: 1rem;
+    }
+    .help-list .phone {
+      font-weight: 700; color: var(--accent-deep);
+      font-size: 1.125rem; letter-spacing: -0.005em;
+    }
+    .help-list .desc {
+      display: block; font-size: 0.875rem;
+      color: var(--ink-soft); margin-top: 0.2rem;
+    }
+
+    .related {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .related-grid { display: grid; gap: 0.5rem; margin-top: 1rem; }
+    .related-link {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      background: var(--bg);
+      border: 1px solid var(--rule-strong);
+      text-decoration: none; color: var(--ink);
+      transition: all 0.15s ease;
+      font-size: 0.9375rem; font-weight: 500;
+    }
+    .related-link:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+    }
+    .related-link::after {
+      content: "→"; margin-left: auto;
+      color: var(--accent); font-weight: 700;
+    }
+
+    .sources {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      font-size: 0.8125rem; color: var(--ink-faded);
+    }
+    .sources h3 {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--ink); margin-bottom: 0.75rem;
+    }
+    .sources ul { list-style: none; padding: 0; }
+    .sources li { margin-bottom: 0.4rem; }
+    .sources a {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--rule-strong);
+    }
+    .verified {
+      margin-top: 1.25rem; padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .disclaimer {
+      margin-top: 2.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-soft);
+      border: 1px dashed var(--rule-strong);
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .disclaimer strong { color: var(--ink); font-weight: 700; }
+
+    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
+    .verify-tag {
+      display: inline-block;
+      background: #c8292e;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      margin: 0 0.15rem;
+      vertical-align: baseline;
+      font-style: normal;
+    }
+    .verify-tag::before { content: "⚑ "; }
+
+    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
+    .verify-tag {
+      display: inline-block;
+      background: #c8292e;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      margin: 0 0.15rem;
+      vertical-align: baseline;
+      font-style: normal;
+    }
+    .verify-tag::before { content: "⚑ "; }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(150%);
+      background: var(--ink); color: var(--bg);
+      padding: 0.875rem 1.5rem;
+      font-size: 0.875rem; font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media print {
+      .progress-bar, .site-header, .related, .meta-item.print-hide, .copy-btn, .toast { display: none; }
+      body { background: white; }
+      .fill { border-bottom: 1px solid #999; }
+    }
+
+    @media (max-width: 600px) {
+      article { padding: 2rem 1.25rem 4rem; }
+      h1 { font-size: 2.25rem; }
+      .step-title { font-size: 1.375rem; }
+      .template-header { flex-wrap: wrap; gap: 0.5rem; }
+      .ref-capture { flex-direction: column; align-items: stretch; }
+      .ref-capture input { width: 100%; }
+      .severity-table { font-size: 0.8125rem; }
+      .severity-table th, .severity-table td { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+  <link rel="stylesheet" href="../print.css" media="print">
+</head>
+<body>
+
+  <div class="progress-bar" id="progress"></div>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="wordmark">
+        <span class="wordmark-main">Tenant Triage</span>
+        <span class="wordmark-accent">NYC</span>
+      </a>
+      <nav class="site-nav">
+        <a href="../index.html">All scenarios</a>
+        <a href="../about.html">About</a>
+        <a href="../free-help.html">Free help</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <aside class="toc-sidebar" aria-label="On this page">
+      <span class="toc-sidebar-label">On this page</span>
+      <nav>
+        <ul class="toc-group">
+          <li><a class="toc-section-link" href="#read-first" data-toc-target="read-first">Read this first</a></li>
+          <li><a class="toc-section-link" href="#rights" data-toc-target="rights">How the presumption works</a></li>
+          <li><a class="toc-section-link" href="#severity-picker" data-toc-target="severity-picker">What's happening to you?</a></li>
+          <li><a class="toc-section-link" href="#step-1" data-toc-target="step-1">Step 1 &mdash; Build the timeline</a></li>
+          <li><a class="toc-section-link" href="#step-2" data-toc-target="step-2">Step 2 &mdash; Save evidence</a></li>
+          <li><a class="toc-section-link" href="#step-3" data-toc-target="step-3">Step 3 &mdash; Respond in writing</a></li>
+          <li><a class="toc-section-link" href="#step-4" data-toc-target="step-4">Step 4 &mdash; Get legal help</a></li>
+          <li><a class="toc-section-link" href="#step-5" data-toc-target="step-5">Step 5 &mdash; Using it in court</a></li>
+          <li><a class="toc-section-link" href="#free-help" data-toc-target="free-help">Free help</a></li>
+          <li><a class="toc-section-link" href="#related" data-toc-target="related">Related situations</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article>
+
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">All scenarios</a>
+      <span class="sep">/</span>
+      <a href="#">Retaliation &amp; harassment</a>
+      <span class="sep">/</span>
+      <span class="current">Retaliation</span>
+    </nav>
+
+    <span class="reading-label">
+      <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Retaliation &amp; harassment defense
+    </span>
+
+    <h1>My landlord is retaliating against me for complaining.</h1>
+
+    <p class="standfirst">In NYC, retaliation against a tenant who asserted a housing right is illegal under NY Real Property Law &sect;&nbsp;223-b. If your landlord raises the rent, refuses to renew, files a holdover, cuts services, or harasses you within <strong>one year</strong> of you complaining, organizing, or asserting a right, the law <em>presumes</em> the action is retaliatory &mdash; and the burden shifts to your landlord to prove otherwise.</p>
+
+    <div class="meta">
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span><strong>10 min</strong> read</span>
+      </span>
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span>Last verified <strong>April 23, 2026</strong></span>
+      </span>
+      <span class="meta-item print-hide">
+        <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+        <a href="#" onclick="window.print(); return false;">Print this page</a>
+      </span>
+    </div>
+
+    <div class="read-first" id="read-first">
+      <p>Retaliation is what happens when your landlord punishes you for asserting a housing right. The law takes this seriously: within <strong>one year</strong> of you making a good-faith complaint, requesting a repair, filing with 311, joining a tenants' association, or asserting any protected right, <strong>anything your landlord does to harm you is presumptively retaliatory</strong> &mdash; and your landlord has to prove a non-retaliatory reason, not the other way around.</p>
+      <p><strong>Timing is everything.</strong> The single most important thing you can do right now is build a written <strong>timeline</strong> of what you did (the protected activity) and what your landlord did (the retaliatory action). Dates, reference numbers, screenshots, receipts. If you have a 311 complaint and a non-renewal notice from within a year, that's the core of your defense already.</p>
+      <p><strong>Pick what's happening below</strong> to jump to the rules that apply. If multiple things apply, start with the most recent or most serious.</p>
+      <p><strong>Treat this as an emergency if:</strong> your landlord has locked you out, changed the locks, shut off utilities, removed your belongings, or threatened you with physical harm. That's an <strong>illegal lockout</strong> or criminal harassment &mdash; call <strong>311</strong> and <strong>NYPD (911)</strong> and say &ldquo;illegal lockout&rdquo; or &ldquo;landlord harassment.&rdquo;</p>
+    </div>
+
+    <div class="rights-box" id="rights">
+      <span class="rights-label">Know your rights</span>
+      <h3>How the retaliation presumption works</h3>
+      <p>Under <a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" class="inline-link" target="_blank" rel="noopener" style="color: var(--accent-bright);">NY Real Property Law &sect;&nbsp;223-b</a> (as amended by the 2019 HSTPA), if your landlord takes a punitive action within <strong>one year</strong> of you engaging in a protected activity, the law presumes the action is retaliation. Your landlord has to prove a legitimate, non-retaliatory reason &mdash; and &ldquo;just because&rdquo; or &ldquo;my decision&rdquo; is not a legitimate reason.</p>
+
+      <table class="severity-table">
+        <thead>
+          <tr>
+            <th>Protected activity (what you did)</th>
+            <th>Retaliatory action (what the landlord did)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Good-faith complaint to a government agency (311, HPD, DHCR, DOB, FDNY)</td>
+            <td>Refusing to renew your lease</td>
+          </tr>
+          <tr>
+            <td>Written repair request or habitability complaint to landlord</td>
+            <td>Starting a holdover or nonpayment proceeding</td>
+          </tr>
+          <tr>
+            <td>Joining, forming, or participating in a tenants' association</td>
+            <td>Raising the rent or offering an inflated renewal</td>
+          </tr>
+          <tr>
+            <td>Bringing or threatening a legal action to enforce a tenant right</td>
+            <td>Reducing services (heat, hot water, repairs, amenities)</td>
+          </tr>
+          <tr>
+            <td>Refusing to consent to something the landlord wasn't entitled to demand</td>
+            <td>Harassment, threats, or interference with quiet enjoyment</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top: 1rem;"><strong>Burden of proof shifts to the landlord.</strong> Once you show the protected activity and the retaliatory action happened within a year, your landlord has to offer a credible non-retaliatory explanation. A vague assertion isn't enough &mdash; they need documentation (e.g., a real rent-increase schedule that predates your complaint, a legitimate lease violation with a paper trail).</p>
+      <p style="margin-top: 0.5rem;"><strong>A retaliation defense can defeat a holdover entirely.</strong> If your landlord files a holdover proceeding and you can show retaliation, the case can be dismissed regardless of whether the landlord's stated ground would otherwise be valid.</p>
+      <p class="source">Sources: NY Real Property Law &sect;&nbsp;223-b (retaliation; 1-year presumption window per HSTPA 2019); NYC Administrative Code &sect;&nbsp;27-2004 et seq. (tenant harassment, Local Law 7 of 2008).</p>
+    </div>
+
+    <!-- SEVERITY PICKER -->
+    <div class="severity-picker" id="severity-picker">
+      <div class="severity-picker-header">
+        <span class="severity-picker-label">Tailor this guide</span>
+        <h3 class="severity-picker-title">What is your landlord doing?</h3>
+        <p class="severity-picker-help">The fastest response depends on the specific action your landlord has taken. Pick whichever fits best &mdash; if several apply, start with the most recent or most urgent. &ldquo;Show me everything&rdquo; shows the full guide.</p>
+      </div>
+      <div class="severity-options" role="radiogroup" aria-label="Type of retaliation">
+        <button class="severity-option" data-severity="rent-increase" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Rent increase &mdash; right after I complained</span>
+            <span class="severity-option-desc">A new, higher rent or an inflated renewal offer that followed a repair request, a 311 call, or another protected activity within the last year.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="non-renewal" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Non-renewal of my lease</span>
+            <span class="severity-option-desc">Your landlord says they won't be offering a renewal. See also our <a href="lease-non-renewal.html" style="color: inherit;">dedicated non-renewal guide</a>.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="holdover" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Eviction notice or Housing Court case filed</span>
+            <span class="severity-option-desc">A pre-court notice (notice to cure, termination notice, rent demand), or an already-filed holdover / nonpayment proceeding. Retaliation can be raised as a defense.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="service-reduction" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Reduced services or refused repairs</span>
+            <span class="severity-option-desc">Heat shut off, hot water cut, repairs ignored, amenities revoked, common areas locked. Reduction in essential or contracted services after you complained is textbook retaliation.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="harassment" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Harassment, threats, or intimidation</span>
+            <span class="severity-option-desc">Constant unwanted contact, threatening messages, showing up at odd hours, slurs, or anything intended to drive you out. May also violate NYC's tenant-harassment law and NYC Human Rights Law.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="ice-threats" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">ICE threats or immigration-based harassment</span>
+            <span class="severity-option-desc">A landlord threatening to report you or a family member to federal immigration authorities, or using immigration status as leverage, violates NYC Human Rights Law on top of retaliation law.</span>
+          </span>
+        </button>
+        <button class="severity-option" data-severity="lockout" role="radio" aria-checked="false">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">Illegal lockout or utility shutoff (emergency)</span>
+            <span class="severity-option-desc">Changed locks, removed belongings, cut off heat / water / electricity to force you out. This is a crime &mdash; call <strong>311</strong> and <strong>NYPD (911)</strong> immediately and see the emergency steps below.</span>
+          </span>
+        </button>
+        <button class="severity-option active" data-severity="all" role="radio" aria-checked="true">
+          <span class="severity-option-marker"></span>
+          <span class="severity-option-text">
+            <span class="severity-option-name">I'm not sure &mdash; show me everything</span>
+            <span class="severity-option-desc">Default. Read the full guide to figure out what's happening and what to do.</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Severity context banner — appears after picker selection -->
+    <div class="severity-context" id="severity-context">
+      <span class="severity-context-label">For your situation</span>
+      <h3 id="severity-context-title">Rent-stabilized</h3>
+      <div id="severity-context-body">
+        <p>Placeholder.</p>
+      </div>
+    </div>
+
+    <!-- HPDONLINE LEVERAGE CALLOUT -->
+    <aside class="callout callout-protect">
+      <span class="callout-label">If your landlord files a holdover, your building's history matters</span>
+      <h3>HPD violations are evidence of retaliation and a defense in any holdover case.</h3>
+      <p>If a landlord refuses to renew shortly after a tenant complains about conditions, that timing is often the heart of a <strong>retaliation defense</strong> under <a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" class="inline-link" target="_blank" rel="noopener">RPL &sect;&nbsp;223-b</a>. Open HPD violations on your unit or building are the single best documentary evidence that a complaint or repair request preceded the non-renewal.</p>
+      <p>If a holdover case is later filed, the <strong>warranty of habitability</strong> (RPL &sect;&nbsp;235-b) also lets you argue that rent should be reduced or abated for any period when the apartment had serious unfixed conditions &mdash; useful leverage in settlement.</p>
+      <p>Spend two minutes searching <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a> below. Look for:</p>
+      <ul>
+        <li><strong>Open Class B or C violations</strong> in your unit &mdash; the strongest evidence for both retaliation and habitability (leaks, heat, mold, pests, electrical, lead paint).</li>
+        <li><strong>Violations dated near or after your last complaint</strong> &mdash; helps build the timeline that supports a retaliation defense.</li>
+        <li><strong>Violations falsely certified as corrected</strong> &mdash; credibility evidence against the landlord.</li>
+      </ul>
+      <p>Save printouts or screenshots in the same folder as your renewal correspondence.</p>
+      <p><strong>An honest note:</strong> HPDOnline shows public records, but it's not a complete picture. Some violations age off, and landlords sometimes fix violations without the paper trail catching up. Use it as a starting point, not the whole story.</p>
+
+      <!-- ADDRESS LOOKUP COMPONENT -->
+      <section class="lookup" id="lookup">
+        <span class="lookup-label">Look it up now</span>
+        <h4>Enter your address to check your building's violation history.</h4>
+        <p class="lookup-intro">HPD maintains a public database of every housing code violation ever issued in NYC. See what's on record for your building without leaving this page.</p>
+        <div class="lookup-input-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
+          <div class="lookup-suggestions" id="lookup-suggestions"></div>
+        </div>
+        <div class="lookup-status" id="lookup-status"></div>
+        <div class="lookup-results" id="lookup-results"></div>
+        <div class="lookup-fallback" id="lookup-fallback" style="display: none;">
+          <strong>Having trouble?</strong> You can also look up your building directly on <a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">HPDOnline</a>.
+        </div>
+      </section>
+    </aside>
+
+    <h2>What to do, step by step</h2>
+
+    <!-- STEP 1: Confirm your apartment's status -->
+    <section class="step" id="step-1">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 1</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            20&ndash;40 min
+          </span>
+        </div>
+        <h3 class="step-title">Build the timeline &mdash; your protected activity, then the landlord's action.</h3>
+      </div>
+
+      <p class="why-this-matters">Retaliation cases are won and lost on the <strong>temporal pattern</strong>. A 311 complaint on March&nbsp;5 followed by a non-renewal notice on March&nbsp;20 is a stronger claim than any amount of &ldquo;they're being unfair&rdquo;. The pattern is what shifts the burden to your landlord. Spend real time on this &mdash; it's the single most important piece of work in your whole case.</p>
+
+      <span class="sub-label">A. List your protected activities (what you did)</span>
+      <p>Under <a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" class="inline-link" target="_blank" rel="noopener">RPL &sect;&nbsp;223-b</a>, a protected activity is any good-faith exercise of a tenant right in the <strong>12 months</strong> before the landlord's retaliatory action. Common examples:</p>
+      <ul>
+        <li><strong>311 complaints</strong> &mdash; heat/hot water, mold, pests, leaks, lead paint, electrical, harassment. You can pull a full history at <a href="https://portal.311.nyc.gov/" class="inline-link" target="_blank" rel="noopener">311 Online</a>; each complaint has a reference number. Save the numbers.</li>
+        <li><strong>Written repair requests</strong> to your landlord &mdash; email, text, portal message, paper letter. Screenshots count.</li>
+        <li><strong>HPD violations issued</strong> on your unit or building after your complaint (pulled from <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a>).</li>
+        <li><strong>DHCR filings</strong> &mdash; rent reduction applications, rent history requests, overcharge complaints.</li>
+        <li><strong>Tenants' association activity</strong> &mdash; sign-up sheets, meeting notes, petitions, building flyers. Even informal organizing counts.</li>
+        <li><strong>Housing Court filings</strong> &mdash; HP Actions, Orders to Show Cause, any prior proceeding you initiated.</li>
+        <li><strong>Refusals to consent</strong> to something the landlord wasn't entitled to demand (e.g., refusing to let them show the apartment at 8 PM, refusing to sign a buyout).</li>
+      </ul>
+
+      <span class="sub-label">B. List the landlord's actions (what they did)</span>
+      <p>A retaliatory action is anything punitive directed at your tenancy: rent increase beyond the normal pattern, non-renewal, starting a holdover, reducing services, false accusations of lease violation, harassment, threats, access demands, hostile communication, locking you out. Note the date and save any paper (notice, email, text) connected to it.</p>
+
+      <span class="sub-label">C. Fill in the timeline + intake checklist</span>
+      <p>This captures everything a lawyer, Met Council volunteer, or judge needs. It auto-syncs to Steps 3 and 4 so you only enter it once.</p>
+      <div class="template" id="intake-template-step1">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Retaliation timeline &amp; intake
+          </span>
+          <button class="copy-btn" data-copy-target="intake-template-step1-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="intake-template-step1-content">
+          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
+          <p><strong>Date I moved in:</strong> <input type="text" class="fill" data-field="move_in_date" placeholder="month/year" size="14"> &mdash; <strong>Apartment status:</strong> <input type="text" class="fill" data-field="apt_status" placeholder="rent-stabilized / market+GCE / market+exempt / NYCHA / Section 8 / unknown" size="58"></p>
+          <p><strong>Current monthly rent:</strong> $<input type="text" class="fill" data-field="current_rent" placeholder="amount" size="10"></p>
+          <p style="margin-top:0.6rem;"><strong>Protected activity #1 (what I did):</strong> <input type="text" class="fill" data-field="act1_what" placeholder="e.g., 311 complaint for heat / HPD ref #54321" size="46"> &mdash; <strong>date:</strong> <input type="text" class="fill" data-field="act1_date" placeholder="date" size="12"></p>
+          <p><strong>Protected activity #2:</strong> <input type="text" class="fill" data-field="act2_what" placeholder="e.g., written repair request for mold" size="46"> &mdash; <strong>date:</strong> <input type="text" class="fill" data-field="act2_date" placeholder="date" size="12"></p>
+          <p><strong>Protected activity #3:</strong> <input type="text" class="fill" data-field="act3_what" placeholder="e.g., joined tenants association" size="46"> &mdash; <strong>date:</strong> <input type="text" class="fill" data-field="act3_date" placeholder="date" size="12"></p>
+          <p style="margin-top:0.6rem;"><strong>Landlord's retaliatory action:</strong> <input type="text" class="fill" data-field="retal_action" placeholder="rent increase / non-renewal / holdover filed / service cut / harassment / lockout" size="60"></p>
+          <p><strong>Date landlord's action happened / notice delivered:</strong> <input type="text" class="fill" data-field="retal_date" placeholder="date" size="12"></p>
+          <p><strong>Time between most recent protected activity and landlord action:</strong> <input type="text" class="fill" data-field="gap" placeholder="e.g., 2 weeks, 4 months" size="18"> <em>(if under 12 months, presumption applies)</em></p>
+          <p><strong>Landlord's stated reason (if any):</strong> <input type="text" class="fill" data-field="landlord_reason" placeholder="e.g., owner use, lease violation, no reason given" size="48"></p>
+          <p style="margin-top:0.6rem;"><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26"> &mdash; <strong>Landlord's attorney:</strong> <input type="text" class="fill" data-field="attorney" placeholder="name (if listed)" size="26"></p>
+          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10"> &mdash; <strong>Household size:</strong> <input type="text" class="fill" data-field="household_size" placeholder="#" size="4"></p>
+        </div>
+      </div>
+
+      <span class="sub-label">D. What to save and how</span>
+      <p>Every document connected to any item on the timeline above. The 311 complaint confirmation email. The screenshot of the text message asking for a repair. The envelope the non-renewal notice came in (postmarks prove the delivery date). Photos of conditions before and after. <strong>Photograph everything</strong> front and back, save it to your phone, and back it up to cloud storage or email it to yourself. Papers get lost. Evidence that's only on your kitchen table is evidence you can't use.</p>
+
+      <p><strong>Don't sign anything</strong> beyond a return receipt. If your landlord offers a buyout, a &ldquo;cash-for-keys&rdquo; agreement, or anything to surrender the apartment &mdash; stop, take a photo, and call a tenant lawyer before signing. A landlord offering to pay you to leave is a signal that <em>they</em> think the retaliation claim has value; you should not give it up cheaply.</p>
+    </section>
+
+    <!-- EMERGENCY: illegal lockout / utility shutoff -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Emergency &mdash; illegal lockout or utility shutoff</span>
+      <h3>If your landlord has locked you out or cut off utilities, act today.</h3>
+      <p>Changing the locks, <strong>removing or disabling your entrance door</strong>, removing your belongings, or shutting off heat / hot water / electricity / gas to force you out is a <strong>crime</strong> under <strong>NYC Administrative Code &sect;&nbsp;26-521</strong>. Police are required to investigate and can order your immediate restoration to the apartment.</p>
+      <p><strong>In this order, right now:</strong></p>
+      <ol>
+        <li><strong>Call NYPD (911).</strong> Say the exact words: &ldquo;illegal lockout&rdquo; or &ldquo;unlawful eviction&rdquo;. Officers at NYPD are trained on this. Wait for them to arrive and document everything.</li>
+        <li><strong>Call 311.</strong> Ask for HPD's emergency housing unit and file a complaint about the lockout or service cut. Save the reference number.</li>
+        <li><strong>Document.</strong> Photos and video of the changed locks, your belongings, any damage, and the landlord's texts/notices.</li>
+        <li><strong>Do not break back in yourself.</strong> It can complicate the criminal case and create civil exposure for you.</li>
+        <li><strong>Call Housing Court Answers at <a href="tel:2129624795" class="inline-link">212-962-4795</a> the same day</strong> and ask about filing an <strong>Order to Show Cause</strong> for immediate restoration to possession. Judges routinely grant these same-day for unlawful lockouts.</li>
+      </ol>
+      <p><strong>Do not move out.</strong> Even if your belongings are outside and the locks are changed, moving out voluntarily can weaken your case. You have a strong civil claim for damages (often tens of thousands of dollars) and for restoration of possession &mdash; but the claim is stronger if you're still asserting your right to the apartment.</p>
+    </aside>
+
+    <!-- STEP 2: Save and expand the evidence -->
+    <section class="step" id="step-2">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 2</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            30&ndash;60 min
+          </span>
+        </div>
+        <h3 class="step-title">Save the public records and take new photos.</h3>
+      </div>
+
+      <p class="why-this-matters">Retaliation cases live and die on documentation. Your timeline (Step 1) is the claim; this step is the evidence. Everything you pull here &mdash; 311 records, HPD violations, your own communications and photos &mdash; becomes what you hand a lawyer, a Met Council volunteer, or a judge. Do it now, while the records are fresh and the conditions are still documentable.</p>
+
+      <span class="sub-label">A. Pull your 311 history</span>
+      <p>Go to <a href="https://portal.311.nyc.gov/" class="inline-link" target="_blank" rel="noopener">311 Online</a> and search complaints by address. Export or screenshot every housing-related complaint you ever filed &mdash; the date, the category, the reference number, and the status (open / closed / escalated to HPD). If you don't remember filing a complaint, search anyway &mdash; anyone in the household could have filed.</p>
+      <p>If you called 311 without going online, the complaint is still in the system. Call <strong>311</strong> and ask for your complaint history by address.</p>
+
+      <span class="sub-label">B. Pull HPD violations on the building and your unit</span>
+      <p>Go to <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a>, search your address, and screenshot / print:</p>
+      <ul>
+        <li><strong>Open violations</strong> in your unit &mdash; especially Class B (hazardous) and Class C (immediately hazardous). These are your strongest evidence that you had legitimate complaints.</li>
+        <li><strong>The full violation history on the building</strong> &mdash; a landlord with a pattern of violations across units is a landlord with a pattern of retaliation.</li>
+        <li><strong>Violations dated close to (or just after) your complaints</strong> &mdash; ties the inspection trail to your protected activity.</li>
+        <li><strong>Violations falsely certified as corrected</strong> &mdash; strong credibility evidence if you can show the condition wasn't actually fixed.</li>
+      </ul>
+      <p><strong>An honest note:</strong> HPDOnline is public but incomplete. Some violations age off after they're certified closed, and the certification step has no on-site verification most of the time. Use what's there as a starting point, then supplement with your own photos.</p>
+
+      <span class="sub-label">C. Save your communications trail</span>
+      <ul>
+        <li><strong>Every text or email</strong> with your landlord, super, or management &mdash; both sides of the conversation. Export the thread if possible.</li>
+        <li><strong>Every repair request you sent</strong> &mdash; in any form. A &ldquo;hi the toilet is broken&rdquo; text on January&nbsp;3 plus a non-renewal notice on January&nbsp;17 is a retaliation case.</li>
+        <li><strong>Voicemails</strong> &mdash; if the landlord called and threatened or pressured you, voicemails are recorded evidence. Back them up off your phone (most phones have an export option).</li>
+        <li><strong>Any written notice</strong> your landlord gave you: rent increase, non-renewal, notice of termination, notice to cure, lease amendment, eviction petition. Save the envelopes too.</li>
+      </ul>
+
+      <span class="sub-label">D. Take current photos of conditions</span>
+      <p>Walk through your apartment with your phone and photograph every unfixed condition: leaks, peeling paint, broken fixtures, pests/droppings, gaps in baseboards, missing window guards, mold, broken locks. Date-stamped photos are best (most phones include this in metadata automatically &mdash; don't strip it). Save to a single folder with the date in the folder name, back it up to cloud storage.</p>
+      <p>These photos serve two purposes: they document the conditions you were complaining about (supporting the retaliation claim), and they preserve a warranty-of-habitability defense if a holdover case gets filed later.</p>
+
+      <span class="sub-label">E. Save your deadline so it carries forward</span>
+      <div class="ref-capture">
+        <label class="ref-capture-label" for="ref-input">Save the date of the landlord's retaliatory action (or the effective date of a notice you received):</label>
+        <input type="text" id="ref-input" placeholder="e.g., March 20, 2026 — non-renewal notice received" data-field="complaint_ref">
+      </div>
+
+      <span class="sub-label">F. Your intake so far</span>
+      <p>Auto-populated from Step 1. Add anything new; it'll carry to Step 3.</p>
+      <div class="template" id="intake-template-step2">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Retaliation timeline &amp; intake (same as Step 1)
+          </span>
+          <button class="copy-btn" data-copy-target="intake-template-step2-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="intake-template-step2-content">
+          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
+          <p><strong>Date I moved in:</strong> <input type="text" class="fill" data-field="move_in_date" placeholder="month/year" size="14"> &mdash; <strong>Apartment status:</strong> <input type="text" class="fill" data-field="apt_status" placeholder="rent-stabilized / market+GCE / market+exempt / NYCHA / Section 8 / unknown" size="58"></p>
+          <p><strong>Current monthly rent:</strong> $<input type="text" class="fill" data-field="current_rent" placeholder="amount" size="10"></p>
+          <p style="margin-top:0.6rem;"><strong>Protected activity #1 (what I did):</strong> <input type="text" class="fill" data-field="act1_what" placeholder="e.g., 311 complaint for heat / HPD ref #54321" size="46"> &mdash; <strong>date:</strong> <input type="text" class="fill" data-field="act1_date" placeholder="date" size="12"></p>
+          <p><strong>Protected activity #2:</strong> <input type="text" class="fill" data-field="act2_what" placeholder="e.g., written repair request for mold" size="46"> &mdash; <strong>date:</strong> <input type="text" class="fill" data-field="act2_date" placeholder="date" size="12"></p>
+          <p><strong>Protected activity #3:</strong> <input type="text" class="fill" data-field="act3_what" placeholder="e.g., joined tenants association" size="46"> &mdash; <strong>date:</strong> <input type="text" class="fill" data-field="act3_date" placeholder="date" size="12"></p>
+          <p style="margin-top:0.6rem;"><strong>Landlord's retaliatory action:</strong> <input type="text" class="fill" data-field="retal_action" placeholder="rent increase / non-renewal / holdover filed / service cut / harassment / lockout" size="60"></p>
+          <p><strong>Date landlord's action happened / notice delivered:</strong> <input type="text" class="fill" data-field="retal_date" placeholder="date" size="12"></p>
+          <p><strong>Time between most recent protected activity and landlord action:</strong> <input type="text" class="fill" data-field="gap" placeholder="e.g., 2 weeks, 4 months" size="18"> <em>(if under 12 months, presumption applies)</em></p>
+          <p><strong>Landlord's stated reason (if any):</strong> <input type="text" class="fill" data-field="landlord_reason" placeholder="e.g., owner use, lease violation, no reason given" size="48"></p>
+          <p style="margin-top:0.6rem;"><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26"> &mdash; <strong>Landlord's attorney:</strong> <input type="text" class="fill" data-field="attorney" placeholder="name (if listed)" size="26"></p>
+          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10"> &mdash; <strong>Household size:</strong> <input type="text" class="fill" data-field="household_size" placeholder="#" size="4"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: Respond in writing -->
+    <section class="step" id="step-3">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 3</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            20&ndash;30 min
+          </span>
+        </div>
+        <h3 class="step-title">Respond in writing &mdash; assert the retaliation claim.</h3>
+      </div>
+
+      <p class="why-this-matters">A written response from you does three things at once: it <strong>asserts the retaliation claim</strong> in writing (making it much harder for your landlord to later claim they didn't know); it <strong>puts the landlord (and their attorney) on notice</strong> that they will need to justify their action; and it <strong>creates a paper trail</strong> that becomes evidence if a holdover or other case is filed later. Send it within a week of receiving the retaliatory notice if you can.</p>
+
+      <span class="sub-label">A. What your letter should do</span>
+      <ul>
+        <li><strong>Acknowledge what you received</strong> and the date you received it.</li>
+        <li><strong>State the retaliation claim clearly.</strong> Cite <a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" class="inline-link" target="_blank" rel="noopener">RPL &sect;&nbsp;223-b</a>, identify your protected activity (with dates), identify the landlord's action (with date), and state that the action falls within the 1-year presumption window.</li>
+        <li><strong>Demand withdrawal</strong> of the retaliatory action (or a written justification, if they insist they have one).</li>
+        <li><strong>State that you intend to remain in possession</strong> of the apartment.</li>
+        <li><strong>Confirm you will continue paying rent</strong> at the prior amount in the meantime, and keep doing so.</li>
+        <li><strong>Reserve all rights and defenses</strong> (legal boilerplate, but worth including).</li>
+        <li><strong>Send by a method that proves delivery</strong> &mdash; certified mail with return receipt, or email if your lease specifies email is valid. Keep copies of everything.</li>
+      </ul>
+
+      <span class="sub-label">B. Sample letter you can copy and adapt</span>
+      <div class="template" id="response-letter">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Sample retaliation-assertion letter
+          </span>
+          <button class="copy-btn" data-copy-target="response-letter-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="response-letter-content">
+          <p>To: <input type="text" class="fill" data-field="landlord" placeholder="landlord / management company name" size="36"></p>
+          <p>From: [Your name], tenant of <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
+          <p>Date: [Today's date]</p>
+          <p>Re: <input type="text" class="fill" data-field="retal_action" placeholder="rent increase / non-renewal / holdover filing / service cut" size="46"> &mdash; assertion of retaliation under RPL &sect;&nbsp;223-b</p>
+          <p>I am writing to formally assert that the above action is retaliatory and therefore unlawful under NY Real Property Law &sect;&nbsp;223-b.</p>
+          <p><strong>Protected activity:</strong> On <input type="text" class="fill" data-field="act1_date" placeholder="date" size="12">, I <input type="text" class="fill" data-field="act1_what" placeholder="filed a 311 complaint for heat (ref #XXXXX) / made a written repair request / joined the tenants' association / etc." size="70">. [Add additional protected activities as needed.]</p>
+          <p><strong>Your action:</strong> On <input type="text" class="fill" data-field="retal_date" placeholder="date" size="12">, you <input type="text" class="fill" data-field="retal_action" placeholder="served a non-renewal notice / increased the rent to $X / filed a holdover petition / etc." size="60">.</p>
+          <p><strong>Legal effect:</strong> Because your action occurred within <input type="text" class="fill" data-field="gap" placeholder="#" size="6"> months of my protected activity, the law presumes it is retaliation. Under RPL &sect;&nbsp;223-b, you have the burden of proving a credible non-retaliatory reason, and the action is otherwise unenforceable and can be a complete defense to a holdover proceeding.</p>
+          <p><strong>Demand:</strong> Please withdraw the action in writing within 14 days of receipt of this letter. Alternatively, provide the specific, documented non-retaliatory basis on which you intend to rely. I will continue paying the agreed rent of $<input type="text" class="fill" data-field="current_rent" placeholder="amount" size="10"> per month during this period.</p>
+          <p>I reserve all rights and defenses, including (as applicable) claims under the warranty of habitability (RPL &sect;&nbsp;235-b), the NYC tenant-harassment statute (NYC Admin. Code &sect;&nbsp;27-2004), and the NYC Human Rights Law.</p>
+          <p>Please direct any further communication on this matter in writing to the address above.</p>
+          <p>Sincerely,</p>
+          <p>[Your signature]<br>[Your printed name]<br>[Phone]<br>[Email]</p>
+        </div>
+      </div>
+
+      <span class="sub-label">C. Send it by a method that proves delivery</span>
+      <ul>
+        <li><strong>Certified mail with return receipt requested.</strong> Costs ~$10 at any USPS counter; gives you a green card signed by the recipient. This is the gold standard.</li>
+        <li><strong>Keep a stamped copy</strong> for yourself by mailing one to your own address at the same time, unopened.</li>
+        <li><strong>If your lease allows email service:</strong> send and BCC yourself; save the sent record.</li>
+        <li><strong>Photograph the envelope and the contents</strong> before mailing.</li>
+      </ul>
+
+      <span class="sub-label">D. Consider additional agency complaints</span>
+      <p>The §&nbsp;223-b letter to the landlord is one track. Depending on what the landlord did, you may also want to file:</p>
+      <ul>
+        <li><strong>311 / HPD complaint</strong> &mdash; if services were cut (heat, hot water, etc.) or repairs are refused. Creates a public record and triggers an inspection.</li>
+        <li><strong>DHCR rent reduction application</strong> (Form <a href="https://hcr.ny.gov/form-ra-81" class="inline-link" target="_blank" rel="noopener">RA-81</a> for individual, <a href="https://hcr.ny.gov/form-ra-84" class="inline-link" target="_blank" rel="noopener">RA-84</a> for building-wide) &mdash; if you're rent-stabilized and services have been reduced. Free; the threat of a rent freeze often restores services faster than anything else.</li>
+        <li><strong>DHCR harassment complaint</strong> (Form <a href="https://hcr.ny.gov/form-ra-60h" class="inline-link" target="_blank" rel="noopener">RA-60H</a>) &mdash; if you're rent-stabilized or rent-controlled and the landlord is engaged in harassment intended to force you out.</li>
+        <li><strong>NYC Commission on Human Rights</strong> (<a href="tel:2124160197" class="inline-link">212-416-0197</a>) &mdash; if the retaliation involves discrimination (race, national origin, source of income, immigration status, etc.) or ICE threats.</li>
+        <li><strong>NYC tenant-harassment Housing Court action</strong> &mdash; if the harassment is severe and ongoing, you can file your own case for damages and injunctive relief. Talk to Met Council or Legal Services NYC first.</li>
+      </ul>
+
+      <span class="sub-label">E. Keep paying rent</span>
+      <p>Pay the previously agreed rent on time, by a method that creates a record (check, money order, online portal). If the landlord refuses to accept it, document the refusal &mdash; save the bounced-back envelope, the screenshot of the rejected portal payment, the text saying &ldquo;don't pay me.&rdquo; Continued payment preserves your tenancy and prevents the case from being reframed as nonpayment.</p>
+    </section>
+
+    <!-- CALLOUT: Undocumented tenants -->
+    <aside class="callout callout-protect">
+      <span class="draft-flag">Draft &mdash; pending immigration advocacy review</span>
+      <span class="callout-label">For undocumented tenants</span>
+      <h3>Your immigration status doesn't affect your right to complain or to assert a retaliation claim.</h3>
+
+      <p>NYC law is clear: your protection under <strong>RPL &sect;&nbsp;223-b</strong>, your right to file 311 and HPD complaints, and your right to a free court-appointed attorney in any Housing Court case do not depend on your immigration status. <strong>Housing Court, 311, HPD, DHCR, NYC CCHR, and Right to Counsel intake do not ask about immigration status</strong>, and court records are not shared with federal immigration authorities.</p>
+
+      <p>ICE threats from your landlord are themselves a separate claim on top of retaliation &mdash; threatening to report you or a family member is a violation of the NYC Human Rights Law and the NYC tenant-harassment statute. File with the NYC Commission on Human Rights (<strong>212-416-0197</strong>).</p>
+
+      <p><strong>An honest note:</strong> NYC's protections are strong, but they are city and state protections. Federal immigration enforcement is a separate system. If you're worried about risks specific to your situation, you can talk to a free, confidential immigration legal organization before filing any complaint. You are not alone in asking these questions.</p>
+
+      <span class="sub-label">Free, confidential help</span>
+      <ul class="resource-list">
+        <li><strong>ActionNYC</strong> &mdash; free, safe immigration legal help connected to city services. Call <strong>311</strong> and ask for ActionNYC.</li>
+        <li><strong>Make the Road New York</strong> &mdash; tenant and immigrant rights support: <strong>718-418-7690</strong></li>
+        <li><strong>New York Immigration Coalition</strong> &mdash; referrals to trusted legal help: <strong>212-627-2227</strong></li>
+        <li><strong>NYC Commission on Human Rights</strong> &mdash; if your landlord threatens you with ICE: <strong>212-416-0197</strong></li>
+      </ul>
+    </aside>
+
+    <!-- STEP 4: Get legal help -->
+    <section class="step" id="step-4">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 4</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            15&ndash;30 min
+          </span>
+        </div>
+        <h3 class="step-title">Get legal help &mdash; and pick the right agency.</h3>
+      </div>
+
+      <p class="why-this-matters">Retaliation cases have more than one enforcement path. Your landlord can be attacked through Housing Court (defense to a holdover, or your own affirmative case), DHCR (rent reductions and harassment for rent-regulated tenants), NYC CCHR (for discrimination- or ICE-flavored retaliation), 311/HPD (for service cuts), or all of the above simultaneously. Start with a free tenant-rights hotline &mdash; they'll help you pick which paths make sense.</p>
+
+      <div class="ref-recall" id="ref-recall">
+        <span class="label">Date of landlord's retaliatory action</span>
+        <span class="number" id="ref-display"><span class="empty">Not entered yet &mdash; you can save it in Step 2.</span></span>
+      </div>
+
+      <span class="sub-label">A. First call: a free tenant-rights hotline</span>
+      <ol>
+        <li><strong>Met Council on Housing Tenants' Rights Hotline</strong> &mdash; <a href="tel:2129790611" class="inline-link">212-979-0611</a> (Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Tue 5:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM). Trained volunteers, decades of experience with retaliation. Best single call for most tenants.</li>
+        <li><strong>Housing Court Answers</strong> &mdash; <a href="tel:2129624795" class="inline-link">212-962-4795</a>, Mon&ndash;Fri 9&nbsp;AM&ndash;5&nbsp;PM. Especially useful if a court case is imminent or already filed. Connects you to Right to Counsel intake.</li>
+      </ol>
+
+      <span class="sub-label">B. Pick the right enforcement path(s)</span>
+      <p>Depending on what the landlord did, use one or more of these in parallel:</p>
+      <ul>
+        <li><strong>Housing Court &mdash; as a defense.</strong> If your landlord has filed or is about to file a holdover or nonpayment, retaliation is an affirmative defense. Right to Counsel may apply (see below).</li>
+        <li><strong>Housing Court &mdash; as an affirmative case.</strong> If the harassment is ongoing and severe, you can bring your own tenant-harassment case under NYC Admin. Code &sect;&nbsp;27-2004 for damages and injunctive relief. Generally requires a tenant attorney.</li>
+        <li><strong>DHCR service reduction</strong> &mdash; rent-stabilized tenants can file Form <a href="https://hcr.ny.gov/form-ra-81" class="inline-link" target="_blank" rel="noopener">RA-81</a> (individual) or <a href="https://hcr.ny.gov/form-ra-84" class="inline-link" target="_blank" rel="noopener">RA-84</a> (building-wide). Free, administrative, and the threat of a rent freeze often restores services.</li>
+        <li><strong>DHCR harassment complaint</strong> &mdash; rent-stabilized / rent-controlled tenants can file Form <a href="https://hcr.ny.gov/form-ra-60h" class="inline-link" target="_blank" rel="noopener">RA-60H</a> for harassment intended to force them out.</li>
+        <li><strong>NYC Commission on Human Rights</strong> &mdash; <a href="tel:2124160197" class="inline-link">212-416-0197</a>. File here if the retaliation involves protected-class discrimination (race, national origin, disability, source of income, immigration status, etc.) or ICE threats.</li>
+        <li><strong>311 / HPD</strong> &mdash; for any code-level issue (heat, hot water, leaks, mold, pests, broken locks). Creates a public record and triggers HPD inspection.</li>
+        <li><strong>NYPD (911)</strong> &mdash; only for illegal lockouts, physical threats, or immediate criminal conduct.</li>
+      </ul>
+
+      <span class="sub-label">C. Right to Counsel &mdash; if an eviction case is filed</span>
+      <p>NYC's Universal Access to Legal Services Law provides a <strong>free attorney</strong> to eligible tenants in Housing Court evictions. You qualify if:</p>
+      <ul>
+        <li><strong>You're 60 or older</strong> &mdash; covered regardless of income.</li>
+        <li><strong>You're income-eligible</strong> &mdash; household income at or below 200% of the Federal Poverty Guidelines (roughly $53,300 for a family of three or $62,000 for a family of four in 2025&ndash;2026).</li>
+        <li><strong>Your case is an eviction proceeding</strong> &mdash; holdover, nonpayment, NYCHA termination, or illegal lockout. (Not HP Actions as a general rule, though the AHTP program has exceptions for emergency repairs and harassment.)</li>
+      </ul>
+      <p>Immigration status does not affect eligibility. To access: call <strong>311</strong> and ask for &ldquo;Right to Counsel,&rdquo; call Housing Court Answers, or ask the judge on your first court date.</p>
+
+      <span class="sub-label">D. Full-representation legal services</span>
+      <ul>
+        <li><strong>Legal Services NYC</strong> &mdash; <a href="tel:9176614500" class="inline-link">917-661-4500</a>. Free representation for income-eligible tenants. Right to Counsel provider.</li>
+        <li><strong>Legal Aid Society &mdash; Tenant Rights</strong> &mdash; <a href="tel:2125773300" class="inline-link">212-577-3300</a>. Housing Justice Unit handles tenant associations and group advocacy; main line for other cases.</li>
+        <li><strong>HRA Office of Civil Justice (OCJ)</strong> &mdash; call <strong>311</strong> and ask for &ldquo;Tenant Legal Assistance,&rdquo; or visit NYC HRA's <a href="https://www.nyc.gov/site/hra/help/legal-services-for-tenants.page" class="inline-link" target="_blank" rel="noopener">Legal Services for Tenants</a> page.</li>
+      </ul>
+
+      <span class="sub-label">E. Watch for buyout / surrender offers</span>
+      <p>If your landlord offers money to move out <em>after</em> you asserted your retaliation claim, that offer is evidence the claim has real value. Don't sign anything without a tenant lawyer reading it &mdash; landlord-drafted surrender agreements routinely include a total release of claims (including the retaliation, habitability, and harassment claims you'd be giving up). Take a photo of the offer and call Met Council before responding.</p>
+    </section>
+
+    <!-- STEP 5: Get legal help and prep for a possible holdover -->
+    <section class="step" id="step-5">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 5</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            20&ndash;30 min
+          </span>
+        </div>
+        <h3 class="step-title">Using the retaliation defense if a case is filed.</h3>
+      </div>
+
+      <p class="why-this-matters">If the landlord files a holdover, nonpayment, or similar Housing Court case against you, retaliation is an <strong>affirmative defense</strong> &mdash; which means you have to raise it in your court answer. Raised properly and backed by the evidence you built in Steps 1&ndash;2, it can defeat the case entirely. This step walks through what that looks like.</p>
+
+      <span class="sub-label">A. When a holdover or nonpayment case is served on you</span>
+      <ol>
+        <li><strong>You'll receive a Notice of Petition and Petition</strong> from a process server. The first court date is usually 10&ndash;14 days out. Do not ignore it.</li>
+        <li><strong>Call Housing Court Answers</strong> (<a href="tel:2129624795" class="inline-link">212-962-4795</a>) or <strong>311 and ask for Right to Counsel</strong> immediately. Get on the RTC list if you qualify.</li>
+        <li><strong>Show up to court.</strong> Missing your first appearance without an accepted reason almost always ends in a default judgment for the landlord.</li>
+        <li><strong>Go to the Help Center</strong> at the courthouse. They'll help you fill out an answer form and include the retaliation defense.</li>
+      </ol>
+
+      <span class="sub-label">B. How retaliation works as a defense</span>
+      <p>Under RPL &sect;&nbsp;223-b, once you establish (1) that you engaged in a <strong>protected activity</strong> and (2) that the landlord's action (the lawsuit, the non-renewal, the rent increase) happened within <strong>one year</strong> of that activity, the burden shifts to your landlord to prove a credible <strong>non-retaliatory reason</strong>.</p>
+      <p>To rebut the presumption, your landlord generally has to show one of:</p>
+      <ul>
+        <li>The decision was made (or the action was documented) <em>before</em> your protected activity &mdash; e.g., a rent schedule that predates your complaint.</li>
+        <li>The action is based on a genuine lease violation or nonpayment with independent documentation (and not cooked up in response to your complaint).</li>
+        <li>There's a comparable, non-tenant-specific business reason &mdash; e.g., the building is being sold or withdrawn from the rental market, and the treatment applies to all tenants, not just you.</li>
+      </ul>
+      <p>&ldquo;I changed my mind,&rdquo; &ldquo;she's difficult,&rdquo; or &ldquo;I don't want her anymore&rdquo; don't rebut the presumption. Generalized annoyance isn't a legitimate reason.</p>
+
+      <span class="sub-label">C. What to bring to court</span>
+      <ul>
+        <li>A one-page printed <strong>timeline</strong> (the heart of Step 1) with dates, protected activities, landlord actions, and gap in months.</li>
+        <li><strong>311 complaint print-outs</strong> with reference numbers.</li>
+        <li><strong>HPD violation print-outs</strong> from HPDOnline for your unit and building.</li>
+        <li>Your <strong>written communications</strong> with the landlord (texts, emails, repair requests) &mdash; printed, chronological, each dated.</li>
+        <li>Your <strong>written response letter</strong> from Step 3 with the certified-mail receipt.</li>
+        <li><strong>Current condition photos</strong>.</li>
+        <li><strong>Photo ID</strong>.</li>
+        <li>All court papers.</li>
+      </ul>
+
+      <aside class="callout callout-protect">
+        <span class="callout-label">What to wear to court</span>
+        <h3>Dress respectfully and comfortably.</h3>
+        <p>Judges don't require a suit, but they notice effort. Aim for neat, clean, and modest &mdash; similar to what you'd wear to a job interview, a doctor's appointment, or a meeting with your child's teacher. Comfortable shoes matter; you'll be on your feet and in line more than you'd think.</p>
+        <p><strong>Good:</strong> button-down shirt, polo, or sweater; trousers, slacks, or a modest dress/skirt; closed-toe shoes. A plain jacket or cardigan if you have one.</p>
+        <p><strong>Avoid:</strong> tank tops, ripped or sagging jeans, shorts, pajamas or loungewear, clothing with profanity or offensive imagery, sunglasses indoors, and hats (except head coverings worn for religious reasons, which are always permitted). Don't wear anything you couldn't clear through courthouse security &mdash; heavy chains, belts with large buckles, or anything sharp will slow you down.</p>
+        <p>Bring a <strong>folder or envelope</strong> to keep your papers organized. Ziploc bags work. Nothing signals &ldquo;I'm prepared&rdquo; to a judge like a tenant who can produce the right document without rummaging.</p>
+      </aside>
+
+      <span class="sub-label">D. If you're rent-stabilized or rent-controlled</span>
+      <p>You have additional protections to raise at the same time:</p>
+      <ul>
+        <li><strong>Rent-stabilized grounds are limited</strong> to the narrow list in <a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2524.3" class="inline-link" target="_blank" rel="noopener">9 NYCRR &sect;&nbsp;2524.3</a> (lease violation after cure, nuisance, etc.). If your landlord's stated reason isn't on the list &mdash; or for owner-use / non-primary residence / demolition cases they don't have a prior DHCR order &mdash; that's its own defense.</li>
+        <li><strong>The warranty of habitability</strong> (RPL &sect;&nbsp;235-b) lets you argue rent should be reduced or abated for the period conditions existed &mdash; useful both as a defense and in settlement.</li>
+      </ul>
+
+      <span class="sub-label">E. Subsidized tenants: don't skip the administrative grievance</span>
+      <p>If you're in NYCHA, project-based Section 8, or have an HCV voucher, your landlord (or NYCHA) generally must offer an <strong>administrative grievance/hearing</strong> with specific deadlines before any termination. Missing the grievance window can forfeit defenses you'd otherwise have in Housing Court later.</p>
+      <ul>
+        <li><strong>NYCHA tenants:</strong> Legal Aid Society's NYCHA unit &mdash; <a href="tel:2125773300" class="inline-link">212-577-3300</a>.</li>
+        <li><strong>Section 8 voucher holders:</strong> source-of-income discrimination is separately illegal under NYC Human Rights Law &mdash; non-renewal because of your voucher is its own claim on top of retaliation.</li>
+      </ul>
+    </section>
+
+    <!-- WARNING: Buyout / surrender agreement traps -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; about buyouts and surrender agreements</span>
+      <h3>Don't sign a buyout, &ldquo;cash for keys,&rdquo; or surrender agreement without a tenant lawyer reading it.</h3>
+      <p>If your landlord offers money to leave, that offer is itself evidence that <strong>your right to remain has real value</strong> &mdash; usually more than the first number on the page. Common traps in landlord-drafted surrender agreements:</p>
+      <ul>
+        <li><strong>Total release of claims</strong> &mdash; you agree to give up any retaliation, habitability, rent overcharge, deposit, or discrimination claim, even ones you don't yet know you have.</li>
+        <li><strong>Sealed terms (NDA)</strong> &mdash; you can't tell other tenants in your building. This makes systemic harassment patterns harder to surface.</li>
+        <li><strong>Move-out dates with self-executing penalties</strong> &mdash; if you're not out by 11:59 PM on day X, the money is forfeit and the landlord gets a stipulated judgment for use and occupancy.</li>
+        <li><strong>&ldquo;Voluntary&rdquo; framing on a deregulation event</strong> &mdash; for rent-stabilized apartments, certain landlord-tenant agreements can be used to argue the unit was vacated voluntarily and is eligible for deregulation. Met Council and tenant attorneys see this routinely.</li>
+      </ul>
+      <p>For rent-stabilized tenants in particular: standard buyouts are routinely worth 10&ndash;30x the landlord's opening offer, and sometimes much more. Take a photo of any written offer, then call Met Council (<strong>212-979-0611</strong>) or a tenant attorney before signing. There is no honest reason for a landlord to demand a same-day signature.</p>
+    </aside>
+
+    <!-- WARNING: Stipulation in any later holdover -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">If a holdover gets filed &mdash; about stipulations</span>
+      <h3>Never sign a stipulation of settlement in court without a lawyer reading it.</h3>
+      <p>If a holdover proceeding does get filed, most cases end in a <strong>stipulation of settlement</strong> &mdash; a written agreement signed in court that the judge enforces like a judgment. Stipulations can be tenant-friendly (more time, repairs ordered, money waived) or very dangerous. Common traps:</p>
+      <ul>
+        <li><strong>&ldquo;Self-executing&rdquo; warrant language</strong> &mdash; one missed condition triggers eviction without another court appearance.</li>
+        <li><strong>Waiver of defenses</strong> &mdash; you agree to give up warranty of habitability, retaliation, or rent regulation defenses you would otherwise have.</li>
+        <li><strong>Move-out dates in exchange for time</strong> &mdash; you promise to be out by a specific date even if circumstances change.</li>
+      </ul>
+      <p>If you're in the hallway at court and the landlord's attorney hands you a stipulation, <strong>tell the judge you want to speak with a lawyer before signing anything.</strong> Judges grant this routinely. If you've already signed a stipulation you now regret, a lawyer can sometimes file an Order to Show Cause to vacate it.</p>
+    </aside>
+
+    <!-- Free help -->
+    <h2 id="free-help">Free help available</h2>
+    <ul class="help-list">
+      <li>
+        <span class="name">Met Council on Housing Tenants' Rights Hotline</span>
+        <span class="phone">212-979-0611</span>
+        <span class="desc">The first call for retaliation cases. Trained volunteers with decades of experience building timelines, drafting response letters, and deciding which enforcement path to use. Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Tue 5:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM. Call after 4&nbsp;PM and avoid Mondays if you can.</span>
+      </li>
+      <li>
+        <span class="name">NYC Commission on Human Rights (CCHR)</span>
+        <span class="phone">212-416-0197</span>
+        <span class="desc">If the retaliation involves ICE threats, source-of-income discrimination (e.g., Section 8 voucher), or any other protected-class discrimination. Also handles NYC's tenant-harassment claims with a discrimination angle. Mon&ndash;Fri 9&nbsp;AM&ndash;5&nbsp;PM.</span>
+      </li>
+      <li>
+        <span class="name">Housing Court Answers</span>
+        <span class="phone">212-962-4795</span>
+        <span class="desc">Best single call to get connected with Right to Counsel intake and the right legal services provider for your borough &mdash; especially if a case has been filed or is imminent. Mon&ndash;Fri 9&nbsp;AM&ndash;5&nbsp;PM.</span>
+      </li>
+      <li>
+        <span class="name">NYS Homes &amp; Community Renewal (DHCR) &mdash; Office of Rent Administration</span>
+        <span class="phone">833-499-0343</span>
+        <span class="desc">For rent-stabilized and rent-controlled tenants: file a rent-reduction application (Form RA-81 / RA-84) for service cuts, or a harassment complaint (Form RA-60H). Free. Live agents Mon&ndash;Fri 9&nbsp;AM&ndash;5&nbsp;PM.</span>
+      </li>
+      <li>
+        <span class="name">Legal Services NYC</span>
+        <span class="phone">917-661-4500</span>
+        <span class="desc">Free legal representation for low-income tenants across all five boroughs. Right to Counsel provider. Intake Mon&ndash;Fri 9:30&nbsp;AM&ndash;4&nbsp;PM, available in any language.</span>
+      </li>
+      <li>
+        <span class="name">Legal Aid Society &mdash; Tenant Rights</span>
+        <span class="phone">212-577-3300</span>
+        <span class="desc">Free legal representation, including the <strong>Housing Justice Unit</strong> (212-577-7988, Mon&ndash;Fri 10&nbsp;AM&ndash;4&nbsp;PM) for tenants' association / group advocacy cases, and a dedicated NYCHA unit.</span>
+      </li>
+      <li>
+        <span class="name">NYC 311 &mdash; Tenant Helpline / HRA Legal Services</span>
+        <span class="phone"><a href="tel:311" class="inline-link">Dial 311</a></span>
+        <span class="desc">Ask for the &ldquo;Tenant Helpline&rdquo; to be routed to HRA's Office of Civil Justice legal services. Also the first stop for 311 complaints about service cuts (heat, hot water, repairs) or an illegal lockout.</span>
+      </li>
+    </ul>
+
+    <!-- Related -->
+    <section class="related" id="related">
+      <h2 style="margin-top: 0;">Related situations</h2>
+      <div class="related-grid">
+        <a href="eviction-notice.html" class="related-link">I got an eviction notice</a>
+        <a href="lease-non-renewal.html" class="related-link">My landlord won't renew my lease</a>
+        <a href="heat-hot-water.html" class="related-link">My apartment has no heat or hot water</a>
+        <a href="leaks-plumbing.html" class="related-link">I have a leak or plumbing problem</a>
+        <a href="free-help.html" class="related-link">All tenant resources &amp; hotlines</a>
+      </div>
+    </section>
+
+    <!-- Sources -->
+    <div class="sources">
+      <h3>Sources &amp; verification</h3>
+      <ul>
+        <li><a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" target="_blank" rel="noopener">NY Real Property Law &sect;&nbsp;223-b &mdash; retaliation (1-year presumption window per HSTPA 2019)</a></li>
+        <li><a href="https://www.nysenate.gov/legislation/laws/RPP/235-B" target="_blank" rel="noopener">NY Real Property Law &sect;&nbsp;235-b &mdash; warranty of habitability</a></li>
+        <li>NYC Administrative Code &sect;&nbsp;27-2004 et seq. &mdash; tenant harassment (Local Law 7 of 2008, as amended)</li>
+        <li>NYC Administrative Code &sect;&nbsp;26-521 &mdash; illegal eviction / unlawful lockout</li>
+        <li><a href="https://www.nyc.gov/site/cchr/law/the-law.page" target="_blank" rel="noopener">NYC Human Rights Law</a> &mdash; NYC Admin. Code Title 8</li>
+        <li><a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2524.3" target="_blank" rel="noopener">9 NYCRR &sect;&nbsp;2524.3 &mdash; grounds for refusal of renewal (rent-stabilized)</a></li>
+        <li><a href="https://hcr.ny.gov/good-cause-eviction" target="_blank" rel="noopener">NYS Good Cause Eviction Law</a> &mdash; Chapter 56 of the Laws of 2024, Part HH</li>
+        <li><a href="https://hcr.ny.gov/" target="_blank" rel="noopener">NYS Homes &amp; Community Renewal (DHCR) &mdash; rent regulation portal</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/help-answers/" target="_blank" rel="noopener">Met Council on Housing &mdash; Help &amp; Answers</a></li>
+        <li><a href="https://housingcourtanswers.org/" target="_blank" rel="noopener">Housing Court Answers &mdash; tenant resources</a></li>
+        <li><a href="https://www.nyc.gov/site/cchr/index.page" target="_blank" rel="noopener">NYC Commission on Human Rights</a></li>
+      </ul>
+      <p class="verified">All sources verified April 23, 2026. <a href="https://github.com/hollymariegibbs/tenant-triage-nyc/issues/new?template=report-error.yml&amp;page-url=https%3A%2F%2Ftenanttriage.nyc%2Fscenarios%2Fretaliation.html" target="_blank" rel="noopener" class="inline-link">Found an error? Tell us.</a></p>
+    </div>
+
+    <div class="disclaimer">
+      <strong>This isn't legal advice.</strong> Tenant Triage NYC is an independent guide to help you understand your options and take action. We are not lawyers, and this is not an official government resource. If you need legal advice for your specific situation, please contact one of the free legal help organizations listed above.
+    </div>
+
+    </article>
+
+  </div>
+
+  <div class="toast" id="toast">Copied to clipboard</div>
+
+  <script>
+    // Scroll progress bar
+    window.addEventListener('scroll', function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progress").style.width = scrolled + "%";
+    });
+
+    const formState = {};
+
+    function syncField(fieldName, value) {
+      formState[fieldName] = value;
+      document.querySelectorAll('[data-field="' + fieldName + '"]').forEach(function(input) {
+        if (input.value !== value) input.value = value;
+        if (value && value.trim() !== '') {
+          input.classList.add('has-value');
+        } else {
+          input.classList.remove('has-value');
+        }
+        autoResize(input);
+      });
+      if (fieldName === 'complaint_ref') {
+        const display = document.getElementById('ref-display');
+        if (value && value.trim() !== '') {
+          display.innerHTML = value;
+        } else {
+          display.innerHTML = '<span class="empty">Not entered yet &mdash; you can save it in the court step above.</span>';
+        }
+      }
+    }
+
+    document.querySelectorAll('.fill, [data-field]').forEach(function(input) {
+      input.addEventListener('input', function() { syncField(this.dataset.field, this.value); });
+    });
+
+    function autoResize(input) {
+      if (!input.classList.contains('fill')) return;
+      const placeholder = input.getAttribute('placeholder') || '';
+      const value = input.value || '';
+      const len = Math.max(value.length, placeholder.length, 4);
+      input.size = len + 1;
+    }
+    document.querySelectorAll('.fill').forEach(function(input) {
+      autoResize(input);
+      input.addEventListener('input', function() { autoResize(this); });
+    });
+
+    // EVICTION STAGE PICKER
+    const severityContent = {
+      'rent-increase': {
+        title: 'Rent increase after a complaint',
+        body: '<p>A new, higher rent (or an inflated renewal offer) that shows up <em>after</em> you complained, requested a repair, filed with 311, or joined a tenants\' association is the most common form of retaliation. Under <a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" class="inline-link" target="_blank" rel="noopener">RPL &sect;&nbsp;223-b</a>, an increase within <strong>one year</strong> of your protected activity is presumptively retaliatory and your landlord has to justify it.</p><p>If your apartment is covered by <strong>Good Cause Eviction</strong>, there\'s a second angle: any increase above the lesser of <strong>10%</strong> or <strong>5% + local CPI</strong> is presumptively unreasonable and the landlord has to justify that too. If you\'re rent-stabilized, the increase is capped at the Rent Guidelines Board rate for the year; anything higher is a straight-up violation.</p><span class="key-fact"><strong>Most important for you:</strong> Don\'t pay the increased amount if you can avoid it. Respond in writing demanding the lawful amount and the landlord\'s justification; keep paying the prior rent on time. Step 3 walks through the letter. If they file a nonpayment case, the increase being retaliatory or unlawful is a defense.</span>'
+      },
+      'non-renewal': {
+        title: 'Non-renewal after a complaint',
+        body: '<p>If your landlord is refusing to renew within a year of your protected activity, that\'s the classic retaliation pattern &mdash; and the presumption under RPL &sect;&nbsp;223-b is your best friend. Your landlord has to prove a non-retaliatory reason to refuse.</p><p>Non-renewal has its own rules independent of retaliation too. See our <a href="lease-non-renewal.html" class="inline-link">non-renewal guide</a> for apartment-status-specific rights (rent-stabilized tenants can\'t be refused; Good Cause tenants need a lawful reason; §&nbsp;226-c notice rules apply regardless).</p><span class="key-fact"><strong>Most important for you:</strong> Stay in the apartment. Non-renewal is not eviction &mdash; your landlord still has to file a holdover in Housing Court and win it. The retaliation defense can defeat that case entirely. Document the timeline (Step 1) and respond in writing (Step 3) right now.</span>'
+      },
+      holdover: {
+        title: 'Eviction notice or Housing Court case filed',
+        body: '<p>Retaliation is an <em>affirmative defense</em> in Housing Court. If your landlord has filed a pre-court notice (notice to cure, notice of termination, rent demand) or an actual holdover or nonpayment proceeding, and you engaged in a protected activity within the last year, raise the retaliation defense in your answer. If the court agrees, the case can be dismissed regardless of whether the stated ground would otherwise be valid.</p><p>You also have Right to Counsel if you\'re income-qualified &mdash; a free lawyer through NYC\'s Universal Access program. Our <a href="eviction-notice.html" class="inline-link">eviction notice guide</a> has the procedural playbook.</p><span class="key-fact"><strong>Most important for you:</strong> Show up to court. Call Housing Court Answers at <strong>212-962-4795</strong> today for Right to Counsel intake. Bring the timeline you build in Step 1 &mdash; the protected activity and the landlord\'s action. That timeline is your defense.</span>'
+      },
+      'service-reduction': {
+        title: 'Reduced services or refused repairs',
+        body: '<p>Cutting services you were receiving &mdash; heat, hot water, repairs, laundry, common area access &mdash; after you complained is a classic form of retaliation. It\'s also its own set of violations: the <strong>warranty of habitability</strong> (RPL &sect;&nbsp;235-b), and for rent-stabilized tenants a <strong>service reduction</strong> that can trigger a DHCR rent reduction (Forms RA-81 for individual units, RA-84 for building-wide).</p><p>Your landlord cannot use service cuts as leverage to push you out. Every missed repair or cut-off utility is evidence.</p><span class="key-fact"><strong>Most important for you:</strong> File a 311 complaint <em>immediately</em> for any code-level issue (heat, hot water, mold, pests, leaks). This creates a public record and triggers an HPD inspection. Document the before/after with dated photos. Rent-stabilized tenants: file a DHCR rent reduction application &mdash; it\'s free and the threat of a rent freeze often restores services faster than anything else.</span>'
+      },
+      harassment: {
+        title: 'Harassment, threats, or intimidation',
+        body: '<p>NYC defines tenant harassment broadly under <strong>NYC Administrative Code &sect;&nbsp;27-2004</strong> (Local Law 7 of 2008, strengthened by later amendments): any act or omission intended to force a tenant to surrender rights or leave. That includes threats, baseless eviction filings, false statements to induce you to move, repeated contact at odd hours, and failures to provide essential services. On top of RPL &sect;&nbsp;223-b retaliation, harassment has its own remedies: a tenant can bring a separate action in Housing Court for damages and injunctive relief.</p><p><strong>Three different NYC units handle different flavors of harassment</strong> &mdash; know which one fits your situation:</p><ul><li><strong>NYC Tenant Helpline</strong> (Public Engagement Unit) &mdash; call <strong>311</strong> and say &ldquo;Tenant Helpline.&rdquo; The central hub for 1-on-1 support and routing to legal services.</li><li><strong>HPD Tenant Anti-Harassment Unit (TAHU)</strong> &mdash; for landlords withholding essential services (heat, water, repairs) to pressure you out. Route through 311 or the Tenant Helpline.</li><li><strong>DOB Office of the Tenant Advocate (OTA)</strong> &mdash; for <em>construction-related</em> harassment (unsafe conditions, work at odd hours, disruption intended to drive you out). Call <strong>(212) 393-2949</strong> or email <strong>TenantAdvocate@buildings.nyc.gov</strong>.</li><li><strong>NYS Tenant Protection Unit (TPU)</strong> &mdash; for rent-stabilized tenants, a state-level law enforcement office. Email <strong>TPUinfo@hcr.ny.gov</strong>.</li></ul><span class="key-fact"><strong>Most important for you &mdash; document everything:</strong> save every text, voicemail, and email; photograph posted notes on your door and any unsafe conditions; write down dates and exact words for verbal incidents. <strong>New York is a one-party consent state</strong>, so you can legally record your own conversations with your landlord without their permission. Keep the 311 Service Request Number (SRN) from every call &mdash; if complaints are closed without being fixed, the SRN history proves the pattern of neglect. For severe or physical threats, call <strong>NYPD (911)</strong>.</span>'
+      },
+      'ice-threats': {
+        title: 'ICE threats or immigration-based harassment',
+        body: '<p>Threatening to report you to federal immigration authorities, or using your (or a family member\'s) immigration status as leverage, is separately illegal under <strong>NYC Human Rights Law</strong> and violates NYC\'s tenant-harassment statute. Using terms like &ldquo;illegal alien&rdquo; to demean or intimidate you is also a violation.</p><p>This is on top of the RPL &sect;&nbsp;223-b retaliation framework. You can pursue both claims simultaneously.</p><span class="key-fact"><strong>Most important for you:</strong> Document the threat in writing &mdash; save the text, the voicemail, or write a dated contemporaneous note with exact words used. Then contact the <strong>NYC Commission on Human Rights</strong> at <strong>212-416-0197</strong>. Their Source-of-Income and Immigration Status Unit handles these cases. Your immigration status does not affect your right to file this complaint or your tenant protections in Housing Court.</span>'
+      },
+      lockout: {
+        title: 'Illegal lockout or utility shutoff (emergency)',
+        body: '<p>If your landlord has <strong>changed the locks</strong>, <strong>removed or disabled your entrance door</strong>, <strong>removed your belongings</strong>, or <strong>shut off utilities</strong> (heat, hot water, electricity, gas) to force you out, that is a crime under <strong>NYC Administrative Code &sect;&nbsp;26-521</strong> (illegal eviction / unlawful lockout). Police are required to investigate and can order your immediate restoration to the apartment.</p><p>This is an emergency, not a slow-burn retaliation case.</p><span class="key-fact"><strong>Do this right now:</strong> Call <strong>NYPD (911)</strong>. Say the exact words: &ldquo;illegal lockout&rdquo; or &ldquo;unlawful eviction.&rdquo; Officers are trained on this &mdash; stay on scene and wait for them. Also call <strong>311</strong> and ask for HPD&apos;s emergency housing unit. Take photos and video of the locks, your belongings, and any damage. Do not break back in yourself &mdash; it can complicate the criminal case. Call <strong>Housing Court Answers at 212-962-4795</strong> the same day for same-day Order to Show Cause filing.</span>'
+      },
+      all: null
+    };
+
+    const contextEl = document.getElementById('severity-context');
+    const contextTitle = document.getElementById('severity-context-title');
+    const contextBody = document.getElementById('severity-context-body');
+
+    document.querySelectorAll('.severity-option').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.severity-option').forEach(function(b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-checked', 'false');
+        });
+        this.classList.add('active');
+        this.setAttribute('aria-checked', 'true');
+
+        const severity = this.dataset.severity;
+        const content = severityContent[severity];
+
+        if (content) {
+          contextTitle.textContent = content.title;
+          contextBody.innerHTML = content.body;
+          contextEl.classList.add('visible');
+        } else {
+          contextEl.classList.remove('visible');
+        }
+      });
+    });
+
+    // COPY TO CLIPBOARD
+    function getTemplateText(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return '';
+      const clone = container.cloneNode(true);
+      clone.querySelectorAll('input.fill').forEach(function(input) {
+        const original = container.querySelector('[data-field="' + input.dataset.field + '"]');
+        const value = original.value.trim();
+        const replacement = value || ('[' + (input.getAttribute('placeholder') || input.dataset.field) + ']');
+        const textNode = document.createTextNode(replacement);
+        input.parentNode.replaceChild(textNode, input);
+      });
+      let text = '';
+      clone.querySelectorAll('p').forEach(function(p, index) {
+        if (index > 0) text += '\n\n';
+        const html = p.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        text += tempDiv.textContent.trim();
+      });
+      return text;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 2200);
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const targetId = this.dataset.copyTarget;
+        const text = getTemplateText(targetId);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function() { showCopySuccess(btn); })
+            .catch(function() { fallbackCopy(text, btn); });
+        } else {
+          fallbackCopy(text, btn);
+        }
+      });
+    });
+
+    function fallbackCopy(text, btn) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try { document.execCommand('copy'); showCopySuccess(btn); }
+      catch (err) { showToast('Copy failed — please select and copy manually'); }
+      document.body.removeChild(textarea);
+    }
+
+    function showCopySuccess(btn) {
+      btn.classList.add('copied');
+      const textSpan = btn.querySelector('.copy-btn-text');
+      const originalText = textSpan.textContent;
+      textSpan.textContent = 'Copied!';
+      showToast('Copied to clipboard');
+      setTimeout(function() {
+        btn.classList.remove('copied');
+        textSpan.textContent = originalText;
+      }, 2000);
+    }
+  </script>
+  <script src="../lookup.js"></script>
+  <script>
+    initLookup({
+      filterKeywords: ['retaliation', 'retaliate', '223-b', 'harass', 'harassment', 'threat', 'threats', 'intimidation', 'ICE', 'immigration', 'lockout', 'illegal lockout', 'service reduction', 'cut off', 'discrimination', 'complaint', '311', 'HPD', 'violation', 'rent increase', 'non-renewal', 'holdover', 'buyout', 'cash for keys', 'stipulation', 'warranty of habitability', 'CCHR', 'Human Rights']
+    });
+  </script>
+  <script src="../sidebar.js"></script>
+
+</body>
+</html>
