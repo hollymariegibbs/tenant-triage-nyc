@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../lookup.css">
+  <link rel="stylesheet" href="../sidebar.css">
   <style>
     :root {
       --bg: #ffffff;
@@ -819,7 +820,27 @@
     </div>
   </header>
 
-  <article>
+  <div class="layout">
+
+    <aside class="toc-sidebar" aria-label="On this page">
+      <span class="toc-sidebar-label">On this page</span>
+      <nav>
+        <ul class="toc-group">
+          <li><a class="toc-section-link" href="#read-first" data-toc-target="read-first">Read this first</a></li>
+          <li><a class="toc-section-link" href="#rights" data-toc-target="rights">How non-renewal works</a></li>
+          <li><a class="toc-section-link" href="#severity-picker" data-toc-target="severity-picker">What kind of apartment?</a></li>
+          <li><a class="toc-section-link" href="#step-1" data-toc-target="step-1">Step 1 &mdash; Confirm your status</a></li>
+          <li><a class="toc-section-link" href="#step-2" data-toc-target="step-2">Step 2 &mdash; Read the notice</a></li>
+          <li><a class="toc-section-link" href="#step-3" data-toc-target="step-3">Step 3 &mdash; Respond in writing</a></li>
+          <li><a class="toc-section-link" href="#step-4" data-toc-target="step-4">Step 4 &mdash; Build your evidence</a></li>
+          <li><a class="toc-section-link" href="#step-5" data-toc-target="step-5">Step 5 &mdash; Get legal help</a></li>
+          <li><a class="toc-section-link" href="#free-help" data-toc-target="free-help">Free help</a></li>
+          <li><a class="toc-section-link" href="#related" data-toc-target="related">Related situations</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article>
 
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="../index.html">All scenarios</a>
@@ -853,13 +874,13 @@
       </span>
     </div>
 
-    <div class="read-first">
+    <div class="read-first" id="read-first">
       <p>A landlord saying &ldquo;I'm not renewing your lease&rdquo; is not an eviction. <strong>Your lease ending does not mean you have to leave.</strong> If you stay past the expiration date, your landlord's only legal option is to file a <strong>holdover</strong> case in Housing Court &mdash; the same multi-week to multi-month process described in our <a href="eviction-notice.html" class="inline-link">eviction notice guide</a>. Until a judge rules and a marshal serves a warrant, you do not have to move.</p>
       <p><strong>What you can do depends on your apartment's status.</strong> If you're <strong>rent-stabilized or rent-controlled</strong>, your landlord almost certainly <em>cannot lawfully refuse to renew</em> &mdash; renewal at the legal regulated rent is a right, not a favor. If you're <strong>market-rate</strong>, NYC's new <strong>Good Cause Eviction</strong> law (in effect since 2024) may still require your landlord to have a lawful reason to refuse and may cap rent increases. <strong>Pick your status below</strong> to jump to the rules that apply to you.</p>
       <p><strong>Treat this as an emergency if:</strong> your landlord has locked you out, changed the locks, shut off utilities, removed your belongings, or told you to leave &ldquo;today.&rdquo; That's an <strong>illegal lockout</strong>, and it's a crime &mdash; call <strong>311</strong> and <strong>NYPD (911)</strong> and say &ldquo;illegal lockout.&rdquo;</p>
     </div>
 
-    <div class="rights-box">
+    <div class="rights-box" id="rights">
       <span class="rights-label">Know your rights</span>
       <h3>What &ldquo;won't renew&rdquo; actually means in NYC</h3>
       <p>Three things to hold in your head:</p>
@@ -901,7 +922,7 @@
     </div>
 
     <!-- SEVERITY PICKER -->
-    <div class="severity-picker">
+    <div class="severity-picker" id="severity-picker">
       <div class="severity-picker-header">
         <span class="severity-picker-label">Tailor this guide</span>
         <h3 class="severity-picker-title">What kind of apartment do you have?</h3>
@@ -1005,7 +1026,7 @@
     <h2>What to do, step by step</h2>
 
     <!-- STEP 1: Confirm your apartment's status -->
-    <section class="step">
+    <section class="step" id="step-1">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 1</span>
@@ -1121,7 +1142,7 @@
     </aside>
 
     <!-- STEP 2: Read notice + calculate deadline -->
-    <section class="step">
+    <section class="step" id="step-2">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 2</span>
@@ -1202,7 +1223,7 @@
     </section>
 
     <!-- STEP 3: Respond in writing -->
-    <section class="step">
+    <section class="step" id="step-3">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 3</span>
@@ -1314,7 +1335,7 @@
     </aside>
 
     <!-- STEP 4: Build your evidence file -->
-    <section class="step">
+    <section class="step" id="step-4">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 4</span>
@@ -1391,7 +1412,7 @@
     </section>
 
     <!-- STEP 5: Get legal help and prep for a possible holdover -->
-    <section class="step">
+    <section class="step" id="step-5">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 5</span>
@@ -1461,7 +1482,7 @@
     </aside>
 
     <!-- Free help -->
-    <h2>Free help available</h2>
+    <h2 id="free-help">Free help available</h2>
     <ul class="help-list">
       <li>
         <span class="name">Met Council on Housing Tenants' Rights Hotline</span>
@@ -1501,7 +1522,7 @@
     </ul>
 
     <!-- Related -->
-    <section class="related">
+    <section class="related" id="related">
       <h2 style="margin-top: 0;">Related situations</h2>
       <div class="related-grid">
         <a href="eviction-notice.html" class="related-link">I got an eviction notice</a>
@@ -1534,7 +1555,9 @@
       <strong>This isn't legal advice.</strong> Tenant Triage NYC is an independent guide to help you understand your options and take action. We are not lawyers, and this is not an official government resource. If you need legal advice for your specific situation, please contact one of the free legal help organizations listed above.
     </div>
 
-  </article>
+    </article>
+
+  </div>
 
   <div class="toast" id="toast">Copied to clipboard</div>
 
@@ -1714,6 +1737,7 @@
       filterKeywords: ['lease', 'renewal', 'non-renewal', 'renew', 'rent increase', 'rent stabilized', 'rent stabilization', 'rent controlled', 'good cause', 'GCE', 'DHCR', '226-c', '223-b', '235-b', 'retaliation', 'holdover', 'buyout', 'cash for keys', 'overcharge', 'habitability']
     });
   </script>
+  <script src="../sidebar.js"></script>
 
 </body>
 </html>

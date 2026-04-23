@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../lookup.css">
+  <link rel="stylesheet" href="../sidebar.css">
   <style>
     :root {
       --bg: #ffffff;
@@ -819,7 +820,27 @@
     </div>
   </header>
 
-  <article>
+  <div class="layout">
+
+    <aside class="toc-sidebar" aria-label="On this page">
+      <span class="toc-sidebar-label">On this page</span>
+      <nav>
+        <ul class="toc-group">
+          <li><a class="toc-section-link" href="#read-first" data-toc-target="read-first">Read this first</a></li>
+          <li><a class="toc-section-link" href="#rights" data-toc-target="rights">Know your rights</a></li>
+          <li><a class="toc-section-link" href="#severity-picker" data-toc-target="severity-picker">How serious is it?</a></li>
+          <li><a class="toc-section-link" href="#step-1" data-toc-target="step-1">Step 1 &mdash; Document</a></li>
+          <li><a class="toc-section-link" href="#step-2" data-toc-target="step-2">Step 2 &mdash; Tell your landlord</a></li>
+          <li><a class="toc-section-link" href="#step-3" data-toc-target="step-3">Step 3 &mdash; File a 311 complaint</a></li>
+          <li><a class="toc-section-link" href="#step-4" data-toc-target="step-4">Step 4 &mdash; Check the status</a></li>
+          <li><a class="toc-section-link" href="#step-5" data-toc-target="step-5">Step 5 &mdash; Escalate</a></li>
+          <li><a class="toc-section-link" href="#free-help" data-toc-target="free-help">Free help</a></li>
+          <li><a class="toc-section-link" href="#related" data-toc-target="related">Related situations</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article>
 
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="../index.html">All scenarios</a>
@@ -853,13 +874,13 @@
       </span>
     </div>
 
-    <div class="read-first">
+    <div class="read-first" id="read-first">
       <p>Mold is one of the most common &mdash; and most mishandled &mdash; problems in NYC apartments. NYC has specific protections under Local Law 55, and if your mold is over 10 square feet, your landlord may legally be required to hire licensed professionals to fix it.</p>
       <p><strong>You can choose your situation below to see what applies most to you</strong>, or read the full page to understand the complete picture. Most tenants only need the first two or three steps.</p>
       <p><strong>Treat this as urgent if:</strong> anyone in your apartment has asthma, a child is under 6, the mold patch is large or growing fast, or you can smell it in the air.</p>
     </div>
 
-    <div class="rights-box">
+    <div class="rights-box" id="rights">
       <span class="rights-label">Know your rights</span>
       <h3>What NYC law requires</h3>
       <p>Under <strong>Local Law 55 of 2018</strong>, your landlord must keep your apartment free of mold and fix the underlying conditions that cause it (like leaks). The severity of the violation and the time your landlord has to fix it depends on how much mold is present:</p>
@@ -896,7 +917,7 @@
     </div>
 
     <!-- SEVERITY PICKER -->
-    <div class="severity-picker">
+    <div class="severity-picker" id="severity-picker">
       <div class="severity-picker-header">
         <span class="severity-picker-label">Tailor this guide</span>
         <h3 class="severity-picker-title">How big is the mold patch?</h3>
@@ -981,7 +1002,7 @@
     <h2>What to do, step by step</h2>
 
     <!-- STEP 1: Document with photos -->
-    <section class="step">
+    <section class="step" id="step-1">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 1</span>
@@ -1022,7 +1043,7 @@
     </aside>
 
     <!-- STEP 2: Notify landlord -->
-    <section class="step">
+    <section class="step" id="step-2">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 2</span>
@@ -1073,7 +1094,7 @@
     </section>
 
     <!-- STEP 3: 311 -->
-    <section class="step">
+    <section class="step" id="step-3">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 3</span>
@@ -1159,7 +1180,7 @@
     </aside>
 
     <!-- STEP 4: Check status -->
-    <section class="step">
+    <section class="step" id="step-4">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 4</span>
@@ -1193,7 +1214,7 @@
     </section>
 
     <!-- STEP 5: Escalate -->
-    <section class="step">
+    <section class="step" id="step-5">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 5</span>
@@ -1242,7 +1263,7 @@
     </aside>
 
     <!-- Free help -->
-    <h2>Free help available</h2>
+    <h2 id="free-help">Free help available</h2>
     <ul class="help-list">
       <li>
         <span class="name">Met Council on Housing Tenants' Rights Hotline</span>
@@ -1267,7 +1288,7 @@
     </ul>
 
     <!-- Related -->
-    <section class="related">
+    <section class="related" id="related">
       <h2 style="margin-top: 0;">Related situations</h2>
       <div class="related-grid">
         <a href="leaks-plumbing.html" class="related-link">I have a leak or plumbing problem</a>
@@ -1295,7 +1316,9 @@
       <strong>This isn't legal advice.</strong> Tenant Triage NYC is an independent guide to help you understand your options and take action. We are not lawyers, and this is not an official government resource. If you need legal advice for your specific situation, please contact one of the free legal help organizations listed above.
     </div>
 
-  </article>
+    </article>
+
+  </div>
 
   <div class="toast" id="toast">Copied to clipboard</div>
 
@@ -1463,6 +1486,7 @@
       filterKeywords: ['mold', 'mildew', 'fungus', 'moisture', 'damp', 'musty', 'mould']
     });
   </script>
+  <script src="../sidebar.js"></script>
 
 </body>
 </html>

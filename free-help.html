@@ -18,6 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sidebar.css">
   <style>
     :root {
       --bg: #ffffff;
@@ -90,114 +91,6 @@
     .site-nav a.current { border-bottom-color: var(--ink); }
 
     article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
-
-    /* Sticky sidebar layout — desktop only */
-    .layout {
-      max-width: 72rem;
-      margin: 0 auto;
-      padding: 0;
-      display: block;
-    }
-    .layout > article {
-      max-width: var(--measure);
-      margin: 0 auto;
-    }
-    .toc-sidebar { display: none; }
-
-    @media (min-width: 901px) {
-      .layout {
-        display: grid;
-        grid-template-columns: 15rem minmax(0, var(--measure)) 1fr;
-        column-gap: 3rem;
-        align-items: start;
-        padding: 3rem 1.5rem 6rem;
-      }
-      .layout > article {
-        grid-column: 2;
-        padding: 0;
-        margin: 0;
-      }
-      .toc-sidebar {
-        display: block;
-        grid-column: 1;
-        position: sticky;
-        top: 2rem;
-        max-height: calc(100vh - 4rem);
-        overflow-y: auto;
-        padding-right: 0.5rem;
-        font-size: 0.875rem;
-        align-self: start;
-        /* Thin scrollbar on webkit */
-      }
-      .toc-sidebar::-webkit-scrollbar { width: 4px; }
-      .toc-sidebar::-webkit-scrollbar-thumb { background: var(--rule-strong); border-radius: 2px; }
-      /* Hide the inline ToC when sidebar is visible */
-      article > nav.toc { display: none; }
-    }
-
-    .toc-sidebar-label {
-      display: block;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-faded);
-      margin-bottom: 0.75rem;
-      padding-left: 0.75rem;
-    }
-    .toc-sidebar nav {
-      display: block;
-    }
-    .toc-sidebar .toc-group {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 1.25rem 0;
-    }
-    .toc-sidebar .toc-section-link {
-      display: block;
-      font-weight: 700;
-      font-size: 0.8125rem;
-      color: var(--ink);
-      letter-spacing: 0.01em;
-      padding: 0.35rem 0.75rem;
-      text-decoration: none;
-      border-left: 2px solid transparent;
-      transition: color 0.15s ease, border-color 0.15s ease;
-    }
-    .toc-sidebar .toc-section-link:hover {
-      color: var(--accent-deep);
-    }
-    .toc-sidebar .toc-section-link.active {
-      color: var(--accent-deep);
-      border-left-color: var(--accent);
-    }
-    .toc-sidebar .toc-sub {
-      list-style: none;
-      padding: 0;
-      margin: 0.15rem 0 0;
-    }
-    .toc-sidebar .toc-sub li { padding: 0; }
-    .toc-sidebar .toc-sub li::before { content: none; }
-    .toc-sidebar .toc-sub a {
-      display: block;
-      font-weight: 400;
-      font-size: 0.8125rem;
-      color: var(--ink-soft);
-      line-height: 1.4;
-      padding: 0.28rem 0.75rem 0.28rem 1.25rem;
-      border-left: 2px solid transparent;
-      text-decoration: none;
-      transition: color 0.12s ease, border-color 0.12s ease, background 0.12s ease;
-    }
-    .toc-sidebar .toc-sub a:hover {
-      color: var(--accent-deep);
-    }
-    .toc-sidebar .toc-sub a.active {
-      color: var(--accent-deep);
-      font-weight: 600;
-      border-left-color: var(--accent);
-      background: var(--accent-soft);
-    }
 
     /* Scroll offset so jumped-to items aren't jammed against top edge */
     .help-list > li[id^="org-"] { scroll-margin-top: 1.25rem; }
@@ -1339,66 +1232,7 @@
     Made by <a href="https://www.hollymariegibbs.com" target="_blank" rel="noopener">Holly Gibbs</a>
   </footer>
 
-  <script>
-    // Scroll-spy for sticky sidebar ToC: highlight the link for whichever
-    // section/org is currently in the upper part of the viewport.
-    (function () {
-      var sidebar = document.querySelector('.toc-sidebar');
-      if (!sidebar) return;
-
-      var links = sidebar.querySelectorAll('a[data-toc-target]');
-      if (!links.length) return;
-
-      var linkById = {};
-      links.forEach(function (a) {
-        linkById[a.getAttribute('data-toc-target')] = a;
-      });
-
-      var targets = [];
-      Object.keys(linkById).forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) targets.push(el);
-      });
-
-      function clearActive() {
-        links.forEach(function (a) { a.classList.remove('active'); });
-      }
-
-      // Track the most-recently-entered element. IntersectionObserver fires
-      // for every element whose intersection changes, so we track positions.
-      var activeId = null;
-
-      var observer = new IntersectionObserver(function (entries) {
-        // Of all currently-visible targets, pick the one nearest the top
-        // of the "active zone" (roughly the top third of the viewport).
-        var visible = targets
-          .map(function (t) {
-            var rect = t.getBoundingClientRect();
-            return { id: t.id, top: rect.top, bottom: rect.bottom };
-          })
-          .filter(function (r) { return r.bottom > 0 && r.top < window.innerHeight; });
-
-        if (!visible.length) return;
-
-        // Prefer an element whose top has already passed the 30% viewport line
-        var activeZone = window.innerHeight * 0.3;
-        var candidates = visible.filter(function (r) { return r.top <= activeZone; });
-        var pick = (candidates.length ? candidates[candidates.length - 1] : visible[0]);
-
-        if (pick.id !== activeId) {
-          activeId = pick.id;
-          clearActive();
-          var link = linkById[activeId];
-          if (link) link.classList.add('active');
-        }
-      }, {
-        rootMargin: '0px 0px -60% 0px',
-        threshold: [0, 0.25, 0.5, 0.75, 1]
-      });
-
-      targets.forEach(function (t) { observer.observe(t); });
-    })();
-  </script>
+  <script src="sidebar.js"></script>
 
 </body>
 </html>
