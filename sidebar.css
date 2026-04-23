@@ -1,0 +1,143 @@
+/*
+ * Sticky sidebar with scroll-spy — reusable component.
+ *
+ * Expects these CSS variables on :root (all scenario + reference pages
+ * already define them): --ink, --ink-soft, --ink-faded, --accent,
+ * --accent-deep, --accent-soft, --rule-strong, --measure.
+ *
+ * Markup:
+ *   <div class="layout">
+ *     <aside class="toc-sidebar" aria-label="On this page">
+ *       <span class="toc-sidebar-label">On this page</span>
+ *       <nav>
+ *         <ul class="toc-group">
+ *           <li>
+ *             <a class="toc-section-link" data-toc-target="section-id">...</a>
+ *             <ul class="toc-sub">
+ *               <li><a data-toc-target="sub-id">...</a></li>
+ *             </ul>
+ *           </li>
+ *         </ul>
+ *       </nav>
+ *     </aside>
+ *     <article> ... page content with matching id attributes ... </article>
+ *   </div>
+ *
+ * Sidebar shows at viewport ≥ 901px; hidden below (page content flows
+ * as a single column). Scroll-spy is handled by sidebar.js.
+ */
+
+.layout {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0;
+  display: block;
+}
+.layout > article {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+.toc-sidebar { display: none; }
+
+@media (min-width: 901px) {
+  .layout {
+    display: grid;
+    grid-template-columns: 15rem minmax(0, var(--measure)) 1fr;
+    column-gap: 3rem;
+    align-items: start;
+    padding: 3rem 1.5rem 6rem;
+  }
+  .layout > article {
+    grid-column: 2;
+    padding: 0;
+    margin: 0;
+  }
+  .toc-sidebar {
+    display: block;
+    grid-column: 1;
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    font-size: 0.875rem;
+    align-self: start;
+  }
+  .toc-sidebar::-webkit-scrollbar { width: 4px; }
+  .toc-sidebar::-webkit-scrollbar-thumb { background: var(--rule-strong); border-radius: 2px; }
+  /* Hide any inline in-article ToC when the sidebar is visible */
+  article > nav.toc { display: none; }
+}
+
+.toc-sidebar-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faded);
+  margin-bottom: 0.75rem;
+  padding-left: 0.75rem;
+}
+.toc-sidebar nav { display: block; }
+.toc-sidebar .toc-group {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.25rem 0;
+}
+.toc-sidebar .toc-section-link {
+  display: block;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+  padding: 0.35rem 0.75rem;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.toc-sidebar .toc-section-link:hover {
+  color: var(--accent-deep);
+}
+.toc-sidebar .toc-section-link.active {
+  color: var(--accent-deep);
+  border-left-color: var(--accent);
+}
+.toc-sidebar .toc-sub {
+  list-style: none;
+  padding: 0;
+  margin: 0.15rem 0 0;
+}
+.toc-sidebar .toc-sub li { padding: 0; }
+.toc-sidebar .toc-sub li::before { content: none; }
+.toc-sidebar .toc-sub a {
+  display: block;
+  font-weight: 400;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+  padding: 0.28rem 0.75rem 0.28rem 1.25rem;
+  border-left: 2px solid transparent;
+  text-decoration: none;
+  transition: color 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+}
+.toc-sidebar .toc-sub a:hover {
+  color: var(--accent-deep);
+}
+.toc-sidebar .toc-sub a.active {
+  color: var(--accent-deep);
+  font-weight: 600;
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Give common sidebar-targeted section elements breathing room at the top
+ * when the user jumps to them — prevents anchors from jamming against the
+ * viewport edge. Applies inside .layout so it's opt-in per page. */
+.layout h2[id],
+.layout section[id],
+.layout div[id^="read-"],
+.layout div[id="rights"],
+.layout div[id="severity-picker"] {
+  scroll-margin-top: 1.5rem;
+}

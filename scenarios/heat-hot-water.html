@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../lookup.css">
+  <link rel="stylesheet" href="../sidebar.css">
   <style>
     :root {
       /* Neutrals do most of the work */
@@ -877,7 +878,26 @@
     </div>
   </header>
 
-  <article>
+  <div class="layout">
+
+    <aside class="toc-sidebar" aria-label="On this page">
+      <span class="toc-sidebar-label">On this page</span>
+      <nav>
+        <ul class="toc-group">
+          <li><a class="toc-section-link" href="#read-first" data-toc-target="read-first">Read this first</a></li>
+          <li><a class="toc-section-link" href="#rights" data-toc-target="rights">Know your rights</a></li>
+          <li><a class="toc-section-link" href="#step-1" data-toc-target="step-1">Step 1 &mdash; Document</a></li>
+          <li><a class="toc-section-link" href="#step-2" data-toc-target="step-2">Step 2 &mdash; Tell your landlord</a></li>
+          <li><a class="toc-section-link" href="#step-3" data-toc-target="step-3">Step 3 &mdash; File a 311 complaint</a></li>
+          <li><a class="toc-section-link" href="#step-4" data-toc-target="step-4">Step 4 &mdash; Check the status</a></li>
+          <li><a class="toc-section-link" href="#step-5" data-toc-target="step-5">Step 5 &mdash; Escalate</a></li>
+          <li><a class="toc-section-link" href="#free-help" data-toc-target="free-help">Free help</a></li>
+          <li><a class="toc-section-link" href="#related" data-toc-target="related">Related situations</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article>
 
     <p class="crumb"><a href="../index.html">All scenarios</a> &nbsp;·&nbsp; Repairs &amp; conditions</p>
 
@@ -900,13 +920,13 @@
       </span>
     </div>
 
-    <div class="read-first">
+    <div class="read-first" id="read-first">
       <p>This is a stressful situation and you shouldn't have to deal with it. The good news: NYC has some of the strongest heat and hot water protections in the country, and the steps below have worked for thousands of tenants.</p>
       <p><strong>Read this whole page first if you can.</strong> You don't need to take every step &mdash; you just need to know what the full path looks like so you can decide how far to go. Most tenants only need the first two or three steps.</p>
       <p><strong>If anyone in your apartment is elderly, disabled, a young child, or has a medical condition affected by cold:</strong> treat this as urgent. Skip ahead to Step&nbsp;3 immediately and mention the vulnerable resident when you file your complaint.</p>
     </div>
 
-    <div class="rights-box">
+    <div class="rights-box" id="rights">
       <span class="rights-label">Know your rights</span>
       <h3>What NYC law requires</h3>
       <p>Your landlord must provide:</p>
@@ -953,7 +973,7 @@
     <h2>What to do, step by step</h2>
 
     <!-- STEP 1 -->
-    <section class="step">
+    <section class="step" id="step-1">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 1</span>
@@ -981,7 +1001,7 @@
     </section>
 
     <!-- STEP 2 -->
-    <section class="step">
+    <section class="step" id="step-2">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 2</span>
@@ -1030,7 +1050,7 @@
     </section>
 
     <!-- STEP 3 -->
-    <section class="step">
+    <section class="step" id="step-3">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 3</span>
@@ -1114,7 +1134,7 @@
     </aside>
 
     <!-- STEP 4 -->
-    <section class="step">
+    <section class="step" id="step-4">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 4</span>
@@ -1146,7 +1166,7 @@
     </section>
 
     <!-- STEP 5 -->
-    <section class="step">
+    <section class="step" id="step-5">
       <div class="step-header">
         <div class="step-meta">
           <span class="step-number">Step 5</span>
@@ -1187,7 +1207,7 @@
     </aside>
 
     <!-- Free help -->
-    <h2>Free help available</h2>
+    <h2 id="free-help">Free help available</h2>
     <ul class="help-list">
       <li>
         <span class="name">Met Council on Housing Tenants' Rights Hotline</span>
@@ -1212,7 +1232,7 @@
     </ul>
 
     <!-- Related -->
-    <section class="related">
+    <section class="related" id="related">
       <h2 style="margin-top: 0;">Related situations</h2>
       <div class="related-grid">
         <a href="#" class="related-link">My landlord is making repairs but they're not fixing the actual problem</a>
@@ -1239,7 +1259,9 @@
       <strong>This isn't legal advice.</strong> Tenant Triage NYC is an independent guide to help you understand your options and take action. We are not lawyers, and this is not an official government resource. If you need legal advice for your specific situation, please contact one of the free legal help organizations listed above.
     </div>
 
-  </article>
+    </article>
+
+  </div>
 
   <div class="toast" id="toast">Copied to clipboard</div>
 
@@ -1398,6 +1420,7 @@
       filterKeywords: ['heat', 'hot water', 'boiler', 'radiator', 'furnace', 'temperature', 'thermostat']
     });
   </script>
+  <script src="../sidebar.js"></script>
 
 </body>
 </html>
