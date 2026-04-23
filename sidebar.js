@@ -68,5 +68,17 @@
     });
 
     targets.forEach(function (t) { observer.observe(t); });
+
+    // The first sidebar link represents the "top" of the article's readable
+    // content. Native anchor scrolling would jump to the first target
+    // element, cutting off the site header above it. Intercept the click
+    // and scroll all the way to the top of the page instead.
+    var firstLink = sidebar.querySelector('a[data-toc-target]');
+    if (firstLink) {
+      firstLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
   });
 })();
