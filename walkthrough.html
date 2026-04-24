@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Walk through your apartment — Tenant Triage NYC</title>
+  <meta property="og:title" content="Walk through your apartment — Tenant Triage NYC">
+  <meta property="og:description" content="Room-by-room NYC apartment inspection tool. Check what's broken and we'll write the letter to your landlord.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tenanttriage.nyc/walkthrough.html">
+  <meta property="og:image" content="https://tenanttriage.nyc/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Walk through your apartment — Tenant Triage NYC">
+  <meta name="twitter:description" content="Room-by-room NYC apartment inspection tool. Check what's broken and we'll write the letter to your landlord.">
+  <meta name="twitter:image" content="https://tenanttriage.nyc/og-image.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sidebar.css">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f3ef;
+      --ink: #111111;
+      --ink-soft: #3d3d3d;
+      --ink-faded: #6b6b6b;
+      --rule: #e6e4df;
+      --rule-strong: #c9c5bc;
+
+      --accent: #0d7377;
+      --accent-deep: #08494c;
+      --accent-soft: #e3f0f0;
+      --accent-bright: #5eb6b9;
+
+      --protect: #2a4a7f;
+      --protect-soft: #eaeff7;
+
+      --measure: 42rem;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 18px; scroll-behavior: smooth; }
+
+    body {
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      font-size: 1.125rem;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* -------- Site header (matches other pages) -------- */
+
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem;
+      background: var(--bg);
+    }
+    .site-header-inner {
+      max-width: 64rem; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .wordmark {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      text-decoration: none; color: var(--ink);
+    }
+    .wordmark-main {
+      font-weight: 900; font-size: 1.375rem;
+      letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
+    }
+    .wordmark-accent {
+      font-weight: 500; font-size: 0.95rem;
+      color: var(--accent); letter-spacing: 0.01em;
+    }
+    .site-nav {
+      display: flex; gap: 1.75rem;
+      font-size: 0.875rem; color: var(--ink); font-weight: 500;
+    }
+    .site-nav a,
+    .site-nav a:visited {
+      color: var(--ink); text-decoration: none;
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .site-nav a:hover { border-bottom-color: var(--accent); }
+    .site-nav a.current { border-bottom-color: var(--ink); }
+
+    article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+    /* -------- Breadcrumbs, reading-label, headings -------- */
+
+    .breadcrumbs {
+      display: flex; align-items: center; gap: 0.5rem;
+      flex-wrap: wrap; margin-bottom: 1.75rem; font-size: 0.875rem;
+    }
+    .breadcrumbs a {
+      color: var(--ink-soft); text-decoration: none; font-weight: 500;
+      padding: 0.25rem 0; border-bottom: 1px solid var(--rule-strong);
+      transition: all 0.15s ease;
+    }
+    .breadcrumbs a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .breadcrumbs .sep { color: var(--ink-faded); font-weight: 400; }
+    .breadcrumbs .current { color: var(--ink); font-weight: 600; }
+
+    .reading-label {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent-deep); background: var(--accent-soft);
+      padding: 0.35rem 0.75rem; margin-bottom: 1rem;
+    }
+    .reading-label svg {
+      width: 12px; height: 12px;
+      stroke: currentColor; fill: none; stroke-width: 2.5;
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: clamp(2.25rem, 5.5vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+
+    .standfirst {
+      font-weight: 400;
+      font-size: 1.1875rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin-bottom: 2rem;
+      max-width: 36rem;
+    }
+
+    p { margin-bottom: 1.25rem; color: var(--ink); }
+    p strong { font-weight: 600; }
+
+    a.inline-link,
+    a.inline-link:visited {
+      color: var(--accent-deep); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: background 0.15s ease;
+    }
+    a.inline-link:hover { background: var(--accent-soft); }
+
+    /* -------- Review panel (only shown with ?review in URL) -------- */
+
+    .review-panel {
+      margin: 0 0 2rem;
+      padding: 1.25rem 1.5rem;
+      background: #fff9db;
+      border: 2px solid #f5c518;
+    }
+    .review-panel-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7a4f00;
+      margin-bottom: 0.35rem;
+    }
+    .review-panel-intro {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .review-items {
+      display: grid;
+      gap: 0.85rem;
+    }
+    .review-item {
+      padding: 0.85rem 1rem;
+      background: var(--bg);
+      border: 1px solid #e3d68c;
+    }
+    .review-item-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.55rem;
+      flex-wrap: wrap;
+    }
+    .review-item-tag {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+      padding: 0.15rem 0.45rem;
+    }
+    .verify-tag {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7a4f00;
+      background: #fff2a8;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid #e3d68c;
+    }
+    .review-item-text {
+      font-size: 0.9375rem;
+      color: var(--ink);
+      margin: 0 0 0.5rem;
+      line-height: 1.55;
+    }
+    .review-item-question {
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      margin: 0;
+      font-style: italic;
+      line-height: 1.5;
+    }
+    .review-item-used-by {
+      font-size: 0.75rem;
+      color: var(--ink-faded);
+      margin-top: 0.5rem;
+    }
+    .review-item-used-by strong { color: var(--ink-soft); font-weight: 600; }
+
+    /* -------- Emergency callout -------- */
+
+    .emergency-callout {
+      background: #fdf2f0;
+      border-left: 4px solid #c4322b;
+      padding: 1.1rem 1.35rem 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+    .emergency-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #c4322b;
+      margin-bottom: 0.85rem;
+    }
+    .emergency-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .emergency-list li {
+      padding: 0.7rem 0;
+      border-top: 1px solid #f2cac4;
+      display: grid;
+      gap: 0.15rem;
+    }
+    .emergency-list li:first-child { border-top: none; padding-top: 0; }
+    .emergency-list li:last-child { padding-bottom: 0; }
+    .emergency-trigger {
+      font-weight: 800;
+      font-size: 0.9375rem;
+      color: #8a1c17;
+      letter-spacing: -0.005em;
+    }
+    .emergency-action {
+      color: var(--ink);
+      font-size: 0.9375rem;
+      line-height: 1.5;
+    }
+    .emergency-callout a.inline-link,
+    .emergency-callout a.inline-link:visited {
+      color: #8a1c17;
+      border-bottom-color: #c4322b;
+      font-weight: 600;
+    }
+    .emergency-callout a.inline-link:hover { background: #f9e3e0; }
+
+    /* -------- Rights callout (in What's Next) -------- */
+
+    .rights-callout {
+      margin-top: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--protect-soft);
+      border-left: 4px solid var(--protect);
+    }
+    .rights-callout-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--protect);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .rights-callout h3 {
+      font-weight: 800;
+      font-size: 1.0625rem;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
+    .rights-callout p {
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+      margin: 0 0 0.7rem;
+      line-height: 1.55;
+    }
+    .rights-callout p:last-child { margin-bottom: 0; }
+    .rights-callout-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .rights-callout-list li {
+      padding: 0.3rem 0 0.3rem 1.25rem;
+      position: relative;
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+    .rights-callout-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0.35rem;
+      color: var(--protect);
+      font-weight: 700;
+    }
+    .rights-callout-list strong { color: var(--ink); font-weight: 700; }
+
+    /* -------- Intro note (why comprehensive + timing) -------- */
+
+    .intro-note {
+      background: var(--bg-soft);
+      border-left: 4px solid var(--ink);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+      font-size: 0.9375rem;
+    }
+    .intro-note p { margin-bottom: 0.7rem; color: var(--ink-soft); }
+    .intro-note p:last-child { margin-bottom: 0; }
+    .intro-note strong { color: var(--ink); }
+
+    /* -------- How it works (3-step) -------- */
+
+    .how-it-works {
+      margin-bottom: 3rem;
+      padding: 1.5rem;
+      border: 1px solid var(--rule-strong);
+    }
+    .how-it-works h2 {
+      font-size: 0.75rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-faded);
+      margin-bottom: 1rem;
+    }
+    .how-it-works ol {
+      list-style: none; padding: 0;
+      display: grid; gap: 0.85rem;
+    }
+    .how-it-works li {
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.85rem;
+      align-items: baseline;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+    .how-it-works li::before {
+      content: counter(how-step);
+      counter-increment: how-step;
+      width: 2rem; height: 2rem;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--ink); color: var(--bg);
+      font-weight: 800; font-size: 0.9375rem;
+      border-radius: 100px;
+    }
+    .how-it-works ol { counter-reset: how-step; }
+
+    /* -------- Save-progress toggle -------- */
+
+    .save-toggle-row {
+      margin-bottom: 2.25rem;
+      padding: 0.9rem 1.1rem;
+      background: var(--bg-soft);
+      border: 1px solid var(--rule);
+    }
+    .save-toggle {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.75rem;
+      align-items: start;
+      cursor: pointer;
+    }
+    .save-toggle input[type="checkbox"] {
+      margin-top: 0.25rem;
+      width: 1rem; height: 1rem;
+      accent-color: var(--accent-deep);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .save-toggle-text {
+      display: grid;
+      gap: 0.25rem;
+    }
+    .save-toggle-text strong {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .save-toggle-note {
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+      line-height: 1.5;
+    }
+
+    /* -------- Room accordions -------- */
+
+    h2.rooms-h2 {
+      font-size: 1.625rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-top: 3rem;
+      margin-bottom: 0.25rem;
+      color: var(--ink);
+    }
+    .rooms-intro {
+      font-size: 1rem;
+      color: var(--ink-soft);
+      margin-bottom: 1.5rem;
+    }
+
+    .room {
+      margin-bottom: 0.75rem;
+      scroll-margin-top: 1.25rem;
+    }
+    .room details {
+      border: 1px solid var(--rule-strong);
+      background: var(--bg);
+    }
+    .room details[open] {
+      border-color: var(--ink);
+    }
+    .room summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--ink);
+      background: var(--bg);
+      transition: background 0.12s ease;
+    }
+    .room summary::-webkit-details-marker { display: none; }
+    .room summary::after {
+      content: "+";
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: var(--ink-faded);
+      line-height: 1;
+      transition: transform 0.15s ease;
+    }
+    .room details[open] summary::after {
+      content: "−";
+    }
+    .room summary:hover { background: var(--bg-soft); }
+    .room-name {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+    .room-count {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+      padding: 0.2rem 0.5rem;
+      min-width: 2.25rem;
+      text-align: center;
+    }
+    .room-count:empty { display: none; }
+
+    .room-body {
+      padding: 0.5rem 1.25rem 1.25rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* Label row + remove button (duplicable rooms only) */
+    .room-label-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 0.65rem;
+      align-items: center;
+      margin: 0.75rem 0 0.5rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px dashed var(--rule);
+    }
+    .room-label-row > label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink-faded);
+      white-space: nowrap;
+    }
+    .room-label-input {
+      font-family: inherit;
+      font-size: 0.9375rem;
+      padding: 0.45rem 0.65rem;
+      border: 1.5px solid var(--rule-strong);
+      background: var(--bg);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.12s ease;
+      min-width: 0;
+    }
+    .room-label-input:focus { border-color: var(--accent); }
+    .remove-room-btn {
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      padding: 0.45rem 0.75rem;
+      background: transparent;
+      color: var(--ink-faded);
+      border: 1px solid var(--rule-strong);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+    }
+    .remove-room-btn:hover {
+      color: #c4322b;
+      border-color: #c4322b;
+      background: #fdf2f0;
+    }
+
+    /* Add-another-room button (shown after each duplicable group) */
+    .add-room-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      width: 100%;
+      margin: 0.5rem 0 0.75rem;
+      padding: 0.7rem 1rem;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--accent-deep);
+      background: transparent;
+      border: 1.5px dashed var(--accent);
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.12s ease, border-style 0.12s ease;
+    }
+    .add-room-btn:hover {
+      background: var(--accent-soft);
+      border-style: solid;
+    }
+    .add-room-btn-plus {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.35rem; height: 1.35rem;
+      border-radius: 100px;
+      background: var(--accent-deep);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 0.95rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .photo-tip {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      background: var(--accent-soft);
+      padding: 0.6rem 0.85rem;
+      margin: 0.75rem 0 1rem;
+    }
+    .photo-tip::before {
+      content: "📷";
+      flex-shrink: 0;
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .checklist li {
+      padding: 0.15rem 0;
+      font-size: 0.9375rem;
+    }
+    .checklist label {
+      display: flex;
+      gap: 0.6rem;
+      cursor: pointer;
+      padding: 0.35rem 0.25rem;
+      line-height: 1.4;
+      color: var(--ink);
+      border-radius: 2px;
+      transition: background 0.1s ease;
+    }
+    .checklist label:hover { background: var(--bg-soft); }
+    .checklist input[type="checkbox"] {
+      margin-top: 0.2rem;
+      flex-shrink: 0;
+      width: 1rem; height: 1rem;
+      accent-color: var(--accent-deep);
+      cursor: pointer;
+    }
+    .checklist li.custom label {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 0.6rem;
+      align-items: center;
+    }
+    .checklist .custom-remove {
+      background: transparent;
+      border: none;
+      color: var(--ink-faded);
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.15rem 0.4rem;
+      line-height: 1;
+    }
+    .checklist .custom-remove:hover { color: var(--ink); }
+
+    .add-own {
+      margin-top: 1rem;
+      padding-top: 0.85rem;
+      border-top: 1px dashed var(--rule);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+    .add-own label {
+      grid-column: 1 / -1;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-faded);
+      margin-bottom: 0.15rem;
+    }
+    .add-own input[type="text"] {
+      font-family: inherit;
+      font-size: 0.9375rem;
+      padding: 0.55rem 0.75rem;
+      border: 1.5px solid var(--rule-strong);
+      background: var(--bg);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.12s ease;
+    }
+    .add-own input[type="text"]:focus { border-color: var(--accent); }
+    .add-own button {
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 700;
+      padding: 0.55rem 1rem;
+      background: var(--ink);
+      color: var(--bg);
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+    }
+    .add-own button:hover { background: var(--accent-deep); }
+
+    /* -------- Letter preview -------- */
+
+    .letter-section {
+      margin-top: 3.5rem;
+      scroll-margin-top: 1.25rem;
+    }
+    .letter-section h2 {
+      font-size: 1.625rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+    .letter-section .section-intro {
+      font-size: 1rem;
+      color: var(--ink-soft);
+      margin-bottom: 1.5rem;
+    }
+
+    .template {
+      border: 2px solid var(--ink);
+      background: var(--bg);
+    }
+    .template-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 1.25rem;
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .template-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+    }
+    .template-label svg {
+      width: 14px; height: 14px;
+      stroke: currentColor; fill: none; stroke-width: 2;
+    }
+    .template-footer {
+      padding: 1rem 1.25rem;
+      background: var(--bg-soft);
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: flex-end;
+    }
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--ink);
+      color: var(--bg);
+      border: 1.5px solid var(--ink);
+      padding: 0.65rem 1.25rem;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: background 0.12s ease, border-color 0.12s ease;
+    }
+    .copy-btn:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+    .copy-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .copy-btn.copied { background: var(--accent-bright); color: var(--ink); border-color: var(--accent-bright); }
+
+    .template-body {
+      padding: 1.5rem 1.75rem;
+      font-size: 0.9375rem;
+      line-height: 1.65;
+    }
+    .template-body p { margin-bottom: 0.85rem; }
+    .template-body p:last-child { margin-bottom: 0; }
+
+    .fill {
+      border: none;
+      border-bottom: 1px solid var(--ink-faded);
+      background: transparent;
+      font-family: inherit;
+      font-size: inherit;
+      color: var(--accent-deep);
+      padding: 0 0.25rem;
+      outline: none;
+      min-width: 8rem;
+      transition: border-color 0.12s ease;
+    }
+    .fill:focus { border-bottom-color: var(--accent); }
+    .fill::placeholder { color: var(--accent-deep); font-style: italic; opacity: 0.65; }
+    .fill.has-value { color: var(--ink); font-style: normal; }
+
+    /* Letter items block (JS-rendered) */
+    .letter-items {
+      margin: 0.25rem 0 0.75rem;
+    }
+    .letter-items:empty::before {
+      content: "(check items above to populate this list)";
+      color: var(--ink-faded);
+      font-style: italic;
+      font-size: 0.875rem;
+    }
+    .letter-room-block {
+      margin-bottom: 0.9rem;
+    }
+    .letter-room-block:last-child { margin-bottom: 0; }
+    .letter-room-heading {
+      font-weight: 800;
+      font-size: 0.8125rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 0.2rem;
+    }
+    .letter-room-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .letter-room-list li {
+      padding-left: 0.9rem;
+      position: relative;
+      font-size: 0.9375rem;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+    .letter-room-list li::before {
+      content: "–";
+      position: absolute;
+      left: 0;
+      color: var(--ink-faded);
+    }
+
+    .letter-laws {
+      margin: 1rem 0;
+      padding: 0.85rem 1rem;
+      background: var(--bg-soft);
+      border-left: 3px solid var(--accent);
+      font-size: 0.9rem;
+    }
+    .letter-laws:empty { display: none; }
+    .letter-laws p { margin-bottom: 0.5rem; }
+    .letter-laws p:last-child { margin-bottom: 0; }
+
+    /* Reset link below letter */
+    .letter-actions {
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      color: var(--ink-faded);
+    }
+    .letter-actions button {
+      background: transparent;
+      border: none;
+      color: var(--ink-faded);
+      font-family: inherit;
+      font-size: 0.875rem;
+      padding: 0;
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: var(--rule-strong);
+      text-underline-offset: 3px;
+    }
+    .letter-actions button:hover { color: var(--ink); text-decoration-color: var(--ink); }
+
+    /* -------- What's next -------- */
+
+    .whats-next {
+      margin-top: 3.5rem;
+    }
+    .whats-next h2 {
+      font-size: 1.625rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+    .whats-next ul {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+    .whats-next li {
+      padding: 0.6rem 0 0.6rem 1.75rem;
+      position: relative;
+      font-size: 0.9375rem;
+      color: var(--ink);
+      line-height: 1.55;
+      border-bottom: 1px solid var(--rule);
+    }
+    .whats-next li:last-child { border-bottom: none; }
+    .whats-next li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      top: 0.6rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .whats-next strong { color: var(--ink); }
+
+    /* -------- Met Council credit -------- */
+
+    .metcouncil {
+      margin-top: 3rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--bg-soft);
+      border: 1px solid var(--rule-strong);
+    }
+    .metcouncil-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faded);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .metcouncil h3 {
+      font-weight: 800;
+      font-size: 1.125rem;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .metcouncil p {
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+      margin-bottom: 0.75rem;
+    }
+    .metcouncil a.inline-link { font-weight: 600; }
+
+    /* -------- Disclaimer -------- */
+
+    .disclaimer {
+      margin-top: 2.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-soft);
+      border: 1px dashed var(--rule-strong);
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .disclaimer strong { color: var(--ink); font-weight: 700; }
+
+    /* -------- Footer -------- */
+
+    .site-footer {
+      border-top: 2px solid var(--ink);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+    }
+    .site-footer a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule-strong);
+    }
+
+    /* -------- Sidebar-specific additions (static "Your letter" link) -------- */
+
+    .toc-sidebar .toc-static {
+      padding: 0.35rem 0.75rem;
+      margin-top: 0.75rem;
+      border-top: 1px solid var(--rule);
+      padding-top: 1rem;
+    }
+    .toc-sidebar .toc-static a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      padding: 0.25rem 0;
+      border-bottom: none;
+    }
+    .toc-sidebar .toc-static a:hover { color: var(--accent-deep); }
+    .toc-sidebar .toc-static a::after {
+      content: "→";
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* -------- Toast (copy confirmation) -------- */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(150%);
+      background: var(--ink); color: var(--bg);
+      padding: 0.75rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: transform 0.25s ease;
+      z-index: 1000;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* -------- Responsive tweaks -------- */
+
+    @media (max-width: 600px) {
+      article { padding: 2rem 1.25rem 4rem; }
+      .template-body { padding: 1rem 1.1rem; }
+      .room summary { padding: 0.85rem 1rem; font-size: 1rem; }
+      .room-body { padding: 0.5rem 1rem 1rem; }
+      .room-label-row {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+      }
+      .room-label-row > label { font-size: 0.7rem; }
+    }
+
+    /* -------- Print: the letter is the thing. Everything else is UI. -------- */
+
+    @media print {
+      .site-header, .site-footer, .toc-sidebar,
+      .breadcrumbs, .reading-label, .intro-note,
+      .emergency-callout, .save-toggle-row, .review-panel,
+      .how-it-works, .rooms-h2, .rooms-intro,
+      .room, .add-room-btn, .whats-next, .metcouncil, .disclaimer,
+      .copy-btn, .letter-actions,
+      .toast { display: none !important; }
+      .letter-section { margin-top: 0; }
+      .letter-section h2, .letter-section .section-intro { display: none; }
+      .template { border: none; }
+      .template-header, .template-footer { display: none; }
+      .template-body { padding: 0; font-size: 11pt; line-height: 1.4; }
+      .fill {
+        border-bottom: 1px solid #000;
+        color: #000;
+        font-style: normal;
+      }
+      .fill::placeholder { color: #666; }
+      .letter-laws { background: transparent; border-left: 2px solid #000; }
+    }
+  </style>
+  <link rel="stylesheet" href="print.css" media="print">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="index.html" class="wordmark">
+        <span class="wordmark-main">Tenant Triage</span>
+        <span class="wordmark-accent">NYC</span>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">All scenarios</a>
+        <a href="about.html">About</a>
+        <a href="free-help.html">Free help</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <aside class="toc-sidebar" aria-label="On this page">
+      <span class="toc-sidebar-label">On this page</span>
+      <nav>
+        <ul class="toc-group" id="sidebar-list"></ul>
+        <div class="toc-static">
+          <a href="#your-letter">Your letter</a>
+        </div>
+      </nav>
+    </aside>
+
+    <article>
+
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">All scenarios</a>
+        <span class="sep">/</span>
+        <span class="current">Walk-through</span>
+      </nav>
+
+      <span class="reading-label">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Apartment walkthrough
+      </span>
+
+      <h1>Walk through your apartment.</h1>
+
+      <p class="standfirst">Go room by room. Check what's broken. We'll write the letter to your landlord that covers everything &mdash; so you only have to make your case once.</p>
+
+      <div class="review-panel" id="review-panel" hidden>
+        <span class="review-panel-label">Review mode &mdash; unverified law references</span>
+        <p class="review-panel-intro">This panel only appears when <code>?review</code> is in the URL. Each law below is used in the generated letter. Confirm accuracy against current NYC code or a tenant-lawyer reference before removing the Verify tag.</p>
+        <div class="review-items" id="review-items"></div>
+      </div>
+
+      <div class="emergency-callout" role="alert">
+        <span class="emergency-label">Emergency? Don't use this form.</span>
+        <ul class="emergency-list">
+          <li>
+            <span class="emergency-trigger">If you smell gas</span>
+            <span class="emergency-action">Call Con Edison at <a href="tel:18007526633" class="inline-link">1-800-75-CONED</a> (1-800-752-6633) or 911.</span>
+          </li>
+          <li>
+            <span class="emergency-trigger">If there's an active fire or flooding</span>
+            <span class="emergency-action">Call 911.</span>
+          </li>
+          <li>
+            <span class="emergency-trigger">If you've been locked out illegally</span>
+            <span class="emergency-action">Call 911, then see the <a href="scenarios/retaliation.html" class="inline-link">illegal lockout guide</a>.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="intro-note">
+        <p><strong>Why do this all at once?</strong> Met Council on Housing's core advice to NYC tenants is: &ldquo;Include everything that needs to be addressed in your first written communication.&rdquo; Most tenants write about one problem (the leaky faucet), discover three more later, and have to start the clock over each time. This tool coaches you through a systematic room-by-room inspection before you write anything.</p>
+        <p><strong>What you'll get:</strong> a ready-to-send letter listing every problem you checked, grouped by room, with the relevant NYC housing laws referenced. Copy it, email it to your landlord (with photos attached), or print and send by certified mail.</p>
+        <p><strong>How long this takes:</strong> about 10&ndash;15 minutes. Have your phone ready for photos as you go.</p>
+      </div>
+
+      <section class="how-it-works" aria-label="How this tool works">
+        <h2>How this works</h2>
+        <ol>
+          <li>Walk through each room of your apartment and check off what's wrong.</li>
+          <li>Add anything we missed using the &ldquo;add your own&rdquo; box in each room.</li>
+          <li>Copy your letter at the bottom and send it to your landlord.</li>
+        </ol>
+      </section>
+
+      <div class="save-toggle-row">
+        <label class="save-toggle" for="save-toggle">
+          <input type="checkbox" id="save-toggle">
+          <span class="save-toggle-text">
+            <strong>Save my progress on this device</strong>
+            <span class="save-toggle-note">Keeps your checks, labels, and letter info if you close the tab. Saved only in your own browser &mdash; we never see it. Uncheck at any time to clear what's saved.</span>
+          </span>
+        </label>
+      </div>
+
+      <h2 class="rooms-h2">Room by room</h2>
+      <p class="rooms-intro">Tap any section to expand it. If you have more than one bedroom or bathroom, use <strong>Add another</strong> to create a new section for each one &mdash; you can label them <em>primary</em>, <em>guest</em>, <em>kids</em>, or however you think of them.</p>
+
+      <!-- Rooms rendered by JS -->
+      <div id="rooms-container"></div>
+
+      <!-- Letter preview -->
+      <section class="letter-section" id="your-letter">
+        <h2>Your letter</h2>
+        <p class="section-intro">This letter updates live as you check items above. Fill in your address, landlord's name, and your contact info, then copy and send.</p>
+
+        <div class="template" id="letter-template">
+          <div class="template-header">
+            <span class="template-label">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Letter to your landlord
+            </span>
+          </div>
+          <div class="template-body" id="letter-body">
+            <p>Subject: Request for repairs at <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
+            <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord or management company" size="32">,</p>
+            <p>I am writing to formally request repairs to my apartment. I have conducted a thorough inspection and identified the following conditions that require attention:</p>
+            <div class="letter-items" id="letter-items"></div>
+            <div class="letter-laws" id="letter-laws"></div>
+            <p>Please arrange to inspect and repair these conditions promptly. I have documented them with photographs and am prepared to file a complaint with 311 and HPD if repairs are not made within a reasonable timeframe.</p>
+            <p>Thank you,</p>
+            <p><input type="text" class="fill" data-field="tenant_name" placeholder="your name" size="22"><br><input type="text" class="fill" data-field="tenant_phone" placeholder="phone number" size="18"><br><input type="text" class="fill" data-field="date" placeholder="today's date" size="14"></p>
+          </div>
+          <div class="template-footer">
+            <button class="copy-btn" id="copy-letter-btn">
+              <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span class="copy-btn-text">Copy letter</span>
+            </button>
+          </div>
+        </div>
+        <div class="letter-actions">
+          <button type="button" id="reset-btn">Clear all checks and start over</button>
+        </div>
+      </section>
+
+      <section class="whats-next">
+        <h2>What to do next</h2>
+        <ul>
+          <li><strong>Send it by email</strong> and attach your photos. BCC yourself so you have a copy you can prove you sent.</li>
+          <li><strong>Or send by USPS Certified Mail, Return Receipt Requested.</strong> About $10 at any post office. Gives you a signed delivery card that holds up in Housing Court.</li>
+          <li><strong>Keep your photos and this letter together.</strong> Same folder, same backup. You'll need them if repairs don't happen and you have to file a complaint or go to Housing Court.</li>
+          <li><strong>If your landlord doesn't respond within 7&ndash;14 days,</strong> file a 311 complaint. Our scenario guides walk through the process: <a href="scenarios/heat-hot-water.html" class="inline-link">heat &amp; hot water</a>, <a href="scenarios/mold.html" class="inline-link">mold</a>, <a href="scenarios/pests.html" class="inline-link">pests</a>, <a href="scenarios/leaks-plumbing.html" class="inline-link">leaks</a>, <a href="scenarios/appliances.html" class="inline-link">broken appliances</a>, <a href="scenarios/lead-paint.html" class="inline-link">lead paint</a>.</li>
+          <li><strong>If the landlord retaliates</strong> (rent increase, non-renewal, service cut, harassment) within 12 months of this letter, that's presumptively unlawful under RPL &sect;&nbsp;223-b. See the <a href="scenarios/retaliation.html" class="inline-link">retaliation guide</a>.</li>
+        </ul>
+
+        <div class="rights-callout">
+          <span class="rights-callout-label">Know your rights</span>
+          <h3>You can still secure your door &mdash; but don't drill a fire door.</h3>
+          <p>Under <a href="https://codes.findlaw.com/ny/multiple-dwelling-law/mdw-sect-51-c/" class="inline-link" target="_blank" rel="noopener">New York Multiple Dwelling Law &sect;&nbsp;51-c</a>, you have the right to install one additional lock on your apartment entrance at your own expense. The lock can be no more than 3 inches in circumference. Landlords can't charge extra rent or fees for it. If they ask, you must give them a duplicate key.</p>
+          <p><strong>If you have a metal fire-rated door</strong> (common in NYC buildings): don't drill into it yourself &mdash; modifying a fire-rated door voids its rating and can be a fire-code violation against the landlord. Safer options that don't require drilling:</p>
+          <ul class="rights-callout-list">
+            <li><strong>Portable door locks</strong> (like Addalock) that clamp to the strike plate</li>
+            <li><strong>Door security bars</strong> that wedge between the door and floor</li>
+            <li><strong>Ask your landlord to install</strong> the additional lock using a fire-rated lock kit that maintains the rating &mdash; &sect;&nbsp;51-c protects your right either way</li>
+          </ul>
+        </div>
+      </section>
+
+      <aside class="metcouncil">
+        <span class="metcouncil-label">Credit &amp; alternatives</span>
+        <h3>Adapted from Met Council on Housing's Tenants' Inspection Checklist.</h3>
+        <p>Met Council's checklist is the gold-standard tool used by NYC tenant organizers. It's more comprehensive than ours, and it's bilingual (English &amp; Spanish). Want to do this on paper instead? Download <a href="https://www.metcouncilonhousing.org/wp-content/uploads/2011/02/Repair-Complaint-Form.pdf" class="inline-link" target="_blank" rel="noopener">Met Council's full printable checklist</a> &mdash; it's free and designed to be accepted as evidence in Housing Court.</p>
+        <p>And if you need a real person to talk through your situation, call <strong>Met Council's Tenants' Rights Hotline</strong> at <a href="tel:2129790611" class="inline-link">212-979-0611</a>.</p>
+      </aside>
+
+      <div class="disclaimer">
+        <strong>This isn't legal advice.</strong> Tenant Triage NYC is an independent guide. We are not lawyers. If repairs don't happen or your landlord retaliates, contact one of the free legal organizations on our <a href="free-help.html" class="inline-link">Free help</a> page.
+      </div>
+
+    </article>
+
+  </div>
+
+  <footer class="site-footer">
+    Made by <a href="https://www.hollymariegibbs.com" target="_blank" rel="noopener">Holly Gibbs</a>
+  </footer>
+
+  <div class="toast" id="toast">Copied to clipboard</div>
+
+  <script>
+    // ===========================================================
+    // WALKTHROUGH CHECKLIST DATA
+    // Each item has a `label` (tenant-facing) and an optional `law`
+    // tag referencing a key in lawText. Items without a tag fall back
+    // to the generic HMC habitability reference.
+    //
+    // All lawText entries verified by Holly 2026-04-23.
+    // If a future change adds a new law reference, add a [VERIFY] comment
+    // and register it in initReviewMode() below so it surfaces under ?review.
+    // ===========================================================
+
+    const rooms = [
+      {
+        id: 'front-door',
+        name: 'Front door & safety',
+        items: [
+          { label: 'Peephole missing or broken on apartment entrance door', law: 'peephole' },
+          { label: 'Entrance door doesn’t close by itself (self-closer broken or missing)', law: 'selfclose' },
+          { label: 'Deadbolt missing, broken, or won’t lock', law: 'deadbolt' },
+          { label: 'Chain door guard missing or broken', law: 'deadbolt' },
+          { label: 'Entrance door lock is broken or won’t turn', law: 'deadbolt' },
+          { label: 'Landlord hasn’t provided a key for the entrance lock', law: 'deadbolt' },
+          { label: 'Smoke detector missing or not working in apartment', law: 'detectors' },
+          { label: 'Carbon monoxide detector missing or not working in apartment', law: 'detectors' },
+          { label: 'Exposed or frayed electrical wiring (fire / shock hazard)', law: 'hmc' }
+        ]
+      },
+      {
+        id: 'living-room',
+        name: 'Living room / other rooms',
+        items: [
+          { label: 'Ceiling cracked or peeling', law: 'hmc' },
+          { label: 'Ceiling water-stained, sagging, or bulging', law: 'hmc' },
+          { label: 'Walls cracked or holes', law: 'hmc' },
+          { label: 'Paint peeling or chipping', law: 'll1' },
+          { label: 'Window broken, won’t open, or won’t lock', law: 'hmc' },
+          { label: 'Window guard missing (children 10 or under)', law: 'windowguard' },
+          { label: 'Radiator not working or leaking', law: 'heat' },
+          { label: 'Floor damaged', law: 'hmc' },
+          { label: 'Electrical outlet or light fixture broken', law: 'hmc' },
+          { label: 'Mold visible', law: 'll55' },
+          { label: 'Signs of pests', law: 'll55' },
+          { label: 'Bedbugs (bites, live insects on couches or chairs)', law: 'll55' },
+          { label: 'Intercom or buzzer not working', law: 'hmc' }
+        ]
+      },
+      {
+        id: 'kitchen',
+        name: 'Kitchen',
+        items: [
+          { label: 'Ceiling cracked or peeling', law: 'hmc' },
+          { label: 'Ceiling water-stained, sagging, or bulging', law: 'hmc' },
+          { label: 'Refrigerator broken or not cooling', law: 'hmc' },
+          { label: 'Stove or oven broken or not heating', law: 'hmc' },
+          { label: 'Sink faucet leaking or broken', law: 'hmc' },
+          { label: 'Water pressure low or no water from sink', law: 'hmc' },
+          { label: 'Sink drain clogged or slow', law: 'hmc' },
+          { label: 'Cabinets broken or falling off wall', law: 'hmc' },
+          { label: 'Countertop damaged', law: 'hmc' },
+          { label: 'Floor damaged (tiles broken, holes)', law: 'hmc' },
+          { label: 'Mold visible', law: 'll55' },
+          { label: 'Signs of pests (droppings, roaches, mice)', law: 'll55' },
+          { label: 'Electrical outlet broken', law: 'hmc' },
+          { label: 'Window broken or won’t lock', law: 'hmc' }
+        ]
+      },
+      {
+        id: 'bedroom',
+        name: 'Bedroom',
+        canDuplicate: true,
+        items: [
+          { label: 'Ceiling cracked or peeling', law: 'hmc' },
+          { label: 'Ceiling water-stained, sagging, or bulging', law: 'hmc' },
+          { label: 'Walls cracked or holes', law: 'hmc' },
+          { label: 'Paint peeling or chipping', law: 'll1' },
+          { label: 'Window broken, won’t open, or won’t lock', law: 'hmc' },
+          { label: 'Window guard missing (children 10 or under in household)', law: 'windowguard' },
+          { label: 'Radiator not working or leaking', law: 'heat' },
+          { label: 'Electrical outlet broken or not working', law: 'hmc' },
+          { label: 'Light fixture broken or not working', law: 'hmc' },
+          { label: 'Floor damaged (tiles broken, boards loose, holes)', law: 'hmc' },
+          { label: 'Door doesn’t close or lock properly', law: 'hmc' },
+          { label: 'Mold visible on walls, ceiling, or around windows', law: 'll55' },
+          { label: 'Signs of pests (droppings, nests, live insects)', law: 'll55' },
+          { label: 'Bedbugs (bites, dark specks on mattress, or live insects on bedding)', law: 'll55' }
+        ]
+      },
+      {
+        id: 'bathroom',
+        name: 'Bathroom',
+        canDuplicate: true,
+        items: [
+          { label: 'Ceiling cracked, peeling, or water-stained', law: 'hmc' },
+          { label: 'Toilet running, leaking, or broken', law: 'hmc' },
+          { label: 'Sink faucet leaking or broken', law: 'hmc' },
+          { label: 'Bathtub or shower faucet leaking or broken', law: 'hmc' },
+          { label: 'Water pressure low or no water', law: 'hmc' },
+          { label: 'No hot water or insufficient hot water', law: 'heat' },
+          { label: 'Bathtub or shower drain clogged or slow', law: 'hmc' },
+          { label: 'Tiles broken or falling off wall', law: 'hmc' },
+          { label: 'Floor damaged or water-damaged', law: 'hmc' },
+          { label: 'Mold visible (walls, ceiling, grout, around fixtures)', law: 'll55' },
+          { label: 'Exhaust fan broken or missing', law: 'hmc' },
+          { label: 'Medicine cabinet broken or missing', law: 'hmc' },
+          { label: 'Toilet seat broken', law: 'hmc' }
+        ]
+      },
+      {
+        id: 'common-areas',
+        name: 'Common areas (hallways, stairs, lobby, laundry)',
+        items: [
+          { label: 'Ceiling cracked or peeling', law: 'hmc' },
+          { label: 'Building entrance door lock broken or not secure', law: 'hmc' },
+          { label: 'Hallway lights out', law: 'hmc' },
+          { label: 'Stairway lights out', law: 'hmc' },
+          { label: 'Stair handrails missing, loose, or broken', law: 'hmc' },
+          { label: 'Stair treads broken, loose, or missing', law: 'hmc' },
+          { label: 'Elevator broken or not working', law: 'hmc' },
+          { label: 'Mailbox broken or not secure', law: 'hmc' },
+          { label: 'Hallways dirty or not maintained', law: 'hmc' },
+          { label: 'Garbage not collected / trash piled up', law: 'hmc' },
+          { label: 'Fire escape blocked or damaged', law: 'hmc' },
+          { label: 'Smoke or CO detector missing or broken in hallway / stairwell', law: 'detectors' },
+          { label: 'Signs of pests in common areas', law: 'll55' }
+        ]
+      }
+    ];
+
+    const lawText = {
+      detectors: 'Under NYC Administrative Code § 27-2045, landlords must provide and install approved and operational smoke detectors and carbon monoxide detectors in each dwelling unit and maintain them in good working order.',
+      selfclose: 'Under NYC Administrative Code § 27-2041.1, owners of multiple dwellings must keep and maintain self-closing entrance doors in good repair. Failure to do so is a Class C immediately hazardous violation.',
+      deadbolt: 'Under NYC Administrative Code § 27-2043, apartment entrance doors in Class A multiple dwellings must have a heavy-duty deadbolt operable by a key from outside and a thumb-turn from inside, plus a chain door guard, and the landlord must provide at least one key.',
+      peephole: 'Under NYC Administrative Code § 27-2041, building owners must provide and maintain a peephole in the entrance door of each dwelling unit.',
+      ll55: 'Under NYC Local Law 55 of 2018, landlords are required to remediate mold and pest conditions in dwelling units and address their underlying causes.',
+      ll1:  'Under NYC Local Law 1 of 2004, landlords must inspect for and remediate lead-based paint hazards in apartments where children under 6 reside.',
+      windowguard: 'Under NYC Health Code § 131.15, window guards are required in apartments where children 10 or under reside.',
+      heat: 'Under NYC Housing Maintenance Code § 27-2029, landlords must provide heat during heat season (October 1 – May 31); under § 27-2031, hot water must be provided year-round at a minimum of 120°F.',
+      hmc: 'Under the NYC Housing Maintenance Code and New York Real Property Law § 235-b (the implied warranty of habitability), landlords must keep apartments fit for human habitation and free from conditions dangerous to life, health, or safety.'
+    };
+
+    // ===========================================================
+    // STATE
+    // ===========================================================
+
+    // checkedSet holds "instanceId::idx" or "instanceId::custom::id" keys.
+    const checkedSet = new Set();
+    const customItems = {}; // { instanceId: [{ id, label, checked }] }
+    let customCounter = 0;
+
+    // ===========================================================
+    // LOCAL PERSISTENCE (opt-in)
+    // Stores the user's progress in this browser only. Toggled via
+    // the checkbox at the top of the rooms. Uncheck = clear.
+    // ===========================================================
+
+    const STORAGE_KEY = 'tenantTriage.walkthrough.v1';
+    const OPTIN_KEY = 'tenantTriage.walkthrough.optin';
+
+    function isSaveEnabled() {
+      try { return localStorage.getItem(OPTIN_KEY) === '1'; }
+      catch (_) { return false; }
+    }
+
+    function setSaveEnabled(on) {
+      try {
+        if (on) {
+          localStorage.setItem(OPTIN_KEY, '1');
+          saveState();
+        } else {
+          localStorage.removeItem(OPTIN_KEY);
+          localStorage.removeItem(STORAGE_KEY);
+        }
+      } catch (_) {}
+    }
+
+    function saveState() {
+      if (!isSaveEnabled()) return;
+      try {
+        const fields = {};
+        ['address', 'landlord', 'tenant_name', 'tenant_phone'].forEach(function (key) {
+          const input = document.querySelector('[data-field="' + key + '"]');
+          fields[key] = input ? input.value : '';
+        });
+        const state = {
+          version: 1,
+          savedAt: new Date().toISOString(),
+          instances: instances,
+          duplicateCounters: duplicateCounters,
+          customCounter: customCounter,
+          checked: Array.from(checkedSet),
+          customItems: customItems,
+          fields: fields
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (_) {}
+    }
+
+    function loadState() {
+      if (!isSaveEnabled()) return false;
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        const state = JSON.parse(raw);
+        if (state.version !== 1) return false;
+
+        if (Array.isArray(state.instances) && state.instances.length) {
+          instances = state.instances;
+        }
+        if (state.duplicateCounters && typeof state.duplicateCounters === 'object') {
+          duplicateCounters = state.duplicateCounters;
+        }
+        if (typeof state.customCounter === 'number') customCounter = state.customCounter;
+        checkedSet.clear();
+        (state.checked || []).forEach(function (k) { checkedSet.add(k); });
+        Object.keys(customItems).forEach(function (k) { delete customItems[k]; });
+        Object.keys(state.customItems || {}).forEach(function (k) {
+          customItems[k] = state.customItems[k] || [];
+        });
+
+        return state.fields || null;
+      } catch (_) { return false; }
+    }
+
+    function applyLoadedFields(fields) {
+      if (!fields) return;
+      Object.keys(fields).forEach(function (key) {
+        const input = document.querySelector('[data-field="' + key + '"]');
+        if (input && fields[key]) {
+          input.value = fields[key];
+          input.classList.add('has-value');
+        }
+      });
+    }
+
+    // Each rendered accordion = one "instance". Duplicable rooms (bedroom,
+    // bathroom) can have multiple instances; others always have exactly one.
+    let instances = [];
+    // Tracks the highest dup-number used per template, so new dups get a
+    // unique id like "bedroom-2" even after some are removed and re-added.
+    let duplicateCounters = {};
+
+    function initInstances() {
+      instances = rooms.map(function (r) {
+        return { id: r.id, templateId: r.id, label: r.name };
+      });
+      duplicateCounters = {};
+      rooms.forEach(function (r) {
+        if (r.canDuplicate) duplicateCounters[r.id] = 1;
+      });
+    }
+
+    function getTemplate(templateId) {
+      for (let i = 0; i < rooms.length; i++) {
+        if (rooms[i].id === templateId) return rooms[i];
+      }
+      return null;
+    }
+
+    // ===========================================================
+    // RENDER INSTANCES
+    // ===========================================================
+
+    function renderInstances() {
+      const container = document.getElementById('rooms-container');
+
+      // Snapshot which accordions are currently open so we can restore state
+      const openIds = new Set();
+      container.querySelectorAll('.room > details[open]').forEach(function (d) {
+        const section = d.parentElement;
+        if (section && section.id) openIds.add(section.id);
+      });
+
+      container.innerHTML = '';
+
+      instances.forEach(function (inst, idx) {
+        const tpl = getTemplate(inst.templateId);
+        if (!tpl) return;
+        customItems[inst.id] = customItems[inst.id] || [];
+
+        const section = document.createElement('section');
+        section.className = 'room';
+        section.id = inst.id;
+
+        const isOpen = openIds.has(inst.id);
+        // Only allow removing *duplicate* instances (id like "bedroom-2"), not
+        // the base instance whose id matches the template — the sidebar links
+        // to the base id, so we must keep one with that id at all times.
+        const canRemove = tpl.canDuplicate && inst.id !== tpl.id;
+        const templateLower = tpl.name.toLowerCase();
+
+        const labelRow = tpl.canDuplicate
+          ? '<div class="room-label-row">' +
+              '<label for="' + inst.id + '-label">Name this ' + escapeHtml(templateLower) + '</label>' +
+              '<input type="text" id="' + inst.id + '-label" class="room-label-input" data-label-for="' + inst.id + '" value="' + escapeAttr(inst.label) + '" placeholder="e.g. primary, guest, kids" autocomplete="off">' +
+              (canRemove ? '<button type="button" class="remove-room-btn" data-remove-instance="' + inst.id + '" aria-label="Remove this ' + escapeAttr(templateLower) + '">Remove</button>' : '') +
+            '</div>'
+          : '';
+
+        section.innerHTML =
+          '<details' + (isOpen ? ' open' : '') + '>' +
+            '<summary>' +
+              '<span class="room-name" data-summary-for="' + inst.id + '">' + escapeHtml(inst.label) + '</span>' +
+              '<span class="room-count" data-count-for="' + inst.id + '"></span>' +
+            '</summary>' +
+            '<div class="room-body">' +
+              labelRow +
+              '<p class="photo-tip">Take photos of anything you check — you’ll need them later.</p>' +
+              '<ul class="checklist" data-room="' + inst.id + '">' +
+                tpl.items.map(function (item, i) {
+                  const safeLabel = escapeAttr(item.label);
+                  const checked = checkedSet.has(inst.id + '::' + i) ? ' checked' : '';
+                  return (
+                    '<li>' +
+                      '<label>' +
+                        '<input type="checkbox" data-room="' + inst.id + '" data-idx="' + i + '" data-label="' + safeLabel + '" data-law="' + (item.law || 'hmc') + '"' + checked + '>' +
+                        '<span>' + item.label + '</span>' +
+                      '</label>' +
+                    '</li>'
+                  );
+                }).join('') +
+              '</ul>' +
+              '<div class="add-own">' +
+                '<label for="' + inst.id + '-own">Add your own</label>' +
+                '<input type="text" id="' + inst.id + '-own" placeholder="Describe another problem" autocomplete="off">' +
+                '<button type="button" data-add-for="' + inst.id + '">Add</button>' +
+              '</div>' +
+            '</div>' +
+          '</details>';
+
+        container.appendChild(section);
+
+        // Re-render any existing custom items for this instance
+        renderCustomList(inst.id);
+
+        // If this is the last instance of a duplicable template, append the "Add another" button
+        const nextInst = instances[idx + 1];
+        const isLastOfType = tpl.canDuplicate && (!nextInst || nextInst.templateId !== inst.templateId);
+        if (isLastOfType) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'add-room-btn';
+          btn.setAttribute('data-add-instance', tpl.id);
+          btn.innerHTML = '<span class="add-room-btn-plus">+</span><span>Add another ' + escapeHtml(templateLower) + '</span>';
+          container.appendChild(btn);
+        }
+      });
+    }
+
+    function addInstance(templateId) {
+      const tpl = getTemplate(templateId);
+      if (!tpl || !tpl.canDuplicate) return;
+
+      duplicateCounters[templateId] = (duplicateCounters[templateId] || 1) + 1;
+      const newId = templateId + '-' + duplicateCounters[templateId];
+
+      const count = instances.filter(function (i) { return i.templateId === templateId; }).length + 1;
+      const defaultLabel = tpl.name + ' ' + count;
+
+      // Insert directly after the last existing instance of this template
+      let insertAt = -1;
+      instances.forEach(function (inst, i) {
+        if (inst.templateId === templateId) insertAt = i;
+      });
+      if (insertAt < 0) insertAt = instances.length - 1;
+
+      instances.splice(insertAt + 1, 0, { id: newId, templateId: templateId, label: defaultLabel });
+
+      renderInstances();
+      renderSidebar();
+      updateCounts();
+      renderLetter();
+      saveState();
+
+      // Auto-expand and focus the new instance's label so the user can rename it immediately
+      const newSection = document.getElementById(newId);
+      if (newSection) {
+        const details = newSection.querySelector('details');
+        if (details) details.open = true;
+        const labelInput = newSection.querySelector('.room-label-input');
+        if (labelInput) { labelInput.focus(); labelInput.select(); }
+        newSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function removeInstance(instanceId) {
+      const inst = instances.find(function (i) { return i.id === instanceId; });
+      if (!inst) return;
+      if (!confirm('Remove ' + inst.label + '? All items checked in this section will be lost.')) return;
+
+      instances = instances.filter(function (i) { return i.id !== instanceId; });
+      Array.from(checkedSet).forEach(function (key) {
+        if (key.indexOf(instanceId + '::') === 0) checkedSet.delete(key);
+      });
+      delete customItems[instanceId];
+
+      renderInstances();
+      renderSidebar();
+      updateCounts();
+      renderLetter();
+      saveState();
+    }
+
+    function updateInstanceLabel(instanceId, newLabel) {
+      const inst = instances.find(function (i) { return i.id === instanceId; });
+      if (!inst) return;
+      const trimmed = newLabel.trim();
+      inst.label = trimmed || getTemplate(inst.templateId).name;
+      const summary = document.querySelector('[data-summary-for="' + instanceId + '"]');
+      if (summary) summary.textContent = inst.label;
+      updateSidebarLabel(instanceId);
+      renderLetter();
+      saveState();
+    }
+
+    function escapeAttr(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    // ===========================================================
+    // DYNAMIC SIDEBAR
+    // Rebuilt whenever instances change (add / remove / rename).
+    // Renumbering is automatic. Scroll-spy is re-bound after DOM update.
+    // ===========================================================
+
+    function renderSidebar() {
+      const list = document.getElementById('sidebar-list');
+      if (!list) return;
+      list.innerHTML = instances.map(function (inst, idx) {
+        return (
+          '<li>' +
+            '<a class="toc-section-link" href="#' + inst.id + '" data-toc-target="' + inst.id + '">' +
+              (idx + 1) + '. ' + escapeHtml(inst.label) +
+              ' <span class="room-count" data-count-for="' + inst.id + '-sidebar"></span>' +
+            '</a>' +
+          '</li>'
+        );
+      }).join('');
+      if (typeof window.initTocSidebars === 'function') {
+        window.initTocSidebars();
+      }
+    }
+
+    // Surgical sidebar update for rename — avoids tearing down scroll-spy
+    function updateSidebarLabel(instanceId) {
+      const inst = instances.find(function (i) { return i.id === instanceId; });
+      if (!inst) return;
+      const link = document.querySelector('#sidebar-list a[data-toc-target="' + instanceId + '"]');
+      if (!link) return;
+      const idx = instances.findIndex(function (i) { return i.id === instanceId; });
+      const countSpan = link.querySelector('.room-count');
+      link.textContent = (idx + 1) + '. ' + inst.label + ' ';
+      if (countSpan) link.appendChild(countSpan);
+    }
+
+    // ===========================================================
+    // CHECKBOX + ADD-OWN WIRING
+    // ===========================================================
+
+    function wireInteractions() {
+      const container = document.getElementById('rooms-container');
+
+      container.addEventListener('change', function (e) {
+        if (e.target.matches('input[type="checkbox"]')) {
+          const key = e.target.dataset.room + '::' + (e.target.dataset.custom ? 'custom::' + e.target.dataset.custom : e.target.dataset.idx);
+          if (e.target.checked) checkedSet.add(key);
+          else checkedSet.delete(key);
+
+          if (e.target.dataset.custom) {
+            const room = e.target.dataset.room;
+            const id = e.target.dataset.custom;
+            const custom = (customItems[room] || []).find(function (c) { return c.id === id; });
+            if (custom) custom.checked = e.target.checked;
+          }
+
+          updateCounts();
+          renderLetter();
+          saveState();
+        }
+      });
+
+      container.addEventListener('click', function (e) {
+        if (e.target.matches('[data-add-for]')) {
+          const roomId = e.target.dataset.addFor;
+          const input = document.getElementById(roomId + '-own');
+          if (input && input.value.trim()) addCustom(roomId, input.value.trim());
+          if (input) { input.value = ''; input.focus(); }
+          return;
+        }
+        if (e.target.matches('.custom-remove')) {
+          const room = e.target.dataset.room;
+          const id = e.target.dataset.custom;
+          customItems[room] = (customItems[room] || []).filter(function (c) { return c.id !== id; });
+          checkedSet.delete(room + '::custom::' + id);
+          renderCustomList(room);
+          updateCounts();
+          renderLetter();
+          saveState();
+          return;
+        }
+        const addBtn = e.target.closest('[data-add-instance]');
+        if (addBtn) {
+          addInstance(addBtn.dataset.addInstance);
+          return;
+        }
+        const removeBtn = e.target.closest('[data-remove-instance]');
+        if (removeBtn) {
+          removeInstance(removeBtn.dataset.removeInstance);
+          return;
+        }
+      });
+
+      container.addEventListener('keydown', function (e) {
+        if (e.target.matches('[id$="-own"]') && e.key === 'Enter') {
+          e.preventDefault();
+          const roomId = e.target.id.replace(/-own$/, '');
+          if (e.target.value.trim()) addCustom(roomId, e.target.value.trim());
+          e.target.value = '';
+        }
+      });
+
+      container.addEventListener('input', function (e) {
+        if (e.target.matches('.room-label-input')) {
+          updateInstanceLabel(e.target.dataset.labelFor, e.target.value);
+        }
+      });
+    }
+
+    function addCustom(roomId, label) {
+      const id = 'c' + (++customCounter);
+      customItems[roomId].push({ id: id, label: label, checked: true });
+      checkedSet.add(roomId + '::custom::' + id);
+      renderCustomList(roomId);
+      updateCounts();
+      renderLetter();
+      saveState();
+    }
+
+    function renderCustomList(roomId) {
+      const list = document.querySelector('ul.checklist[data-room="' + roomId + '"]');
+      if (!list) return;
+
+      // Remove old custom items
+      Array.prototype.slice.call(list.querySelectorAll('li.custom')).forEach(function (li) { li.remove(); });
+
+      // Render current custom items
+      customItems[roomId].forEach(function (c) {
+        const li = document.createElement('li');
+        li.className = 'custom';
+        li.innerHTML =
+          '<label>' +
+            '<input type="checkbox" data-room="' + roomId + '" data-custom="' + c.id + '"' + (c.checked ? ' checked' : '') + ' data-law="hmc">' +
+            '<span>' + escapeHtml(c.label) + '</span>' +
+            '<button type="button" class="custom-remove" aria-label="Remove this item" data-room="' + roomId + '" data-custom="' + c.id + '">×</button>' +
+          '</label>';
+        list.appendChild(li);
+      });
+    }
+
+    function escapeHtml(s) {
+      return s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // ===========================================================
+    // COUNTS (accordion headers + sidebar)
+    // ===========================================================
+
+    function updateCounts() {
+      instances.forEach(function (inst) {
+        const tpl = getTemplate(inst.templateId);
+        if (!tpl) return;
+        let count = 0;
+        tpl.items.forEach(function (_, i) {
+          if (checkedSet.has(inst.id + '::' + i)) count++;
+        });
+        (customItems[inst.id] || []).forEach(function (c) { if (c.checked) count++; });
+
+        const text = count > 0 ? count + ' ✓' : '';
+        document.querySelectorAll('[data-count-for="' + inst.id + '"]').forEach(function (el) {
+          el.textContent = text;
+        });
+        document.querySelectorAll('[data-count-for="' + inst.id + '-sidebar"]').forEach(function (el) {
+          el.textContent = text;
+        });
+      });
+    }
+
+    // ===========================================================
+    // LETTER GENERATION
+    // ===========================================================
+
+    function renderLetter() {
+      const itemsEl = document.getElementById('letter-items');
+      const lawsEl = document.getElementById('letter-laws');
+
+      const lawTagsInUse = new Set();
+      const entries = [];
+
+      instances.forEach(function (inst) {
+        const tpl = getTemplate(inst.templateId);
+        if (!tpl) return;
+        const list = [];
+        tpl.items.forEach(function (item, i) {
+          if (checkedSet.has(inst.id + '::' + i)) {
+            list.push(item.label);
+            lawTagsInUse.add(item.law || 'hmc');
+          }
+        });
+        (customItems[inst.id] || []).forEach(function (c) {
+          if (c.checked) {
+            list.push(c.label);
+            lawTagsInUse.add('hmc');
+          }
+        });
+        if (list.length) entries.push({ label: inst.label, items: list });
+      });
+
+      itemsEl.innerHTML = '';
+      entries.forEach(function (entry) {
+        const block = document.createElement('div');
+        block.className = 'letter-room-block';
+        block.innerHTML =
+          '<div class="letter-room-heading">' + escapeHtml(entry.label.toUpperCase()) + '</div>' +
+          '<ul class="letter-room-list">' +
+            entry.items.map(function (label) {
+              return '<li>' + escapeHtml(label) + '</li>';
+            }).join('') +
+          '</ul>';
+        itemsEl.appendChild(block);
+      });
+
+      // Render law references, deduplicated
+      lawsEl.innerHTML = '';
+      const lawOrder = ['detectors', 'selfclose', 'deadbolt', 'peephole', 'll55', 'll1', 'windowguard', 'heat', 'hmc'];
+      lawOrder.forEach(function (tag) {
+        if (lawTagsInUse.has(tag)) {
+          const p = document.createElement('p');
+          p.textContent = lawText[tag];
+          lawsEl.appendChild(p);
+        }
+      });
+    }
+
+    // ===========================================================
+    // FILLABLE FIELDS (sync + placeholder UX)
+    // ===========================================================
+
+    function wireFillableFields() {
+      document.querySelectorAll('.fill').forEach(function (input) {
+        input.addEventListener('input', function () {
+          if (input.value.trim()) input.classList.add('has-value');
+          else input.classList.remove('has-value');
+          // Persist form fields (excluding date, which always auto-fills fresh)
+          if (input.dataset.field !== 'date') saveState();
+        });
+      });
+
+      // Auto-fill today's date (not persisted — always fresh on load)
+      const dateInput = document.querySelector('.fill[data-field="date"]');
+      if (dateInput && !dateInput.value) {
+        const today = new Date();
+        const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        dateInput.value = months[today.getMonth()] + ' ' + today.getDate() + ', ' + today.getFullYear();
+        dateInput.classList.add('has-value');
+      }
+    }
+
+    // ===========================================================
+    // COPY + RESET
+    // ===========================================================
+
+    function getLetterText() {
+      const body = document.getElementById('letter-body');
+      const clone = body.cloneNode(true);
+
+      // Replace each <input> with its value or a bracketed placeholder
+      clone.querySelectorAll('input.fill').forEach(function (input) {
+        const original = body.querySelector('input[data-field="' + input.dataset.field + '"]');
+        const value = (original && original.value.trim()) || '[' + (input.getAttribute('placeholder') || input.dataset.field) + ']';
+        input.replaceWith(document.createTextNode(value));
+      });
+
+      // Convert to plain text with line breaks
+      let text = '';
+      Array.prototype.forEach.call(clone.children, function (node) {
+        if (node.classList.contains('letter-items')) {
+          // Render each room block
+          Array.prototype.forEach.call(node.children, function (block) {
+            const heading = block.querySelector('.letter-room-heading');
+            const list = block.querySelector('.letter-room-list');
+            if (heading) text += '\n' + heading.textContent + '\n';
+            if (list) {
+              Array.prototype.forEach.call(list.children, function (li) {
+                text += '- ' + li.textContent + '\n';
+              });
+            }
+          });
+          text += '\n';
+        } else if (node.classList.contains('letter-laws')) {
+          if (node.children.length) {
+            Array.prototype.forEach.call(node.children, function (p) {
+              text += p.textContent + '\n\n';
+            });
+          }
+        } else {
+          // Handle <br> in the signature block specially
+          const html = node.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+          const tmp = document.createElement('div');
+          tmp.innerHTML = html;
+          text += tmp.textContent + '\n\n';
+        }
+      });
+      return text.replace(/\n{3,}/g, '\n\n').trim();
+    }
+
+    function wireCopyButton() {
+      const btn = document.getElementById('copy-letter-btn');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        const text = getLetterText();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { flashCopy(btn); }).catch(function () { fallbackCopy(text, btn); });
+        } else {
+          fallbackCopy(text, btn);
+        }
+      });
+    }
+
+    function fallbackCopy(text, btn) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); flashCopy(btn); }
+      catch (_) { showToast('Copy failed — please select and copy manually'); }
+      document.body.removeChild(ta);
+    }
+
+    function flashCopy(btn) {
+      btn.classList.add('copied');
+      const span = btn.querySelector('.copy-btn-text');
+      const orig = span.textContent;
+      span.textContent = 'Copied!';
+      showToast('Letter copied to clipboard');
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        span.textContent = orig;
+      }, 2000);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(function () { toast.classList.remove('show'); }, 2200);
+    }
+
+    function wireResetButton() {
+      const btn = document.getElementById('reset-btn');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        if (!confirm('Clear all checked items and reset the room list? Your address and contact info will stay.')) return;
+        checkedSet.clear();
+        Object.keys(customItems).forEach(function (k) { delete customItems[k]; });
+        initInstances();
+        renderInstances();
+        renderSidebar();
+        updateCounts();
+        renderLetter();
+        saveState();
+      });
+    }
+
+    // ===========================================================
+    // INIT
+    // ===========================================================
+
+    function wireSaveToggle() {
+      const checkbox = document.getElementById('save-toggle');
+      if (!checkbox) return;
+      checkbox.checked = isSaveEnabled();
+      checkbox.addEventListener('change', function () {
+        setSaveEnabled(checkbox.checked);
+      });
+    }
+
+    // ===========================================================
+    // REVIEW MODE (?review in URL)
+    // Surfaces the unverified law references for Holly's pass.
+    // ===========================================================
+
+    function initReviewMode() {
+      let isReview = false;
+      try { isReview = new URLSearchParams(location.search).has('review'); } catch (_) {}
+      if (!isReview) return;
+      const panel = document.getElementById('review-panel');
+      const itemsEl = document.getElementById('review-items');
+      if (!panel || !itemsEl) return;
+
+      // Register unverified law tags here as { tag, question, usedBy }.
+      // Empty = no review panel renders (all current laws verified).
+      const unverified = [];
+
+      if (!unverified.length) {
+        // All clear — render a confirmation so the review-mode user knows
+        // the panel didn't fail to populate.
+        itemsEl.innerHTML =
+          '<div class="review-item">' +
+            '<div class="review-item-header">' +
+              '<span class="verify-tag" style="background:#d4edda;color:#155724;border-color:#c3e6cb;">All verified</span>' +
+            '</div>' +
+            '<p class="review-item-text">No outstanding [VERIFY] tags. All lawText entries have been confirmed.</p>' +
+          '</div>';
+        panel.hidden = false;
+        return;
+      }
+
+      itemsEl.innerHTML = unverified.map(function (u) {
+        return (
+          '<div class="review-item">' +
+            '<div class="review-item-header">' +
+              '<span class="review-item-tag">' + u.tag + '</span>' +
+              '<span class="verify-tag">Verify</span>' +
+            '</div>' +
+            '<p class="review-item-text">' + escapeHtml(lawText[u.tag]) + '</p>' +
+            '<p class="review-item-question">' + escapeHtml(u.question) + '</p>' +
+            '<p class="review-item-used-by"><strong>Used by:</strong> ' + escapeHtml(u.usedBy) + '</p>' +
+          '</div>'
+        );
+      }).join('');
+
+      panel.hidden = false;
+    }
+
+    // Initialize defaults, then override with saved state if opt-in is on.
+    initInstances();
+    const loadedFields = loadState();
+    renderInstances();
+    renderSidebar();
+    wireInteractions();
+    wireFillableFields();
+    applyLoadedFields(loadedFields);
+    wireCopyButton();
+    wireResetButton();
+    wireSaveToggle();
+    initReviewMode();
+    updateCounts();
+    renderLetter();
+  </script>
+  <script src="sidebar.js"></script>
+
+</body>
+</html>

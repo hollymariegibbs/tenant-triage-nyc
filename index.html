@@ -526,33 +526,6 @@
       content: "→";
       font-weight: 700;
     }
-    /* Disabled state — shown while the walk-through feature is under construction */
-    .walkthrough-cta.is-coming-soon {
-      background: transparent;
-      border-color: #3a3a3a;
-      color: #9a9892;
-      cursor: not-allowed;
-    }
-    .walkthrough-cta.is-coming-soon:hover {
-      background: transparent;
-      border-color: #3a3a3a;
-      color: #9a9892;
-    }
-    .walkthrough-cta.is-coming-soon::after {
-      content: none;
-    }
-    .walkthrough-cta-badge {
-      display: inline-block;
-      font-size: 0.6875rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent-bright);
-      background: rgba(94, 182, 185, 0.15);
-      padding: 0.2rem 0.5rem;
-      margin-left: 0.15rem;
-    }
-
     /* Missing scenario footer */
     .missing {
       margin: 4rem 0 2rem;
@@ -712,10 +685,9 @@
       <h2>Walk through your apartment with us.</h2>
       <p>If you have multiple problems, or you're not sure how to describe what's wrong, our room-by-room walk-through helps you build a complete list of issues to give your landlord and the city in one go.</p>
       <p>You'll get a checklist organized room by room. Mark what's broken, and we'll generate a written letter you can send to your landlord that covers everything &mdash; so you only have to make your case once.</p>
-      <span class="walkthrough-cta is-coming-soon" aria-disabled="true">
+      <a href="walkthrough.html" class="walkthrough-cta">
         Start the walk-through
-        <span class="walkthrough-cta-badge">Coming soon</span>
-      </span>
+      </a>
     </aside>
 
     <!-- MISSING SCENARIO FOOTER -->
