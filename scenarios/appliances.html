@@ -135,6 +135,10 @@
       color: var(--ink);
       font-weight: 600;
     }
+    .breadcrumbs .category {
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
 
     h1 {
       font-weight: 900;
@@ -684,6 +688,14 @@
       font-weight: 700; color: var(--accent-deep);
       font-size: 1.125rem; letter-spacing: -0.005em;
     }
+    .help-list .phone a,
+    .help-list .phone a:visited {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 2px solid var(--accent-soft);
+      transition: border-color 0.15s ease;
+    }
+    .help-list .phone a:hover { border-bottom-color: var(--accent); }
     .help-list .desc {
       display: block; font-size: 0.875rem;
       color: var(--ink-soft); margin-top: 0.2rem;
@@ -836,7 +848,7 @@
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="../index.html">All scenarios</a>
       <span class="sep">/</span>
-      <a href="#">Repairs not being made</a>
+      <span class="category">Repairs not being made</span>
       <span class="sep">/</span>
       <span class="current">Appliances &amp; fixtures</span>
     </nav>
@@ -1173,7 +1185,7 @@
 
       <p>If you believe your landlord is retaliating: document everything (dates, what happened, any written communication), and call the Met Council on Housing hotline at <strong>212-979-0611</strong>.</p>
 
-      <p style="margin-top: 1rem;"><a href="#" class="inline-link">Read more: What retaliation looks like and what to do &rarr;</a></p>
+      <p style="margin-top: 1rem;"><a href="retaliation.html" class="inline-link">Read more: What retaliation looks like and what to do &rarr;</a></p>
     </aside>
 
     <!-- STEP 4: Check status -->
@@ -1290,7 +1302,7 @@
     <ul class="help-list">
       <li>
         <span class="name">Met Council on Housing Tenants' Rights Hotline</span>
-        <span class="phone">212-979-0611</span>
+        <span class="phone"><a href="tel:2129790611">212-979-0611</a></span>
         <span class="desc">Free advice from trained volunteers. Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM. Not lawyers, but very knowledgeable.</span>
       </li>
       <li>
@@ -1300,12 +1312,12 @@
       </li>
       <li>
         <span class="name">Housing Court Answers</span>
-        <span class="phone">212-962-4795</span>
+        <span class="phone"><a href="tel:2129624795">212-962-4795</a></span>
         <span class="desc">Help navigating Housing Court, including HP Actions.</span>
       </li>
       <li>
         <span class="name">Legal Services NYC</span>
-        <span class="phone">917-661-4500</span>
+        <span class="phone"><a href="tel:9176614500">917-661-4500</a></span>
         <span class="desc">Free legal help for low-income tenants, multiple boroughs.</span>
       </li>
     </ul>

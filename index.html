@@ -529,6 +529,75 @@
       content: "→";
       font-weight: 700;
     }
+    /* Print-a-flier callout */
+    .flier-cta-section {
+      margin: 4rem 0;
+      padding: 2.25rem 2.5rem;
+      background: var(--accent-soft);
+      border: 2px solid var(--accent);
+      border-left-width: 8px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.5rem 2.5rem;
+      align-items: center;
+    }
+    .flier-cta-text {
+      min-width: 0;
+    }
+    .flier-cta-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 0.6rem;
+    }
+    .flier-cta-section h2 {
+      font-weight: 800;
+      font-size: 1.625rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 0.875rem;
+      max-width: 32rem;
+    }
+    .flier-cta-section p {
+      color: var(--ink-soft);
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+      max-width: 36rem;
+    }
+    .flier-cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--bg);
+      background: var(--accent-deep);
+      border: 2px solid var(--accent-deep);
+      padding: 0.7rem 1.25rem;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .flier-cta-link:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg);
+    }
+    .flier-cta-link::after {
+      content: "→";
+      font-weight: 700;
+    }
+    .flier-cta-image {
+      width: 200px;
+      height: auto;
+      display: block;
+      flex-shrink: 0;
+    }
     /* Missing scenario footer */
     .missing {
       margin: 4rem 0 2rem;
@@ -586,6 +655,12 @@
       .search-input-wrap svg.search-icon { left: 1rem; width: 18px; height: 18px; }
       .walkthrough { padding: 1.75rem 1.5rem; }
       .walkthrough h2 { font-size: 1.375rem; }
+      .flier-cta-section {
+        grid-template-columns: 1fr;
+        padding: 1.75rem 1.5rem;
+      }
+      .flier-cta-section h2 { font-size: 1.375rem; }
+      .flier-cta-image { width: 140px; justify-self: center; }
     }
   </style>
 </head>
@@ -642,7 +717,6 @@
     <section class="browse-section">
       <div class="section-header">
         <h2 class="section-title">Or browse all scenarios</h2>
-        <span class="section-meta">9 scenarios &middot; 9 ready</span>
       </div>
 
       <div class="category">
@@ -691,6 +765,19 @@
       <a href="walkthrough.html" class="walkthrough-cta">
         Start the walk-through
       </a>
+    </aside>
+
+    <!-- PRINT-A-FLIER CALLOUT -->
+    <aside class="flier-cta-section">
+      <div class="flier-cta-text">
+        <span class="flier-cta-label">For your building</span>
+        <h2>Print a Know Your Rights flier.</h2>
+        <p>A free, one-page, black-and-white flier with a QR code linking back to this site. Post it in your lobby, laundry room, or hallway so neighbors can find help when they need it.</p>
+        <a href="flier.html" class="flier-cta-link" target="_blank" rel="noopener">
+          Open the flier
+        </a>
+      </div>
+      <img src="images/getillustrations-JmRmiQPHMGM-unsplash.png" alt="" class="flier-cta-image" aria-hidden="true">
     </aside>
 
     <!-- MISSING SCENARIO FOOTER -->

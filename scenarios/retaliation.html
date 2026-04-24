@@ -136,6 +136,10 @@
       color: var(--ink);
       font-weight: 600;
     }
+    .breadcrumbs .category {
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
 
     h1 {
       font-weight: 900;
@@ -702,6 +706,14 @@
       font-weight: 700; color: var(--accent-deep);
       font-size: 1.125rem; letter-spacing: -0.005em;
     }
+    .help-list .phone a,
+    .help-list .phone a:visited {
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 2px solid var(--accent-soft);
+      transition: border-color 0.15s ease;
+    }
+    .help-list .phone a:hover { border-bottom-color: var(--accent); }
     .help-list .desc {
       display: block; font-size: 0.875rem;
       color: var(--ink-soft); margin-top: 0.2rem;
@@ -855,7 +867,7 @@
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="../index.html">All scenarios</a>
       <span class="sep">/</span>
-      <a href="#">Retaliation &amp; harassment</a>
+      <span class="category">Retaliation &amp; harassment</span>
       <span class="sep">/</span>
       <span class="current">Retaliation</span>
     </nav>
@@ -1458,32 +1470,32 @@
     <ul class="help-list">
       <li>
         <span class="name">Met Council on Housing Tenants' Rights Hotline</span>
-        <span class="phone">212-979-0611</span>
+        <span class="phone"><a href="tel:2129790611">212-979-0611</a></span>
         <span class="desc">The first call for retaliation cases. Trained volunteers with decades of experience building timelines, drafting response letters, and deciding which enforcement path to use. Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Tue 5:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM. Call after 4&nbsp;PM and avoid Mondays if you can.</span>
       </li>
       <li>
         <span class="name">NYC Commission on Human Rights (CCHR)</span>
-        <span class="phone">212-416-0197</span>
+        <span class="phone"><a href="tel:2124160197">212-416-0197</a></span>
         <span class="desc">If the retaliation involves ICE threats, source-of-income discrimination (e.g., Section 8 voucher), or any other protected-class discrimination. Also handles NYC's tenant-harassment claims with a discrimination angle. Mon&ndash;Fri 9&nbsp;AM&ndash;5&nbsp;PM.</span>
       </li>
       <li>
         <span class="name">Housing Court Answers</span>
-        <span class="phone">212-962-4795</span>
+        <span class="phone"><a href="tel:2129624795">212-962-4795</a></span>
         <span class="desc">Best single call to get connected with Right to Counsel intake and the right legal services provider for your borough &mdash; especially if a case has been filed or is imminent. Mon&ndash;Fri 9&nbsp;AM&ndash;5&nbsp;PM.</span>
       </li>
       <li>
         <span class="name">NYS Homes &amp; Community Renewal (DHCR) &mdash; Office of Rent Administration</span>
-        <span class="phone">833-499-0343</span>
+        <span class="phone"><a href="tel:8334990343">833-499-0343</a></span>
         <span class="desc">For rent-stabilized and rent-controlled tenants: file a rent-reduction application (Form RA-81 / RA-84) for service cuts, or a harassment complaint (Form RA-60H). Free. Live agents Mon&ndash;Fri 9&nbsp;AM&ndash;5&nbsp;PM.</span>
       </li>
       <li>
         <span class="name">Legal Services NYC</span>
-        <span class="phone">917-661-4500</span>
+        <span class="phone"><a href="tel:9176614500">917-661-4500</a></span>
         <span class="desc">Free legal representation for low-income tenants across all five boroughs. Right to Counsel provider. Intake Mon&ndash;Fri 9:30&nbsp;AM&ndash;4&nbsp;PM, available in any language.</span>
       </li>
       <li>
         <span class="name">Legal Aid Society &mdash; Tenant Rights</span>
-        <span class="phone">212-577-3300</span>
+        <span class="phone"><a href="tel:2125773300">212-577-3300</a></span>
         <span class="desc">Free legal representation, including the <strong>Housing Justice Unit</strong> (212-577-7988, Mon&ndash;Fri 10&nbsp;AM&ndash;4&nbsp;PM) for tenants' association / group advocacy cases, and a dedicated NYCHA unit.</span>
       </li>
       <li>
