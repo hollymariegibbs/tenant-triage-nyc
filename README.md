@@ -2,7 +2,7 @@
 
 Free, independent step-by-step guides for New York City renters dealing with housing problems — from no heat to mold to eviction notices.
 
-**Live site:** [tenanttriage.nyc](https://tenanttriage.nyc)
+**Live site:** [tenanttriagenyc.org](https://tenanttriagenyc.org)
 
 ---
 

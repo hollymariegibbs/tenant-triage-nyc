@@ -14,13 +14,13 @@ No user input is stored, transmitted to a server, or persisted between sessions.
 ## Supported Versions
 
 There are no versioned releases. The `main` branch is deployed directly to
-[tenanttriage.nyc](https://tenanttriage.nyc) via GitHub Pages. The live site
+[tenanttriagenyc.org](https://tenanttriagenyc.org) via GitHub Pages. The live site
 is always the current and only supported version.
 
 ## Reporting a Vulnerability
 
 If you find a security issue, please report it privately by emailing
-**security@tenanttriage.nyc**. Do not open a public GitHub issue for
+**security@tenanttriagenyc.org**. Do not open a public GitHub issue for
 security vulnerabilities.
 
 Please include:
