@@ -80,9 +80,15 @@ The `file://` protocol will not work for the address lookup tool because browser
 /
 ├── index.html                  # Homepage: search, scenario list, hero
 ├── about.html                  # About / mission
+├── free-help.html              # Directory of free NYC tenant legal services
+├── walkthrough.html            # Room-by-room apartment inspection tool
 ├── lookup.js                   # Shared HPD address-lookup component
 ├── lookup.css                  # Styles for the lookup component
 ├── lookup-test.html            # Dev page for testing the lookup in isolation
+├── sidebar.js                  # Scroll-spy + sticky TOC sidebar
+├── sidebar.css                 # Styles for the sidebar component
+├── print.css                   # Shared print stylesheet (letter-first)
+├── review.js                   # Site-wide ?review mode for content verification
 ├── og-image-template.html      # Template for generating the OG share image
 ├── scenarios/
 │   ├── appliances.html
@@ -90,8 +96,10 @@ The `file://` protocol will not work for the address lookup tool because browser
 │   ├── heat-hot-water.html
 │   ├── lead-paint.html
 │   ├── leaks-plumbing.html
+│   ├── lease-non-renewal.html
 │   ├── mold.html
-│   └── pests.html
+│   ├── pests.html
+│   └── retaliation.html
 ├── CNAME                       # Custom domain for GitHub Pages
 └── robots.txt
 ```
