@@ -756,22 +756,6 @@
     }
     .verify-tag::before { content: "⚑ "; }
 
-    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
-    .verify-tag {
-      display: inline-block;
-      background: #c8292e;
-      color: #ffffff;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding: 0.15rem 0.5rem;
-      margin: 0 0.15rem;
-      vertical-align: baseline;
-      font-style: normal;
-    }
-    .verify-tag::before { content: "⚑ "; }
-
     .toast {
       position: fixed; bottom: 2rem; left: 50%;
       transform: translateX(-50%) translateY(150%);
@@ -980,7 +964,7 @@
         <li><strong>Leak-related violations</strong> &mdash; since mold usually comes from water, a history of unfixed leaks makes the mold case much stronger.</li>
       </ul>
       <p>Walk into your conversation with the landlord already knowing what's on record. Reference specific violations in your written complaint. It changes the dynamic completely.</p>
-      <p><strong>An honest note:</strong> HPDOnline shows public records, but it's not a complete picture. <span class="verify-tag">Verify</span> Some violations age off, and landlords sometimes fix violations without the paper trail catching up. Use it as a starting point, not the whole story.</p>
+      <p><strong>An honest note:</strong> HPDOnline shows public records, but it's not a complete picture. Some violations age off, and landlords sometimes fix violations without the paper trail catching up. Use it as a starting point, not the whole story.</p>
 
       <!-- ADDRESS LOOKUP COMPONENT -->
       <section class="lookup" id="lookup">
@@ -1488,6 +1472,7 @@
     });
   </script>
   <script src="../sidebar.js"></script>
+  <script src="../review.js"></script>
 
 </body>
 </html>
