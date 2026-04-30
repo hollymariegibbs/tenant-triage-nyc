@@ -254,5 +254,16 @@
 
 </div>
 
+  <!-- Cloudflare Web Analytics — skipped on localhost to avoid dev console noise -->
+  <script>
+    if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+      var s = document.createElement('script');
+      s.defer = true;
+      s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+      s.setAttribute('data-cf-beacon', '{"token": "fc2935e949fc46cb938233e121e19854"}');
+      document.head.appendChild(s);
+    }
+  </script>
+  <!-- End Cloudflare Web Analytics -->
 </body>
 </html>
