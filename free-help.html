@@ -92,6 +92,19 @@
     }
     .site-nav a:hover { border-bottom-color: var(--accent); }
     .site-nav a.current { border-bottom-color: var(--ink); }
+    .site-nav a.nav-cta,
+    .site-nav a.nav-cta:visited {
+      background: var(--accent);
+      color: var(--bg);
+      padding: 0.4rem 0.85rem;
+      font-weight: 700;
+      border-bottom: 2px solid transparent;
+      transition: background 0.15s ease;
+    }
+    .site-nav a.nav-cta:hover {
+      background: var(--accent-deep);
+      border-bottom-color: transparent;
+    }
 
     article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
 
@@ -663,6 +676,7 @@
         <a href="index.html">All scenarios</a>
         <a href="about.html">About</a>
         <a href="free-help.html" class="current">Free help</a>
+        <a href="fliers.html" class="nav-cta">Free fliers</a>
       </nav>
     </div>
   </header>

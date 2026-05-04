@@ -89,6 +89,18 @@
     .site-nav a.current {
       border-bottom-color: var(--ink);
     }
+    .site-nav a.nav-cta {
+      background: var(--accent);
+      color: var(--bg);
+      padding: 0.4rem 0.85rem;
+      font-weight: 700;
+      border-bottom: 2px solid transparent;
+      transition: background 0.15s ease;
+    }
+    .site-nav a.nav-cta:hover {
+      background: var(--accent-deep);
+      border-bottom-color: transparent;
+    }
 
     article {
       max-width: var(--measure);
@@ -243,6 +255,7 @@
         <a href="index.html">All scenarios</a>
         <a href="about.html" class="current">About</a>
         <a href="free-help.html">Free help</a>
+        <a href="fliers.html" class="nav-cta">Free fliers</a>
       </nav>
     </div>
   </header>
