@@ -23,816 +23,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../lookup.css">
   <link rel="stylesheet" href="../sidebar.css">
-  <style>
-    :root {
-      --bg: #ffffff;
-      --bg-soft: #f5f3ef;
-      --bg-elevated: #fafaf8;
-      --ink: #111111;
-      --ink-soft: #3d3d3d;
-      --ink-faded: #6b6b6b;
-      --rule: #e6e4df;
-      --rule-strong: #c9c5bc;
-
-      --accent: #0d7377;
-      --accent-deep: #08494c;
-      --accent-soft: #e3f0f0;
-      --accent-bright: #5eb6b9; /* lighter variant for use on dark backgrounds */
-
-      --protect: #2a4a7f;
-      --protect-soft: #eaeff7;
-      --warning-ink: #7a3a0a;
-      --warning-bg: #fff4e6;
-      --warning-rule: #e8a35a;
-
-      --code-bg: #f3f1ec;
-      --code-rule: #d9d5ca;
-      --quote-bar: #c9c5bc;
-
-      --measure: 38rem;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 18px; scroll-behavior: smooth; }
-
-    body {
-      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
-      font-size: 1.125rem;
-      line-height: 1.65;
-      color: var(--ink);
-      background: var(--bg);
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    .progress-bar {
-      position: fixed; top: 0; left: 0; height: 3px;
-      background: var(--accent); width: 0%; z-index: 1000;
-      transition: width 0.05s linear;
-    }
-
-    .site-header {
-      border-bottom: 2px solid var(--ink);
-      padding: 1.5rem 1.5rem;
-      background: var(--bg);
-    }
-    .site-header-inner {
-      max-width: 64rem; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 2rem;
-    }
-    .wordmark {
-      display: flex; align-items: baseline; gap: 0.5rem;
-      text-decoration: none; color: var(--ink);
-    }
-    .wordmark-main {
-      font-weight: 900; font-size: 1.375rem;
-      letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
-    }
-    .wordmark-accent {
-      font-weight: 500; font-size: 0.95rem;
-      color: var(--accent); letter-spacing: 0.01em;
-    }
-    .site-nav {
-      display: flex; gap: 1.75rem;
-      font-size: 0.875rem; color: var(--ink); font-weight: 500;
-    }
-    .site-nav a {
-      color: inherit; text-decoration: none;
-      padding: 0.25rem 0;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.15s ease;
-    }
-    .site-nav a:hover { border-bottom-color: var(--accent); }
-
-    article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
-
-    /* Breadcrumbs — more prominent now */
-    .breadcrumbs {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.75rem;
-      font-size: 0.875rem;
-    }
-    .breadcrumbs a {
-      color: var(--ink-soft);
-      text-decoration: none;
-      font-weight: 500;
-      padding: 0.25rem 0;
-      border-bottom: 1px solid var(--rule-strong);
-      transition: all 0.15s ease;
-    }
-    .breadcrumbs a:hover {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
-    .breadcrumbs .sep {
-      color: var(--ink-faded);
-      font-weight: 400;
-    }
-    .breadcrumbs .current {
-      color: var(--ink);
-      font-weight: 600;
-    }
-    .breadcrumbs .category {
-      color: var(--ink-soft);
-      font-weight: 500;
-    }
-
-    h1 {
-      font-weight: 900;
-      font-size: clamp(2.25rem, 5.5vw, 3.25rem);
-      line-height: 1.05;
-      letter-spacing: -0.035em;
-      margin-bottom: 0.5rem;
-      color: var(--ink);
-    }
-
-    /* "What you're reading" subtitle */
-    .reading-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent-deep);
-      background: var(--accent-soft);
-      padding: 0.35rem 0.75rem;
-      margin-bottom: 1rem;
-    }
-    .reading-label svg {
-      width: 12px;
-      height: 12px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2.5;
-    }
-
-    .standfirst {
-      font-weight: 400;
-      font-size: 1.1875rem;
-      line-height: 1.5;
-      color: var(--ink-soft);
-      margin-bottom: 2rem;
-      max-width: 36rem;
-    }
-
-    .meta {
-      display: flex; flex-wrap: wrap; gap: 1.5rem;
-      padding: 0.875rem 0;
-      border-top: 1px solid var(--ink);
-      border-bottom: 1px solid var(--rule);
-      font-size: 0.8125rem; color: var(--ink-faded);
-      margin-bottom: 2.5rem;
-    }
-    .meta-item { display: flex; align-items: center; gap: 0.4rem; }
-    .meta-item svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
-    .meta-item strong { color: var(--ink); font-weight: 600; }
-    .meta-item a {
-      color: var(--accent-deep); text-decoration: none;
-      border-bottom: 1px solid var(--accent);
-    }
-
-    p { margin-bottom: 1.25rem; color: var(--ink); }
-    p strong { font-weight: 600; }
-
-    a.inline-link {
-      color: var(--accent-deep); text-decoration: none;
-      border-bottom: 1px solid var(--accent);
-      transition: background 0.15s ease;
-    }
-    a.inline-link:hover { background: var(--accent-soft); }
-
-    h2 {
-      font-weight: 800;
-      font-size: 1.625rem;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      margin-top: 3.5rem;
-      margin-bottom: 1.25rem;
-      color: var(--ink);
-    }
-
-    .sub-label {
-      font-weight: 600;
-      font-size: 0.875rem;
-      color: var(--ink);
-      margin-top: 1.5rem;
-      margin-bottom: 0.4rem;
-      display: block;
-    }
-
-    .read-first {
-      background: var(--bg-soft);
-      border-left: 4px solid var(--ink);
-      padding: 1.5rem 1.75rem;
-      margin-bottom: 2.5rem;
-    }
-    .read-first p { margin-bottom: 0.75rem; font-size: 0.9375rem; }
-    .read-first p:last-child { margin-bottom: 0; }
-    .read-first strong { color: var(--ink); font-weight: 700; }
-
-    .rights-box {
-      background: var(--ink);
-      color: var(--bg);
-      padding: 1.75rem 2rem;
-      margin: 2rem 0;
-    }
-    .rights-box .rights-label {
-      font-size: 0.7rem; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: #d4d2cc;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-    .rights-box h3 {
-      font-weight: 800; font-size: 1.375rem;
-      letter-spacing: -0.015em; color: var(--bg);
-      margin-bottom: 0.75rem;
-    }
-    .rights-box p { color: var(--bg); font-size: 0.9375rem; margin-bottom: 0.75rem; }
-    .rights-box ul { list-style: none; padding: 0; margin-top: 0.75rem; }
-    .rights-box li {
-      position: relative; padding-left: 1.5rem; margin-bottom: 0.6rem;
-      font-size: 0.9375rem; color: var(--bg);
-    }
-    .rights-box li::before {
-      content: "→"; position: absolute; left: 0;
-      color: var(--accent-bright); font-weight: 700;
-    }
-    .rights-box .source {
-      font-size: 0.75rem; color: #b8b6b1;
-      margin-top: 1rem; margin-bottom: 0;
-    }
-
-    .severity-table {
-      margin: 1rem 0 0.5rem;
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.875rem;
-    }
-    .severity-table th,
-    .severity-table td {
-      text-align: left;
-      padding: 0.5rem 0.75rem;
-      border-bottom: 1px solid #2c2c2c;
-      color: var(--bg);
-    }
-    .severity-table th {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #d4d2cc;
-      border-bottom-color: #4a4a4a;
-    }
-    .severity-table tr:last-child td { border-bottom: none; }
-    .severity-table .class-cell { font-weight: 700; color: var(--accent-bright); }
-
-    /* SEVERITY PICKER */
-    .severity-picker {
-      margin: 2rem 0 2.5rem;
-      padding: 1.5rem;
-      background: var(--bg-soft);
-      border: 2px solid var(--ink);
-    }
-    .severity-picker-header {
-      margin-bottom: 1rem;
-    }
-    .severity-picker-label {
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent-deep);
-      display: block;
-      margin-bottom: 0.4rem;
-    }
-    .severity-picker-title {
-      font-weight: 800;
-      font-size: 1.25rem;
-      letter-spacing: -0.015em;
-      color: var(--ink);
-      margin: 0;
-    }
-    .severity-picker-help {
-      font-size: 0.875rem;
-      color: var(--ink-soft);
-      margin-top: 0.5rem;
-      margin-bottom: 0;
-    }
-    .severity-options {
-      display: grid;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    .severity-option {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.875rem;
-      padding: 0.875rem 1rem;
-      background: var(--bg);
-      border: 1.5px solid var(--rule-strong);
-      cursor: pointer;
-      text-align: left;
-      font-family: inherit;
-      transition: all 0.12s ease;
-      width: 100%;
-    }
-    .severity-option:hover {
-      border-color: var(--accent);
-      background: var(--accent-soft);
-    }
-    .severity-option.active {
-      border-color: var(--ink);
-      background: var(--ink);
-      color: var(--bg);
-    }
-    .severity-option-marker {
-      flex-shrink: 0;
-      width: 1.25rem;
-      height: 1.25rem;
-      border: 1.5px solid var(--rule-strong);
-      border-radius: 100px;
-      margin-top: 0.15rem;
-      position: relative;
-      transition: all 0.12s ease;
-    }
-    .severity-option:hover .severity-option-marker {
-      border-color: var(--accent);
-    }
-    .severity-option.active .severity-option-marker {
-      border-color: var(--bg);
-      background: var(--bg);
-    }
-    .severity-option.active .severity-option-marker::after {
-      content: "";
-      position: absolute;
-      inset: 3px;
-      background: var(--ink);
-      border-radius: 100px;
-    }
-    .severity-option-text {
-      flex: 1;
-    }
-    .severity-option-name {
-      font-weight: 700;
-      font-size: 0.9375rem;
-      color: var(--ink);
-      display: block;
-      margin-bottom: 0.15rem;
-    }
-    .severity-option.active .severity-option-name { color: var(--bg); }
-    .severity-option-desc {
-      font-size: 0.8125rem;
-      color: var(--ink-soft);
-      display: block;
-    }
-    .severity-option.active .severity-option-desc { color: #c9c5bc; }
-
-    /* Severity context banner — shows after selection */
-    .severity-context {
-      margin: 1.5rem 0 2.5rem;
-      padding: 1.5rem 1.75rem;
-      background: var(--accent-soft);
-      border-left: 4px solid var(--accent);
-      display: none;
-    }
-    .severity-context.visible {
-      display: block;
-    }
-    .severity-context-label {
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent-deep);
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-    .severity-context h3 {
-      font-weight: 800;
-      font-size: 1.25rem;
-      letter-spacing: -0.015em;
-      color: var(--ink);
-      margin-bottom: 0.75rem;
-    }
-    .severity-context p {
-      font-size: 0.9375rem;
-      margin-bottom: 0.5rem;
-    }
-    .severity-context p:last-child { margin-bottom: 0; }
-    .severity-context .key-fact {
-      display: block;
-      padding: 0.75rem 0;
-      border-top: 1px solid rgba(13, 115, 119, 0.2);
-      margin-top: 0.75rem;
-      font-size: 0.875rem;
-    }
-    .severity-context .key-fact strong {
-      color: var(--accent-deep);
-    }
-
-    .step {
-      margin: 3rem 0;
-      padding-top: 2rem;
-      border-top: 2px solid var(--ink);
-    }
-    .step-header { margin-bottom: 1.25rem; }
-    .step-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
-    .step-number {
-      font-weight: 800; font-size: 0.75rem;
-      letter-spacing: 0.08em; color: var(--accent);
-      text-transform: uppercase;
-    }
-    .time-chip {
-      display: inline-flex; align-items: center; gap: 0.35rem;
-      font-size: 0.75rem; font-weight: 500;
-      color: var(--ink-soft); background: var(--bg-soft);
-      padding: 0.25rem 0.6rem; border-radius: 100px;
-    }
-    .time-chip svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.25; }
-    .step-title {
-      font-weight: 800; font-size: 1.625rem;
-      line-height: 1.2; letter-spacing: -0.02em;
-      color: var(--ink); margin: 0;
-    }
-
-    .why-this-matters {
-      color: var(--ink-soft);
-      border-left: 3px solid var(--rule-strong);
-      padding-left: 1rem;
-      margin-bottom: 1.5rem;
-      font-size: 0.9375rem;
-      line-height: 1.55;
-    }
-
-    .step ol, .step ul { margin-bottom: 1.25rem; padding-left: 1.25rem; }
-    .step li { margin-bottom: 0.6rem; }
-
-    /* Template box */
-    .template {
-      background: var(--code-bg);
-      border: 1px solid var(--code-rule);
-      border-left: 4px solid var(--ink);
-      margin: 1rem 0 1.5rem;
-      position: relative;
-    }
-    .template-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0.6rem 1rem 0.6rem 1.25rem;
-      border-bottom: 1px solid var(--code-rule);
-      background: rgba(0,0,0,0.025);
-    }
-    .template-label {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-size: 0.7rem; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--ink);
-    }
-    .template-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
-    .copy-btn {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-family: inherit; font-size: 0.75rem; font-weight: 600;
-      color: var(--ink); background: var(--bg);
-      border: 1px solid var(--ink);
-      padding: 0.35rem 0.75rem;
-      cursor: pointer;
-      transition: all 0.12s ease;
-    }
-    .copy-btn:hover { background: var(--ink); color: var(--bg); }
-    .copy-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
-    .copy-btn.copied { background: var(--ink); color: var(--bg); }
-    .template-body {
-      padding: 1.25rem 1.5rem 1.5rem;
-      font-size: 0.9375rem; line-height: 1.65;
-      color: var(--ink);
-    }
-    .template-body p { margin-bottom: 0.75rem; color: var(--ink); }
-    .template-body p:last-child { margin-bottom: 0; }
-
-    .fill {
-      display: inline-block;
-      font-family: inherit; font-size: inherit; font-weight: 500;
-      color: var(--accent-deep); background: var(--bg);
-      border: none; border-bottom: 1.5px dashed var(--accent);
-      padding: 0 0.25rem; margin: 0 1px;
-      min-width: 4rem; max-width: 100%;
-      line-height: 1.4;
-      transition: background 0.12s ease;
-    }
-    .fill::placeholder {
-      color: var(--accent); font-style: italic;
-      font-weight: 400; opacity: 0.65;
-    }
-    .fill:focus {
-      outline: none;
-      background: var(--accent-soft);
-      border-bottom-color: var(--accent-deep);
-      border-bottom-style: solid;
-    }
-    .fill.has-value {
-      border-bottom-style: solid;
-      border-bottom-color: var(--ink);
-      color: var(--ink);
-    }
-
-    /* Spoken script box with fillable inputs */
-    .spoken {
-      margin: 1rem 0 1.5rem;
-      padding: 1rem 0 1rem 1.5rem;
-      border-left: 4px solid var(--quote-bar);
-      position: relative;
-    }
-    .spoken-label {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-size: 0.7rem; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--ink-soft);
-      margin-bottom: 0.6rem;
-    }
-    .spoken-label svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
-    .spoken-body {
-      font-size: 1.0625rem; line-height: 1.65;
-      color: var(--ink); font-weight: 400;
-    }
-    .spoken-body p { margin-bottom: 0.6rem; }
-    .spoken-body p:last-child { margin-bottom: 0; }
-
-    /* Fillable inputs in spoken scripts — bigger, more prominent */
-    .spoken .fill {
-      font-size: 1.0625rem;
-      font-weight: 500;
-      color: var(--accent-deep);
-      border-bottom-width: 2px;
-      padding: 0 0.3rem;
-      min-width: 5rem;
-    }
-    .spoken .fill::placeholder {
-      font-size: 1rem;
-    }
-    .spoken .fill.has-value {
-      color: var(--ink);
-      font-weight: 600;
-    }
-
-    .spoken-hint {
-      display: block; margin-top: 0.75rem;
-      font-size: 0.8125rem; color: var(--ink-faded);
-      font-style: italic;
-    }
-
-    /* Reference number capture */
-    .ref-capture {
-      background: var(--bg-soft);
-      border: 1px solid var(--rule-strong);
-      padding: 1rem 1.25rem;
-      margin: 1rem 0 1.5rem;
-      display: flex; align-items: center; gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .ref-capture-label {
-      font-weight: 600; font-size: 0.9375rem;
-      color: var(--ink); flex: 1 1 auto;
-    }
-    .ref-capture input {
-      font-family: inherit; font-size: 1rem; font-weight: 600;
-      color: var(--ink); background: var(--bg);
-      border: 1.5px solid var(--ink);
-      padding: 0.5rem 0.75rem;
-      width: 14rem; max-width: 100%;
-    }
-    .ref-capture input::placeholder { font-weight: 400; color: var(--ink-faded); }
-    .ref-capture input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-
-    .ref-recall {
-      background: var(--accent-soft);
-      border-left: 4px solid var(--accent);
-      padding: 1rem 1.25rem;
-      margin: 1rem 0;
-      font-size: 0.9375rem;
-    }
-    .ref-recall .label {
-      display: block;
-      font-size: 0.7rem; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--accent-deep);
-      margin-bottom: 0.25rem;
-    }
-    .ref-recall .number {
-      font-size: 1.125rem; font-weight: 700; color: var(--ink);
-    }
-    .ref-recall .empty {
-      color: var(--ink-faded);
-      font-weight: 400; font-style: italic;
-      font-size: 0.9375rem;
-    }
-
-    /* Callouts */
-    .callout {
-      margin: 2.5rem 0;
-      padding: 1.75rem 2rem;
-      position: relative;
-    }
-    .callout-protect {
-      background: var(--protect-soft);
-      border-left: 4px solid var(--protect);
-    }
-    .callout-warning {
-      background: var(--warning-bg);
-      border-left: 4px solid var(--warning-rule);
-    }
-    .callout-label {
-      font-size: 0.7rem; font-weight: 800;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      margin-bottom: 0.5rem; display: block;
-    }
-    .callout-protect .callout-label { color: var(--protect); }
-    .callout-warning .callout-label { color: var(--warning-ink); }
-
-    .callout h3 {
-      margin-top: 0; margin-bottom: 0.75rem;
-      font-weight: 800; font-size: 1.25rem;
-      letter-spacing: -0.015em; color: var(--ink);
-    }
-    .callout p { font-size: 0.9375rem; margin-bottom: 0.85rem; }
-    .callout p:last-child { margin-bottom: 0; }
-    .callout strong { font-weight: 700; color: var(--ink); }
-    .callout ul { margin: 0.75rem 0; padding-left: 1.25rem; font-size: 0.9375rem; }
-    .callout li { margin-bottom: 0.5rem; }
-    .callout .resource-list { list-style: none; padding-left: 0; }
-    .callout .resource-list li { padding-left: 1.25rem; position: relative; }
-    .callout .resource-list li::before {
-      content: "•"; position: absolute; left: 0; font-weight: 700;
-    }
-    .callout-protect .resource-list li::before { color: var(--protect); }
-    .callout .sub-label { color: var(--ink); }
-
-    .draft-flag {
-      display: inline-block;
-      font-size: 0.65rem; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      background: var(--ink); color: var(--bg);
-      padding: 0.25rem 0.55rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .help-list { list-style: none; padding: 0; margin: 1rem 0 2rem; }
-    .help-list li {
-      padding: 1.125rem 0;
-      border-bottom: 1px solid var(--rule);
-    }
-    .help-list li:last-child { border-bottom: none; }
-    .help-list .name {
-      font-weight: 700; color: var(--ink);
-      display: block; margin-bottom: 0.2rem; font-size: 1rem;
-    }
-    .help-list .phone {
-      font-weight: 700; color: var(--accent-deep);
-      font-size: 1.125rem; letter-spacing: -0.005em;
-    }
-    .help-list .phone a,
-    .help-list .phone a:visited {
-      color: var(--accent-deep);
-      text-decoration: none;
-      border-bottom: 2px solid var(--accent-soft);
-      transition: border-color 0.15s ease;
-    }
-    .help-list .phone a:hover { border-bottom-color: var(--accent); }
-    .help-list .desc {
-      display: block; font-size: 0.875rem;
-      color: var(--ink-soft); margin-top: 0.2rem;
-    }
-
-    .related {
-      margin-top: 4rem;
-      padding-top: 2rem;
-      border-top: 2px solid var(--ink);
-    }
-    .related-grid { display: grid; gap: 0.5rem; margin-top: 1rem; }
-    .related-link {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 1rem 1.25rem;
-      background: var(--bg);
-      border: 1px solid var(--rule-strong);
-      text-decoration: none; color: var(--ink);
-      transition: all 0.15s ease;
-      font-size: 0.9375rem; font-weight: 500;
-    }
-    .related-link:hover {
-      border-color: var(--accent);
-      background: var(--accent-soft);
-      color: var(--accent-deep);
-    }
-    .related-link::after {
-      content: "→"; margin-left: auto;
-      color: var(--accent); font-weight: 700;
-    }
-    .related-link.coming-soon {
-      background: var(--bg-soft);
-      color: var(--ink-soft);
-      cursor: default;
-    }
-    .related-link.coming-soon:hover {
-      border-color: var(--rule-strong);
-      background: var(--bg-soft);
-      color: var(--ink-soft);
-    }
-    .related-link.coming-soon::after {
-      content: "Coming soon";
-      margin-left: auto;
-      font-size: 0.6875rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--ink-faded);
-      background: var(--bg);
-      padding: 0.25rem 0.55rem;
-      border: 1px solid var(--rule-strong);
-    }
-
-    .sources {
-      margin-top: 4rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--rule);
-      font-size: 0.8125rem; color: var(--ink-faded);
-    }
-    .sources h3 {
-      font-size: 0.75rem; font-weight: 700;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--ink); margin-bottom: 0.75rem;
-    }
-    .sources ul { list-style: none; padding: 0; }
-    .sources li { margin-bottom: 0.4rem; }
-    .sources a {
-      color: var(--accent-deep); text-decoration: none;
-      border-bottom: 1px solid var(--rule-strong);
-    }
-    .verified {
-      margin-top: 1.25rem; padding-top: 1rem;
-      border-top: 1px solid var(--rule);
-    }
-
-    .disclaimer {
-      margin-top: 2.5rem;
-      padding: 1.25rem 1.5rem;
-      background: var(--bg-soft);
-      border: 1px dashed var(--rule-strong);
-      font-size: 0.8125rem;
-      color: var(--ink-soft);
-      line-height: 1.55;
-    }
-    .disclaimer strong { color: var(--ink); font-weight: 700; }
-
-    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
-    .verify-tag {
-      display: inline-block;
-      background: #c8292e;
-      color: #ffffff;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding: 0.15rem 0.5rem;
-      margin: 0 0.15rem;
-      vertical-align: baseline;
-      font-style: normal;
-    }
-    .verify-tag::before { content: "⚑ "; }
-
-    .toast {
-      position: fixed; bottom: 2rem; left: 50%;
-      transform: translateX(-50%) translateY(150%);
-      background: var(--ink); color: var(--bg);
-      padding: 0.875rem 1.5rem;
-      font-size: 0.875rem; font-weight: 600;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 1000;
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-
-    @media print {
-      .progress-bar, .site-header, .related, .meta-item.print-hide, .copy-btn, .toast { display: none; }
-      body { background: white; }
-      .fill { border-bottom: 1px solid #999; }
-    }
-
-    @media (max-width: 600px) {
-      article { padding: 2rem 1.25rem 4rem; }
-      h1 { font-size: 2.25rem; }
-      .step-title { font-size: 1.375rem; }
-      .template-header { flex-wrap: wrap; gap: 0.5rem; }
-      .ref-capture { flex-direction: column; align-items: stretch; }
-      .ref-capture input { width: 100%; }
-      .severity-table { font-size: 0.8125rem; }
-      .severity-table th, .severity-table td { padding: 0.4rem 0.5rem; }
-    }
-  </style>
+  <link rel="stylesheet" href="../scenarios.css">
   <link rel="stylesheet" href="../print.css" media="print">
 </head>
 <body>
@@ -859,16 +50,16 @@
       <span class="toc-sidebar-label">On this page</span>
       <nav>
         <ul class="toc-group">
-          <li><a class="toc-section-link" href="#read-first" data-toc-target="read-first">Read this first</a></li>
-          <li><a class="toc-section-link" href="#rights" data-toc-target="rights">Know your rights</a></li>
+          <li><a class="toc-section-link" href="#read-first" data-toc-target="read-first">Read this first.</a></li>
+          <li><a class="toc-section-link" href="#rights" data-toc-target="rights">Know your rights.</a></li>
           <li><a class="toc-section-link" href="#severity-picker" data-toc-target="severity-picker">How serious is it?</a></li>
-          <li><a class="toc-section-link" href="#step-1" data-toc-target="step-1">Step 1 &mdash; Document</a></li>
-          <li><a class="toc-section-link" href="#step-2" data-toc-target="step-2">Step 2 &mdash; Tell your landlord</a></li>
-          <li><a class="toc-section-link" href="#step-3" data-toc-target="step-3">Step 3 &mdash; File a 311 complaint</a></li>
-          <li><a class="toc-section-link" href="#step-4" data-toc-target="step-4">Step 4 &mdash; Check the status</a></li>
-          <li><a class="toc-section-link" href="#step-5" data-toc-target="step-5">Step 5 &mdash; Escalate</a></li>
-          <li><a class="toc-section-link" href="#free-help" data-toc-target="free-help">Free help</a></li>
-          <li><a class="toc-section-link" href="#related" data-toc-target="related">Related situations</a></li>
+          <li><a class="toc-section-link" href="#step-1" data-toc-target="step-1">Step 1 &mdash; Document.</a></li>
+          <li><a class="toc-section-link" href="#step-2" data-toc-target="step-2">Step 2 &mdash; Tell your landlord.</a></li>
+          <li><a class="toc-section-link" href="#step-3" data-toc-target="step-3">Step 3 &mdash; File a 311 complaint.</a></li>
+          <li><a class="toc-section-link" href="#step-4" data-toc-target="step-4">Step 4 &mdash; Check the status.</a></li>
+          <li><a class="toc-section-link" href="#step-5" data-toc-target="step-5">Step 5 &mdash; Escalate.</a></li>
+          <li><a class="toc-section-link" href="#free-help" data-toc-target="free-help">Free help.</a></li>
+          <li><a class="toc-section-link" href="#related" data-toc-target="related">Related situations.</a></li>
         </ul>
       </nav>
     </aside>
@@ -1008,8 +199,8 @@
       <p>Before you message your landlord, spend two minutes searching <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a> on the site or in the lookup box just below. Look at the relevant violations for:</p>
       <ul>
         <li><strong>Existing mold violations on the building</strong> &mdash; open or closed. If mold is a known problem in your building, this is powerful evidence that the condition isn't new and the landlord hasn't been maintaining the property.</li>
-        <li><strong>Any Class B or C violations that were falsely certified as corrected</strong> &mdash; a pattern of false certifications tells you what kind of landlord you're dealing with.</li>
-        <li><strong>Leak-related violations</strong> &mdash; since mold usually comes from water, a history of unfixed leaks makes the mold case much stronger.</li>
+        <li><strong>Any Class B or C violations that were falsely certified as corrected</strong> &mdash; a pattern of false certifications tells you what kind of landlord you're dealing with</li>
+        <li><strong>Leak-related violations</strong> &mdash; since mold usually comes from water, a history of unfixed leaks makes the mold case much stronger</li>
       </ul>
       <p>Walk into your conversation with the landlord already knowing what's on record. Reference specific violations in your written complaint. It changes the dynamic completely.</p>
       <p><strong>An honest note:</strong> HPDOnline shows public records, but it's not a complete picture. Some violations age off, and landlords sometimes fix violations without the paper trail catching up. Use it as a starting point, not the whole story.</p>
@@ -1031,6 +222,8 @@
         </div>
       </section>
     </aside>
+
+    <div class="saved-violations-panel"></div>
 
     <h2>What to do, step by step</h2>
 
@@ -1069,8 +262,8 @@
       <p>If you or your child has asthma and there is mold or pests in your home, you can ask your doctor to refer you for a <strong>free home environmental inspection</strong> through the NYC Health Department's Healthy Neighborhoods Program. This is a separate process from a 311 complaint and gives you an official health assessment that can support your case if things escalate.</p>
       <p><strong>How to get it:</strong></p>
       <ul>
-        <li>Talk to your doctor and ask for a referral to the NYC Health Department's environmental inspection program</li>
-        <li>Or call <strong>311</strong> and ask about the Healthy Neighborhoods Program</li>
+        <li>Talk to your doctor and ask for a referral to the NYC Health Department's environmental inspection program.</li>
+        <li>Or call <strong>311</strong> and ask about the Healthy Neighborhoods Program.</li>
       </ul>
       <p>This pathway is especially powerful because medical evidence makes mold complaints much harder for landlords to dismiss. If anyone in your household has asthma, breathing problems, or is a child under 6, this is worth pursuing in parallel with everything else on this page.</p>
     </aside>
@@ -1116,6 +309,7 @@
           <p>I am writing to formally report a mold condition in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22">. I first noticed the mold on <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">, and it is located in <input type="text" class="fill" data-field="location" placeholder="bedroom ceiling, bathroom wall, etc." size="32">. The affected area is approximately <input type="text" class="fill" data-field="size" placeholder="size in sq ft" size="14">.</p>
           <p>Under NYC Local Law 55 of 2018, you are required to remediate this condition and address the underlying cause (such as a leak or moisture source). I have photographs documenting the mold and am happy to provide them upon request.</p>
           <p>Please respond within 7 days with a plan to inspect and remediate the mold. If the problem is not addressed promptly, I will be filing a complaint with 311 and HPD.</p>
+          <p>For reference, related HPD violation(s) on file at this address: <input type="text" class="fill" data-field="prior_violation_ids" placeholder="violation IDs" size="34">.</p>
           <p>Thank you,<br>
           <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18"><br>
           <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16"></p>
@@ -1143,7 +337,7 @@
 
       <span class="sub-label">How to do it &mdash; pick what's easiest</span>
       <ul>
-        <li><strong>By phone:</strong> Call <strong>311</strong>. If you're deaf or hard of hearing, use TTY at <strong>(212) 504-4115</strong>.</li>
+        <li><strong>By phone:</strong> Call <strong>311</strong>. If you're deaf or hard of hearing, use TTY at <strong>(212) 504-4115</strong></li>
         <li><strong>Online:</strong> Go to <a href="https://portal.311.nyc.gov/" class="inline-link" target="_blank" rel="noopener">portal.311.nyc.gov</a> and search for "mold."</li>
         <li><strong>Mobile app:</strong> Download the NYC 311 app (iOS or Android). The app lets you upload your photos directly.</li>
       </ul>
@@ -1189,10 +383,10 @@
 
       <span class="sub-label">Free, confidential help</span>
       <ul class="resource-list">
-        <li><strong>ActionNYC</strong> &mdash; free, safe immigration legal help connected to city services. Call <strong>311</strong> and ask for ActionNYC.</li>
-        <li><strong>Make the Road New York</strong> &mdash; tenant and immigrant rights support: <strong>718-418-7690</strong></li>
-        <li><strong>New York Immigration Coalition</strong> &mdash; referrals to trusted legal help: <strong>212-627-2227</strong></li>
-        <li><strong>NYC Commission on Human Rights</strong> &mdash; if your landlord threatens you with ICE: <strong>212-416-0197</strong></li>
+        <li><strong>ActionNYC</strong> &mdash; free, safe immigration legal help connected to city services. Call <a href="tel:311" class="inline-link"><strong>311</strong></a> and ask for ActionNYC.</li>
+        <li><strong>Make the Road New York</strong> &mdash; tenant and immigrant rights support: <a href="tel:7184187690" class="inline-link"><strong>718-418-7690</strong></a></li>
+        <li><strong>New York Immigration Coalition</strong> &mdash; referrals to trusted legal help: <a href="tel:2126272227" class="inline-link"><strong>212-627-2227</strong></a></li>
+        <li><strong>NYC Commission on Human Rights</strong> &mdash; if your landlord threatens you with ICE: <a href="tel:2124160197" class="inline-link"><strong>212-416-0197</strong></a></li>
       </ul>
     </aside>
 
@@ -1207,7 +401,7 @@
 
       <p><strong>An honest note for market-rate tenants:</strong> If you're not in a rent-stabilized or rent-controlled apartment, you have fewer protections against non-renewal or large rent increases at the end of your lease. The anti-retaliation law still applies, but enforcing it can be harder. If you're worried about this, talk to Met Council or a tenant lawyer <em>before</em> filing the complaint &mdash; they can help you think through the timing and your options.</p>
 
-      <p>If you believe your landlord is retaliating: document everything (dates, what happened, any written communication), and call the Met Council on Housing hotline at <strong>212-979-0611</strong>.</p>
+      <p>If you believe your landlord is retaliating: document everything (dates, what happened, any written communication), and call the Met Council on Housing hotline at <a href="tel:2129790611" class="inline-link"><strong>212-979-0611</strong></a>.</p>
 
       <p style="margin-top: 1rem;"><a href="retaliation.html" class="inline-link">Read more: What retaliation looks like and what to do &rarr;</a></p>
     </aside>
@@ -1264,8 +458,8 @@
       <span class="sub-label">A. Call the Met Council on Housing Tenants' Rights Hotline</span>
       <p>Free, staffed by trained volunteers, and the best starting point for figuring out what to do next.</p>
       <ul>
-        <li><strong>Phone:</strong> 212-979-0611</li>
-        <li><strong>Hours:</strong> Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM</li>
+        <li><strong>Phone:</strong> <a href="tel:2129790611" class="inline-link">212-979-0611</a></li>
+        <li><strong>Hours:</strong> Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM.</li>
         <li><strong>Heads up:</strong> The hotline is very busy &mdash; call after 4&nbsp;PM if you can, and avoid Mondays.</li>
       </ul>
 
@@ -1327,6 +521,7 @@
         <a href="leaks-plumbing.html" class="related-link">I have a leak or plumbing problem</a>
         <a href="pests.html" class="related-link">I have pests &mdash; rats, mice, roaches, or bedbugs</a>
         <a href="lead-paint.html" class="related-link">I'm worried about lead paint in my apartment</a>
+        <a href="repairs-not-fixing-problem.html" class="related-link">My landlord made a repair but the problem is back</a>
         <a href="retaliation.html" class="related-link">My landlord is retaliating against me for complaining</a>
         <span class="related-link coming-soon">I'm in a NYCHA building, not private housing</span>
       </div>
@@ -1337,10 +532,10 @@
       <h3>Sources &amp; verification</h3>
       <ul>
         <li><a href="https://www.nyc.gov/site/hpd/services-and-information/indoor-allergen-hazards-mold-and-pests.page" target="_blank" rel="noopener">NYC HPD &mdash; Indoor Allergen Hazards (Mold and Pests)</a></li>
-        <li><a href="https://www.metcouncilonhousing.org/help-answers/getting-repairs/" target="_blank" rel="noopener">Met Council on Housing &mdash; Getting Repairs</a></li>
-        <li><a href="https://www.metcouncilonhousing.org/program/tenants-rights-hotline/" target="_blank" rel="noopener">Met Council on Housing &mdash; Tenants' Rights Hotline</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/help-answers/getting-repairs/" target="_blank" rel="noopener">Met Council on Housing &mdash; Getting Repairs.</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/program/tenants-rights-hotline/" target="_blank" rel="noopener">Met Council on Housing &mdash; Tenants' Rights Hotline.</a></li>
         <li><a href="https://www1.nyc.gov/assets/buildings/local_laws/ll55of2018.pdf" target="_blank" rel="noopener">NYC Local Law 55 of 2018 (full text)</a></li>
-        <li><a href="https://www.nyc.gov/site/doh/health/health-topics/mold.page" target="_blank" rel="noopener">NYC DOH &mdash; Mold</a></li>
+        <li><a href="https://www.nyc.gov/site/doh/health/health-topics/mold.page" target="_blank" rel="noopener">NYC DOH &mdash; Mold.</a></li>
       </ul>
       <p class="verified">All sources verified April 13, 2026. <a href="https://github.com/hollymariegibbs/tenant-triage-nyc/issues/new?template=report-error.yml&amp;page-url=https%3A%2F%2Ftenanttriagenyc.org%2Fscenarios%2Fmold" target="_blank" rel="noopener" class="inline-link">Found an error? Tell us.</a></p>
     </div>

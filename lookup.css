@@ -356,3 +356,264 @@
   text-decoration: none;
   border-bottom: 1px solid var(--accent, #0d7377);
 }
+
+/* ============================================
+   VIOLATION CARD BOTTOM ROW: ID + Pin button
+   ============================================ */
+.lookup-violation-bottom {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.625rem;
+  padding-top: 0.625rem;
+  border-top: 1px solid var(--rule, #e6e4df);
+  flex-wrap: wrap;
+}
+.lookup-violation-id {
+  font-size: 0.75rem;
+  color: var(--ink-faded, #6b6b6b);
+  font-variant-numeric: tabular-nums;
+}
+.lookup-violation-id .id-label {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 0.25rem;
+}
+.lookup-violation-id .id-value {
+  font-weight: 700;
+  color: var(--ink, #111111);
+}
+.lookup-pin-btn {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  color: var(--accent-deep, #08494c);
+  background: var(--bg, #ffffff);
+  border: 1.5px solid var(--accent, #0d7377);
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.lookup-pin-btn:hover {
+  background: var(--accent-soft, #e3f0f0);
+}
+.lookup-pin-btn.is-pinned {
+  background: var(--accent-deep, #08494c);
+  color: var(--bg, #ffffff);
+  border-color: var(--accent-deep, #08494c);
+}
+.lookup-pin-btn.is-pinned:hover {
+  background: var(--ink, #111111);
+  border-color: var(--ink, #111111);
+}
+.lookup-pin-btn svg {
+  flex-shrink: 0;
+}
+
+/* ============================================
+   "YOUR CASE" SAVED-VIOLATIONS PANEL
+   ============================================ */
+.saved-violations-panel {
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--accent-soft, #e3f0f0);
+  border: 1px solid var(--accent, #0d7377);
+  border-left-width: 6px;
+}
+.saved-violations-panel.is-empty {
+  background: var(--bg-soft, #f5f3ef);
+  border-color: var(--rule, #e6e4df);
+  border-left-color: var(--rule-strong, #c9c5bc);
+}
+.saved-violations-panel .saved-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-deep, #08494c);
+  margin-bottom: 0.5rem;
+}
+.saved-violations-panel.is-empty .saved-label {
+  color: var(--ink-faded, #6b6b6b);
+}
+.saved-violations-panel .saved-empty-text {
+  font-size: 0.875rem;
+  color: var(--ink-soft, #3d3d3d);
+  line-height: 1.55;
+  margin: 0;
+}
+.saved-violations-panel .saved-empty-text strong {
+  color: var(--ink, #111111);
+  font-weight: 700;
+}
+.saved-violations-panel .saved-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.saved-violations-panel .saved-header .saved-label {
+  margin-bottom: 0;
+  flex: 1;
+}
+.saved-violations-panel .saved-header .saved-label strong {
+  color: var(--ink, #111111);
+  font-weight: 800;
+}
+.saved-violations-panel .saved-clear-btn {
+  font-family: inherit;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft, #3d3d3d);
+  background: transparent;
+  border: 1px solid var(--rule-strong, #c9c5bc);
+  padding: 0.25rem 0.55rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.saved-violations-panel .saved-clear-btn:hover {
+  color: #8c1c20;
+  border-color: #8c1c20;
+}
+.saved-violations-panel .saved-building-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft, #3d3d3d);
+  margin: 0.75rem 0 0.5rem;
+}
+.saved-violations-panel .saved-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.saved-violations-panel .saved-item {
+  position: relative;
+  background: var(--bg, #ffffff);
+  border: 1px solid var(--rule, #e6e4df);
+  padding: 0.875rem 2.5rem 0.875rem 1rem;
+  margin-bottom: 0.5rem;
+}
+.saved-violations-panel .saved-item:last-child { margin-bottom: 0; }
+.saved-violations-panel .saved-item-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+.saved-violations-panel .saved-item-date {
+  font-size: 0.75rem;
+  color: var(--ink-faded, #6b6b6b);
+  margin-left: auto;
+}
+.saved-violations-panel .saved-item-id-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+.saved-violations-panel .saved-id-label {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faded, #6b6b6b);
+}
+.saved-violations-panel .saved-id-value {
+  font-weight: 700;
+  color: var(--ink, #111111);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9375rem;
+}
+.saved-violations-panel .saved-copy-btn {
+  font-family: inherit;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent-deep, #08494c);
+  background: transparent;
+  border: 1px solid var(--accent, #0d7377);
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.saved-violations-panel .saved-copy-btn:hover {
+  background: var(--accent-soft, #e3f0f0);
+}
+.saved-violations-panel .saved-copy-btn.copied {
+  background: var(--accent-deep, #08494c);
+  color: var(--bg, #ffffff);
+  border-color: var(--accent-deep, #08494c);
+}
+.saved-violations-panel .saved-item-desc {
+  font-size: 0.875rem;
+  color: var(--ink, #111111);
+  line-height: 1.5;
+}
+.saved-violations-panel .saved-item-location {
+  font-size: 0.8125rem;
+  color: var(--ink-faded, #6b6b6b);
+  font-style: italic;
+  margin-top: 0.3rem;
+}
+.saved-violations-panel .saved-unpin-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-content: center;
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ink-faded, #6b6b6b);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.saved-violations-panel .saved-unpin-btn:hover {
+  color: #8c1c20;
+  border-color: #8c1c20;
+  background: #fdecec;
+}
+.saved-violations-panel .saved-footer-tip {
+  font-size: 0.8125rem;
+  color: var(--ink-soft, #3d3d3d);
+  line-height: 1.55;
+  margin: 1rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--accent, #0d7377);
+  border-top-style: dashed;
+  opacity: 0.85;
+}
+.saved-violations-panel .saved-footer-tip strong {
+  color: var(--ink, #111111);
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .saved-violations-panel { padding: 1rem 1.125rem; }
+  .saved-violations-panel .saved-item { padding: 0.75rem 2.25rem 0.75rem 0.875rem; }
+  .lookup-violation-bottom { gap: 0.5rem; }
+  .lookup-pin-btn { font-size: 0.6875rem; padding: 0.3rem 0.55rem; }
+}

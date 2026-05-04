@@ -731,6 +731,7 @@
           <li><a href="scenarios/leaks-plumbing.html" class="scenario-item linked">I have a leak or plumbing problem</a></li>
           <li><a href="scenarios/appliances.html" class="scenario-item linked">Appliances or fixtures in my apartment are broken</a></li>
           <li><a href="scenarios/lead-paint.html" class="scenario-item linked">I'm worried about lead paint in my apartment</a></li>
+          <li><a href="scenarios/repairs-not-fixing-problem.html" class="scenario-item linked">My landlord made a repair but the problem is back</a></li>
         </ul>
       </div>
 
@@ -783,7 +784,7 @@
     <!-- MISSING SCENARIO FOOTER -->
     <div class="missing">
       <h3>Don't see your problem?</h3>
-      <p>This site is growing &mdash; new scenarios are added regularly. If your situation isn't listed yet, the fastest way to get help is to call <strong>Met Council on Housing's free Tenants' Rights Hotline</strong> at <strong>212-979-0611</strong> (Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM). They're trained volunteers who can talk you through almost any NYC housing issue.</p>
+      <p>This site is growing &mdash; new scenarios are added regularly. If your situation isn't listed yet, the fastest way to get help is to call <strong>Met Council on Housing's free Tenants' Rights Hotline</strong> at <a href="tel:2129790611" class="inline-link"><strong>212-979-0611</strong></a> (Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM). They're trained volunteers who can talk you through almost any NYC housing issue.</p>
       <p>You can also <a href="https://github.com/hollymariegibbs/tenant-triage-nyc/issues/new?template=suggest-scenario.yml" target="_blank" rel="noopener">tell us what's missing</a> and we'll prioritize building it.</p>
     </div>
 
@@ -853,6 +854,12 @@
         url: 'scenarios/retaliation.html',
         ready: true,
         keywords: ['retaliation', 'retaliate', 'retaliating', 'harassment', 'harassing', 'harass', 'threat', 'threats', 'threatening', 'punish', 'punishing', 'revenge', 'after', 'complained', 'complaint', '311', 'HPD', '223-b', 'lockout', 'ICE', 'immigration', 'service reduction', 'CCHR']
+      },
+      bandaid: {
+        name: 'My landlord made a repair but the problem is back',
+        url: 'scenarios/repairs-not-fixing-problem.html',
+        ready: true,
+        keywords: ['repair', 'repairs', 'fixed', 'fix', 'not fixed', 'still broken', 'broken again', 'painted over', 'paint over', 'cosmetic', 'patch', 'patched', 'incomplete', 'bandaid', 'band-aid', 'returned', 'recurring', 'came back', 'still', 'leaking again', 'mold back', 'sprayed but', 'super came', 'didnt work', 'didn\'t work', 'temporary', 'quick fix', 'self-certified', 'falsely certified', 'HP action', 'HP Action', 'rent reduction', 'RA-81', 'RA-84']
       }
     };
 
@@ -936,7 +943,18 @@
       { text: 'Landlord is retaliating', scenario: 'retaliation' },
       { text: 'Landlord raised rent after I complained', scenario: 'retaliation' },
       { text: 'Landlord is harassing me', scenario: 'retaliation' },
-      { text: 'Landlord threatening me', scenario: 'retaliation' }
+      { text: 'Landlord threatening me', scenario: 'retaliation' },
+
+      // Repairs not fixing the problem
+      { text: 'Landlord made a repair but the problem is back', scenario: 'bandaid' },
+      { text: 'My landlord painted over the mold', scenario: 'bandaid' },
+      { text: 'They patched the wall but the leak is back', scenario: 'bandaid' },
+      { text: 'They sprayed but the roaches are back', scenario: 'bandaid' },
+      { text: 'They sprayed but the mice are back', scenario: 'bandaid' },
+      { text: 'The repair didn\'t work', scenario: 'bandaid' },
+      { text: 'They came and fixed it but it broke again', scenario: 'bandaid' },
+      { text: 'My landlord self-certified the violation but it isn\'t fixed', scenario: 'bandaid' },
+      { text: 'My landlord made a quick fix but didn\'t address the cause', scenario: 'bandaid' }
     ];
 
     // ============================================
@@ -1278,7 +1296,7 @@
         '<div class="search-no-results">' +
           '<strong>No matches for &ldquo;' + escapeHTML(q) + '&rdquo;.</strong> ' +
           'Try a different word, or scroll down to browse all scenarios. ' +
-          'If your situation isn\'t listed, call Met Council at <strong>212-979-0611</strong>.' +
+          'If your situation isn\'t listed, call Met Council at <a href="tel:2129790611" class="inline-link"><strong>212-979-0611</strong></a>.' +
         '</div>';
       suggestionsBox.innerHTML = noResultsHTML;
       suggestionsBox.appendChild(buildFeedbackFooter('no-results'));

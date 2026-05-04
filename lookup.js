@@ -28,6 +28,7 @@ let filteredViolations = [];
 let displayedCount = 0;
 let filterKeywords = [];
 let filterActive = true;
+let currentBuilding = null;
 
 // DOM references (set in init)
 let lookupInput, lookupSuggestionsBox, lookupStatusEl, lookupResultsEl, lookupFallbackEl;
@@ -220,6 +221,7 @@ function applyFilter(violations) {
 
 function renderViolations(building, violations) {
   lookupStatusEl.textContent = '';
+  currentBuilding = building;
   allViolations = violations;
   filterActive = filterKeywords.length > 0;
   filteredViolations = applyFilter(violations);
@@ -403,6 +405,35 @@ function buildViolationCard(v) {
     locEl.className = 'lookup-violation-location';
     locEl.textContent = desc.location;
     li.appendChild(locEl);
+  }
+
+  // Bottom row: ID + Pin button
+  if (v.violationid) {
+    var bottom = document.createElement('div');
+    bottom.className = 'lookup-violation-bottom';
+
+    var idLabel = document.createElement('span');
+    idLabel.className = 'lookup-violation-id';
+    idLabel.innerHTML = '<span class="id-label">ID</span> <span class="id-value">' + escapeHTMLLookup(v.violationid) + '</span>';
+    bottom.appendChild(idLabel);
+
+    var pinBtn = document.createElement('button');
+    pinBtn.type = 'button';
+    pinBtn.className = 'lookup-pin-btn' + (isPinned(v.violationid) ? ' is-pinned' : '');
+    pinBtn.setAttribute('data-violation-id', v.violationid);
+    pinBtn.setAttribute('aria-pressed', isPinned(v.violationid) ? 'true' : 'false');
+    var iconHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14l-1.4-1.4a4 4 0 0 1-1.17-2.83V8a4.5 4.5 0 0 0-9 0v4.77a4 4 0 0 1-1.17 2.83L5 17z"/></svg>';
+    pinBtn.innerHTML = iconHTML + '<span class="pin-btn-text">' + (isPinned(v.violationid) ? 'Pinned' : 'Pin to your case') + '</span>';
+    pinBtn.addEventListener('click', function() {
+      if (isPinned(v.violationid)) {
+        unpinViolation(v.violationid);
+      } else {
+        pinViolation(v, currentBuilding);
+      }
+    });
+    bottom.appendChild(pinBtn);
+
+    li.appendChild(bottom);
   }
 
   return li;
@@ -630,4 +661,217 @@ function escapeHTMLLookup(str) {
   var div = document.createElement('div');
   div.textContent = str || '';
   return div.innerHTML;
+}
+
+// ============================================
+// SAVED VIOLATIONS ("Your case")
+// Persists across pages via localStorage. Renders into any
+// element with class .saved-violations-panel.
+// ============================================
+const PINNED_STORAGE_KEY = 'tt-saved-violations';
+
+function getPinnedViolations() {
+  try {
+    var raw = localStorage.getItem(PINNED_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function savePinnedViolations(arr) {
+  try {
+    localStorage.setItem(PINNED_STORAGE_KEY, JSON.stringify(arr));
+  } catch (e) { /* localStorage unavailable */ }
+}
+
+function isPinned(violationId) {
+  if (!violationId) return false;
+  return getPinnedViolations().some(function(p) { return String(p.id) === String(violationId); });
+}
+
+function pinViolation(v, building) {
+  if (!v.violationid) return;
+  var pinned = getPinnedViolations();
+  if (pinned.some(function(p) { return String(p.id) === String(v.violationid); })) return;
+
+  var statusInfo = translateStatus(v.currentstatus);
+  var desc = cleanDescription(v.novdescription || v.novtype);
+
+  pinned.push({
+    id: String(v.violationid),
+    class: (v.class || '').toUpperCase(),
+    desc: desc.main,
+    location: desc.location || '',
+    date: v.inspectiondate || '',
+    statusLabel: statusInfo.label,
+    statusState: statusInfo.state,
+    building: building ? building.label : '',
+    bbl: building ? building.bbl : '',
+    pinnedAt: new Date().toISOString()
+  });
+  savePinnedViolations(pinned);
+  renderAllPinnedPanels();
+  updateAllPinButtons();
+}
+
+function unpinViolation(violationId) {
+  var pinned = getPinnedViolations();
+  var next = pinned.filter(function(p) { return String(p.id) !== String(violationId); });
+  savePinnedViolations(next);
+  renderAllPinnedPanels();
+  updateAllPinButtons();
+}
+
+function clearAllPinned() {
+  if (!confirm('Clear all pinned violations from your case?')) return;
+  savePinnedViolations([]);
+  renderAllPinnedPanels();
+  updateAllPinButtons();
+}
+
+function updateAllPinButtons() {
+  document.querySelectorAll('.lookup-pin-btn').forEach(function(btn) {
+    var id = btn.getAttribute('data-violation-id');
+    var pinned = isPinned(id);
+    btn.classList.toggle('is-pinned', pinned);
+    btn.setAttribute('aria-pressed', pinned ? 'true' : 'false');
+    var textEl = btn.querySelector('.pin-btn-text');
+    if (textEl) textEl.textContent = pinned ? 'Pinned' : 'Pin to your case';
+  });
+}
+
+function renderAllPinnedPanels() {
+  document.querySelectorAll('.saved-violations-panel').forEach(function(container) {
+    renderPinnedPanel(container);
+  });
+}
+
+function renderPinnedPanel(container) {
+  var pinned = getPinnedViolations();
+  container.innerHTML = '';
+
+  if (pinned.length === 0) {
+    container.classList.add('is-empty');
+    container.innerHTML =
+      '<span class="saved-label">Your case</span>' +
+      '<p class="saved-empty-text">No HPD violations pinned yet. When you find ones related to your problem in a lookup, click <strong>Pin to your case</strong> to save them here. They\'ll persist across pages and sessions so you can reference them in your email, complaint, or court filing.</p>';
+    return;
+  }
+
+  container.classList.remove('is-empty');
+
+  // Group by building so multiple cases stay legible
+  var byBuilding = {};
+  var buildingOrder = [];
+  pinned.forEach(function(p) {
+    var key = p.building || 'Unknown building';
+    if (!byBuilding[key]) {
+      byBuilding[key] = [];
+      buildingOrder.push(key);
+    }
+    byBuilding[key].push(p);
+  });
+
+  var html = '<div class="saved-header">' +
+    '<span class="saved-label">Your case &mdash; <strong>' + pinned.length + ' violation' + (pinned.length === 1 ? '' : 's') + ' pinned</strong></span>' +
+    '<button type="button" class="saved-clear-btn">Clear all</button>' +
+  '</div>';
+
+  buildingOrder.forEach(function(buildingLabel) {
+    var items = byBuilding[buildingLabel];
+    if (buildingOrder.length > 1) {
+      html += '<div class="saved-building-label">' + escapeHTMLLookup(toSentenceCase(buildingLabel)) + '</div>';
+    }
+    html += '<ul class="saved-list">';
+    items.forEach(function(p) { html += renderSavedItem(p); });
+    html += '</ul>';
+  });
+
+  html += '<p class="saved-footer-tip"><strong>Tip:</strong> Use these IDs in your email to your landlord, your timeline, your 311 callback, and any HPD or Housing Court filing.</p>';
+
+  container.innerHTML = html;
+
+  // Wire up handlers
+  container.querySelectorAll('.saved-unpin-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      unpinViolation(btn.getAttribute('data-violation-id'));
+    });
+  });
+  container.querySelectorAll('.saved-copy-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      copyToClipboardLookup(btn.getAttribute('data-violation-id'), btn);
+    });
+  });
+  var clearBtn = container.querySelector('.saved-clear-btn');
+  if (clearBtn) clearBtn.addEventListener('click', clearAllPinned);
+}
+
+function renderSavedItem(p) {
+  var statePillHTML = '<span class="lookup-state-pill state-' + p.statusState + '"><span class="state-dot" aria-hidden="true"></span>' + escapeHTMLLookup(p.statusLabel) + '</span>';
+  var classDescriptor = { 'A': 'Non-hazardous', 'B': 'Hazardous', 'C': 'Immediately hazardous', 'I': 'Information' }[p.class] || '';
+  var classPillHTML = p.class
+    ? '<span class="lookup-class-pill"><span class="class-letter">Class ' + escapeHTMLLookup(p.class) + '</span>' + (classDescriptor ? '<span class="class-descriptor">: ' + escapeHTMLLookup(classDescriptor) + '</span>' : '') + '</span>'
+    : '';
+  var dateText = p.date ? formatDateLookup(p.date) : '';
+  return '<li class="saved-item">' +
+    '<button type="button" class="saved-unpin-btn" data-violation-id="' + escapeHTMLLookup(p.id) + '" aria-label="Remove from your case">&times;</button>' +
+    '<div class="saved-item-pills">' + statePillHTML + classPillHTML + (dateText ? '<span class="saved-item-date">' + escapeHTMLLookup(dateText) + '</span>' : '') + '</div>' +
+    '<div class="saved-item-id-row">' +
+      '<span class="saved-id-label">Violation ID</span>' +
+      '<span class="saved-id-value">' + escapeHTMLLookup(p.id) + '</span>' +
+      '<button type="button" class="saved-copy-btn" data-violation-id="' + escapeHTMLLookup(p.id) + '">Copy ID</button>' +
+    '</div>' +
+    '<div class="saved-item-desc">' + escapeHTMLLookup(p.desc) + '</div>' +
+    (p.location ? '<div class="saved-item-location">' + escapeHTMLLookup(p.location) + '</div>' : '') +
+  '</li>';
+}
+
+function copyToClipboardLookup(text, btn) {
+  function showSuccess() {
+    var orig = btn.textContent;
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = orig;
+      btn.classList.remove('copied');
+    }, 1400);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(showSuccess).catch(function() {
+      fallbackCopyText(text, showSuccess);
+    });
+  } else {
+    fallbackCopyText(text, showSuccess);
+  }
+}
+
+function fallbackCopyText(text, onSuccess) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    if (onSuccess) onSuccess();
+  } catch (e) { /* ignore */ }
+  document.body.removeChild(ta);
+}
+
+// Cross-tab sync: if user pins/unpins in another tab, update this one
+window.addEventListener('storage', function(e) {
+  if (e.key === PINNED_STORAGE_KEY) {
+    renderAllPinnedPanels();
+    updateAllPinButtons();
+  }
+});
+
+// Render saved panels on page load (panels exist on every scenario page,
+// not just the one where the user did the lookup)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderAllPinnedPanels);
+} else {
+  renderAllPinnedPanels();
 }
