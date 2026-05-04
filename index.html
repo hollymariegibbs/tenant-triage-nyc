@@ -90,6 +90,96 @@
       border-bottom-color: var(--ink);
     }
 
+    /* OPTION B: nav callout for free fliers */
+    .site-nav a.nav-cta {
+      background: var(--accent);
+      color: var(--bg);
+      padding: 0.4rem 0.85rem;
+      font-weight: 700;
+      border-bottom: 2px solid transparent;
+      transition: background 0.15s ease;
+    }
+    .site-nav a.nav-cta:hover {
+      background: var(--accent-deep);
+      border-bottom-color: transparent;
+    }
+
+    /* OPTION A: frame-breaking flier promo */
+    .page-layout {
+      max-width: 64rem;
+      margin: 0 auto;
+    }
+    .flier-promo {
+      background: var(--bg);
+      border: 2px solid var(--ink);
+      box-shadow: 6px 6px 0 0 var(--accent);
+      max-width: 22rem;
+      margin: 1.5rem auto 0;
+    }
+    .flier-promo-thumb {
+      background: var(--bg-soft);
+      border-bottom: 2px solid var(--ink);
+      padding: 1rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .flier-promo-thumb img {
+      width: 100%; height: auto; display: block;
+      max-height: 11rem;
+      object-fit: contain;
+    }
+    .flier-promo-body {
+      padding: 1rem 1.1rem 1.1rem;
+    }
+    .flier-promo-label {
+      display: block;
+      font-size: 0.65rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 0.4rem;
+    }
+    .flier-promo-body h3 {
+      font-weight: 800; font-size: 1.0625rem;
+      letter-spacing: -0.015em; line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+    .flier-promo-body p {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin-bottom: 0.85rem;
+    }
+    .flier-promo-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-weight: 700; font-size: 0.875rem;
+      color: var(--accent-deep);
+      text-decoration: none;
+      border-bottom: 2px solid var(--accent);
+    }
+    .flier-promo-link:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+    @media (min-width: 1080px) {
+      .page-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 17rem;
+        gap: 2.5rem;
+        padding: 0 1.5rem;
+        align-items: start;
+      }
+      .page-layout > article {
+        max-width: none;
+        padding-left: 0;
+        padding-right: 0;
+        margin: 0;
+      }
+      .flier-promo {
+        max-width: none;
+        margin: 3rem 0 0;
+        position: sticky;
+        top: 1.5rem;
+      }
+    }
+
     article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
 
     /* Hero / intro */
@@ -676,9 +766,12 @@
         <a href="index.html" class="current">All scenarios</a>
         <a href="about.html">About</a>
         <a href="free-help.html">Free help</a>
+        <a href="fliers.html" class="nav-cta">Free fliers</a>
       </nav>
     </div>
   </header>
+
+  <div class="page-layout">
 
   <article>
 
@@ -789,6 +882,20 @@
     </div>
 
   </article>
+
+  <aside class="flier-promo">
+    <a href="fliers.html" class="flier-promo-thumb">
+      <img src="images/getillustrations-JmRmiQPHMGM-unsplash.png" alt="Hand-drawn cat lounging in a cardboard box">
+    </a>
+    <div class="flier-promo-body">
+      <span class="flier-promo-label">Print &amp; post</span>
+      <h3>Free fliers for your building.</h3>
+      <p>Visual or detailed &mdash; pick what fits the spot. Help your neighbors find this site.</p>
+      <a href="fliers.html" class="flier-promo-link">See both fliers &rarr;</a>
+    </div>
+  </aside>
+
+  </div>
 
   <footer class="site-footer">
     Made by <a href="https://www.hollymariegibbs.com" target="_blank" rel="noopener">Holly Gibbs</a>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free printable fliers — Tenant Triage NYC</title>
+  <meta name="description" content="Free printable fliers about NYC tenant rights — pick the friendly visual version or the detailed text version.">
+  <link rel="canonical" href="https://tenanttriagenyc.org/fliers">
+  <meta property="og:title" content="Free printable fliers — Tenant Triage NYC">
+  <meta property="og:description" content="Free printable fliers about NYC tenant rights — pick the friendly visual version or the detailed text version.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tenant Triage NYC">
+  <meta property="og:url" content="https://tenanttriagenyc.org/fliers">
+  <meta property="og:image" content="https://tenanttriagenyc.org/images/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free printable fliers — Tenant Triage NYC">
+  <meta name="twitter:description" content="Free printable fliers about NYC tenant rights — pick the friendly visual version or the detailed text version.">
+  <meta name="twitter:image" content="https://tenanttriagenyc.org/images/og-card.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f3ef;
+      --bg-elevated: #fafaf8;
+      --ink: #111111;
+      --ink-soft: #3d3d3d;
+      --ink-faded: #6b6b6b;
+      --rule: #e6e4df;
+      --rule-strong: #c9c5bc;
+
+      --accent: #0d7377;
+      --accent-deep: #08494c;
+      --accent-soft: #e3f0f0;
+      --accent-bright: #5eb6b9;
+
+      --measure: 56rem;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 18px; scroll-behavior: smooth; }
+
+    body {
+      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
+      font-size: 1.125rem;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem 1.5rem;
+      background: var(--bg);
+    }
+    .site-header-inner {
+      max-width: 64rem; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .wordmark {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      text-decoration: none; color: var(--ink);
+    }
+    .wordmark-main {
+      font-weight: 900; font-size: 1.375rem;
+      letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
+    }
+    .wordmark-accent {
+      font-weight: 500; font-size: 0.95rem;
+      color: var(--accent); letter-spacing: 0.01em;
+    }
+    .site-nav {
+      display: flex; gap: 1.75rem;
+      font-size: 0.875rem; color: var(--ink); font-weight: 500;
+    }
+    .site-nav a {
+      color: inherit; text-decoration: none;
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .site-nav a:hover { border-bottom-color: var(--accent); }
+    .site-nav a.current { border-bottom-color: var(--ink); }
+
+    article {
+      max-width: var(--measure);
+      margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+    }
+
+    .reading-label {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent-deep); background: var(--accent-soft);
+      padding: 0.35rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      line-height: 1.1;
+      letter-spacing: -0.035em;
+      margin-bottom: 1rem;
+      color: var(--ink);
+    }
+
+    .standfirst {
+      font-weight: 400;
+      font-size: 1.1875rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin-bottom: 3rem;
+      max-width: 38rem;
+    }
+
+    .flier-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+    }
+
+    .flier-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      border: 2px solid var(--ink);
+    }
+    .flier-card-preview {
+      background: var(--bg-soft);
+      border-bottom: 2px solid var(--ink);
+      aspect-ratio: 8.5 / 11;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .flier-card-preview img {
+      width: 100%; height: 100%; object-fit: contain; display: block;
+    }
+    .flier-card-body {
+      padding: 1.5rem 1.5rem 1.75rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .flier-card-tag {
+      display: inline-block;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent-deep); background: var(--accent-soft);
+      padding: 0.25rem 0.55rem;
+      margin-bottom: 0.6rem;
+      align-self: flex-start;
+    }
+    .flier-card h2 {
+      font-weight: 800; font-size: 1.375rem;
+      letter-spacing: -0.02em; line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .flier-card p {
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+      margin-bottom: 1rem;
+    }
+    .flier-card-best-for {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      margin-bottom: 1.25rem;
+    }
+    .flier-card-best-for strong {
+      color: var(--ink); font-weight: 700;
+    }
+    .flier-card-cta {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      align-self: flex-start;
+      margin-top: auto;
+      padding: 0.7rem 1.1rem;
+      background: var(--ink); color: var(--bg);
+      text-decoration: none;
+      font-weight: 700; font-size: 0.9375rem;
+      letter-spacing: -0.005em;
+      border: 2px solid var(--ink);
+      transition: all 0.15s ease;
+    }
+    .flier-card-cta:hover {
+      background: var(--bg); color: var(--ink);
+    }
+    .flier-card-cta svg {
+      width: 14px; height: 14px;
+      stroke: currentColor; fill: none; stroke-width: 2.25;
+    }
+
+    .posting-note {
+      margin-top: 2.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-soft);
+      border-left: 4px solid var(--accent);
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+    }
+    .posting-note strong { color: var(--ink); font-weight: 700; }
+
+    .site-footer {
+      border-top: 2px solid var(--ink);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--ink-faded);
+    }
+    .site-footer a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule-strong);
+      transition: border-color 0.15s ease;
+    }
+    .site-footer a:hover {
+      border-bottom-color: var(--accent);
+      color: var(--accent-deep);
+    }
+
+    @media (max-width: 720px) {
+      .flier-grid { grid-template-columns: 1fr; }
+      article { padding: 2rem 1.25rem 4rem; }
+      h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="index.html" class="wordmark">
+        <span class="wordmark-main">Tenant Triage</span>
+        <span class="wordmark-accent">NYC</span>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">All scenarios</a>
+        <a href="about.html">About</a>
+        <a href="free-help.html">Free help</a>
+      </nav>
+    </div>
+  </header>
+
+  <article>
+
+    <span class="reading-label">Print &amp; share</span>
+    <h1>Free printable fliers.</h1>
+    <p class="standfirst">Help your neighbors find this site. Two versions &mdash; pick the one that fits where you're posting.</p>
+
+    <div class="flier-grid">
+
+      <!-- Friendly / visual -->
+      <div class="flier-card">
+        <div class="flier-card-preview">
+          <img src="images/tenant-triage-flier-kitty.png" alt="Hand-drawn flier with a cat in a mailbox holding ice cream, with the URL tenanttriagenyc.org and a QR code">
+        </div>
+        <div class="flier-card-body">
+          <span class="flier-card-tag">Friendly &amp; visual</span>
+          <h2>Doodle flier</h2>
+          <p>A friendly black-and-white doodle &mdash; just the URL, a QR code, and one line about what the site does. Quick to scan, easy on a busy bulletin board.</p>
+          <p class="flier-card-best-for"><strong>Best for:</strong> laundry rooms, coffee shop bulletin boards, group chats, mutual-aid handouts, posting in your building's shared spaces.</p>
+          <a href="images/tenant-triage-flier-kitty.pdf" class="flier-card-cta" download>
+            Download PDF
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Detailed -->
+      <div class="flier-card">
+        <div class="flier-card-preview">
+          <img src="images/know-your-rights-flier-preview.png" alt="Preview of the detailed Know Your Rights flier — a one-page rundown of NYC tenant rights with QR code">
+        </div>
+        <div class="flier-card-body">
+          <span class="flier-card-tag">Detailed</span>
+          <h2>Rights flier</h2>
+          <p>A one-page rundown of NYC tenant rights &mdash; heat, repairs, retaliation, lead, mold, immigration protections, and more &mdash; with the URL and a QR code.</p>
+          <p class="flier-card-best-for"><strong>Best for:</strong> elevators and lobby boards (where folks have a minute to read), tenant association meetings, legal-services waiting rooms.</p>
+          <a href="images/know-your-rights-flier.pdf" class="flier-card-cta" download>
+            Download PDF
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="posting-note"><strong>A note on posting in elevators:</strong> NYC has no city-wide ban on tenant-rights posters in elevators or building common areas, but individual landlords or co-ops may have rules. If you're unsure, the laundry room and the lobby bulletin board are usually safe.</p>
+
+  </article>
+
+  <footer class="site-footer">
+    Made by <a href="https://www.hollymariegibbs.com" target="_blank" rel="noopener">Holly Gibbs</a>
+  </footer>
+
+</body>
+</html>
