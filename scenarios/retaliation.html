@@ -23,804 +23,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../lookup.css">
   <link rel="stylesheet" href="../sidebar.css">
+  <link rel="stylesheet" href="../scenarios.css">
   <style>
-    :root {
-      --bg: #ffffff;
-      --bg-soft: #f5f3ef;
-      --bg-elevated: #fafaf8;
-      --ink: #111111;
-      --ink-soft: #3d3d3d;
-      --ink-faded: #6b6b6b;
-      --rule: #e6e4df;
-      --rule-strong: #c9c5bc;
-
-      --accent: #0d7377;
-      --accent-deep: #08494c;
-      --accent-soft: #e3f0f0;
-      --accent-bright: #5eb6b9; /* lighter variant for use on dark backgrounds */
-
-      --protect: #2a4a7f;
-      --protect-soft: #eaeff7;
-      --warning-ink: #7a3a0a;
-      --warning-bg: #fff4e6;
-      --warning-rule: #e8a35a;
-
-      --code-bg: #f3f1ec;
-      --code-rule: #d9d5ca;
-      --quote-bar: #c9c5bc;
-
-      --measure: 38rem;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 18px; scroll-behavior: smooth; }
-
-    body {
-      font-family: "Public Sans", system-ui, -apple-system, sans-serif;
-      font-size: 1.125rem;
-      line-height: 1.65;
-      color: var(--ink);
-      background: var(--bg);
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    .progress-bar {
-      position: fixed; top: 0; left: 0; height: 3px;
-      background: var(--accent); width: 0%; z-index: 1000;
-      transition: width 0.05s linear;
-    }
-
-    .site-header {
-      border-bottom: 2px solid var(--ink);
-      padding: 1.5rem 1.5rem;
-      background: var(--bg);
-    }
-    .site-header-inner {
-      max-width: 64rem; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 2rem;
-    }
-    .wordmark {
-      display: flex; align-items: baseline; gap: 0.5rem;
-      text-decoration: none; color: var(--ink);
-    }
-    .wordmark-main {
-      font-weight: 900; font-size: 1.375rem;
-      letter-spacing: -0.035em; line-height: 1; text-transform: uppercase;
-    }
-    .wordmark-accent {
-      font-weight: 500; font-size: 0.95rem;
-      color: var(--accent); letter-spacing: 0.01em;
-    }
-    .site-nav {
-      display: flex; gap: 1.75rem;
-      font-size: 0.875rem; color: var(--ink); font-weight: 500;
-    }
-    .site-nav a {
-      color: inherit; text-decoration: none;
-      padding: 0.25rem 0;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.15s ease;
-    }
-    .site-nav a:hover { border-bottom-color: var(--accent); }
-
-    article { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 6rem; }
-
-    /* Breadcrumbs — more prominent now */
-    .breadcrumbs {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.75rem;
-      font-size: 0.875rem;
-    }
-    .breadcrumbs a {
-      color: var(--ink-soft);
-      text-decoration: none;
-      font-weight: 500;
-      padding: 0.25rem 0;
-      border-bottom: 1px solid var(--rule-strong);
-      transition: all 0.15s ease;
-    }
-    .breadcrumbs a:hover {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
-    .breadcrumbs .sep {
-      color: var(--ink-faded);
-      font-weight: 400;
-    }
-    .breadcrumbs .current {
-      color: var(--ink);
-      font-weight: 600;
-    }
-    .breadcrumbs .category {
-      color: var(--ink-soft);
-      font-weight: 500;
-    }
-
-    h1 {
-      font-weight: 900;
-      font-size: clamp(2.25rem, 5.5vw, 3.25rem);
-      line-height: 1.05;
-      letter-spacing: -0.035em;
-      margin-bottom: 0.5rem;
-      color: var(--ink);
-    }
-
-    /* "What you're reading" subtitle */
-    .reading-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent-deep);
-      background: var(--accent-soft);
-      padding: 0.35rem 0.75rem;
-      margin-bottom: 1rem;
-    }
-    .reading-label svg {
-      width: 12px;
-      height: 12px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2.5;
-    }
-
-    .standfirst {
-      font-weight: 400;
-      font-size: 1.1875rem;
-      line-height: 1.5;
-      color: var(--ink-soft);
-      margin-bottom: 2rem;
-      max-width: 36rem;
-    }
-
-    .meta {
-      display: flex; flex-wrap: wrap; gap: 1.5rem;
-      padding: 0.875rem 0;
-      border-top: 1px solid var(--ink);
-      border-bottom: 1px solid var(--rule);
-      font-size: 0.8125rem; color: var(--ink-faded);
-      margin-bottom: 2.5rem;
-    }
-    .meta-item { display: flex; align-items: center; gap: 0.4rem; }
-    .meta-item svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
-    .meta-item strong { color: var(--ink); font-weight: 600; }
-    .meta-item a {
-      color: var(--accent-deep); text-decoration: none;
-      border-bottom: 1px solid var(--accent);
-    }
-
-    p { margin-bottom: 1.25rem; color: var(--ink); }
-    p strong { font-weight: 600; }
-
-    a.inline-link {
-      color: var(--accent-deep); text-decoration: none;
-      border-bottom: 1px solid var(--accent);
-      transition: background 0.15s ease;
-    }
-    a.inline-link:hover { background: var(--accent-soft); }
-
-    h2 {
-      font-weight: 800;
-      font-size: 1.625rem;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      margin-top: 3.5rem;
-      margin-bottom: 1.25rem;
-      color: var(--ink);
-    }
-
-    .sub-label {
-      font-weight: 700;
-      font-size: 1.25rem;
-      color: var(--ink);
-      margin-top: 1.75rem;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-
-    .read-first {
-      background: var(--bg-soft);
-      border-left: 4px solid var(--ink);
-      padding: 1.5rem 1.75rem;
-      margin-bottom: 2.5rem;
-    }
-    .read-first p { margin-bottom: 0.75rem; font-size: 0.9375rem; }
-    .read-first p:last-child { margin-bottom: 0; }
-    .read-first strong { color: var(--ink); font-weight: 700; }
-
-    .rights-box {
-      background: var(--ink);
-      color: var(--bg);
-      padding: 1.75rem 2rem;
-      margin: 2rem 0;
-    }
-    .rights-box .rights-label {
-      font-size: 0.7rem; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: #d4d2cc;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-    .rights-box h3 {
-      font-weight: 800; font-size: 1.375rem;
-      letter-spacing: -0.015em; color: var(--bg);
-      margin-bottom: 0.75rem;
-    }
-    .rights-box p { color: var(--bg); font-size: 0.9375rem; margin-bottom: 0.75rem; }
-    .rights-box ul { list-style: none; padding: 0; margin-top: 0.75rem; }
-    .rights-box li {
-      position: relative; padding-left: 1.5rem; margin-bottom: 0.6rem;
-      font-size: 0.9375rem; color: var(--bg);
-    }
-    .rights-box li::before {
-      content: "→"; position: absolute; left: 0;
-      color: var(--accent-bright); font-weight: 700;
-    }
-    .rights-box .source {
-      font-size: 0.75rem; color: #b8b6b1;
-      margin-top: 1rem; margin-bottom: 0;
-    }
-
-    .severity-table {
-      margin: 1rem 0 0.5rem;
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.875rem;
-    }
-    .severity-table th,
-    .severity-table td {
-      text-align: left;
-      padding: 0.5rem 0.75rem;
-      border-bottom: 1px solid #2c2c2c;
-      color: var(--bg);
-    }
-    .severity-table th {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #d4d2cc;
-      border-bottom-color: #4a4a4a;
-    }
-    .severity-table tr:last-child td { border-bottom: none; }
-    .severity-table .class-cell { font-weight: 700; color: var(--accent-bright); }
-
-    /* SEVERITY PICKER */
-    .severity-picker {
-      margin: 2rem 0 2.5rem;
-      padding: 1.5rem;
-      background: var(--bg-soft);
-      border: 2px solid var(--ink);
-    }
-    .severity-picker-header {
-      margin-bottom: 1rem;
-    }
-    .severity-picker-label {
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent-deep);
-      display: block;
-      margin-bottom: 0.4rem;
-    }
-    .severity-picker-title {
-      font-weight: 800;
-      font-size: 1.25rem;
-      letter-spacing: -0.015em;
-      color: var(--ink);
-      margin: 0;
-    }
-    .severity-picker-help {
-      font-size: 0.875rem;
-      color: var(--ink-soft);
-      margin-top: 0.5rem;
-      margin-bottom: 0;
-    }
-    .severity-options {
-      display: grid;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    .severity-option {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.875rem;
-      padding: 0.875rem 1rem;
-      background: var(--bg);
-      border: 1.5px solid var(--rule-strong);
-      cursor: pointer;
-      text-align: left;
-      font-family: inherit;
-      transition: all 0.12s ease;
-      width: 100%;
-    }
-    .severity-option:hover {
-      border-color: var(--accent);
-      background: var(--accent-soft);
-    }
-    .severity-option.active {
-      border-color: var(--ink);
-      background: var(--ink);
-      color: var(--bg);
-    }
-    .severity-option-marker {
-      flex-shrink: 0;
-      width: 1.25rem;
-      height: 1.25rem;
-      border: 1.5px solid var(--rule-strong);
-      border-radius: 100px;
-      margin-top: 0.15rem;
-      position: relative;
-      transition: all 0.12s ease;
-    }
-    .severity-option:hover .severity-option-marker {
-      border-color: var(--accent);
-    }
-    .severity-option.active .severity-option-marker {
-      border-color: var(--bg);
-      background: var(--bg);
-    }
-    .severity-option.active .severity-option-marker::after {
-      content: "";
-      position: absolute;
-      inset: 3px;
-      background: var(--ink);
-      border-radius: 100px;
-    }
-    .severity-option-text {
-      flex: 1;
-    }
-    .severity-option-name {
-      font-weight: 700;
-      font-size: 0.9375rem;
-      color: var(--ink);
-      display: block;
-      margin-bottom: 0.15rem;
-    }
-    .severity-option.active .severity-option-name { color: var(--bg); }
-    .severity-option-desc {
-      font-size: 0.8125rem;
-      color: var(--ink-soft);
-      display: block;
-    }
-    .severity-option.active .severity-option-desc { color: #c9c5bc; }
-
-    /* Severity context banner — shows after selection */
-    .severity-context {
-      margin: 1.5rem 0 2.5rem;
-      padding: 1.5rem 1.75rem;
-      background: var(--accent-soft);
-      border-left: 4px solid var(--accent);
-      display: none;
-    }
-    .severity-context.visible {
-      display: block;
-    }
-    .severity-context-label {
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent-deep);
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-    .severity-context h3 {
-      font-weight: 800;
-      font-size: 1.25rem;
-      letter-spacing: -0.015em;
-      color: var(--ink);
-      margin-bottom: 0.75rem;
-    }
-    .severity-context p {
-      font-size: 0.9375rem;
-      margin-bottom: 0.5rem;
-    }
-    .severity-context p:last-child { margin-bottom: 0; }
     .severity-context ul {
       margin: 0.5rem 0 0.75rem;
       padding-left: 1.25rem;
       font-size: 0.9375rem;
     }
+    
     .severity-context li {
       margin-bottom: 0.35rem;
       line-height: 1.55;
     }
-    .severity-context .key-fact {
-      display: block;
-      padding: 0.75rem 0;
-      border-top: 1px solid rgba(13, 115, 119, 0.2);
-      margin-top: 0.75rem;
-      font-size: 0.875rem;
-    }
-    .severity-context .key-fact strong {
-      color: var(--accent-deep);
-    }
-
-    .step {
-      margin: 3rem 0;
-      padding-top: 2rem;
-      border-top: 2px solid var(--ink);
-    }
-    .step-header { margin-bottom: 1.25rem; }
-    .step-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
-    .step-number {
-      font-weight: 800; font-size: 0.75rem;
-      letter-spacing: 0.08em; color: var(--accent);
-      text-transform: uppercase;
-    }
-    .time-chip {
-      display: inline-flex; align-items: center; gap: 0.35rem;
-      font-size: 0.75rem; font-weight: 500;
-      color: var(--ink-soft); background: var(--bg-soft);
-      padding: 0.25rem 0.6rem; border-radius: 100px;
-    }
-    .time-chip svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.25; }
-    .step-title {
-      font-weight: 800; font-size: 1.625rem;
-      line-height: 1.2; letter-spacing: -0.02em;
-      color: var(--ink); margin: 0;
-    }
-
-    .why-this-matters {
-      color: var(--ink-soft);
-      border-left: 3px solid var(--rule-strong);
-      padding-left: 1rem;
-      margin-bottom: 1.5rem;
-      font-size: 0.9375rem;
-      line-height: 1.55;
-    }
-
+    
     .step ol, .step ul { margin-bottom: 1.25rem; padding-left: 1.75rem; }
-    .step li { margin-bottom: 0.6rem; }
+    
     .step li ul, .step li ol { margin-top: 0.5rem; margin-bottom: 0.5rem; padding-left: 1.5rem; }
-
-    /* Template box */
-    .template {
-      background: var(--code-bg);
-      border: 1px solid var(--code-rule);
-      border-left: 4px solid var(--ink);
-      margin: 1rem 0 1.5rem;
-      position: relative;
-    }
-    .template-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0.6rem 1rem 0.6rem 1.25rem;
-      border-bottom: 1px solid var(--code-rule);
-      background: rgba(0,0,0,0.025);
-    }
-    .template-label {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-size: 0.7rem; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--ink);
-    }
-    .template-label svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
-    .copy-btn {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-family: inherit; font-size: 0.75rem; font-weight: 600;
-      color: var(--ink); background: var(--bg);
-      border: 1px solid var(--ink);
-      padding: 0.35rem 0.75rem;
-      cursor: pointer;
-      transition: all 0.12s ease;
-    }
-    .copy-btn:hover { background: var(--ink); color: var(--bg); }
-    .copy-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.25; }
-    .copy-btn.copied { background: var(--ink); color: var(--bg); }
-    .template-body {
-      padding: 1.25rem 1.5rem 1.5rem;
-      font-size: 0.9375rem; line-height: 1.65;
-      color: var(--ink);
-    }
-    .template-body p { margin-bottom: 0.75rem; color: var(--ink); }
-    .template-body p:last-child { margin-bottom: 0; }
-
-    .fill {
-      display: inline-block;
-      font-family: inherit; font-size: inherit; font-weight: 500;
-      color: var(--accent-deep); background: var(--bg);
-      border: none; border-bottom: 1.5px dashed var(--accent);
-      padding: 0 0.25rem; margin: 0 1px;
-      min-width: 4rem; max-width: 100%;
-      line-height: 1.4;
-      transition: background 0.12s ease;
-    }
-    .fill::placeholder {
-      color: var(--accent); font-style: italic;
-      font-weight: 400; opacity: 0.65;
-    }
-    .fill:focus {
-      outline: none;
-      background: var(--accent-soft);
-      border-bottom-color: var(--accent-deep);
-      border-bottom-style: solid;
-    }
-    .fill.has-value {
-      border-bottom-style: solid;
-      border-bottom-color: var(--ink);
-      color: var(--ink);
-    }
-
-    /* Spoken script box with fillable inputs */
-    .spoken {
-      margin: 1rem 0 1.5rem;
-      padding: 1rem 0 1rem 1.5rem;
-      border-left: 4px solid var(--quote-bar);
-      position: relative;
-    }
-    .spoken-label {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-size: 0.7rem; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--ink-soft);
-      margin-bottom: 0.6rem;
-    }
-    .spoken-label svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
-    .spoken-body {
-      font-size: 1.0625rem; line-height: 1.65;
-      color: var(--ink); font-weight: 400;
-    }
-    .spoken-body p { margin-bottom: 0.6rem; }
-    .spoken-body p:last-child { margin-bottom: 0; }
-
-    /* Fillable inputs in spoken scripts — bigger, more prominent */
-    .spoken .fill {
-      font-size: 1.0625rem;
-      font-weight: 500;
-      color: var(--accent-deep);
-      border-bottom-width: 2px;
-      padding: 0 0.3rem;
-      min-width: 5rem;
-    }
-    .spoken .fill::placeholder {
-      font-size: 1rem;
-    }
-    .spoken .fill.has-value {
-      color: var(--ink);
-      font-weight: 600;
-    }
-
-    .spoken-hint {
-      display: block; margin-top: 0.75rem;
-      font-size: 0.8125rem; color: var(--ink-faded);
-      font-style: italic;
-    }
-
-    /* Reference number capture */
-    .ref-capture {
-      background: var(--bg-soft);
-      border: 1px solid var(--rule-strong);
-      padding: 1rem 1.25rem;
-      margin: 1rem 0 1.5rem;
-      display: flex; align-items: center; gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .ref-capture-label {
-      font-weight: 600; font-size: 0.9375rem;
-      color: var(--ink); flex: 1 1 auto;
-    }
-    .ref-capture input {
-      font-family: inherit; font-size: 1rem; font-weight: 600;
-      color: var(--ink); background: var(--bg);
-      border: 1.5px solid var(--ink);
-      padding: 0.5rem 0.75rem;
-      width: 14rem; max-width: 100%;
-    }
-    .ref-capture input::placeholder { font-weight: 400; color: var(--ink-faded); }
-    .ref-capture input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-
-    .ref-recall {
-      background: var(--accent-soft);
-      border-left: 4px solid var(--accent);
-      padding: 1rem 1.25rem;
-      margin: 1rem 0;
-      font-size: 0.9375rem;
-    }
-    .ref-recall .label {
-      display: block;
-      font-size: 0.7rem; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--accent-deep);
-      margin-bottom: 0.25rem;
-    }
-    .ref-recall .number {
-      font-size: 1.125rem; font-weight: 700; color: var(--ink);
-    }
-    .ref-recall .empty {
-      color: var(--ink-faded);
-      font-weight: 400; font-style: italic;
-      font-size: 0.9375rem;
-    }
-
-    /* Callouts */
-    .callout {
-      margin: 2.5rem 0;
-      padding: 1.75rem 2rem;
-      position: relative;
-    }
-    .callout-protect {
-      background: var(--protect-soft);
-      border-left: 4px solid var(--protect);
-    }
-    .callout-warning {
-      background: var(--warning-bg);
-      border-left: 4px solid var(--warning-rule);
-    }
-    .callout-label {
-      font-size: 0.7rem; font-weight: 800;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      margin-bottom: 0.5rem; display: block;
-    }
-    .callout-protect .callout-label { color: var(--protect); }
-    .callout-warning .callout-label { color: var(--warning-ink); }
-
-    .callout h3 {
-      margin-top: 0; margin-bottom: 0.75rem;
-      font-weight: 800; font-size: 1.25rem;
-      letter-spacing: -0.015em; color: var(--ink);
-    }
-    .callout p { font-size: 0.9375rem; margin-bottom: 0.85rem; }
-    .callout p:last-child { margin-bottom: 0; }
-    .callout strong { font-weight: 700; color: var(--ink); }
-    .callout ul { margin: 0.75rem 0; padding-left: 1.25rem; font-size: 0.9375rem; }
+    
     .callout li { margin-bottom: 0.5rem; text-wrap: pretty; }
+    
     .callout p { text-wrap: pretty; }
-    .callout .resource-list { list-style: none; padding-left: 0; }
-    .callout .resource-list li { padding-left: 1.25rem; position: relative; }
-    .callout .resource-list li::before {
-      content: "•"; position: absolute; left: 0; font-weight: 700;
-    }
-    .callout-protect .resource-list li::before { color: var(--protect); }
-    .callout .sub-label { color: var(--ink); }
-
-    .draft-flag {
-      display: inline-block;
-      font-size: 0.65rem; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      background: var(--ink); color: var(--bg);
-      padding: 0.25rem 0.55rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .help-list { list-style: none; padding: 0; margin: 1rem 0 2rem; }
-    .help-list li {
-      padding: 1.125rem 0;
-      border-bottom: 1px solid var(--rule);
-    }
-    .help-list li:last-child { border-bottom: none; }
-    .help-list .name {
-      font-weight: 700; color: var(--ink);
-      display: block; margin-bottom: 0.2rem; font-size: 1rem;
-    }
-    .help-list .phone {
-      font-weight: 700; color: var(--accent-deep);
-      font-size: 1.125rem; letter-spacing: -0.005em;
-    }
-    .help-list .phone a,
-    .help-list .phone a:visited {
-      color: var(--accent-deep);
-      text-decoration: none;
-      border-bottom: 2px solid var(--accent-soft);
-      transition: border-color 0.15s ease;
-    }
-    .help-list .phone a:hover { border-bottom-color: var(--accent); }
-    .help-list .desc {
-      display: block; font-size: 0.875rem;
-      color: var(--ink-soft); margin-top: 0.2rem;
-    }
-
-    .related {
-      margin-top: 4rem;
-      padding-top: 2rem;
-      border-top: 2px solid var(--ink);
-    }
-    .related-grid { display: grid; gap: 0.5rem; margin-top: 1rem; }
-    .related-link {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 1rem 1.25rem;
-      background: var(--bg);
-      border: 1px solid var(--rule-strong);
-      text-decoration: none; color: var(--ink);
-      transition: all 0.15s ease;
-      font-size: 0.9375rem; font-weight: 500;
-    }
-    .related-link:hover {
-      border-color: var(--accent);
-      background: var(--accent-soft);
-      color: var(--accent-deep);
-    }
-    .related-link::after {
-      content: "→"; margin-left: auto;
-      color: var(--accent); font-weight: 700;
-    }
-
-    .sources {
-      margin-top: 4rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--rule);
-      font-size: 0.8125rem; color: var(--ink-faded);
-    }
-    .sources h3 {
-      font-size: 0.75rem; font-weight: 700;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--ink); margin-bottom: 0.75rem;
-    }
-    .sources ul { list-style: none; padding: 0; }
-    .sources li { margin-bottom: 0.4rem; }
-    .sources a {
-      color: var(--accent-deep); text-decoration: none;
-      border-bottom: 1px solid var(--rule-strong);
-    }
-    .verified {
-      margin-top: 1.25rem; padding-top: 1rem;
-      border-top: 1px solid var(--rule);
-    }
-
-    .disclaimer {
-      margin-top: 2.5rem;
-      padding: 1.25rem 1.5rem;
-      background: var(--bg-soft);
-      border: 1px dashed var(--rule-strong);
-      font-size: 0.8125rem;
-      color: var(--ink-soft);
-      line-height: 1.55;
-    }
-    .disclaimer strong { color: var(--ink); font-weight: 700; }
-
-    /* [VERIFY] inline tags — red, scannable, for unverified claims awaiting review */
-    .verify-tag {
-      display: inline-block;
-      background: #c8292e;
-      color: #ffffff;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding: 0.15rem 0.5rem;
-      margin: 0 0.15rem;
-      vertical-align: baseline;
-      font-style: normal;
-    }
-    .verify-tag::before { content: "⚑ "; }
-
-    .toast {
-      position: fixed; bottom: 2rem; left: 50%;
-      transform: translateX(-50%) translateY(150%);
-      background: var(--ink); color: var(--bg);
-      padding: 0.875rem 1.5rem;
-      font-size: 0.875rem; font-weight: 600;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 1000;
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-
-    @media print {
-      .progress-bar, .site-header, .related, .meta-item.print-hide, .copy-btn, .toast { display: none; }
-      body { background: white; }
-      .fill { border-bottom: 1px solid #999; }
-    }
-
-    @media (max-width: 600px) {
-      article { padding: 2rem 1.25rem 4rem; }
-      h1 { font-size: 2.25rem; }
-      .step-title { font-size: 1.375rem; }
-      .template-header { flex-wrap: wrap; gap: 0.5rem; }
-      .ref-capture { flex-direction: column; align-items: stretch; }
-      .ref-capture input { width: 100%; }
-      .severity-table { font-size: 0.8125rem; }
-      .severity-table th, .severity-table td { padding: 0.4rem 0.5rem; }
-    }
   </style>
   <link rel="stylesheet" href="../print.css" media="print">
 </head>
@@ -848,16 +70,16 @@
       <span class="toc-sidebar-label">On this page</span>
       <nav>
         <ul class="toc-group">
-          <li><a class="toc-section-link" href="#read-first" data-toc-target="read-first">Read this first</a></li>
-          <li><a class="toc-section-link" href="#rights" data-toc-target="rights">How the presumption works</a></li>
+          <li><a class="toc-section-link" href="#read-first" data-toc-target="read-first">Read this first.</a></li>
+          <li><a class="toc-section-link" href="#rights" data-toc-target="rights">How the presumption works.</a></li>
           <li><a class="toc-section-link" href="#severity-picker" data-toc-target="severity-picker">What's happening to you?</a></li>
-          <li><a class="toc-section-link" href="#step-1" data-toc-target="step-1">Step 1 &mdash; Build the timeline</a></li>
-          <li><a class="toc-section-link" href="#step-2" data-toc-target="step-2">Step 2 &mdash; Save evidence</a></li>
-          <li><a class="toc-section-link" href="#step-3" data-toc-target="step-3">Step 3 &mdash; Respond in writing</a></li>
-          <li><a class="toc-section-link" href="#step-4" data-toc-target="step-4">Step 4 &mdash; Get legal help</a></li>
-          <li><a class="toc-section-link" href="#step-5" data-toc-target="step-5">Step 5 &mdash; Using it in court</a></li>
-          <li><a class="toc-section-link" href="#free-help" data-toc-target="free-help">Free help</a></li>
-          <li><a class="toc-section-link" href="#related" data-toc-target="related">Related situations</a></li>
+          <li><a class="toc-section-link" href="#step-1" data-toc-target="step-1">Step 1 &mdash; Build the timeline.</a></li>
+          <li><a class="toc-section-link" href="#step-2" data-toc-target="step-2">Step 2 &mdash; Save evidence.</a></li>
+          <li><a class="toc-section-link" href="#step-3" data-toc-target="step-3">Step 3 &mdash; Respond in writing.</a></li>
+          <li><a class="toc-section-link" href="#step-4" data-toc-target="step-4">Step 4 &mdash; Get legal help.</a></li>
+          <li><a class="toc-section-link" href="#step-5" data-toc-target="step-5">Step 5 &mdash; Using it in court.</a></li>
+          <li><a class="toc-section-link" href="#free-help" data-toc-target="free-help">Free help.</a></li>
+          <li><a class="toc-section-link" href="#related" data-toc-target="related">Related situations.</a></li>
         </ul>
       </nav>
     </aside>
@@ -1028,9 +250,9 @@
       <p>If a holdover case is later filed, the <strong>warranty of habitability</strong> (RPL &sect;&nbsp;235-b) also lets you argue that rent should be reduced or abated for any period when the apartment had serious unfixed conditions &mdash; useful leverage in settlement.</p>
       <p>Spend two minutes searching <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a> below. Look for:</p>
       <ul>
-        <li><strong>Open Class B or C violations</strong> in your unit &mdash; the strongest evidence for both retaliation and habitability (leaks, heat, mold, pests, electrical, lead paint).</li>
-        <li><strong>Violations dated near or after your last complaint</strong> &mdash; helps build the timeline that supports a retaliation defense.</li>
-        <li><strong>Violations falsely certified as corrected</strong> &mdash; credibility evidence against the landlord.</li>
+        <li><strong>Open Class B or C violations</strong> in your unit &mdash; the strongest evidence for both retaliation and habitability (leaks, heat, mold, pests, electrical, lead paint)</li>
+        <li><strong>Violations dated near or after your last complaint</strong> &mdash; helps build the timeline that supports a retaliation defense</li>
+        <li><strong>Violations falsely certified as corrected</strong> &mdash; credibility evidence against the landlord</li>
       </ul>
       <p>Save printouts or screenshots in the same folder as your renewal correspondence.</p>
       <p><strong>An honest note:</strong> HPDOnline shows public records, but it's not a complete picture. Some violations age off, and landlords sometimes fix violations without the paper trail catching up. Use it as a starting point, not the whole story.</p>
@@ -1052,6 +274,8 @@
         </div>
       </section>
     </aside>
+
+    <div class="saved-violations-panel"></div>
 
     <h2>What to do, step by step</h2>
 
@@ -1075,11 +299,11 @@
       <ul>
         <li><strong>311 complaints</strong> &mdash; heat/hot water, mold, pests, leaks, lead paint, electrical, harassment. You can pull a full history at <a href="https://portal.311.nyc.gov/" class="inline-link" target="_blank" rel="noopener">311 Online</a>; each complaint has a reference number. Save the numbers.</li>
         <li><strong>Written repair requests</strong> to your landlord &mdash; email, text, portal message, paper letter. Screenshots count.</li>
-        <li><strong>HPD violations issued</strong> on your unit or building after your complaint (pulled from <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a>).</li>
-        <li><strong>DHCR filings</strong> &mdash; rent reduction applications, rent history requests, overcharge complaints.</li>
+        <li><strong>HPD violations issued</strong> on your unit or building after your complaint (pulled from <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a>)</li>
+        <li><strong>DHCR filings</strong> &mdash; rent reduction applications, rent history requests, overcharge complaints</li>
         <li><strong>Tenants' association activity</strong> &mdash; sign-up sheets, meeting notes, petitions, building flyers. Even informal organizing counts.</li>
         <li><strong>Housing Court filings</strong> &mdash; HP Actions, Orders to Show Cause, any prior proceeding you initiated.</li>
-        <li><strong>Refusals to consent</strong> to something the landlord wasn't entitled to demand (e.g., refusing to let them show the apartment at 8 PM, refusing to sign a buyout).</li>
+        <li><strong>Refusals to consent</strong> to something the landlord wasn't entitled to demand (e.g., refusing to let them show the apartment at 8 PM, refusing to sign a buyout)</li>
       </ul>
 
       <span class="sub-label">B. List the landlord's actions (what they did)</span>
@@ -1159,9 +383,9 @@
       <p>Go to <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a>, search your address, and screenshot / print:</p>
       <ul>
         <li><strong>Open violations</strong> in your unit &mdash; especially Class B (hazardous) and Class C (immediately hazardous). These are your strongest evidence that you had legitimate complaints.</li>
-        <li><strong>The full violation history on the building</strong> &mdash; a landlord with a pattern of violations across units is a landlord with a pattern of retaliation.</li>
-        <li><strong>Violations dated close to (or just after) your complaints</strong> &mdash; ties the inspection trail to your protected activity.</li>
-        <li><strong>Violations falsely certified as corrected</strong> &mdash; strong credibility evidence if you can show the condition wasn't actually fixed.</li>
+        <li><strong>The full violation history on the building</strong> &mdash; a landlord with a pattern of violations across units is a landlord with a pattern of retaliation</li>
+        <li><strong>Violations dated close to (or just after) your complaints</strong> &mdash; ties the inspection trail to your protected activity</li>
+        <li><strong>Violations falsely certified as corrected</strong> &mdash; strong credibility evidence if you can show the condition wasn't actually fixed</li>
       </ul>
       <p><strong>An honest note:</strong> HPDOnline is public but incomplete. Some violations age off after they're certified closed, and the certification step has no on-site verification most of the time. Use what's there as a starting point, then supplement with your own photos.</p>
 
@@ -1169,7 +393,7 @@
       <ul>
         <li><strong>Every text or email</strong> with your landlord, super, or management &mdash; both sides of the conversation. Export the thread if possible.</li>
         <li><strong>Every repair request you sent</strong> &mdash; in any form. A &ldquo;hi the toilet is broken&rdquo; text on January&nbsp;3 plus a non-renewal notice on January&nbsp;17 is a retaliation case.</li>
-        <li><strong>Voicemails</strong> &mdash; if the landlord called and threatened or pressured you, voicemails are recorded evidence. Back them up off your phone (most phones have an export option).</li>
+        <li><strong>Voicemails</strong> &mdash; if the landlord called and threatened or pressured you, voicemails are recorded evidence. Back them up off your phone (most phones have an export option)</li>
         <li><strong>Any written notice</strong> your landlord gave you: rent increase, non-renewal, notice of termination, notice to cure, lease amendment, eviction petition. Save the envelopes too.</li>
       </ul>
 
@@ -1232,10 +456,10 @@
       <ul>
         <li><strong>Acknowledge what you received</strong> and the date you received it.</li>
         <li><strong>State the retaliation claim clearly.</strong> Cite <a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" class="inline-link" target="_blank" rel="noopener">RPL &sect;&nbsp;223-b</a>, identify your protected activity (with dates), identify the landlord's action (with date), and state that the action falls within the 1-year presumption window.</li>
-        <li><strong>Demand withdrawal</strong> of the retaliatory action (or a written justification, if they insist they have one).</li>
+        <li><strong>Demand withdrawal</strong> of the retaliatory action (or a written justification, if they insist they have one)</li>
         <li><strong>State that you intend to remain in possession</strong> of the apartment.</li>
         <li><strong>Confirm you will continue paying rent</strong> at the prior amount in the meantime, and keep doing so.</li>
-        <li><strong>Reserve all rights and defenses</strong> (legal boilerplate, but worth including).</li>
+        <li><strong>Reserve all rights and defenses</strong> (legal boilerplate, but worth including)</li>
         <li><strong>Send by a method that proves delivery</strong> &mdash; certified mail with return receipt, or email if your lease specifies email is valid. Keep copies of everything.</li>
       </ul>
 
@@ -1272,7 +496,7 @@
       <ul>
         <li><strong>Certified mail with return receipt requested.</strong> Costs ~$10 at any USPS counter; gives you a green card signed by the recipient. This is the gold standard.</li>
         <li><strong>Keep a stamped copy</strong> for yourself by mailing one to your own address at the same time, unopened.</li>
-        <li><strong>If your lease allows email service:</strong> send and BCC yourself; save the sent record.</li>
+        <li><strong>If your lease allows email service:</strong> send and BCC yourself; save the sent record</li>
         <li><strong>Photograph the envelope and the contents</strong> before mailing.</li>
       </ul>
 
@@ -1304,10 +528,10 @@
 
       <span class="sub-label">Free, confidential help</span>
       <ul class="resource-list">
-        <li><strong>ActionNYC</strong> &mdash; free, safe immigration legal help connected to city services. Call <strong>311</strong> and ask for ActionNYC.</li>
-        <li><strong>Make the Road New York</strong> &mdash; tenant and immigrant rights support: <strong>718-418-7690</strong></li>
-        <li><strong>New York Immigration Coalition</strong> &mdash; referrals to trusted legal help: <strong>212-627-2227</strong></li>
-        <li><strong>NYC Commission on Human Rights</strong> &mdash; if your landlord threatens you with ICE: <strong>212-416-0197</strong></li>
+        <li><strong>ActionNYC</strong> &mdash; free, safe immigration legal help connected to city services. Call <a href="tel:311" class="inline-link"><strong>311</strong></a> and ask for ActionNYC.</li>
+        <li><strong>Make the Road New York</strong> &mdash; tenant and immigrant rights support: <a href="tel:7184187690" class="inline-link"><strong>718-418-7690</strong></a></li>
+        <li><strong>New York Immigration Coalition</strong> &mdash; referrals to trusted legal help: <a href="tel:2126272227" class="inline-link"><strong>212-627-2227</strong></a></li>
+        <li><strong>NYC Commission on Human Rights</strong> &mdash; if your landlord threatens you with ICE: <a href="tel:2124160197" class="inline-link"><strong>212-416-0197</strong></a></li>
       </ul>
     </aside>
 
@@ -1340,20 +564,20 @@
       <span class="sub-label">B. Pick the right enforcement path(s)</span>
       <p>Depending on what the landlord did, use one or more of these in parallel:</p>
       <ul>
-        <li><strong>Housing Court &mdash; as a defense.</strong> If your landlord has filed or is about to file a holdover or nonpayment, retaliation is an affirmative defense. Right to Counsel may apply (see below).</li>
+        <li><strong>Housing Court &mdash; as a defense.</strong> If your landlord has filed or is about to file a holdover or nonpayment, retaliation is an affirmative defense. Right to Counsel may apply (see below)</li>
         <li><strong>Housing Court &mdash; as an affirmative case.</strong> If the harassment is ongoing and severe, you can bring your own tenant-harassment case under NYC Admin. Code &sect;&nbsp;27-2004 for damages and injunctive relief. Generally requires a tenant attorney.</li>
         <li><strong>DHCR service reduction</strong> &mdash; rent-stabilized tenants can file Form <a href="https://hcr.ny.gov/form-ra-81" class="inline-link" target="_blank" rel="noopener">RA-81</a> (individual) or <a href="https://hcr.ny.gov/form-ra-84" class="inline-link" target="_blank" rel="noopener">RA-84</a> (building-wide). Free, administrative, and the threat of a rent freeze often restores services.</li>
-        <li><strong>DHCR harassment complaint</strong> &mdash; rent-stabilized / rent-controlled tenants can file Form <a href="https://hcr.ny.gov/form-ra-60h" class="inline-link" target="_blank" rel="noopener">RA-60H</a> for harassment intended to force them out.</li>
+        <li><strong>DHCR harassment complaint</strong> &mdash; rent-stabilized / rent-controlled tenants can file Form <a href="https://hcr.ny.gov/form-ra-60h" class="inline-link" target="_blank" rel="noopener">RA-60H</a> for harassment intended to force them out</li>
         <li><strong>NYC Commission on Human Rights</strong> &mdash; <a href="tel:2124160197" class="inline-link">212-416-0197</a>. File here if the retaliation involves protected-class discrimination (race, national origin, disability, source of income, immigration status, etc.) or ICE threats.</li>
         <li><strong>311 / HPD</strong> &mdash; for any code-level issue (heat, hot water, leaks, mold, pests, broken locks). Creates a public record and triggers HPD inspection.</li>
-        <li><strong>NYPD (911)</strong> &mdash; only for illegal lockouts, physical threats, or immediate criminal conduct.</li>
+        <li><strong>NYPD (911)</strong> &mdash; only for illegal lockouts, physical threats, or immediate criminal conduct</li>
       </ul>
 
       <span class="sub-label">C. Right to Counsel &mdash; if an eviction case is filed</span>
       <p>NYC's Universal Access to Legal Services Law provides a <strong>free attorney</strong> to eligible tenants in Housing Court evictions. You qualify if:</p>
       <ul>
-        <li><strong>You're 60 or older</strong> &mdash; covered regardless of income.</li>
-        <li><strong>You're income-eligible</strong> &mdash; household income at or below 200% of the Federal Poverty Guidelines (roughly $53,300 for a family of three or $62,000 for a family of four in 2025&ndash;2026).</li>
+        <li><strong>You're 60 or older</strong> &mdash; covered regardless of income</li>
+        <li><strong>You're income-eligible</strong> &mdash; household income at or below 200% of the Federal Poverty Guidelines (roughly $53,300 for a family of three or $62,000 for a family of four in 2025&ndash;2026)</li>
         <li><strong>Your case is an eviction proceeding</strong> &mdash; holdover, nonpayment, NYCHA termination, or illegal lockout. (Not HP Actions as a general rule, though the AHTP program has exceptions for emergency repairs and harassment.)</li>
       </ul>
       <p>Immigration status does not affect eligibility. To access: call <strong>311</strong> and ask for &ldquo;Right to Counsel,&rdquo; call Housing Court Answers, or ask the judge on your first court date.</p>
@@ -1362,7 +586,7 @@
       <ul>
         <li><strong>Legal Services NYC</strong> &mdash; <a href="tel:9176614500" class="inline-link">917-661-4500</a>. Free representation for income-eligible tenants. Right to Counsel provider.</li>
         <li><strong>Legal Aid Society &mdash; Tenant Rights</strong> &mdash; <a href="tel:2125773300" class="inline-link">212-577-3300</a>. Housing Justice Unit handles tenant associations and group advocacy; main line for other cases.</li>
-        <li><strong>HRA Office of Civil Justice (OCJ)</strong> &mdash; call <strong>311</strong> and ask for &ldquo;Tenant Legal Assistance,&rdquo; or visit NYC HRA's <a href="https://www.nyc.gov/site/hra/help/legal-services-for-tenants.page" class="inline-link" target="_blank" rel="noopener">Legal Services for Tenants</a> page.</li>
+        <li><strong>HRA Office of Civil Justice (OCJ)</strong> &mdash; call <strong>311</strong> and ask for &ldquo;Tenant Legal Assistance,&rdquo; or visit NYC HRA's <a href="https://www.nyc.gov/site/hra/help/legal-services-for-tenants.page" class="inline-link" target="_blank" rel="noopener">Legal Services for Tenants</a> page</li>
       </ul>
 
       <span class="sub-label">E. Watch for buyout / surrender offers</span>
@@ -1397,7 +621,7 @@
       <p>To rebut the presumption, your landlord generally has to show one of:</p>
       <ul>
         <li>The decision was made (or the action was documented) <em>before</em> your protected activity &mdash; e.g., a rent schedule that predates your complaint.</li>
-        <li>The action is based on a genuine lease violation or nonpayment with independent documentation (and not cooked up in response to your complaint).</li>
+        <li>The action is based on a genuine lease violation or nonpayment with independent documentation (and not cooked up in response to your complaint)</li>
         <li>There's a comparable, non-tenant-specific business reason &mdash; e.g., the building is being sold or withdrawn from the rental market, and the treatment applies to all tenants, not just you.</li>
       </ul>
       <p>&ldquo;I changed my mind,&rdquo; &ldquo;she's difficult,&rdquo; or &ldquo;I don't want her anymore&rdquo; don't rebut the presumption. Generalized annoyance isn't a legitimate reason.</p>
@@ -1405,12 +629,12 @@
       <span class="sub-label">C. What to bring to court</span>
       <ul>
         <li>A one-page printed <strong>timeline</strong> (the heart of Step 1) with dates, protected activities, landlord actions, and gap in months.</li>
-        <li><strong>311 complaint print-outs</strong> with reference numbers.</li>
+        <li><strong>311 complaint print-outs</strong> with reference numbers</li>
         <li><strong>HPD violation print-outs</strong> from HPDOnline for your unit and building.</li>
         <li>Your <strong>written communications</strong> with the landlord (texts, emails, repair requests) &mdash; printed, chronological, each dated.</li>
         <li>Your <strong>written response letter</strong> from Step 3 with the certified-mail receipt.</li>
-        <li><strong>Current condition photos</strong>.</li>
-        <li><strong>Photo ID</strong>.</li>
+        <li><strong>Current condition photos.</strong></li>
+        <li><strong>Photo ID.</strong></li>
         <li>All court papers.</li>
       </ul>
 
@@ -1433,8 +657,8 @@
       <span class="sub-label">E. Subsidized tenants: don't skip the administrative grievance</span>
       <p>If you're in NYCHA, project-based Section 8, or have an HCV voucher, your landlord (or NYCHA) generally must offer an <strong>administrative grievance/hearing</strong> with specific deadlines before any termination. Missing the grievance window can forfeit defenses you'd otherwise have in Housing Court later.</p>
       <ul>
-        <li><strong>NYCHA tenants:</strong> Legal Aid Society's NYCHA unit &mdash; <a href="tel:2125773300" class="inline-link">212-577-3300</a>.</li>
-        <li><strong>Section 8 voucher holders:</strong> source-of-income discrimination is separately illegal under NYC Human Rights Law &mdash; non-renewal because of your voucher is its own claim on top of retaliation.</li>
+        <li><strong>NYCHA tenants:</strong> Legal Aid Society's NYCHA unit &mdash; <a href="tel:2125773300" class="inline-link">212-577-3300</a></li>
+        <li><strong>Section 8 voucher holders:</strong> source-of-income discrimination is separately illegal under NYC Human Rights Law &mdash; non-renewal because of your voucher is its own claim on top of retaliation</li>
       </ul>
     </section>
 
@@ -1444,12 +668,12 @@
       <h3>Don't sign a buyout, &ldquo;cash for keys,&rdquo; or surrender agreement without a tenant lawyer reading it.</h3>
       <p>If your landlord offers money to leave, that offer is itself evidence that <strong>your right to remain has real value</strong> &mdash; usually more than the first number on the page. Common traps in landlord-drafted surrender agreements:</p>
       <ul>
-        <li><strong>Total release of claims</strong> &mdash; you agree to give up any retaliation, habitability, rent overcharge, deposit, or discrimination claim, even ones you don't yet know you have.</li>
+        <li><strong>Total release of claims</strong> &mdash; you agree to give up any retaliation, habitability, rent overcharge, deposit, or discrimination claim, even ones you don't yet know you have</li>
         <li><strong>Sealed terms (NDA)</strong> &mdash; you can't tell other tenants in your building. This makes systemic harassment patterns harder to surface.</li>
-        <li><strong>Move-out dates with self-executing penalties</strong> &mdash; if you're not out by 11:59 PM on day X, the money is forfeit and the landlord gets a stipulated judgment for use and occupancy.</li>
+        <li><strong>Move-out dates with self-executing penalties</strong> &mdash; if you're not out by 11:59 PM on day X, the money is forfeit and the landlord gets a stipulated judgment for use and occupancy</li>
         <li><strong>&ldquo;Voluntary&rdquo; framing on a deregulation event</strong> &mdash; for rent-stabilized apartments, certain landlord-tenant agreements can be used to argue the unit was vacated voluntarily and is eligible for deregulation. Met Council and tenant attorneys see this routinely.</li>
       </ul>
-      <p>For rent-stabilized tenants in particular: standard buyouts are routinely worth 10&ndash;30x the landlord's opening offer, and sometimes much more. Take a photo of any written offer, then call Met Council (<strong>212-979-0611</strong>) or a tenant attorney before signing. There is no honest reason for a landlord to demand a same-day signature.</p>
+      <p>For rent-stabilized tenants in particular: standard buyouts are routinely worth 10&ndash;30x the landlord's opening offer, and sometimes much more. Take a photo of any written offer, then call Met Council (<a href="tel:2129790611" class="inline-link"><strong>212-979-0611</strong></a>) or a tenant attorney before signing. There is no honest reason for a landlord to demand a same-day signature.</p>
     </aside>
 
     <!-- WARNING: Stipulation in any later holdover -->
@@ -1458,9 +682,9 @@
       <h3>Never sign a stipulation of settlement in court without a lawyer reading it.</h3>
       <p>If a holdover proceeding does get filed, most cases end in a <strong>stipulation of settlement</strong> &mdash; a written agreement signed in court that the judge enforces like a judgment. Stipulations can be tenant-friendly (more time, repairs ordered, money waived) or very dangerous. Common traps:</p>
       <ul>
-        <li><strong>&ldquo;Self-executing&rdquo; warrant language</strong> &mdash; one missed condition triggers eviction without another court appearance.</li>
-        <li><strong>Waiver of defenses</strong> &mdash; you agree to give up warranty of habitability, retaliation, or rent regulation defenses you would otherwise have.</li>
-        <li><strong>Move-out dates in exchange for time</strong> &mdash; you promise to be out by a specific date even if circumstances change.</li>
+        <li><strong>&ldquo;Self-executing&rdquo; warrant language</strong> &mdash; one missed condition triggers eviction without another court appearance</li>
+        <li><strong>Waiver of defenses</strong> &mdash; you agree to give up warranty of habitability, retaliation, or rent regulation defenses you would otherwise have</li>
+        <li><strong>Move-out dates in exchange for time</strong> &mdash; you promise to be out by a specific date even if circumstances change</li>
       </ul>
       <p>If you're in the hallway at court and the landlord's attorney hands you a stipulation, <strong>tell the judge you want to speak with a lawyer before signing anything.</strong> Judges grant this routinely. If you've already signed a stipulation you now regret, a lawyer can sometimes file an Order to Show Cause to vacate it.</p>
     </aside>
@@ -1522,16 +746,16 @@
       <h3>Sources &amp; verification</h3>
       <ul>
         <li><a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" target="_blank" rel="noopener">NY Real Property Law &sect;&nbsp;223-b &mdash; retaliation (1-year presumption window per HSTPA 2019)</a></li>
-        <li><a href="https://www.nysenate.gov/legislation/laws/RPP/235-B" target="_blank" rel="noopener">NY Real Property Law &sect;&nbsp;235-b &mdash; warranty of habitability</a></li>
+        <li><a href="https://www.nysenate.gov/legislation/laws/RPP/235-B" target="_blank" rel="noopener">NY Real Property Law &sect;&nbsp;235-b &mdash; warranty of habitability.</a></li>
         <li>NYC Administrative Code &sect;&nbsp;27-2004 et seq. &mdash; tenant harassment (Local Law 7 of 2008, as amended)</li>
-        <li>NYC Administrative Code &sect;&nbsp;26-521 &mdash; illegal eviction / unlawful lockout</li>
+        <li>NYC Administrative Code &sect;&nbsp;26-521 &mdash; illegal eviction / unlawful lockout.</li>
         <li><a href="https://www.nyc.gov/site/cchr/law/the-law.page" target="_blank" rel="noopener">NYC Human Rights Law</a> &mdash; NYC Admin. Code Title 8</li>
         <li><a href="https://www.law.cornell.edu/regulations/new-york/9-NYCRR-2524.3" target="_blank" rel="noopener">9 NYCRR &sect;&nbsp;2524.3 &mdash; grounds for refusal of renewal (rent-stabilized)</a></li>
-        <li><a href="https://hcr.ny.gov/good-cause-eviction" target="_blank" rel="noopener">NYS Good Cause Eviction Law</a> &mdash; Chapter 56 of the Laws of 2024, Part HH</li>
-        <li><a href="https://hcr.ny.gov/" target="_blank" rel="noopener">NYS Homes &amp; Community Renewal (DHCR) &mdash; rent regulation portal</a></li>
-        <li><a href="https://www.metcouncilonhousing.org/help-answers/" target="_blank" rel="noopener">Met Council on Housing &mdash; Help &amp; Answers</a></li>
-        <li><a href="https://housingcourtanswers.org/" target="_blank" rel="noopener">Housing Court Answers &mdash; tenant resources</a></li>
-        <li><a href="https://www.nyc.gov/site/cchr/index.page" target="_blank" rel="noopener">NYC Commission on Human Rights</a></li>
+        <li><a href="https://hcr.ny.gov/good-cause-eviction" target="_blank" rel="noopener">NYS Good Cause Eviction Law</a> &mdash; Chapter 56 of the Laws of 2024, Part HH.</li>
+        <li><a href="https://hcr.ny.gov/" target="_blank" rel="noopener">NYS Homes &amp; Community Renewal (DHCR) &mdash; rent regulation portal.</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/help-answers/" target="_blank" rel="noopener">Met Council on Housing &mdash; Help &amp; Answers.</a></li>
+        <li><a href="https://housingcourtanswers.org/" target="_blank" rel="noopener">Housing Court Answers &mdash; tenant resources.</a></li>
+        <li><a href="https://www.nyc.gov/site/cchr/index.page" target="_blank" rel="noopener">NYC Commission on Human Rights.</a></li>
       </ul>
       <p class="verified">All sources verified April 23, 2026. <a href="https://github.com/hollymariegibbs/tenant-triage-nyc/issues/new?template=report-error.yml&amp;page-url=https%3A%2F%2Ftenanttriagenyc.org%2Fscenarios%2Fretaliation" target="_blank" rel="noopener" class="inline-link">Found an error? Tell us.</a></p>
     </div>
@@ -1614,7 +838,7 @@
       },
       harassment: {
         title: 'Harassment, threats, or intimidation',
-        body: '<p>NYC defines tenant harassment broadly under <strong>NYC Administrative Code &sect;&nbsp;27-2004</strong> (Local Law 7 of 2008, strengthened by later amendments): any act or omission intended to force a tenant to surrender rights or leave. That includes threats, baseless eviction filings, false statements to induce you to move, repeated contact at odd hours, and failures to provide essential services. On top of RPL &sect;&nbsp;223-b retaliation, harassment has its own remedies: a tenant can bring a separate action in Housing Court for damages and injunctive relief.</p><p><strong>Three different NYC units handle different flavors of harassment</strong> &mdash; know which one fits your situation:</p><ul><li><strong>NYC Tenant Helpline</strong> (Public Engagement Unit) &mdash; call <strong>311</strong> and say &ldquo;Tenant Helpline.&rdquo; The central hub for 1-on-1 support and routing to legal services.</li><li><strong>HPD Tenant Anti-Harassment Unit (TAHU)</strong> &mdash; for landlords withholding essential services (heat, water, repairs) to pressure you out. Route through 311 or the Tenant Helpline.</li><li><strong>DOB Office of the Tenant Advocate (OTA)</strong> &mdash; for <em>construction-related</em> harassment (unsafe conditions, work at odd hours, disruption intended to drive you out). Call <strong>(212) 393-2949</strong> or email <strong>TenantAdvocate@buildings.nyc.gov</strong>.</li><li><strong>NYS Tenant Protection Unit (TPU)</strong> &mdash; for rent-stabilized tenants, a state-level law enforcement office. Email <strong>TPUinfo@hcr.ny.gov</strong>.</li></ul><span class="key-fact"><strong>Most important for you &mdash; document everything:</strong> save every text, voicemail, and email; photograph posted notes on your door and any unsafe conditions; write down dates and exact words for verbal incidents. <strong>New York is a one-party consent state</strong>, so you can legally record your own conversations with your landlord without their permission. Keep the 311 Service Request Number (SRN) from every call &mdash; if complaints are closed without being fixed, the SRN history proves the pattern of neglect. For severe or physical threats, call <strong>NYPD (911)</strong>.</span>'
+        body: '<p>NYC defines tenant harassment broadly under <strong>NYC Administrative Code &sect;&nbsp;27-2004</strong> (Local Law 7 of 2008, strengthened by later amendments): any act or omission intended to force a tenant to surrender rights or leave. That includes threats, baseless eviction filings, false statements to induce you to move, repeated contact at odd hours, and failures to provide essential services. On top of RPL &sect;&nbsp;223-b retaliation, harassment has its own remedies: a tenant can bring a separate action in Housing Court for damages and injunctive relief.</p><p><strong>Three different NYC units handle different flavors of harassment</strong> &mdash; know which one fits your situation:</p><ul><li><strong>NYC Tenant Helpline</strong> (Public Engagement Unit) &mdash; call <strong>311</strong> and say &ldquo;Tenant Helpline.&rdquo; The central hub for 1-on-1 support and routing to legal services.</li><li><strong>HPD Tenant Anti-Harassment Unit (TAHU)</strong> &mdash; for landlords withholding essential services (heat, water, repairs) to pressure you out. Route through 311 or the Tenant Helpline.</li><li><strong>DOB Office of the Tenant Advocate (OTA)</strong> &mdash; for <em>construction-related</em> harassment (unsafe conditions, work at odd hours, disruption intended to drive you out). Call <strong>(212) 393-2949</strong> or email <strong>TenantAdvocate@buildings.nyc.gov.</strong></li><li><strong>NYS Tenant Protection Unit (TPU)</strong> &mdash; for rent-stabilized tenants, a state-level law enforcement office. Email <strong>TPUinfo@hcr.ny.gov.</strong></li></ul><span class="key-fact"><strong>Most important for you &mdash; document everything:</strong> save every text, voicemail, and email; photograph posted notes on your door and any unsafe conditions; write down dates and exact words for verbal incidents. <strong>New York is a one-party consent state</strong>, so you can legally record your own conversations with your landlord without their permission. Keep the 311 Service Request Number (SRN) from every call &mdash; if complaints are closed without being fixed, the SRN history proves the pattern of neglect. For severe or physical threats, call <strong>NYPD (911)</strong>.</span>'
       },
       'ice-threats': {
         title: 'ICE threats or immigration-based harassment',

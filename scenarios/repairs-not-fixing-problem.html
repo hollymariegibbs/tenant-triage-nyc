@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My landlord made a repair but the problem is back — Tenant Triage NYC</title>
+  <meta name="description" content="What to do when your NYC landlord made a repair but the underlying problem keeps coming back — re-documenting, re-filing 311, and escalating to HPD inspection or HP Action.">
+  <link rel="canonical" href="https://tenanttriagenyc.org/scenarios/repairs-not-fixing-problem">
+  <meta property="og:title" content="My landlord made a repair but the problem is back — Tenant Triage NYC">
+  <meta property="og:description" content="What to do when your NYC landlord made a repair but the underlying problem keeps coming back — re-documenting, re-filing 311, and escalating to HPD inspection or HP Action.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Tenant Triage NYC">
+  <meta property="og:url" content="https://tenanttriagenyc.org/scenarios/repairs-not-fixing-problem">
+  <meta property="og:image" content="https://tenanttriagenyc.org/images/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="My landlord made a repair but the problem is back — Tenant Triage NYC">
+  <meta name="twitter:description" content="What to do when your NYC landlord made a repair but the underlying problem keeps coming back — re-documenting, re-filing 311, and escalating to HPD inspection or HP Action.">
+  <meta name="twitter:image" content="https://tenanttriagenyc.org/images/og-card.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../lookup.css">
+  <link rel="stylesheet" href="../sidebar.css">
+  <link rel="stylesheet" href="../scenarios.css">
+  <style>
+    .rights-box a.inline-link,
+    .rights-box a.inline-link:visited {
+      color: var(--accent-bright);
+      border-bottom-color: var(--accent-bright);
+    }
+    
+    .rights-box a.inline-link:hover {
+      color: var(--bg);
+      border-bottom-color: var(--bg);
+    }
+    
+    /* Worked examples (replaces severity-picker for this scenario) */
+    .examples {
+      margin: 2.5rem 0 3rem;
+      padding: 2rem 2.25rem;
+      background: var(--bg-elevated);
+      border: 1px solid var(--rule);
+    }
+    
+    .examples-header { margin-bottom: 1.5rem; }
+    
+    .examples-label {
+      display: block;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 0.5rem;
+    }
+    
+    .examples-title {
+      font-weight: 800; font-size: 1.375rem;
+      letter-spacing: -0.02em; color: var(--ink);
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+    
+    .examples-help {
+      color: var(--ink-soft); font-size: 0.9375rem;
+      line-height: 1.6; max-width: 36rem;
+    }
+    
+    .examples-list { list-style: none; padding: 0; margin: 0; }
+    
+    .example {
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-left: 4px solid var(--accent);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .example:last-child { margin-bottom: 0; }
+    
+    .example-label {
+      display: block;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent-deep);
+      margin-bottom: 0.4rem;
+    }
+    
+    .example h3 {
+      font-weight: 700; font-size: 1.0625rem;
+      letter-spacing: -0.01em; color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    
+    .example p {
+      font-size: 0.9375rem; line-height: 1.55;
+      color: var(--ink-soft);
+      margin-bottom: 0.5rem;
+    }
+    
+    .example p:last-child { margin-bottom: 0; }
+    
+    .example-lever {
+      background: var(--bg-soft);
+      padding: 0.65rem 0.85rem;
+      border-left: 3px solid var(--accent);
+      font-size: 0.875rem !important;
+      margin-top: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+    
+    .example-lever strong { color: var(--ink); }
+    
+    .example-link { font-size: 0.875rem !important; }
+    
+    .verify {
+      display: inline-block;
+      font-size: 0.6875rem; font-weight: 800;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--warning-ink);
+      background: var(--warning-bg);
+      padding: 0.1rem 0.4rem;
+      margin-left: 0.25rem;
+      vertical-align: 1px;
+      border: 1px solid var(--warning-rule);
+    }
+    
+    /* Savelist — clickable checklist for evidence-collection style sections */
+    .savelist {
+      list-style: none;
+      padding: 0;
+      margin: 0.75rem 0 0;
+    }
+    
+    .savelist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.625rem;
+      padding: 0.5rem 0;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+    }
+    
+    .savelist input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--rule-strong);
+      border-radius: 3px;
+      cursor: pointer;
+      flex-shrink: 0;
+      margin: 2px 0 0 0;
+      background: var(--bg);
+      display: grid;
+      place-content: center;
+      transition: all 0.15s ease;
+    }
+    
+    .savelist input[type="checkbox"]:hover { border-color: var(--accent); }
+    
+    .savelist input[type="checkbox"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    
+    .savelist input[type="checkbox"]:checked::after {
+      content: "";
+      width: 10px;
+      height: 6px;
+      border-left: 2px solid var(--bg);
+      border-bottom: 2px solid var(--bg);
+      transform: rotate(-45deg) translate(1px, -1px);
+    }
+    
+    .savelist label {
+      cursor: pointer;
+      flex: 1;
+      color: var(--ink-soft);
+      transition: color 0.15s ease;
+    }
+    
+    .savelist input[type="checkbox"]:checked + label {
+      color: var(--ink-faded);
+      text-decoration: line-through;
+    }
+  </style>
+  <link rel="stylesheet" href="../print.css" media="print">
+</head>
+<body>
+
+  <div class="progress-bar" id="progress"></div>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="wordmark">
+        <span class="wordmark-main">Tenant Triage</span>
+        <span class="wordmark-accent">NYC</span>
+      </a>
+      <nav class="site-nav">
+        <a href="../index.html">All scenarios</a>
+        <a href="../about.html">About</a>
+        <a href="../free-help.html">Free help</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <aside class="toc-sidebar" aria-label="On this page">
+      <span class="toc-sidebar-label">On this page</span>
+      <nav>
+        <ul class="toc-group">
+          <li><a class="toc-section-link" href="#read-first" data-toc-target="read-first">Read this first.</a></li>
+          <li><a class="toc-section-link" href="#rights" data-toc-target="rights">Know your rights.</a></li>
+          <li><a class="toc-section-link" href="#examples" data-toc-target="examples">What kind of incomplete repair?</a></li>
+          <li><a class="toc-section-link" href="#step-1" data-toc-target="step-1">Step 1 &mdash; Re-document.</a></li>
+          <li><a class="toc-section-link" href="#step-2" data-toc-target="step-2">Step 2 &mdash; Tell your landlord again.</a></li>
+          <li><a class="toc-section-link" href="#step-3" data-toc-target="step-3">Step 3 &mdash; Re-file a 311 complaint.</a></li>
+          <li><a class="toc-section-link" href="#step-4" data-toc-target="step-4">Step 4 &mdash; Check HPD status.</a></li>
+          <li><a class="toc-section-link" href="#step-5" data-toc-target="step-5">Step 5 &mdash; Escalate (HP Action / DHCR)</a></li>
+          <li><a class="toc-section-link" href="#free-help" data-toc-target="free-help">Free help.</a></li>
+          <li><a class="toc-section-link" href="#related" data-toc-target="related">Related situations.</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article>
+
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">All scenarios</a>
+      <span class="sep">/</span>
+      <span class="category">Repairs not being made</span>
+      <span class="sep">/</span>
+      <span class="current">Repairs not fixing the problem</span>
+    </nav>
+
+    <span class="reading-label">
+      <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Escalation guide for incomplete repairs
+    </span>
+
+    <h1>My landlord made a repair, but the problem is back.</h1>
+
+    <p class="standfirst">When the patch peeled, the leak returned, the mold grew through the paint, or the heat went out again the next week &mdash; here's how to escalate from "another 311 complaint" to a real fix.</p>
+
+    <div class="meta">
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span><strong>10 min</strong> read</span>
+      </span>
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span>Last verified <strong>April 27, 2026</strong></span>
+      </span>
+      <span class="meta-item print-hide">
+        <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+        <a href="#" onclick="window.print(); return false;">Print this page</a>
+      </span>
+    </div>
+
+    <div class="read-first" id="read-first">
+      <p>You did the right thing &mdash; you complained, you waited, your landlord (or someone they sent) did <em>something</em>. But the mold grew back through the paint. The leak is dripping again. The radiator's cold. The roaches are back two weeks after the spray. <strong>This is one of the most common patterns in NYC housing</strong>, and you have specific legal options that go beyond filing another 311 complaint and hoping for a different result.</p>
+      <p><strong>The principle is simple:</strong> NYC's <a href="https://www.nysenate.gov/legislation/laws/RPP/235-B" class="inline-link" target="_blank" rel="noopener">warranty of habitability</a> requires landlords to <em>actually</em> fix problems, not just hide their symptoms. A repair that doesn't address the root cause is not a repair &mdash; it's a delay tactic. Several specific laws (<a href="https://www1.nyc.gov/assets/buildings/local_laws/ll55of2018.pdf" class="inline-link" target="_blank" rel="noopener">Local Law 55 for mold</a>, <a href="https://www.nyc.gov/site/hpd/services-and-information/lead-based-paint.page" class="inline-link" target="_blank" rel="noopener">Local Law 1 for lead</a>, the <a href="https://www.nyc.gov/assets/buildings/pdf/HousingMaintenanceCode.pdf" class="inline-link" target="_blank" rel="noopener">Housing Maintenance Code</a> for everything else) are explicit about this.</p>
+      <p><strong>Skip ahead to "What kind of incomplete repair?"</strong> below if you want a sketch of how this typically plays out for your specific problem. Otherwise, the steps below work for any kind of incomplete repair.</p>
+    </div>
+
+    <div class="rights-box" id="rights">
+      <span class="rights-label">Know your rights</span>
+      <h3>The repair has to actually fix the problem</h3>
+      <p>NYC's <strong>warranty of habitability</strong> (<a href="https://www.nysenate.gov/legislation/laws/RPP/235-B" class="inline-link" target="_blank" rel="noopener">NY Real Property Law &sect;&nbsp;235-b</a>) requires every landlord to keep your apartment fit for human habitation. That obligation is ongoing &mdash; it isn't satisfied by a token attempt. If a condition recurs because the underlying cause was never addressed, the landlord is still in violation.</p>
+
+      <p>Several specific laws spell out what a real repair looks like for the most common band-aid scenarios:</p>
+
+      <ul style="margin-top: 0.5rem; padding-left: 1.25rem;">
+        <li style="margin-bottom: 0.5rem;"><strong>Mold (<a href="https://www1.nyc.gov/assets/buildings/local_laws/ll55of2018.pdf" class="inline-link" target="_blank" rel="noopener">Local Law 55 of 2018</a>):</strong> Landlords must fix the underlying moisture source &mdash; not just paint over it. Buildings with 10+ apartments must hire a NYS-licensed mold assessor and a separate licensed remediator for any patch over 10&nbsp;sq&nbsp;ft.</li>
+        <li style="margin-bottom: 0.5rem;"><strong>Lead paint (<a href="https://www.nyc.gov/site/hpd/services-and-information/lead-based-paint.page" class="inline-link" target="_blank" rel="noopener">Local Law 1 of 2004</a>):</strong> Landlords must use lead-safe work practices in apartments where children under 6 live. Painting over peeling lead paint is illegal &mdash; the underlying hazard must be remediated.</li>
+        <li style="margin-bottom: 0.5rem;"><strong><a href="https://www.nyc.gov/site/hpd/services-and-information/clear-violations.page" class="inline-link" target="_blank" rel="noopener">HPD violations</a>:</strong> A class B (hazardous) or class C (immediately hazardous) violation isn't legally cleared until HPD <em>verifies</em> the work. A landlord can't just self-certify a repair and walk away.</li>
+        <li style="margin-bottom: 0.5rem;"><strong>Rent-stabilized apartments:</strong> If a "required service" (heat, hot water, plumbing, repairs) was reduced or wasn't restored, you can file <strong><a href="https://hcr.ny.gov/system/files/documents/2022/10/ra-81-fillable.pdf" class="inline-link" target="_blank" rel="noopener">DHCR Form RA-81</a></strong> (individual apartment) or <strong><a href="https://hcr.ny.gov/system/files/documents/2021/05/ra-84-fillable_0.pdf" class="inline-link" target="_blank" rel="noopener">RA-84</a></strong> (building-wide) for a rent reduction that lasts until the service is actually restored.</li>
+      </ul>
+
+      <p style="margin-top: 1rem;"><strong>The recurrence is your evidence.</strong> A repair that fails within days, weeks, or one season is direct proof the underlying problem wasn't fixed. Every photo, every dated note, every returning symptom strengthens your case &mdash; whether you're escalating to HPD, DHCR, or Housing Court.</p>
+      <p class="source">Sources: NY RPL &sect;&nbsp;235-b; NYC Local Law 55 of 2018; NYC Local Law 1 of 2004; NYC Housing Maintenance Code; 9 NYCRR &sect;&nbsp;2523.4 <span style="color: var(--warning-ink); font-weight: 700;">[Verify]</span></p>
+    </div>
+
+    <!-- WORKED EXAMPLES -->
+    <section class="examples" id="examples">
+      <div class="examples-header">
+        <span class="examples-label">What kind of incomplete repair?</span>
+        <h2 class="examples-title">Common band-aid patterns &mdash; jump to your scenario</h2>
+        <p class="examples-help">The five steps further down this page work for <em>any</em> incomplete repair. These short notes describe how the pattern usually looks, the specific legal lever that applies, and where to find the deeper scenario guide for that problem type.</p>
+      </div>
+      <ul class="examples-list">
+        <li class="example">
+          <span class="example-label">Mold</span>
+          <h3>"They painted over it."</h3>
+          <p>Surface paint, plaster patch, or a bleach wipe-down on a wall that's still wet behind it. The patch peels, bubbles, or the mold blooms through the paint within weeks. Almost always the result of skipping the underlying moisture-source fix.</p>
+          <p class="example-lever"><strong>Specific lever:</strong> Local Law 55 of 2018 requires fixing the underlying moisture source &mdash; not just the surface. For patches over 10&nbsp;sq&nbsp;ft in buildings with 10+ apartments, a NYS-licensed mold assessor and a separate licensed remediator are mandatory.</p>
+          <p class="example-link"><a href="mold.html" class="inline-link">Full mold scenario &rarr;</a></p>
+        </li>
+
+        <li class="example">
+          <span class="example-label">Leaks &amp; plumbing</span>
+          <h3>"They patched the wall but the leak is back."</h3>
+          <p>Drywall patch, fresh paint, or a new ceiling tile &mdash; with the actual pipe or seal that was leaking still untouched. The water finds its way back through the same path, often within a single rainstorm or one dishwasher cycle.</p>
+          <p class="example-lever"><strong>Specific lever:</strong> A leak is typically a class B (hazardous) violation under the Housing Maintenance Code &mdash; 30 days to fix. Landlords can self-certify the repair through HPD's eCertification system, but if the work was inadequate or the leak returns, HPD can mark it as a <strong>False Certification</strong>, adding civil penalties of $250&ndash;$500 on top of the underlying violation.</p>
+          <p class="example-link"><a href="leaks-plumbing.html" class="inline-link">Full leaks &amp; plumbing scenario &rarr;</a></p>
+        </li>
+
+        <li class="example">
+          <span class="example-label">Heat &amp; hot water</span>
+          <h3>"They bled my radiator but the apartment is still freezing."</h3>
+          <p>Bled radiators, replaced thermostat, "boiler reset" &mdash; with no inspection of the building boiler, the steam traps, or the riser pipes. The heat works for a day, then drops back below the legal minimum.</p>
+          <p class="example-lever"><strong>Specific lever:</strong> Heat-season minimums (68&deg;F day / 62&deg;F night, Oct&nbsp;1 &ndash; May&nbsp;31) are absolute. Each 24-hour period of non-compliance is a separate violation. If you're rent-stabilized, the heat-specific form is <strong><a href="https://hcr.ny.gov/system/files/documents/2021/05/hhw-1-fillable.pdf" class="inline-link" target="_blank" rel="noopener">DHCR Form HHW-1</a></strong> (Failure to Provide Heat and/or Hot Water) &mdash; backed by an HPD inspector's report (call 311 first to trigger one). The rent reduction lasts until your landlord successfully applies for a Rent Restoration <em>and</em> an inspector verifies the heat is actually back.</p>
+          <p class="example-link"><a href="heat-hot-water.html" class="inline-link">Full heat &amp; hot water scenario &rarr;</a></p>
+        </li>
+
+        <li class="example">
+          <span class="example-label">Pests</span>
+          <h3>"They sprayed but the roaches/mice are back."</h3>
+          <p>Single pesticide spray, sticky traps, or one bedbug treatment &mdash; with no sealing of entry points, no treatment of adjacent units, and no Integrated Pest Management plan. The infestation either returns or migrates back within weeks.</p>
+          <p class="example-lever"><strong>Specific lever:</strong> Mice / rats / roaches are class C (immediately hazardous) violations &mdash; landlord has 21 days. Bedbugs are class B (30 days). NYC also requires landlords to use Integrated Pest Management practices, not just spray-and-go.</p>
+          <p class="example-link"><a href="pests.html" class="inline-link">Full pests scenario &rarr;</a></p>
+        </li>
+
+        <li class="example">
+          <span class="example-label">Lead paint</span>
+          <h3>"They painted over the peeling area."</h3>
+          <p>Fresh latex paint applied directly over peeling, chipped, or chalking paint &mdash; with no testing, no plastic sheeting, no HEPA cleanup, and no licensed contractor. Often visible weeks later as new chipping or dust in the same spot.</p>
+          <p class="example-lever"><strong>Specific lever:</strong> In apartments with children under 6 in pre-1960 buildings, Local Law 1 of 2004 requires lead-safe work practices and (for many jobs) an EPA-certified renovator. Painting over peeling lead paint without these practices is itself a violation.</p>
+          <p class="example-link"><a href="lead-paint.html" class="inline-link">Full lead paint scenario &rarr;</a></p>
+        </li>
+
+        <li class="example">
+          <span class="example-label">Appliances &amp; fixtures</span>
+          <h3>"It worked for a week, then broke again."</h3>
+          <p>Stove, fridge, sink, toilet, or radiator that was "fixed" but failed almost immediately. Often a sign that an old part was reattached instead of replaced, or a symptom was patched without diagnosing the cause.</p>
+          <p class="example-lever"><strong>Specific lever:</strong> The warranty of habitability (NY RPL &sect;&nbsp;235-b) requires landlords to maintain working essential services. A repair that fails immediately is functionally the same as no repair &mdash; an HPD violation issued for the original problem can be reopened or re-issued.</p>
+          <p class="example-link"><a href="appliances.html" class="inline-link">Full appliances &amp; fixtures scenario &rarr;</a></p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- HPDONLINE LEVERAGE CALLOUT -->
+    <aside class="callout callout-protect">
+      <span class="callout-label">Before you start: pull your building's record</span>
+      <h3>Find the original violation. It's likely still open.</h3>
+      <p>The single most useful thing you can do before re-engaging your landlord is pull your building's record on <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a> (or in the lookup box just below) and find out what HPD actually has on file. Look specifically for:</p>
+      <ul>
+        <li><strong>The original violation for your problem.</strong> If you (or any prior tenant) filed a 311 complaint that became an HPD violation, it's still in the database. Note the violation ID, the class (A / B / C), and the certification status.</li>
+        <li><strong>"Falsely certified as corrected" or "FC" status.</strong> Many landlords self-certify a violation as fixed without HPD verifying. This is its own enforcement issue and is direct evidence the repair was incomplete.</li>
+        <li><strong>The pattern of repeat violations.</strong> If the same condition has been cited multiple times over the years, that's a paper trail of an unfixed underlying problem &mdash; very useful for an HP Action.</li>
+      </ul>
+      <p>Reference specific violation IDs in your written complaint and (later) in any DHCR or Housing Court filing. It puts you in a different conversation than "I have a problem" &mdash; you're now in "violation #ABC123 was certified as corrected, but it isn't."</p>
+      <p><strong>An honest note:</strong> HPDOnline is public but not always current. Some violations age off; certifications sometimes lag the actual repair status either direction. Use it as your starting evidence, not the whole story.</p>
+
+      <!-- ADDRESS LOOKUP COMPONENT -->
+      <section class="lookup" id="lookup">
+        <span class="lookup-label">Look it up now</span>
+        <h4>Enter your address to check your building's violation history.</h4>
+        <p class="lookup-intro">HPD maintains a public database of every housing code violation ever issued in NYC. See what's on record for your building without leaving this page.</p>
+        <div class="lookup-input-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
+          <div class="lookup-suggestions" id="lookup-suggestions"></div>
+        </div>
+        <div class="lookup-status" id="lookup-status"></div>
+        <div class="lookup-results" id="lookup-results"></div>
+        <div class="lookup-fallback" id="lookup-fallback" style="display: none;">
+          <strong>Having trouble?</strong> You can also look up your building directly on <a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">HPDOnline</a>.
+        </div>
+      </section>
+    </aside>
+
+    <div class="saved-violations-panel"></div>
+
+    <h2>What to do, step by step</h2>
+
+    <!-- STEP 1: Re-document the recurrence -->
+    <section class="step" id="step-1">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 1</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            15&ndash;20 min
+          </span>
+        </div>
+        <h3 class="step-title">Re-document the problem &mdash; show the recurrence, not just the condition.</h3>
+      </div>
+
+      <p class="why-this-matters">In your first complaint you proved the problem existed. Now you need to prove that <em>the repair didn't work</em>. The single strongest piece of evidence in any incomplete-repair case is a clear timeline: original problem &rarr; landlord's repair &rarr; recurrence. Side-by-side photos of the same spot before, during, and after the so-called fix carry more weight than any letter you can write.</p>
+
+      <span class="sub-label">How to do it</span>
+      <ol>
+        <li><strong>Find your original photos and notes.</strong> Pull up the photos you took the first time, the date you submitted the 311 complaint (and the SR/complaint number if you have it), and any messages you sent the landlord.</li>
+        <li><strong>Photograph the same spot today, from the same angle.</strong> A side-by-side comparison of "April 2025" and "October 2025" of the same wall, ceiling, or fixture is what an inspector or judge will respond to. Use a familiar landmark in frame (window, outlet, doorframe) so the angle is obvious.</li>
+        <li><strong>Photograph any visible evidence of the partial repair.</strong> Fresh paint over a stain, a new patch over an old hole, a ceiling tile that looks newer than the others. This shows work was done &mdash; and that it failed.</li>
+        <li><strong>Capture timestamps.</strong> Most phone cameras embed date and location in the photo metadata. Don't strip them. If you're paranoid, also photograph today's newspaper or a timestamped news website on a screen alongside the damage.</li>
+        <li><strong>Photograph the underlying source if visible.</strong> If a leak is leaking again, photograph the pipe joint or the water trail. If mold returned, photograph any damp wall, water stain, or condensation. The point is to show the source was never fixed.</li>
+        <li><strong>Note physical symptoms in writing.</strong> Headaches, congestion, asthma flare-ups, returning rashes &mdash; with dates. If anyone is seeing a doctor for these, get the visit dates and a brief description ("doctor noted possible mold-related asthma trigger, April 18")</li>
+      </ol>
+
+      <span class="sub-label">Build a one-page timeline</span>
+      <p>Fill in the dates you have below, then copy the timeline into a doc, an email draft, or a note app. This is the document you'll attach or paste into every escalation from this point forward. Leave any field blank if you don't have it &mdash; the copy will show "<em>[date]</em>" or similar so you know what's missing.</p>
+
+      <div class="template" id="timeline-template">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Timeline
+          </span>
+          <button class="copy-btn" data-copy-target="timeline-template-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="timeline-template-content">
+          <p><strong>Timeline &mdash; <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"></strong></p>
+          <p>First noticed: <input type="text" class="fill" data-field="first_noticed" placeholder="date" size="14"></p>
+          <p>First complaint to landlord: <input type="text" class="fill" data-field="first_landlord_contact" placeholder="date" size="14"></p>
+          <p>311 complaint #: <input type="text" class="fill" data-field="prior_311_sr" placeholder="SR # or 'none'" size="18"></p>
+          <p>HPD inspection date: <input type="text" class="fill" data-field="hpd_inspection_date" placeholder="date or 'none'" size="16"></p>
+          <p>Landlord's repair date: <input type="text" class="fill" data-field="repair_date" placeholder="date" size="14"></p>
+          <p>Date the problem returned: <input type="text" class="fill" data-field="recurrence_date" placeholder="date" size="14"></p>
+          <p>Today: <input type="text" class="fill" data-field="today" placeholder="date" size="14"></p>
+        </div>
+      </div>
+
+      <span class="sub-label">What to save</span>
+      <ul class="savelist">
+        <li>
+          <input type="checkbox" id="save-photos">
+          <label for="save-photos">All photos &mdash; originals with metadata intact (don't crop or filter)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="save-timeline">
+          <label for="save-timeline">Your written timeline (the one you built above)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="save-311">
+          <label for="save-311">Your original 311 complaint number(s)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="save-hpd">
+          <label for="save-hpd">Any HPD violation IDs.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="save-messages">
+          <label for="save-messages">Copies of every message you sent the landlord (and any reply)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="save-backup">
+          <label for="save-backup">Back up the whole bundle off your phone &mdash; email it to yourself, drop it in cloud storage, or text it to someone you trust.</label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- HEALTH PATHWAY CALLOUT -->
+    <aside class="callout callout-protect">
+      <span class="callout-label">If health symptoms are involved</span>
+      <h3>You may qualify for a free home environmental inspection.</h3>
+      <p>If anyone in your apartment has asthma, breathing problems, lead exposure concerns, or is a child under 6, and the unfixed problem is mold, pests, or lead paint, you can ask your doctor to refer you for a <strong>free home environmental inspection</strong> through the NYC Health Department's Healthy Neighborhoods Program. This is a separate process from a 311 complaint and gives you an official health assessment that strengthens an HPD complaint or HP Action.</p>
+      <p><strong>How to get it:</strong></p>
+      <ul>
+        <li>Talk to your doctor and ask for a referral to the NYC Health Department's environmental inspection program.</li>
+        <li>Or call <strong>311</strong> and ask about the Healthy Neighborhoods Program.</li>
+      </ul>
+      <p>Medical documentation tied to an unfixed condition is one of the harder things for a landlord (or their lawyer) to argue away. Pursue this in parallel with everything else on this page if it applies to your household.</p>
+    </aside>
+
+    <!-- STEP 2: Notify landlord -->
+    <section class="step" id="step-2">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 2</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            10 min
+          </span>
+        </div>
+        <h3 class="step-title">Tell your landlord again, in writing &mdash; reference the prior complaint.</h3>
+      </div>
+
+      <p class="why-this-matters">A second complaint that explicitly references the first lands very differently than a fresh "I have a problem" message. It signals (to your landlord, and later to HPD or a judge) that this isn't a one-off &mdash; it's a known issue that wasn't actually fixed. The reference to the prior complaint, the prior repair date, and the recurrence is the foundation of every escalation that follows.</p>
+
+      <span class="sub-label">How to do it</span>
+      <ol>
+        <li>Write a short, factual message that names the prior complaint, the prior repair, and what's recurring. Email is fine; otherwise use USPS Certified Mail with Return Receipt.</li>
+        <li>Reference any HPD violation IDs you found in the building lookup above and any 311 service-request numbers from the original complaint.</li>
+        <li>Be specific about <em>what</em> repair was done, <em>when</em>, and <em>how</em> the problem returned (date, evidence). Vague is bad. Concrete is good.</li>
+        <li>Cite the specific legal hook from the worked example above (Local Law 55, Local Law 1, warranty of habitability, etc.)</li>
+        <li>Set a hard deadline (7&ndash;10 days) for a written response with a real remediation plan. Otherwise you escalate.</li>
+        <li>Keep a copy of everything &mdash; what you sent, attachments, the response or absence of one.</li>
+      </ol>
+
+      <span class="sub-label">Email template &mdash; fill it in, then copy</span>
+      <div class="template" id="email-template">
+        <div class="template-header">
+          <span class="template-label">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email or letter
+          </span>
+          <button class="copy-btn" data-copy-target="email-template-content">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-btn-text">Copy</span>
+          </button>
+        </div>
+        <div class="template-body" id="email-template-content">
+          <p><strong>Subject:</strong> Recurring <input type="text" class="fill" data-field="problem" placeholder="problem (mold/leak/heat/etc.)" size="28"> at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"> &mdash; prior repair was incomplete</p>
+          <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26">,</p>
+          <p>I am writing to follow up on a condition at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"> that I first reported on <input type="text" class="fill" data-field="first_report_date" placeholder="original report date" size="14"> (311 SR #<input type="text" class="fill" data-field="prior_sr" placeholder="if known" size="12">; HPD violation #<input type="text" class="fill" data-field="prior_violation" placeholder="if known" size="12">).</p>
+          <p>On <input type="text" class="fill" data-field="repair_date" placeholder="repair date" size="14">, your office <input type="text" class="fill" data-field="repair_done" placeholder="describe what was done — e.g. painted over the affected area, sent a handyman to bleed the radiator" size="56">. As of <input type="text" class="fill" data-field="recurrence_date" placeholder="recurrence date" size="14">, the underlying problem has returned: <input type="text" class="fill" data-field="recurrence_detail" placeholder="describe what you are seeing now and where" size="56">.</p>
+          <p>Under <input type="text" class="fill" data-field="legal_hook" placeholder="legal hook — e.g. Local Law 55, NY RPL § 235-b" size="48">, the original repair obligation has not been satisfied. I have dated photographs of the prior condition, the repair work, and the current recurrence, and am happy to share them.</p>
+          <p>Please respond in writing within 7 days with a remediation plan that addresses the underlying cause &mdash; not just the surface. If I have not received a substantive response by <input type="text" class="fill" data-field="deadline_date" placeholder="deadline date" size="14">, I will re-file a 311 complaint referencing this letter and the prior service request, and pursue HPD re-inspection and any further enforcement available to me.</p>
+          <p>Thank you,<br>
+          <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18"><br>
+          <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16"></p>
+        </div>
+      </div>
+
+      <span class="sub-label">What to expect</span>
+      <p>Some landlords respond constructively to a follow-up that names the prior complaint and the legal hook &mdash; especially if you also reference the violation IDs from HPDOnline. Others ignore it. Either is useful. <strong>What to watch out for:</strong> a landlord who again proposes a cosmetic fix ("we'll send someone to repaint"). Reply in writing that you require a remediation plan addressing the underlying cause. If they refuse, you have the paper trail you need for Step&nbsp;3.</p>
+    </section>
+
+    <!-- STEP 3: 311 -->
+    <section class="step" id="step-3">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 3</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            5&ndash;15 min
+          </span>
+        </div>
+        <h3 class="step-title">Re-file the 311 complaint &mdash; reference the prior one.</h3>
+      </div>
+
+      <p class="why-this-matters">A second 311 complaint that explicitly references the prior one (and any HPD violation that came out of it) does two things: it creates a fresh record of the recurrence, and it signals that an earlier repair was certified or claimed but didn't hold. HPD inspectors take that pattern seriously, and so does Housing Court. This is the step that turns "the landlord said it's fixed" into an official, contradictable record.</p>
+
+      <span class="sub-label">How to do it &mdash; pick what's easiest</span>
+      <ul>
+        <li><strong>By phone:</strong> Call <a href="tel:311" class="inline-link"><strong>311</strong></a>. If you're deaf or hard of hearing, use TTY at <a href="tel:+12125044115" class="inline-link"><strong>(212) 504-4115</strong></a></li>
+        <li><strong>Online:</strong> Go to <a href="https://portal.311.nyc.gov/" class="inline-link" target="_blank" rel="noopener">portal.311.nyc.gov</a> and search for the specific condition (mold, leak, no heat, vermin, etc.)</li>
+        <li><strong>Mobile app:</strong> Download the NYC 311 app (<a href="https://apps.apple.com/us/app/nyc-311/id324897619" class="inline-link" target="_blank" rel="noopener">iOS</a> or <a href="https://play.google.com/store/apps/details?id=gov.nyc.doitt.ThreeOneOne" class="inline-link" target="_blank" rel="noopener">Android</a>). The app lets you upload your photos directly &mdash; this is where the side-by-side recurrence photos shine.</li>
+      </ul>
+
+      <span class="sub-label">What to say on the phone &mdash; fill in your details first</span>
+      <div class="spoken">
+        <span class="spoken-label">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Say it in your own words
+        </span>
+        <div class="spoken-body">
+          <p>"I'd like to file a complaint about a recurring <input type="text" class="fill" data-field="problem" placeholder="problem (mold/leak/heat/etc.)" size="22"> in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20">. I first reported this on <input type="text" class="fill" data-field="first_report_date" placeholder="date" size="12"> &mdash; the prior service request number was <input type="text" class="fill" data-field="prior_sr" placeholder="SR # if you have it" size="14">, and HPD violation number was <input type="text" class="fill" data-field="prior_violation" placeholder="if known" size="12">. My landlord did some work on <input type="text" class="fill" data-field="repair_date" placeholder="date" size="12">, but the underlying problem has returned as of <input type="text" class="fill" data-field="recurrence_date" placeholder="date" size="12">. I have dated photos of the original condition, the repair, and the current recurrence. The repair did not address the root cause."</p>
+          <p>If anyone in your apartment has asthma, is elderly, is pregnant, or is a child under 6, mention it: <em>"There is someone with asthma (or a child under 6) living in the apartment."</em></p>
+        </div>
+        <span class="spoken-hint">Fill in the blanks above so you have a complete script to read from on the call. This is a guide, not a word-for-word script &mdash; use your own voice and answer their questions as they come.</span>
+      </div>
+
+      <div class="ref-capture">
+        <label class="ref-capture-label" for="ref-input">After filing, write down your new complaint number here so it's saved for the next step:</label>
+        <input type="text" id="ref-input" placeholder="C1-1-XXXXXXXXX" data-field="complaint_ref">
+      </div>
+
+      <span class="sub-label">What to expect</span>
+      <ul>
+        <li>HPD will typically attempt to contact your landlord first. If the prior violation was certified as corrected and the condition has clearly recurred, that's a stronger flag than a brand-new complaint.</li>
+        <li>If the problem isn't resolved at the landlord step, HPD sends an inspector. Bring or share your dated photos and your timeline at the inspection.</li>
+        <li>If the inspector confirms the condition, you'll get a new violation. The legal-clock days for the landlord to fix depend on the violation class:
+          <ul>
+            <li><strong>Class A (Non-Hazardous):</strong> 90 days to correct. Examples: missing peepholes, minor repairs.</li>
+            <li><strong>Class B (Hazardous):</strong> 30 days to correct. Examples: leaks, broken plaster, non-working smoke detectors.</li>
+            <li><strong>Class C (Immediately Hazardous):</strong>
+              <ul>
+                <li>Heat and hot water: <strong>immediately.</strong></li>
+                <li>Lead-based paint, mold, rodents: <strong>21 days</strong> from service of notice.</li>
+                <li>Self-closing doors: <strong>14 days</strong> from service of notice.</li>
+                <li>All other Class C: <strong>24 hours</strong> from service of notice.</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>If the prior violation was falsely certified as corrected, ask the inspector explicitly to reference the prior violation ID in the new complaint &mdash; this makes the false-certification pattern part of HPD's record.</li>
+      </ul>
+    </section>
+
+    <!-- CALLOUT: Undocumented tenants -->
+    <aside class="callout callout-protect">
+      <span class="draft-flag">Draft &mdash; pending immigration advocacy review</span>
+      <span class="callout-label">For undocumented tenants</span>
+      <h3>Your immigration status does not affect your right to safe housing.</h3>
+
+      <p>NYC law is clear: your landlord must maintain your apartment regardless of your immigration status, and HPD's job is to enforce that. <strong>NYC agencies including HPD and 311 do not ask about immigration status when you file a housing complaint.</strong></p>
+
+      <p>It is also illegal under NYC Human Rights Law for your landlord to threaten to report you to ICE, deport you, or treat you differently because of your immigration status. If your landlord threatens you in this way, that is itself a crime you can report.</p>
+
+      <p><strong>An honest note:</strong> NYC's protections are strong, but they are city and state protections. Federal immigration enforcement is a separate system. If you are worried about risks specific to your situation, you can talk to a free, confidential immigration legal organization before filing any complaint. You are not alone in asking these questions.</p>
+
+      <span class="sub-label">Free, confidential help</span>
+      <ul class="resource-list">
+        <li><strong>ActionNYC</strong> &mdash; free, safe immigration legal help connected to city services. Call <a href="tel:311" class="inline-link"><strong>311</strong></a> and ask for ActionNYC.</li>
+        <li><strong>Make the Road New York</strong> &mdash; tenant and immigrant rights support: <a href="tel:7184187690" class="inline-link"><strong>718-418-7690</strong></a></li>
+        <li><strong>New York Immigration Coalition</strong> &mdash; referrals to trusted legal help: <a href="tel:2126272227" class="inline-link"><strong>212-627-2227</strong></a></li>
+        <li><strong>NYC Commission on Human Rights</strong> &mdash; if your landlord threatens you with ICE: <a href="tel:2124160197" class="inline-link"><strong>212-416-0197</strong></a></li>
+      </ul>
+    </aside>
+
+    <!-- CALLOUT: Retaliation (with market-tenant note) -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Worried about retaliation?</span>
+      <h3>This is a real fear &mdash; here's what you should know.</h3>
+
+      <p><strong>Retaliation is illegal in New York.</strong> Under NY Real Property Law &sect;&nbsp;223-b, your landlord cannot punish you for making a good-faith complaint about housing conditions. Punishment includes raising your rent, refusing to renew your lease, starting an eviction, reducing services, or harassing you.</p>
+
+      <p><strong>The law specifically protects complaints like this one.</strong> Filing or re-filing a 311 complaint, demanding a real repair in writing, or escalating to an HP Action are exactly the kinds of actions the anti-retaliation law covers.</p>
+
+      <p><strong>An honest note for market-rate tenants:</strong> If you're not in a rent-stabilized or rent-controlled apartment, you have fewer protections against non-renewal or large rent increases at the end of your lease. The anti-retaliation law still applies, but enforcing it can be harder. If you're worried about this, talk to Met Council or a tenant lawyer <em>before</em> filing the complaint &mdash; they can help you think through the timing and your options.</p>
+
+      <p>If you believe your landlord is retaliating: document everything (dates, what happened, any written communication), and call the Met Council on Housing hotline at <a href="tel:2129790611" class="inline-link"><strong>212-979-0611</strong></a>.</p>
+
+      <p style="margin-top: 1rem;"><a href="retaliation.html" class="inline-link">Read more: What retaliation looks like and what to do &rarr;</a></p>
+    </aside>
+
+    <!-- STEP 4: Check status -->
+    <section class="step" id="step-4">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 4</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            5 min
+          </span>
+        </div>
+        <h3 class="step-title">Check HPD status &mdash; especially the certification flag.</h3>
+      </div>
+
+      <p class="why-this-matters">For incomplete-repair cases, HPDOnline does something most tenants don't realize: it shows whether your landlord <em>self-certified</em> a violation as corrected. A self-certified violation that visibly hasn't been corrected is a powerful piece of evidence on its own &mdash; HPD takes false certification seriously, and Housing Court treats it as a credibility issue against the landlord.</p>
+
+      <div class="ref-recall" id="ref-recall">
+        <span class="label">Your reference numbers (auto-saved)</span>
+        <p style="margin: 0.4rem 0;"><strong>Original 311 SR:</strong> <span class="number" id="prior-311-display"><span class="empty">Add it in your Step&nbsp;1 timeline.</span></span></p>
+        <p style="margin: 0.4rem 0;"><strong>New complaint #:</strong> <span class="number" id="ref-display"><span class="empty">Save it in Step&nbsp;3 above.</span></span></p>
+      </div>
+
+      <span class="sub-label">How to do it</span>
+      <ol>
+        <li>Go to <a href="https://hpdonline.nyc.gov/hpdonline/" class="inline-link" target="_blank" rel="noopener">HPDOnline</a> and enter your building's address (or <a href="#lookup" class="inline-link">use the lookup near the top of this page</a>)</li>
+        <li>Pull the violation list. Find the original violation for your problem and note the <strong>certification status</strong>. These are the official HPD status categories used to track whether a landlord has fixed a problem:
+          <ul>
+            <li><strong>Certified</strong> &mdash; listed as <em>NOV Certified on Time</em> (or <em>NOV Cert</em>). The owner has submitted a document affirming the violation was corrected within the legal timeframe.</li>
+            <li><strong>Falsely Certified</strong> &mdash; listed as <em>False Certification</em> (or <em>False Cert</em>). HPD performed a follow-up inspection and found the problem was not actually fixed, despite the landlord's claim.</li>
+            <li><strong>Pending Verification</strong> &mdash; listed as <em>Certification Pending</em>. The owner has reported the correction, but HPD has not yet verified it through inspection or the mandatory 70-day "deemed complied" period.</li>
+          </ul>
+        </li>
+        <li>If your follow-up 311 complaint produced a new violation, note its violation ID, class (A / B / C), date issued, and the legal cure window for that class &mdash; record them in the box below so they're saved with your record.</li>
+        <li>Save screenshots or print the page. You'll need this for an HP Action or DHCR filing.</li>
+        <li>If a previously certified violation has clearly recurred, ask 311 to flag it for HPD re-inspection. Reference both the old and new SR numbers (<a href="#ref-recall" class="inline-link">saved at the top of this step</a>) in the request.</li>
+      </ol>
+
+      <div class="ref-capture multi">
+        <span class="ref-capture-label">If your re-filed complaint produced a new violation, write down the details here:</span>
+        <p>Violation ID: <input type="text" class="fill" data-field="new_violation_id" placeholder="e.g. 16723456" size="14"></p>
+        <p>Class: <input type="text" class="fill" data-field="new_violation_class" placeholder="A / B / C" size="8"></p>
+        <p>Date issued: <input type="text" class="fill" data-field="new_violation_date" placeholder="MM/DD/YYYY" size="12"></p>
+        <p>Legal cure window: <input type="text" class="fill" data-field="new_violation_cure" placeholder="e.g. 30 days" size="14"></p>
+      </div>
+
+      <span class="sub-label">What to expect</span>
+      <p>Violations typically appear online within a few days of the inspection. If your new complaint doesn't show up at all after a couple weeks, the inspection may not have happened yet &mdash; call 311 to follow up, and reference your service-request number.</p>
+
+      <p><strong>Important:</strong> If your landlord again "certifies" they fixed the problem but you can still see it, you can challenge the certification. HPD will re-inspect, and if the condition still exists, the violation can be upgraded or referred to enforcement. Document the recurrence on the same day you discover it &mdash; fresh, dated photos beat reconstructed ones.</p>
+    </section>
+
+    <!-- STEP 5: Escalate -->
+    <section class="step" id="step-5">
+      <div class="step-header">
+        <div class="step-meta">
+          <span class="step-number">Step 5</span>
+          <span class="time-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Varies
+          </span>
+        </div>
+        <h3 class="step-title">Escalate beyond HPD &mdash; HP Action, DHCR, free legal help.</h3>
+      </div>
+
+      <p class="why-this-matters">By the time you're here, you've given your landlord multiple chances, the city's been involved at least twice, and the problem is still there. The good news: you have real legal levers, and incomplete-repair cases are exactly what they're designed for. The escalations below are stronger than another 311 complaint &mdash; and they all benefit from the timeline and HPDOnline evidence you built in Steps&nbsp;1&ndash;4.</p>
+
+      <span class="sub-label" id="step-5-a">A. Call the Met Council on Housing Tenants' Rights Hotline</span>
+      <p>Free, staffed by trained volunteers with deep expertise in incomplete-repair cases &mdash; especially the choice between an HP Action and a DHCR rent-reduction filing for rent-stabilized tenants. This is the first call.</p>
+      <ul>
+        <li><strong>Phone:</strong> <a href="tel:2129790611" class="inline-link">212-979-0611</a></li>
+        <li><strong>Hours:</strong> Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM.</li>
+        <li><strong>Heads up:</strong> The hotline is very busy &mdash; call after 4&nbsp;PM if you can, and avoid Mondays.</li>
+      </ul>
+
+      <span class="sub-label" id="step-5-b">B. Start an HP Action in Housing Court</span>
+      <p>An HP (Housing Part) Action is a legal proceeding in NYC Housing Court asking a judge to order your landlord to make repairs. It's designed for exactly this situation: a documented housing condition the landlord has not adequately addressed despite an HPD violation. Tenants file HP Actions <em>pro se</em> (without a lawyer) all the time, but it's smoother with help.</p>
+      <p>Outcomes can include: a court order requiring the landlord to make actual repairs by a specific date, civil penalties for HPD violations, and (with a lawyer) an order for an independent inspection. The fact that a prior repair was attempted but failed strengthens an HP Action substantially &mdash; bring your timeline, your photos, your HPDOnline screenshots, and any falsely-certified violations.</p>
+      <ul>
+        <li><strong>Where to file:</strong> The Housing Court for your borough. <strong>Housing Court Answers</strong> (<a href="tel:2129624795" class="inline-link">212-962-4795</a>) walks tenants through the HP Action process for free.</li>
+        <li><strong>Filing fee:</strong> <strong>$45.00</strong>, payable by cash, money order, bank check, or certified check made out to <em>Clerk of the Civil Court</em>. <strong>Personal checks are not accepted.</strong></li>
+        <li><strong>Fee waiver ('Poor Person's Relief'):</strong> If you can't afford the fee, ask the Housing Court Clerk for an <em>Affirmation in Support of an Application to Waive Court Fees</em>, or download it from the <a href="https://ww2.nycourts.gov/courts/nyc/civil/poorrelief.shtml" class="inline-link" target="_blank" rel="noopener">NY Courts 'Poor Person's Relief' page</a>. You'll list your income and property and certify that you can't pay. A judge reviews the affirmation; if approved, you're issued a free index number.</li>
+        <li><strong>Prepare your papers online:</strong> The <a href="https://www.lawhelpny.org/resource/hp-case-forms-for-repairs-and-to-stop-harassment" class="inline-link" target="_blank" rel="noopener">LawHelpNY interview tool</a> walks you through the forms for free; <a href="https://www.justfix.org/en/learn/guide-to-hp-actions/" class="inline-link" target="_blank" rel="noopener">JustFix's HP Action guide</a> is also useful background.</li>
+        <li><strong>Virtual appearances:</strong> Most parts of NYC Housing Court now let you choose between in-person or virtual (video / phone) for your first court date.</li>
+      </ul>
+
+      <aside class="callout callout-update">
+        <span class="callout-label">Recent updates &mdash; new in 2026</span>
+        <h3>What's changed for HP Actions and HPD evidence.</h3>
+        <ul>
+          <li><strong>Affirmations replace affidavits (April 2026):</strong> Under a 2026 amendment to <strong>CPLR&nbsp;2106</strong>, most written statements in civil litigation can now be submitted as unsworn affirmations instead of notarized affidavits. You don't have to find a notary.</li>
+          <li><strong>Local Law 86 of 2025 &mdash; extra evidence:</strong> As of January 2026, buildings with rent-stabilized units must post notices in common areas explaining how tenants can check their unit's status and view building violations. If your building has these notices, photograph them &mdash; they reinforce that the violation history is public record.</li>
+        </ul>
+      </aside>
+
+      <span class="sub-label" id="step-5-c">C. If you're rent-stabilized or rent-controlled: file with DHCR for a rent reduction</span>
+      <p>NYS Homes &amp; Community Renewal (DHCR) can order a rent reduction when "required services" aren't being maintained &mdash; including repairs. The reduction lasts until the service is actually restored and DHCR verifies it. For incomplete-repair cases this is often the most useful single lever, because the rent reduction creates real financial pressure on the landlord without you having to spend a day in court.</p>
+
+      <p><strong>The forms</strong></p>
+      <ul>
+        <li><strong><a href="https://hcr.ny.gov/system/files/documents/2022/10/ra-81-fillable.pdf" class="inline-link" target="_blank" rel="noopener">Form RA-81</a></strong> &mdash; individual apartment service-decrease complaint</li>
+        <li><strong><a href="https://hcr.ny.gov/system/files/documents/2021/05/ra-84-fillable_0.pdf" class="inline-link" target="_blank" rel="noopener">Form RA-84</a></strong> &mdash; building-wide service-decrease complaint
+          <ul>
+            <li>Paired with <strong><a href="https://hcr.ny.gov/system/files/documents/2021/05/ra-84.1-fillable.pdf" class="inline-link" target="_blank" rel="noopener">Form RA-84.1</a></strong> for additional tenant signatures</li>
+          </ul>
+        </li>
+        <li><strong><a href="https://hcr.ny.gov/system/files/documents/2021/05/hhw-1-fillable.pdf" class="inline-link" target="_blank" rel="noopener">Form HHW-1</a></strong> &mdash; heat or hot water specifically (separate, faster track)</li>
+      </ul>
+
+      <p><strong>Filing channels</strong></p>
+      <ul>
+        <li><strong>Online:</strong> File RA-81 and HHW-1 electronically through the <a href="https://rent.hcr.ny.gov/RentConnect/Tenant/Overview" class="inline-link" target="_blank" rel="noopener">DHCR Rent Connect portal.</a></li>
+        <li><strong>Mail:</strong> RA-84 typically requires paper filing because it usually involves multiple tenant signatures (via Form RA-84.1). Paper versions of all complaint forms are available at the <a href="https://hcr.ny.gov/tenant-owner-forms" class="inline-link" target="_blank" rel="noopener">DHCR Tenant/Owner Forms page.</a></li>
+        <li><strong>In person:</strong> Borough rent offices can help you file &mdash; though online or mail is preferred.</li>
+      </ul>
+
+      <aside class="callout callout-warning">
+        <span class="callout-label">Don't skip this</span>
+        <h3>10-day pre-notice &mdash; required before you file.</h3>
+        <p>Notify your landlord or agent in writing at least <strong>10 days before</strong> filing your DHCR complaint, and include a copy of that notice plus proof of delivery (certified-mail receipt or similar) with your filing. Without this evidence, the owner can be granted additional time to respond &mdash; which delays the rent reduction.</p>
+      </aside>
+
+      <p><strong>Timing and effective date</strong></p>
+      <ul>
+        <li><strong>Processing:</strong> No strict statutory deadline. Most complaints take several weeks to months. Emergency conditions (no heat / hot water) are first priority and are processed as quickly as possible.</li>
+        <li><strong>Rent-stabilized:</strong> The rent reduction is retroactive to the <em>first day of the month following DHCR's service of the complaint on the owner.</em></li>
+        <li><strong>Rent-controlled:</strong> The reduction is effective on the <em>first day of the month after DHCR issues the final order.</em></li>
+      </ul>
+
+      <p><strong>Contact</strong></p>
+      <ul>
+        <li><strong>Rent InfoLine (toll-free):</strong> <a href="tel:8334990343" class="inline-link">833-499-0343</a></li>
+        <li><strong>Brooklyn:</strong> <a href="tel:7187224778" class="inline-link">718-722-4778</a></li>
+        <li><strong>Queens (main):</strong> <a href="tel:7184824041" class="inline-link">718-482-4041</a></li>
+        <li><strong>Manhattan:</strong> <a href="tel:2129618930" class="inline-link">212-961-8930</a></li>
+        <li><strong>Bronx:</strong> <a href="tel:7184300880" class="inline-link">718-430-0880</a></li>
+      </ul>
+
+      <span class="sub-label">D. If you qualify: free legal representation</span>
+      <p>NYC's <a href="https://www.nyc.gov/site/mayorspeu/resources/right-to-counsel.page" class="inline-link" target="_blank" rel="noopener"><strong>Right to Counsel</strong> program</a> guarantees free legal representation to <a href="https://www.nycourts.gov/COURTS/nyc//housing/freeLawyerQualify.shtml" class="inline-link" target="_blank" rel="noopener">qualifying low-income tenants</a> in eviction proceedings. If a landlord retaliates against your incomplete-repair complaint with a <a href="https://www.metcouncilonhousing.org/help-answers/holdover-evictions/" class="inline-link" target="_blank" rel="noopener">holdover</a> or <a href="https://housingcourtanswers.org/answers/for-tenants/" class="inline-link" target="_blank" rel="noopener">nonpayment</a> case, Right to Counsel kicks in immediately. <a href="https://www.evictionfreenyc.org/" class="inline-link" target="_blank" rel="noopener">Eviction Free NYC</a> walks you through the next steps if a case has been filed. Even outside an active eviction, several of the orgs in the <a href="#free-help" class="inline-link">Free Help section</a> can help you with <a href="https://www.lawhelpny.org/resource/hp-case-forms-for-repairs-and-to-stop-harassment" class="inline-link" target="_blank" rel="noopener">HP Actions</a> and <a href="https://hcr.ny.gov/tenant-resources" class="inline-link" target="_blank" rel="noopener">DHCR filings</a> on a free or sliding-scale basis.</p>
+      <p>The <a href="#step-5-a" class="inline-link">Met Council hotline (option&nbsp;A)</a> is the easiest way to figure out which <a href="https://www.nyc.gov/site/hra/help/legal-services-for-tenants.page" class="inline-link" target="_blank" rel="noopener">legal services org</a> is right for your borough and case type.</p>
+    </section>
+
+    <!-- WARNING: Cosmetic fix -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; about another cosmetic fix</span>
+      <h3>If they offer to "send someone again," ask what they'll do differently this time.</h3>
+      <p>The most common landlord move after the first cosmetic fix is to propose <em>another cosmetic fix</em> &mdash; "we'll send the super to repaint" or "we'll spray again." This is the moment to push back, in writing.</p>
+      <p>Ask: "Specifically, what is the underlying cause of this condition, and what work will be done to address it?" For mold, that's the moisture source. For a leak, the pipe or seal. For pests, the entry points and adjacent units. For heat, the boiler or steam system. Their answer (or lack of one) tells you whether the next round will work or just delay the problem another month. Save the answer in writing &mdash; it's evidence either way.</p>
+    </aside>
+
+    <!-- WARNING: Repair-and-deduct -->
+    <aside class="callout callout-warning">
+      <span class="callout-label">Important &mdash; about hiring your own contractor</span>
+      <h3>Don't pay for the repair yourself and try to deduct it from rent.</h3>
+      <p>NYC does not have an automatic "repair and deduct" rule for tenants. If you hire your own contractor and try to subtract the cost from your rent, your landlord can sue you for nonpayment and start an eviction. Met Council's strong advice: <strong>do not repair and deduct without first consulting a lawyer.</strong></p>
+      <p>If the condition is making your apartment unlivable and your landlord still won't address the underlying cause, the right path is an <a href="https://www.lawhelpny.org/resource/hp-case-forms-for-repairs-and-to-stop-harassment" class="inline-link" target="_blank" rel="noopener">HP Action in Housing Court</a> (<a href="#step-5-b" class="inline-link">Step&nbsp;5B above</a>) or a <a href="https://rent.hcr.ny.gov/RentConnect/Tenant/Overview" class="inline-link" target="_blank" rel="noopener">DHCR rent reduction</a> (<a href="#step-5-c" class="inline-link">Step&nbsp;5C</a>, if you're <a href="https://hcr.ny.gov/most-common-rent-regulation-issues-tenants" class="inline-link" target="_blank" rel="noopener">rent-regulated</a>) &mdash; not paying for the work yourself.</p>
+    </aside>
+
+    <!-- Free help -->
+    <h2 id="free-help">Free help available</h2>
+    <ul class="help-list">
+      <li>
+        <span class="name">Met Council on Housing Tenants' Rights Hotline</span>
+        <span class="phone"><a href="tel:2129790611">212-979-0611</a></span>
+        <span class="desc">First call for incomplete-repair cases. Trained volunteers help you decide between an HP Action, a DHCR rent reduction, and other options. Mon &amp; Wed 1:30&ndash;8&nbsp;PM, Fri 1:30&ndash;5&nbsp;PM. Call after 4&nbsp;PM if you can.</span>
+      </li>
+      <li>
+        <span class="name">NYC 311</span>
+        <span class="phone"><a href="tel:311">Dial 311</a></span>
+        <span class="desc">File or re-file housing complaints. Reference your prior service-request number for incomplete-repair cases. Also routes to the Healthy Neighborhoods Program for asthma / mold / pest health inspections.</span>
+      </li>
+      <li>
+        <span class="name">Housing Court Answers</span>
+        <span class="phone"><a href="tel:2129624795">212-962-4795</a></span>
+        <span class="desc">Walks tenants through filing an HP Action <em>pro se</em> (without a lawyer), and connects you to Right to Counsel and the right legal services provider for your borough.</span>
+      </li>
+      <li>
+        <span class="name">NYS Homes &amp; Community Renewal (DHCR) &mdash; Office of Rent Administration</span>
+        <span class="phone"><a href="tel:7187395600">718-739-5600</a></span>
+        <span class="desc">Authoritative answers and forms for rent-stabilized tenants &mdash; including Form RA-81 (individual apartment) and RA-84 (building-wide) for service-decrease rent reductions. Free.</span>
+      </li>
+      <li>
+        <span class="name">Legal Services NYC</span>
+        <span class="phone"><a href="tel:9176614500">917-661-4500</a></span>
+        <span class="desc">Free legal representation for low-income tenants across all five boroughs. Right to Counsel provider; can take HP Action and habitability cases depending on capacity.</span>
+      </li>
+      <li>
+        <span class="name">Legal Aid Society &mdash; Tenant Rights</span>
+        <span class="phone"><a href="tel:2125773300">212-577-3300</a></span>
+        <span class="desc">Free legal representation including a dedicated NYCHA unit. Right to Counsel provider; covers all boroughs.</span>
+      </li>
+    </ul>
+
+    <!-- Related -->
+    <section class="related" id="related">
+      <h2 style="margin-top: 0;">Related situations</h2>
+      <div class="related-grid">
+        <a href="mold.html" class="related-link">I have mold in my apartment</a>
+        <a href="leaks-plumbing.html" class="related-link">I have a leak or plumbing problem</a>
+        <a href="heat-hot-water.html" class="related-link">My apartment has no heat or hot water</a>
+        <a href="pests.html" class="related-link">I have pests &mdash; rats, mice, roaches, or bedbugs</a>
+        <a href="lead-paint.html" class="related-link">I'm worried about lead paint in my apartment</a>
+        <a href="appliances.html" class="related-link">Appliances or fixtures in my apartment are broken</a>
+        <a href="retaliation.html" class="related-link">My landlord is retaliating against me for complaining</a>
+        <span class="related-link coming-soon">I'm in a NYCHA building, not private housing</span>
+      </div>
+    </section>
+
+    <!-- Sources -->
+    <div class="sources">
+      <h3>Sources &amp; verification</h3>
+      <ul>
+        <li><a href="https://www.nysenate.gov/legislation/laws/RPP/235-B" target="_blank" rel="noopener">NY Real Property Law &sect;&nbsp;235-b &mdash; warranty of habitability.</a></li>
+        <li><a href="https://www.nysenate.gov/legislation/laws/RPP/223-B" target="_blank" rel="noopener">NY Real Property Law &sect;&nbsp;223-b &mdash; retaliation protections.</a></li>
+        <li><a href="https://www.nyc.gov/site/hpd/services-and-information/file-a-complaint.page" target="_blank" rel="noopener">NYC HPD &mdash; How to File a Complaint.</a></li>
+        <li><a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">NYC HPD Online &mdash; building violation lookup.</a></li>
+        <li><a href="https://www.nyc.gov/site/hpd/services-and-information/indoor-allergen-hazards-mold-and-pests.page" target="_blank" rel="noopener">NYC HPD &mdash; Indoor Allergen Hazards (Local Law 55)</a></li>
+        <li><a href="https://www1.nyc.gov/assets/buildings/local_laws/ll55of2018.pdf" target="_blank" rel="noopener">NYC Local Law 55 of 2018 &mdash; full text.</a></li>
+        <li><a href="https://www.nyc.gov/site/hpd/services-and-information/lead-based-paint.page" target="_blank" rel="noopener">NYC HPD &mdash; Lead-Based Paint (Local Law 1 of 2004)</a></li>
+        <li><a href="https://hcr.ny.gov/forms" target="_blank" rel="noopener">NYS DHCR &mdash; Forms (RA-81, RA-84, others)</a></li>
+        <li><a href="https://rent.hcr.ny.gov/RentConnect/Tenant/Overview" target="_blank" rel="noopener">DHCR Rent Connect &mdash; online filing portal.</a></li>
+        <li><a href="https://www.metcouncilonhousing.org/help-answers/getting-repairs/" target="_blank" rel="noopener">Met Council on Housing &mdash; Getting Repairs.</a></li>
+        <li><a href="https://housingcourtanswers.org/answers/for-tenants/hp-actions-tenants/" target="_blank" rel="noopener">Housing Court Answers &mdash; HP Actions for Tenants.</a></li>
+      </ul>
+      <p class="verified">Drafted April 27, 2026 &mdash; pending source verification. <a href="https://github.com/hollymariegibbs/tenant-triage-nyc/issues/new?template=report-error.yml&amp;page-url=https%3A%2F%2Ftenanttriagenyc.org%2Fscenarios%2Frepairs-not-fixing-problem" target="_blank" rel="noopener" class="inline-link">Found an error? Tell us.</a></p>
+    </div>
+
+    <div class="disclaimer">
+      <strong>This isn't legal advice.</strong> Tenant Triage NYC is an independent guide to help you understand your options and take action. We are not lawyers, and this is not an official government resource. If you need legal advice for your specific situation, please contact one of the free legal help organizations listed above.
+    </div>
+
+    </article>
+
+  </div>
+
+  <div class="toast" id="toast">Copied to clipboard</div>
+
+  <script>
+    // Scroll progress bar
+    window.addEventListener('scroll', function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progress").style.width = scrolled + "%";
+    });
+
+    const formState = {};
+
+    function syncField(fieldName, value) {
+      formState[fieldName] = value;
+      document.querySelectorAll('[data-field="' + fieldName + '"]').forEach(function(input) {
+        if (input.value !== value) input.value = value;
+        if (value && value.trim() !== '') {
+          input.classList.add('has-value');
+        } else {
+          input.classList.remove('has-value');
+        }
+        autoResize(input);
+      });
+      if (fieldName === 'complaint_ref') {
+        const display = document.getElementById('ref-display');
+        if (value && value.trim() !== '') {
+          display.innerHTML = value;
+        } else {
+          display.innerHTML = '<span class="empty">Save it in Step&nbsp;3 above.</span>';
+        }
+      }
+      if (fieldName === 'prior_311_sr') {
+        const display = document.getElementById('prior-311-display');
+        if (display) {
+          if (value && value.trim() !== '') {
+            display.innerHTML = value;
+          } else {
+            display.innerHTML = '<span class="empty">Add it in your Step&nbsp;1 timeline.</span>';
+          }
+        }
+      }
+    }
+
+    document.querySelectorAll('.fill, [data-field]').forEach(function(input) {
+      input.addEventListener('input', function() { syncField(this.dataset.field, this.value); });
+    });
+
+    function autoResize(input) {
+      if (!input.classList.contains('fill')) return;
+      const placeholder = input.getAttribute('placeholder') || '';
+      const value = input.value || '';
+      const len = Math.max(value.length, placeholder.length, 4);
+      input.size = len + 1;
+    }
+    document.querySelectorAll('.fill').forEach(function(input) {
+      autoResize(input);
+      input.addEventListener('input', function() { autoResize(this); });
+    });
+
+    // COPY TO CLIPBOARD
+    function getTemplateText(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return '';
+      const clone = container.cloneNode(true);
+      clone.querySelectorAll('input.fill').forEach(function(input) {
+        const original = container.querySelector('[data-field="' + input.dataset.field + '"]');
+        const value = original.value.trim();
+        const replacement = value || ('[' + (input.getAttribute('placeholder') || input.dataset.field) + ']');
+        const textNode = document.createTextNode(replacement);
+        input.parentNode.replaceChild(textNode, input);
+      });
+      let text = '';
+      clone.querySelectorAll('p').forEach(function(p, index) {
+        if (index > 0) text += '\n\n';
+        const html = p.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        text += tempDiv.textContent.trim();
+      });
+      return text;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 2200);
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const targetId = this.dataset.copyTarget;
+        const text = getTemplateText(targetId);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function() { showCopySuccess(btn); })
+            .catch(function() { fallbackCopy(text, btn); });
+        } else {
+          fallbackCopy(text, btn);
+        }
+      });
+    });
+
+    function fallbackCopy(text, btn) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try { document.execCommand('copy'); showCopySuccess(btn); }
+      catch (err) { showToast('Copy failed — please select and copy manually'); }
+      document.body.removeChild(textarea);
+    }
+
+    function showCopySuccess(btn) {
+      btn.classList.add('copied');
+      const textSpan = btn.querySelector('.copy-btn-text');
+      const originalText = textSpan.textContent;
+      textSpan.textContent = 'Copied!';
+      showToast('Copied to clipboard');
+      setTimeout(function() {
+        btn.classList.remove('copied');
+        textSpan.textContent = originalText;
+      }, 2000);
+    }
+  </script>
+  <script src="../lookup.js"></script>
+  <script>
+    initLookup({
+      filterKeywords: ['mold', 'mildew', 'fungus', 'moisture', 'damp', 'musty', 'mould']
+    });
+  </script>
+  <script src="../sidebar.js"></script>
+  <script src="../review.js"></script>
+
+  <!-- Cloudflare Web Analytics — skipped on localhost to avoid dev console noise -->
+  <script>
+    if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+      var s = document.createElement('script');
+      s.defer = true;
+      s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+      s.setAttribute('data-cf-beacon', '{"token": "fc2935e949fc46cb938233e121e19854"}');
+      document.head.appendChild(s);
+    }
+  </script>
+  <!-- End Cloudflare Web Analytics -->
+</body>
+</html>
