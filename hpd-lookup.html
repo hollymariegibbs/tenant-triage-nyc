@@ -3,24 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About — Tenant Triage NYC</title>
-  <meta name="description" content="Why Tenant Triage NYC exists, how it's built, and who's behind it.">
-  <link rel="canonical" href="https://tenanttriagenyc.org/about">
-  <meta property="og:title" content="About — Tenant Triage NYC">
-  <meta property="og:description" content="Why Tenant Triage NYC exists, how it's built, and who's behind it.">
+  <title>Building lookup — Tenant Triage NYC</title>
+  <meta name="description" content="Look up your NYC building's HPD violation history. See open and resolved housing code violations from public city data — no account or signup required.">
+  <link rel="canonical" href="https://tenanttriagenyc.org/hpd-lookup">
+  <meta property="og:title" content="Building lookup — Tenant Triage NYC">
+  <meta property="og:description" content="Look up your NYC building's HPD violation history. See open and resolved housing code violations from public city data — no account or signup required.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Tenant Triage NYC">
-  <meta property="og:url" content="https://tenanttriagenyc.org/about">
+  <meta property="og:url" content="https://tenanttriagenyc.org/hpd-lookup">
   <meta property="og:image" content="https://tenanttriagenyc.org/images/og-card.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="About — Tenant Triage NYC">
-  <meta name="twitter:description" content="Why Tenant Triage NYC exists, how it's built, and who's behind it.">
+  <meta name="twitter:title" content="Building lookup — Tenant Triage NYC">
+  <meta name="twitter:description" content="Look up your NYC building's HPD violation history. See open and resolved housing code violations from public city data — no account or signup required.">
   <meta name="twitter:image" content="https://tenanttriagenyc.org/images/og-card.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="lookup.css">
   <style>
     :root {
       --bg: #ffffff;
@@ -122,7 +123,7 @@
       font-size: 1.1875rem;
       line-height: 1.55;
       color: var(--ink-soft);
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
       max-width: 36rem;
     }
 
@@ -135,10 +136,6 @@
       margin-bottom: 0.75rem;
       padding-bottom: 0.5rem;
       border-bottom: 2px solid var(--ink);
-    }
-
-    h2:first-of-type {
-      margin-top: 0;
     }
 
     p {
@@ -154,28 +151,28 @@
       font-weight: 600;
     }
 
-    a {
+    article a {
       color: var(--accent-deep);
       text-decoration: none;
       border-bottom: 1px solid var(--accent);
     }
-    a:hover {
+    article a:hover {
       background: var(--accent-soft);
     }
 
-    ul {
+    ul.classes {
       list-style: none;
       padding: 0;
       margin: 0 0 1rem 0;
     }
-    ul li {
+    ul.classes li {
       font-size: 1rem;
       line-height: 1.7;
       color: var(--ink-soft);
       padding: 0.25rem 0 0.25rem 1.25rem;
       position: relative;
     }
-    ul li::before {
+    ul.classes li::before {
       content: "";
       position: absolute;
       left: 0;
@@ -184,17 +181,6 @@
       height: 6px;
       background: var(--accent);
     }
-
-    .principles {
-      margin: 1.5rem 0;
-      padding: 1.75rem 2rem;
-      background: var(--bg-soft);
-      border-left: 4px solid var(--accent);
-    }
-    .principles p {
-      margin-bottom: 0.75rem;
-    }
-    .principles p:last-child { margin-bottom: 0; }
 
     .disclaimer {
       margin: 3rem 0 0;
@@ -216,6 +202,7 @@
       color: var(--ink-soft);
       margin-bottom: 0.5rem;
     }
+    .disclaimer p:last-child { margin-bottom: 0; }
 
     .site-footer {
       border-top: 2px solid var(--ink);
@@ -238,7 +225,6 @@
     @media (max-width: 600px) {
       article { padding: 2rem 1.25rem 4rem; }
       h1 { font-size: 2rem; }
-      .principles { padding: 1.25rem 1.25rem; }
       .disclaimer { padding: 1.25rem; }
     }
   </style>
@@ -253,8 +239,8 @@
       </a>
       <nav class="site-nav">
         <a href="index.html">All scenarios</a>
-        <a href="about.html" class="current">About</a>
-        <a href="hpd-lookup.html">Building lookup</a>
+        <a href="about.html">About</a>
+        <a href="hpd-lookup.html" class="current">Building lookup</a>
         <a href="free-help.html">Free help</a>
         <a href="fliers.html" class="nav-cta">Free fliers</a>
       </nav>
@@ -263,35 +249,53 @@
 
   <article>
 
-    <h1>About this project</h1>
-    <p class="standfirst">Tenant Triage NYC is a free, independent resource that gives New York City renters clear, step-by-step guidance for dealing with housing problems &mdash; from no heat to mold to eviction notices.</p>
+    <h1>Look up your building's HPD violations</h1>
+    <p class="standfirst">Every housing code violation ever issued in NYC is public record. Enter your address to see what's on file for your building &mdash; what's open, what's been resolved, and how serious each one was.</p>
 
-    <h2>Why this exists</h2>
-    <p>New York City has some of the strongest tenant protections in the country. But knowing your rights and knowing <em>what to actually do</em> are two very different things.</p>
-    <p>If you're standing in your apartment with water coming through the ceiling, you don't need a summary of the Housing Maintenance Code. You need to know who to call, what to say, and what to do if they don't respond. That's what this site tries to provide.</p>
-    <p>Most of the information here already exists &mdash; scattered across city agency websites, legal aid PDFs, tenant organizing handouts, and Reddit threads. The problem isn't access to information. It's that the information isn't organized around the moment someone actually needs it, in the order they need to act on it, in language that doesn't require a legal background to understand.</p>
+    <!-- ADDRESS LOOKUP COMPONENT -->
+    <section class="lookup" id="lookup">
+      <span class="lookup-label">Look it up</span>
+      <h4>Enter your NYC address.</h4>
+      <p class="lookup-intro">No account or signup. Data comes live from NYC Open Data and Department of City Planning.</p>
+      <div class="lookup-input-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
+        <div class="lookup-suggestions" id="lookup-suggestions"></div>
+      </div>
+      <div class="lookup-status" id="lookup-status"></div>
+      <div class="lookup-results" id="lookup-results"></div>
+      <div class="lookup-fallback" id="lookup-fallback" style="display: none;">
+        <strong>Having trouble?</strong> You can also look up your building directly on <a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">HPDOnline</a>.
+      </div>
+    </section>
 
-    <h2>How it's built</h2>
-    <p>Every guide on this site follows the same approach:</p>
+    <h2>What you're looking at</h2>
+    <p>HPD &mdash; the city's Department of Housing Preservation and Development &mdash; inspects apartments and issues violations when landlords break the housing code. Each violation has a class that tells you how serious it is:</p>
+    <ul class="classes">
+      <li><strong>Class A &mdash; non-hazardous.</strong> Cosmetic or minor issues like chipped paint outside an apartment.</li>
+      <li><strong>Class B &mdash; hazardous.</strong> Pests, mold, broken locks, plumbing problems that aren't an immediate threat.</li>
+      <li><strong>Class C &mdash; immediately hazardous.</strong> No heat, no hot water, lead paint risk to children, missing smoke detectors, broken windows in winter.</li>
+    </ul>
+    <p>Each violation also has a status: <strong>open</strong> means the landlord hasn't fixed it yet, <strong>closed</strong> means it's been resolved, and <strong>dismissed</strong> means HPD threw it out.</p>
 
-    <div class="principles">
-      <p><strong>Start from the tenant's situation, not the system's structure.</strong> Guides are organized by what's happening in your apartment &mdash; not by which agency handles what or which law applies.</p>
-      <p><strong>Give people the next concrete action.</strong> Each step tells you exactly what to do, with sample messages, phone scripts, and links to the right forms &mdash; not just what agency to contact.</p>
-      <p><strong>Be honest about what works and what doesn't.</strong> Where the process is slow, or where protections have gaps, the guides say so. Trust is more useful than false reassurance.</p>
-      <p><strong>Write for people under stress.</strong> Clear headings, short paragraphs, no jargon, no legalese. If someone is reading this at midnight in a cold apartment, the writing shouldn't be another barrier.</p>
-    </div>
-
-    <p>Each scenario is researched against current NYC housing law, HPD procedures, and 311 processes, then structured as a step-by-step guide that walks tenants through the process in order of priority. Guides are verified against official city sources and updated when procedures change.</p>
-
-    <h2>Who's behind this</h2>
-    <p>Tenant Triage NYC is designed and built by <a href="https://www.hollymariegibbs.com" target="_blank" rel="noopener">Holly Gibbs</a>, a UX designer based in New York City.</p>
-    <p>Holly has a background in journalism, which shaped how this project approaches complex information: start with what matters to the reader, structure it so they can act on it, and never assume they already know how the system works. The same skills that make a good explainer &mdash; clarity, structure, empathy for the audience &mdash; are the ones this project depends on.</p>
-    <p>This is an independent project. It isn't funded by or affiliated with any city agency, landlord group, legal organization, or political campaign. The goal is simply to make information that's already public more usable for the people who need it most.</p>
+    <h2>What to do with what you find</h2>
+    <p>A pattern of open or repeated violations is powerful context. Landlords often behave differently when they know you're paying attention to public records, and city agencies and free tenant lawyers will take your situation more seriously when you can point to specific entries on the record.</p>
+    <p>If you're dealing with a specific problem, the step-by-step guides walk you through what to do next:</p>
+    <ul class="classes">
+      <li><a href="scenarios/heat-hot-water.html">No heat or hot water</a></li>
+      <li><a href="scenarios/mold.html">Mold</a></li>
+      <li><a href="scenarios/pests.html">Pests</a></li>
+      <li><a href="scenarios/leaks-plumbing.html">Leaks and plumbing</a></li>
+      <li><a href="scenarios/lead-paint.html">Lead paint</a></li>
+      <li><a href="scenarios/appliances.html">Broken appliances</a></li>
+      <li><a href="scenarios/repairs-not-fixing-problem.html">Repairs that aren't fixing the problem</a></li>
+      <li><a href="index.html">Browse all scenarios</a></li>
+    </ul>
 
     <div class="disclaimer">
-      <span class="disclaimer-label">Important</span>
-      <p>Tenant Triage NYC is not a law firm and does not provide legal advice. The information on this site is for general guidance only and may not reflect the most recent legal developments. Every situation is different.</p>
-      <p>If you need legal help, contact <strong>Met Council on Housing</strong> at <a href="tel:2129790611" class="inline-link"><strong>212-979-0611</strong></a> or visit the <a href="https://www.metcouncilonhousing.org" target="_blank" rel="noopener">Met Council website</a> to connect with a free tenant rights hotline.</p>
+      <span class="disclaimer-label">An honest note</span>
+      <p>HPD's records are public, but they're not a complete picture. Some violations age off the system, some landlords fix problems without the paper trail catching up, and not every issue in your apartment shows up here. Use this as a starting point &mdash; not the whole story.</p>
+      <p>If you need legal help, contact <strong>Met Council on Housing</strong> at <a href="tel:2129790611"><strong>212-979-0611</strong></a> or visit our <a href="free-help.html">Free help</a> page for a full list of free hotlines and legal services.</p>
     </div>
 
   </article>
@@ -300,6 +304,10 @@
     Made by <a href="https://www.hollymariegibbs.com" target="_blank" rel="noopener">Holly Gibbs</a>
   </footer>
 
+  <script src="lookup.js"></script>
+  <script>
+    initLookup({});
+  </script>
   <script src="review.js"></script>
 
   <!-- Cloudflare Web Analytics — skipped on localhost to avoid dev console noise -->
