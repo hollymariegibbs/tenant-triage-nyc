@@ -439,6 +439,16 @@ function buildViolationCard(v) {
   return li;
 }
 
+// Build a JustFix Who Owns What deep link for the selected building.
+// Uses WOW's BBL-based route, which avoids the address-normalization
+// mismatches we'd hit with the /address/<boro>/<housenumber>/<street>
+// route (e.g. GeoSearch's "BAY STREET LANDING" not matching WOW's
+// internal data). Returns null if we have no BBL to link to.
+function buildWhoOwnsWhatUrl(building) {
+  if (!building || !building.bbl) return null;
+  return 'https://whoownswhat.justfix.org/en/bbl/' + encodeURIComponent(building.bbl);
+}
+
 function renderLookupFooter() {
   var footer = document.getElementById('lookup-results-footer');
   if (!footer) return;
@@ -462,6 +472,16 @@ function renderLookupFooter() {
   hpdLink.className = 'lookup-hpd-link';
   hpdLink.innerHTML = 'Or view the full history on <a href="https://hpdonline.nyc.gov/hpdonline/" target="_blank" rel="noopener">HPDOnline</a>.';
   footer.appendChild(hpdLink);
+
+  var wowUrl = buildWhoOwnsWhatUrl(currentBuilding);
+  if (wowUrl) {
+    var wowLink = document.createElement('div');
+    wowLink.className = 'lookup-hpd-link';
+    wowLink.innerHTML = 'See who owns this building on <a href="' +
+      escapeHTMLLookup(wowUrl) +
+      '" target="_blank" rel="noopener noreferrer">Who Owns What</a>.';
+    footer.appendChild(wowLink);
+  }
 }
 
 // ============================================
