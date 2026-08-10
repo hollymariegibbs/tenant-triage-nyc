@@ -733,14 +733,38 @@ function escapeHTMLLookup(str) {
 
 // ============================================
 // SAVED VIOLATIONS ("Your case")
-// Persists across pages via localStorage. Renders into any
-// element with class .saved-violations-panel.
+// Session-first: pins live in sessionStorage (cleared when the tab
+// closes) unless the user opts into "Keep on this device", which
+// mirrors the walkthrough's explicit-consent model and moves them to
+// localStorage. Renders into any element with class
+// .saved-violations-panel.
 // ============================================
 const PINNED_STORAGE_KEY = 'tt-saved-violations';
+const PINNED_KEEP_KEY = 'tt-saved-violations-keep';
+
+function pinsKeptOnDevice() {
+  try { return localStorage.getItem(PINNED_KEEP_KEY) === '1'; } catch (e) { return false; }
+}
+
+// Pins saved before the session-first change were written to
+// localStorage under a "persists across sessions" promise — honor it
+// by grandfathering them into the keep-on-device tier.
+(function migrateLegacyPins() {
+  try {
+    if (localStorage.getItem(PINNED_STORAGE_KEY) !== null &&
+        localStorage.getItem(PINNED_KEEP_KEY) === null) {
+      localStorage.setItem(PINNED_KEEP_KEY, '1');
+    }
+  } catch (e) { /* storage unavailable */ }
+})();
+
+function pinStore() {
+  return pinsKeptOnDevice() ? localStorage : sessionStorage;
+}
 
 function getPinnedViolations() {
   try {
-    var raw = localStorage.getItem(PINNED_STORAGE_KEY);
+    var raw = pinStore().getItem(PINNED_STORAGE_KEY);
     return raw ? JSON.parse(raw) : [];
   } catch (e) {
     return [];
@@ -749,8 +773,24 @@ function getPinnedViolations() {
 
 function savePinnedViolations(arr) {
   try {
-    localStorage.setItem(PINNED_STORAGE_KEY, JSON.stringify(arr));
-  } catch (e) { /* localStorage unavailable */ }
+    pinStore().setItem(PINNED_STORAGE_KEY, JSON.stringify(arr));
+  } catch (e) { /* storage unavailable */ }
+}
+
+function setKeepOnDevice(keep) {
+  var pins = getPinnedViolations();
+  try {
+    if (keep) {
+      localStorage.setItem(PINNED_KEEP_KEY, '1');
+      localStorage.setItem(PINNED_STORAGE_KEY, JSON.stringify(pins));
+      sessionStorage.removeItem(PINNED_STORAGE_KEY);
+    } else {
+      localStorage.removeItem(PINNED_KEEP_KEY);
+      localStorage.removeItem(PINNED_STORAGE_KEY);
+      sessionStorage.setItem(PINNED_STORAGE_KEY, JSON.stringify(pins));
+    }
+  } catch (e) { /* storage unavailable */ }
+  renderAllPinnedPanels();
 }
 
 function isPinned(violationId) {
@@ -823,7 +863,7 @@ function renderPinnedPanel(container) {
     container.classList.add('is-empty');
     container.innerHTML =
       '<span class="saved-label">Your case</span>' +
-      '<p class="saved-empty-text">No HPD violations pinned yet. When you find ones related to your problem in a lookup, click <strong>Pin to your case</strong> to save them here. They\'ll persist across pages and sessions so you can reference them in your email, complaint, or court filing.</p>';
+      '<p class="saved-empty-text">No HPD violations pinned yet. When you find ones related to your problem in a lookup, click <strong>Pin to your case</strong> to save them here for your email, complaint, or court filing. Pins are saved only in this browser &mdash; nothing is sent anywhere &mdash; and clear when you close this tab, unless you turn on <strong>Keep on this device</strong>.</p>';
     return;
   }
 
@@ -858,9 +898,26 @@ function renderPinnedPanel(container) {
 
   html += '<p class="saved-footer-tip"><strong>Tip:</strong> Use these IDs in your email to your landlord, your timeline, your 311 callback, and any HPD or Housing Court filing.</p>';
 
+  var kept = pinsKeptOnDevice();
+  html += '<div class="saved-storage-row">' +
+    '<label class="saved-keep-toggle">' +
+      '<input type="checkbox" class="saved-keep-checkbox"' + (kept ? ' checked' : '') + '> Keep on this device' +
+    '</label>' +
+    '<p class="saved-storage-note">' + (kept
+      ? 'Saved in this browser until you clear them. On a shared or public computer? Use <strong>Clear all</strong> when you\'re done.'
+      : 'Saved only in this tab &mdash; pins clear when you close it. Nothing is sent anywhere.') +
+    '</p>' +
+  '</div>';
+
   container.innerHTML = html;
 
   // Wire up handlers
+  var keepToggle = container.querySelector('.saved-keep-checkbox');
+  if (keepToggle) {
+    keepToggle.addEventListener('change', function() {
+      setKeepOnDevice(keepToggle.checked);
+    });
+  }
   container.querySelectorAll('.saved-unpin-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       unpinViolation(btn.getAttribute('data-violation-id'));
