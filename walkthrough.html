@@ -82,6 +82,7 @@
       color: var(--accent); letter-spacing: 0.01em;
     }
     .site-nav {
+      flex-wrap: wrap; row-gap: 0.5rem;
       display: flex; gap: 1.75rem;
       font-size: 0.875rem; color: var(--ink); font-weight: 500;
     }
@@ -671,6 +672,8 @@
     .add-own input[type="text"] {
       font-family: inherit;
       font-size: 0.9375rem;
+      min-width: 0;
+      width: 100%;
       padding: 0.55rem 0.75rem;
       border: 1.5px solid var(--rule-strong);
       background: var(--bg);
@@ -780,6 +783,7 @@
       padding: 0 0.25rem;
       outline: none;
       min-width: 8rem;
+      max-width: 100%;
       transition: border-color 0.12s ease;
     }
     .fill:focus { border-bottom-color: var(--accent); }
@@ -1001,7 +1005,8 @@
         grid-template-columns: 1fr;
         gap: 0.4rem;
       }
-      .room-label-row > label { font-size: 0.7rem; }
+      .room-label-row > label { font-size: 0.7rem; white-space: normal; }
+      .remove-room-btn { white-space: normal; }
     }
 
     /* -------- Print: the letter is the thing. Everything else is UI. -------- */
@@ -1027,10 +1032,26 @@
       .fill::placeholder { color: #666; }
       .letter-laws { background: transparent; border-left: 2px solid #000; }
     }
+  
+/* --- Accessibility additions (a11y audit, Aug 2026) --- */
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  background: var(--accent-deep, #08494c); color: #fff;
+  padding: 0.75rem 1.25rem; font-weight: 700; text-decoration: none;
+  font-size: 0.9375rem;
+}
+.skip-link:focus { left: 0; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+@media (max-width: 600px) {
+  .site-nav a { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+}
   </style>
   <link rel="stylesheet" href="print.css" media="print">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header class="site-header">
     <div class="site-header-inner">
@@ -1060,7 +1081,7 @@
       </nav>
     </aside>
 
-    <article>
+    <article id="main-content" role="main">
 
       <nav class="breadcrumbs" aria-label="Breadcrumb">
         <a href="index.html">All scenarios</a>
@@ -1145,14 +1166,14 @@
             </span>
           </div>
           <div class="template-body" id="letter-body">
-            <p>Subject: Request for repairs at <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
-            <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord or management company" size="32">,</p>
+            <p>Subject: Request for repairs at <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34" aria-label="street, apt #, borough, ZIP"></p>
+            <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord or management company" size="32" aria-label="landlord or management company">,</p>
             <p>I am writing to formally request repairs to my apartment. I have conducted a thorough inspection and identified the following conditions that require attention:</p>
             <div class="letter-items" id="letter-items"></div>
             <div class="letter-laws" id="letter-laws"></div>
             <p>Please arrange to inspect and repair these conditions promptly. I have documented them with photographs and am prepared to file a complaint with 311 and HPD if repairs are not made within a reasonable timeframe.</p>
             <p>Thank you,</p>
-            <p><input type="text" class="fill" data-field="tenant_name" placeholder="your name" size="22"><br><input type="text" class="fill" data-field="tenant_phone" placeholder="phone number" size="18"><br><input type="text" class="fill" data-field="date" placeholder="today's date" size="14"></p>
+            <p><input type="text" class="fill" data-field="tenant_name" placeholder="your name" size="22" aria-label="your name"><br><input type="text" class="fill" data-field="tenant_phone" placeholder="phone number" size="18" aria-label="phone number"><br><input type="text" class="fill" data-field="date" placeholder="today's date" size="14" aria-label="today's date"></p>
           </div>
           <div class="template-footer">
             <button class="copy-btn" id="copy-letter-btn">

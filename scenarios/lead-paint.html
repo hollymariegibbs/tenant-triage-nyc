@@ -71,6 +71,7 @@
   <link rel="stylesheet" href="../print.css" media="print">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <div class="progress-bar" id="progress"></div>
 
@@ -110,7 +111,7 @@
       </nav>
     </aside>
 
-    <article>
+    <article id="main-content" role="main">
 
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="../index.html">All scenarios</a>
@@ -403,16 +404,16 @@
           </button>
         </div>
         <div class="template-body" id="email-template-content">
-          <p><strong>Subject:</strong> Lead paint hazard at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"></p>
-          <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26">,</p>
-          <p>I am writing to formally report peeling and chipping paint in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22">. The affected locations include <input type="text" class="fill" data-field="locations" placeholder="window troughs in living room, door frame in kitchen, etc." size="48">. I first noticed the condition on <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">.</p>
-          <p>A child under the age of 6 <input type="text" class="fill" data-field="child_status" placeholder="lives in / regularly visits / does not live in" size="34"> the apartment. The building was built in <input type="text" class="fill" data-field="build_year" placeholder="approximate year" size="14">.</p>
+          <p><strong>Subject:</strong> Lead paint hazard at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22" aria-label="your address, apt #"></p>
+          <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26" aria-label="landlord/management company">,</p>
+          <p>I am writing to formally report peeling and chipping paint in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22" aria-label="your address, apt #">. The affected locations include <input type="text" class="fill" data-field="locations" placeholder="window troughs in living room, door frame in kitchen, etc." size="48" aria-label="window troughs in living room, door frame in kitchen, etc.">. I first noticed the condition on <input type="text" class="fill" data-field="start_date" placeholder="date" size="12" aria-label="date">.</p>
+          <p>A child under the age of 6 <input type="text" class="fill" data-field="child_status" placeholder="lives in / regularly visits / does not live in" size="34" aria-label="lives in / regularly visits / does not live in"> the apartment. The building was built in <input type="text" class="fill" data-field="build_year" placeholder="approximate year" size="14" aria-label="approximate year">.</p>
           <p>Under <strong>NYC Local Law 1 of 2004</strong> and the NYC Housing Maintenance Code (&sect;&sect; 27-2056.1 et seq.), you are required to investigate and remediate any lead-based paint hazards in this apartment. Under <strong>Local Law 31 of 2020</strong>, any work that disturbs paint must be performed using lead-safe work practices by appropriately trained workers. Dry-scraping, sanding, or repainting over peeling paint is not lawful remediation.</p>
           <p>Please respond within 7 days with a plan to inspect and remediate. I have photographs documenting the condition and am happy to provide them upon request. If the problem is not addressed promptly, I will be filing complaints with 311, HPD, and the NYC Department of Health.</p>
-          <p>For reference, related HPD violation(s) on file at this address: <input type="text" class="fill" data-field="prior_violation_ids" placeholder="violation IDs" size="34">.</p>
+          <p>For reference, related HPD violation(s) on file at this address: <input type="text" class="fill" data-field="prior_violation_ids" placeholder="violation IDs" size="34" aria-label="violation IDs">.</p>
           <p>Thank you,<br>
-          <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18"><br>
-          <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16"></p>
+          <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18" aria-label="your name"><br>
+          <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16" aria-label="phone number"></p>
         </div>
       </div>
 
@@ -449,7 +450,7 @@
           Say it in your own words
         </span>
         <div class="spoken-body">
-          <p>"I'd like to file a complaint about peeling paint and a possible lead hazard in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20">. The peeling paint is on <input type="text" class="fill" data-field="locations" placeholder="window troughs, door frames, etc." size="28">. The building was built in <input type="text" class="fill" data-field="build_year" placeholder="year" size="10">. I first noticed it on <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">. I contacted my landlord on <input type="text" class="fill" data-field="contacted_date" placeholder="date" size="12"> and the problem hasn't been fixed. I have photos."</p>
+          <p>"I'd like to file a complaint about peeling paint and a possible lead hazard in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20" aria-label="your address">. The peeling paint is on <input type="text" class="fill" data-field="locations" placeholder="window troughs, door frames, etc." size="28" aria-label="window troughs, door frames, etc.">. The building was built in <input type="text" class="fill" data-field="build_year" placeholder="year" size="10" aria-label="year">. I first noticed it on <input type="text" class="fill" data-field="start_date" placeholder="date" size="12" aria-label="date">. I contacted my landlord on <input type="text" class="fill" data-field="contacted_date" placeholder="date" size="12" aria-label="date"> and the problem hasn't been fixed. I have photos."</p>
           <p>If a young child or pregnant person lives there: <em>"There is a child under 6 (or a pregnant person) living in the apartment. This is a Local Law 1 violation."</em></p>
           <p>If your child has been tested with an elevated blood lead level: <em>"My child has an elevated blood lead level. I would like the Department of Health to inspect."</em></p>
         </div>

@@ -31,7 +31,7 @@ let filterActive = true;
 let currentBuilding = null;
 
 // DOM references (set in init)
-let lookupInput, lookupSuggestionsBox, lookupStatusEl, lookupResultsEl, lookupFallbackEl;
+let lookupInput, lookupSuggestionsBox, lookupStatusEl, lookupResultsEl, lookupFallbackEl, lookupAnnounceEl;
 
 // ============================================
 // INIT
@@ -47,6 +47,27 @@ function initLookup(options) {
 
   if (!lookupInput) return;
 
+  // Combobox semantics — announced by screen readers as an autocomplete
+  lookupInput.setAttribute('role', 'combobox');
+  lookupInput.setAttribute('aria-autocomplete', 'list');
+  lookupInput.setAttribute('aria-expanded', 'false');
+  lookupInput.setAttribute('aria-controls', 'lookup-suggestions');
+  if (!lookupInput.getAttribute('aria-label')) {
+    lookupInput.setAttribute('aria-label', 'Your NYC address');
+  }
+  lookupSuggestionsBox.setAttribute('role', 'listbox');
+  lookupSuggestionsBox.setAttribute('aria-label', 'Address suggestions');
+  lookupStatusEl.setAttribute('role', 'status');
+  lookupStatusEl.setAttribute('aria-live', 'polite');
+
+  // Visually-hidden live region for announcements that have no visible
+  // status counterpart (suggestion counts, result counts)
+  lookupAnnounceEl = document.createElement('div');
+  lookupAnnounceEl.setAttribute('role', 'status');
+  lookupAnnounceEl.setAttribute('aria-live', 'polite');
+  lookupAnnounceEl.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;';
+  lookupInput.closest('.lookup-input-wrap').appendChild(lookupAnnounceEl);
+
   lookupInput.addEventListener('input', function(e) {
     const query = e.target.value.trim();
     lookupResultsEl.classList.remove('visible');
@@ -55,7 +76,7 @@ function initLookup(options) {
     lookupFallbackEl.style.display = 'none';
 
     if (query.length < 3) {
-      lookupSuggestionsBox.classList.remove('visible');
+      closeLookupSuggestions();
       return;
     }
 
@@ -66,7 +87,7 @@ function initLookup(options) {
           renderLookupSuggestions(data.features || []);
         })
         .catch(function() {
-          lookupSuggestionsBox.classList.remove('visible');
+          closeLookupSuggestions();
           lookupStatusEl.textContent = 'Address lookup service is temporarily unavailable.';
           lookupStatusEl.classList.add('error');
           lookupFallbackEl.style.display = 'block';
@@ -92,13 +113,13 @@ function initLookup(options) {
         selectLookupSuggestion(lookupHighlightedIndex);
       }
     } else if (e.key === 'Escape') {
-      lookupSuggestionsBox.classList.remove('visible');
+      closeLookupSuggestions();
     }
   });
 
   document.addEventListener('click', function(e) {
     if (!e.target.closest('.lookup-input-wrap')) {
-      lookupSuggestionsBox.classList.remove('visible');
+      closeLookupSuggestions();
     }
   });
 }
@@ -113,13 +134,25 @@ async function fetchGeoSearch(query) {
   return await response.json();
 }
 
+function announceLookup(message) {
+  if (lookupAnnounceEl) lookupAnnounceEl.textContent = message;
+}
+
+function closeLookupSuggestions() {
+  lookupSuggestionsBox.classList.remove('visible');
+  lookupInput.setAttribute('aria-expanded', 'false');
+  lookupInput.removeAttribute('aria-activedescendant');
+}
+
 function renderLookupSuggestions(features) {
   lookupSuggestionsBox.innerHTML = '';
   lookupCurrentSuggestions = [];
   lookupHighlightedIndex = -1;
+  lookupInput.removeAttribute('aria-activedescendant');
 
   if (!features || features.length === 0) {
-    lookupSuggestionsBox.classList.remove('visible');
+    closeLookupSuggestions();
+    announceLookup('No matching addresses found.');
     return;
   }
 
@@ -144,6 +177,9 @@ function renderLookupSuggestions(features) {
 
     const el = document.createElement('div');
     el.className = 'lookup-suggestion';
+    el.setAttribute('role', 'option');
+    el.setAttribute('aria-selected', 'false');
+    el.id = 'lookup-option-' + (lookupCurrentSuggestions.length - 1);
     el.dataset.index = lookupCurrentSuggestions.length - 1;
     el.innerHTML =
       '<span class="lookup-suggestion-address">' + escapeHTMLLookup(label) + '</span>' +
@@ -161,8 +197,12 @@ function renderLookupSuggestions(features) {
 
   if (lookupCurrentSuggestions.length > 0) {
     lookupSuggestionsBox.classList.add('visible');
+    lookupInput.setAttribute('aria-expanded', 'true');
+    announceLookup(lookupCurrentSuggestions.length + ' address suggestion' +
+      (lookupCurrentSuggestions.length === 1 ? '' : 's') +
+      '. Use up and down arrow keys to review, Enter to select.');
   } else {
-    lookupSuggestionsBox.classList.remove('visible');
+    closeLookupSuggestions();
   }
 }
 
@@ -170,15 +210,21 @@ function setLookupHighlight(index) {
   var items = lookupSuggestionsBox.querySelectorAll('.lookup-suggestion');
   items.forEach(function(item, i) {
     item.classList.toggle('highlighted', i === index);
+    item.setAttribute('aria-selected', i === index ? 'true' : 'false');
   });
   lookupHighlightedIndex = index;
+  if (index >= 0 && items[index]) {
+    lookupInput.setAttribute('aria-activedescendant', items[index].id);
+  } else {
+    lookupInput.removeAttribute('aria-activedescendant');
+  }
 }
 
 function selectLookupSuggestion(index) {
   if (index < 0 || index >= lookupCurrentSuggestions.length) return;
   var selected = lookupCurrentSuggestions[index];
   lookupInput.value = selected.label;
-  lookupSuggestionsBox.classList.remove('visible');
+  closeLookupSuggestions();
   fetchViolations(selected);
 }
 
@@ -308,6 +354,8 @@ function updateViolationDisplay() {
         }
       }
     }
+    var buildingLabel = currentBuilding && currentBuilding.label ? toSentenceCase(currentBuilding.label) : 'this building';
+    announceLookup('Results loaded for ' + buildingLabel + '. ' + summary.textContent);
   }
 
   // Update filter toggle

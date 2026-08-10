@@ -81,6 +81,7 @@
       color: var(--accent); letter-spacing: 0.01em;
     }
     .site-nav {
+      flex-wrap: wrap; row-gap: 0.5rem;
       display: flex; gap: 1.75rem;
       font-size: 0.875rem; color: var(--ink); font-weight: 500;
     }
@@ -662,10 +663,26 @@
       .toc { padding: 1rem 1.25rem 1.25rem; }
       .cta-callout { padding: 1.5rem; }
     }
+  
+/* --- Accessibility additions (a11y audit, Aug 2026) --- */
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  background: var(--accent-deep, #08494c); color: #fff;
+  padding: 0.75rem 1.25rem; font-weight: 700; text-decoration: none;
+  font-size: 0.9375rem;
+}
+.skip-link:focus { left: 0; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+@media (max-width: 600px) {
+  .site-nav a { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+}
   </style>
   <link rel="stylesheet" href="print.css" media="print">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header class="site-header">
     <div class="site-header-inner">
@@ -737,7 +754,7 @@
       </nav>
     </aside>
 
-    <article>
+    <article id="main-content" role="main">
 
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="index.html">All scenarios</a>

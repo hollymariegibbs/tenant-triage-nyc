@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="../print.css" media="print">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <div class="progress-bar" id="progress"></div>
 
@@ -67,7 +68,7 @@
       </nav>
     </aside>
 
-    <article>
+    <article id="main-content" role="main">
 
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="../index.html">All scenarios</a>
@@ -331,20 +332,20 @@
           </button>
         </div>
         <div class="template-body" id="intake-template-step1-content">
-          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
-          <p><strong>Date I moved in:</strong> <input type="text" class="fill" data-field="move_in_date" placeholder="month/year" size="14"> &mdash; <strong>Years here:</strong> <input type="text" class="fill" data-field="years_here" placeholder="#" size="4"></p>
-          <p><strong>Current lease end date:</strong> <input type="text" class="fill" data-field="lease_end_date" placeholder="date" size="12"></p>
-          <p><strong>Apartment status (best guess):</strong> <input type="text" class="fill" data-field="status_guess" placeholder="rent-stabilized / market+GCE / market+exempt / NYCHA / Section 8 / month-to-month / unknown" size="60"></p>
-          <p><strong>DHCR rent history requested?</strong> <input type="text" class="fill" data-field="dhcr_status" placeholder="yes/no &mdash; date requested" size="28"></p>
-          <p><strong>Building unit count + year built:</strong> <input type="text" class="fill" data-field="building_facts" placeholder="e.g., 24 units, 1928" size="28"></p>
-          <p><strong>Type of notice received:</strong> <input type="text" class="fill" data-field="notice_type" placeholder="non-renewal / rent increase / both / verbal only / none yet" size="42"></p>
-          <p><strong>Date notice was delivered:</strong> <input type="text" class="fill" data-field="notice_date" placeholder="date" size="12"> &mdash; <strong>How:</strong> <input type="text" class="fill" data-field="notice_method" placeholder="mail / hand / text / posted" size="22"></p>
-          <p><strong>Current monthly rent:</strong> $<input type="text" class="fill" data-field="current_rent" placeholder="amount" size="10"> &mdash; <strong>New rent demanded (if any):</strong> $<input type="text" class="fill" data-field="new_rent" placeholder="amount" size="10"></p>
-          <p><strong>Reason landlord gave (if any):</strong> <input type="text" class="fill" data-field="reason" placeholder="e.g., owner use, sale, no reason given" size="36"></p>
-          <p><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26"></p>
-          <p><strong>Landlord's attorney (if listed):</strong> <input type="text" class="fill" data-field="attorney" placeholder="name" size="26"></p>
-          <p><strong>Repairs requested or 311 complaints in last 12 months?</strong> <input type="text" class="fill" data-field="complaints_recent" placeholder="brief list with dates" size="44"></p>
-          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10"> &mdash; <strong>Household size:</strong> <input type="text" class="fill" data-field="household_size" placeholder="#" size="4"></p>
+          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34" aria-label="street, apt #, borough, ZIP"></p>
+          <p><strong>Date I moved in:</strong> <input type="text" class="fill" data-field="move_in_date" placeholder="month/year" size="14" aria-label="month/year"> &mdash; <strong>Years here:</strong> <input type="text" class="fill" data-field="years_here" placeholder="#" size="4" aria-label="#"></p>
+          <p><strong>Current lease end date:</strong> <input type="text" class="fill" data-field="lease_end_date" placeholder="date" size="12" aria-label="date"></p>
+          <p><strong>Apartment status (best guess):</strong> <input type="text" class="fill" data-field="status_guess" placeholder="rent-stabilized / market+GCE / market+exempt / NYCHA / Section 8 / month-to-month / unknown" size="60" aria-label="rent-stabilized / market+GCE / market+exempt / NYCHA / Section 8 / month-to-month / unknown"></p>
+          <p><strong>DHCR rent history requested?</strong> <input type="text" class="fill" data-field="dhcr_status" placeholder="yes/no &mdash; date requested" size="28" aria-label="yes/no &mdash; date requested"></p>
+          <p><strong>Building unit count + year built:</strong> <input type="text" class="fill" data-field="building_facts" placeholder="e.g., 24 units, 1928" size="28" aria-label="e.g., 24 units, 1928"></p>
+          <p><strong>Type of notice received:</strong> <input type="text" class="fill" data-field="notice_type" placeholder="non-renewal / rent increase / both / verbal only / none yet" size="42" aria-label="non-renewal / rent increase / both / verbal only / none yet"></p>
+          <p><strong>Date notice was delivered:</strong> <input type="text" class="fill" data-field="notice_date" placeholder="date" size="12" aria-label="date"> &mdash; <strong>How:</strong> <input type="text" class="fill" data-field="notice_method" placeholder="mail / hand / text / posted" size="22" aria-label="mail / hand / text / posted"></p>
+          <p><strong>Current monthly rent:</strong> $<input type="text" class="fill" data-field="current_rent" placeholder="amount" size="10" aria-label="amount"> &mdash; <strong>New rent demanded (if any):</strong> $<input type="text" class="fill" data-field="new_rent" placeholder="amount" size="10" aria-label="amount"></p>
+          <p><strong>Reason landlord gave (if any):</strong> <input type="text" class="fill" data-field="reason" placeholder="e.g., owner use, sale, no reason given" size="36" aria-label="e.g., owner use, sale, no reason given"></p>
+          <p><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26" aria-label="name"></p>
+          <p><strong>Landlord's attorney (if listed):</strong> <input type="text" class="fill" data-field="attorney" placeholder="name" size="26" aria-label="name"></p>
+          <p><strong>Repairs requested or 311 complaints in last 12 months?</strong> <input type="text" class="fill" data-field="complaints_recent" placeholder="brief list with dates" size="44" aria-label="brief list with dates"></p>
+          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10" aria-label="amount"> &mdash; <strong>Household size:</strong> <input type="text" class="fill" data-field="household_size" placeholder="#" size="4" aria-label="#"></p>
         </div>
       </div>
 
@@ -433,20 +434,20 @@
           </button>
         </div>
         <div class="template-body" id="intake-template-step2-content">
-          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
-          <p><strong>Date I moved in:</strong> <input type="text" class="fill" data-field="move_in_date" placeholder="month/year" size="14"> &mdash; <strong>Years here:</strong> <input type="text" class="fill" data-field="years_here" placeholder="#" size="4"></p>
-          <p><strong>Current lease end date:</strong> <input type="text" class="fill" data-field="lease_end_date" placeholder="date" size="12"></p>
-          <p><strong>Apartment status (best guess):</strong> <input type="text" class="fill" data-field="status_guess" placeholder="rent-stabilized / market+GCE / market+exempt / NYCHA / Section 8 / month-to-month / unknown" size="60"></p>
-          <p><strong>DHCR rent history requested?</strong> <input type="text" class="fill" data-field="dhcr_status" placeholder="yes/no &mdash; date requested" size="28"></p>
-          <p><strong>Building unit count + year built:</strong> <input type="text" class="fill" data-field="building_facts" placeholder="e.g., 24 units, 1928" size="28"></p>
-          <p><strong>Type of notice received:</strong> <input type="text" class="fill" data-field="notice_type" placeholder="non-renewal / rent increase / both / verbal only / none yet" size="42"></p>
-          <p><strong>Date notice was delivered:</strong> <input type="text" class="fill" data-field="notice_date" placeholder="date" size="12"> &mdash; <strong>How:</strong> <input type="text" class="fill" data-field="notice_method" placeholder="mail / hand / text / posted" size="22"></p>
-          <p><strong>Current monthly rent:</strong> $<input type="text" class="fill" data-field="current_rent" placeholder="amount" size="10"> &mdash; <strong>New rent demanded (if any):</strong> $<input type="text" class="fill" data-field="new_rent" placeholder="amount" size="10"></p>
-          <p><strong>Reason landlord gave (if any):</strong> <input type="text" class="fill" data-field="reason" placeholder="e.g., owner use, sale, no reason given" size="36"></p>
-          <p><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26"></p>
-          <p><strong>Landlord's attorney (if listed):</strong> <input type="text" class="fill" data-field="attorney" placeholder="name" size="26"></p>
-          <p><strong>Repairs requested or 311 complaints in last 12 months?</strong> <input type="text" class="fill" data-field="complaints_recent" placeholder="brief list with dates" size="44"></p>
-          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10"> &mdash; <strong>Household size:</strong> <input type="text" class="fill" data-field="household_size" placeholder="#" size="4"></p>
+          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34" aria-label="street, apt #, borough, ZIP"></p>
+          <p><strong>Date I moved in:</strong> <input type="text" class="fill" data-field="move_in_date" placeholder="month/year" size="14" aria-label="month/year"> &mdash; <strong>Years here:</strong> <input type="text" class="fill" data-field="years_here" placeholder="#" size="4" aria-label="#"></p>
+          <p><strong>Current lease end date:</strong> <input type="text" class="fill" data-field="lease_end_date" placeholder="date" size="12" aria-label="date"></p>
+          <p><strong>Apartment status (best guess):</strong> <input type="text" class="fill" data-field="status_guess" placeholder="rent-stabilized / market+GCE / market+exempt / NYCHA / Section 8 / month-to-month / unknown" size="60" aria-label="rent-stabilized / market+GCE / market+exempt / NYCHA / Section 8 / month-to-month / unknown"></p>
+          <p><strong>DHCR rent history requested?</strong> <input type="text" class="fill" data-field="dhcr_status" placeholder="yes/no &mdash; date requested" size="28" aria-label="yes/no &mdash; date requested"></p>
+          <p><strong>Building unit count + year built:</strong> <input type="text" class="fill" data-field="building_facts" placeholder="e.g., 24 units, 1928" size="28" aria-label="e.g., 24 units, 1928"></p>
+          <p><strong>Type of notice received:</strong> <input type="text" class="fill" data-field="notice_type" placeholder="non-renewal / rent increase / both / verbal only / none yet" size="42" aria-label="non-renewal / rent increase / both / verbal only / none yet"></p>
+          <p><strong>Date notice was delivered:</strong> <input type="text" class="fill" data-field="notice_date" placeholder="date" size="12" aria-label="date"> &mdash; <strong>How:</strong> <input type="text" class="fill" data-field="notice_method" placeholder="mail / hand / text / posted" size="22" aria-label="mail / hand / text / posted"></p>
+          <p><strong>Current monthly rent:</strong> $<input type="text" class="fill" data-field="current_rent" placeholder="amount" size="10" aria-label="amount"> &mdash; <strong>New rent demanded (if any):</strong> $<input type="text" class="fill" data-field="new_rent" placeholder="amount" size="10" aria-label="amount"></p>
+          <p><strong>Reason landlord gave (if any):</strong> <input type="text" class="fill" data-field="reason" placeholder="e.g., owner use, sale, no reason given" size="36" aria-label="e.g., owner use, sale, no reason given"></p>
+          <p><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26" aria-label="name"></p>
+          <p><strong>Landlord's attorney (if listed):</strong> <input type="text" class="fill" data-field="attorney" placeholder="name" size="26" aria-label="name"></p>
+          <p><strong>Repairs requested or 311 complaints in last 12 months?</strong> <input type="text" class="fill" data-field="complaints_recent" placeholder="brief list with dates" size="44" aria-label="brief list with dates"></p>
+          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10" aria-label="amount"> &mdash; <strong>Household size:</strong> <input type="text" class="fill" data-field="household_size" placeholder="#" size="4" aria-label="#"></p>
         </div>
       </div>
     </section>
@@ -490,16 +491,16 @@
           </button>
         </div>
         <div class="template-body" id="response-letter-content">
-          <p>To: <input type="text" class="fill" data-field="landlord" placeholder="landlord / management company name" size="36"></p>
-          <p>From: [Your name], tenant of <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
+          <p>To: <input type="text" class="fill" data-field="landlord" placeholder="landlord / management company name" size="36" aria-label="landlord / management company name"></p>
+          <p>From: [Your name], tenant of <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34" aria-label="street, apt #, borough, ZIP"></p>
           <p>Date: [Today's date]</p>
-          <p>Re: Your notice dated <input type="text" class="fill" data-field="notice_date" placeholder="date on notice" size="14"> regarding non-renewal / rent increase &mdash; received <input type="text" class="fill" data-field="notice_date" placeholder="date received" size="14"></p>
-          <p>I am writing to acknowledge receipt of your notice and to confirm in writing that I intend to remain in possession of the above apartment, where I have lived since <input type="text" class="fill" data-field="move_in_date" placeholder="month/year" size="14">.</p>
+          <p>Re: Your notice dated <input type="text" class="fill" data-field="notice_date" placeholder="date on notice" size="14" aria-label="date on notice"> regarding non-renewal / rent increase &mdash; received <input type="text" class="fill" data-field="notice_date" placeholder="date received" size="14" aria-label="date received"></p>
+          <p>I am writing to acknowledge receipt of your notice and to confirm in writing that I intend to remain in possession of the above apartment, where I have lived since <input type="text" class="fill" data-field="move_in_date" placeholder="month/year" size="14" aria-label="month/year">.</p>
           <p>[<strong>Choose the paragraph(s) that apply to your situation:</strong>]</p>
           <p><strong>If you believe you are rent-stabilized:</strong> Based on my review (including DHCR records), I have reason to believe my apartment is subject to the Rent Stabilization Code. Under 9 NYCRR &sect;&nbsp;2523.5, I am entitled to a renewal lease at the legal regulated rent on the same terms as my prior lease, for either one or two years at my election. Please send me a renewal lease offer within the time required by law.</p>
           <p><strong>If you believe Good Cause Eviction applies:</strong> My understanding is that this apartment is subject to NY's Good Cause Eviction Law (NYS L. 2024, ch. 56, Part HH). Please state in writing the lawful &ldquo;good cause&rdquo; ground on which you rely, and (if applicable) the calculation justifying any rent increase above the local presumptive reasonable threshold.</p>
-          <p><strong>If the notice appears defective:</strong> The notice does not appear to comply with RPL &sect;&nbsp;226-c, which requires <input type="text" class="fill" data-field="notice_required_days" placeholder="30/60/90" size="6"> days' written advance notice based on my length of tenancy of <input type="text" class="fill" data-field="years_here" placeholder="#" size="4"> years. Please withdraw the current notice; I reserve all rights and defenses if you proceed without correcting it.</p>
-          <p>I will continue to pay the previously agreed rent of $<input type="text" class="fill" data-field="current_rent" placeholder="amount" size="10"> per month while this is being resolved. Please direct any further communication on this matter in writing.</p>
+          <p><strong>If the notice appears defective:</strong> The notice does not appear to comply with RPL &sect;&nbsp;226-c, which requires <input type="text" class="fill" data-field="notice_required_days" placeholder="30/60/90" size="6" aria-label="30/60/90"> days' written advance notice based on my length of tenancy of <input type="text" class="fill" data-field="years_here" placeholder="#" size="4" aria-label="#"> years. Please withdraw the current notice; I reserve all rights and defenses if you proceed without correcting it.</p>
+          <p>I will continue to pay the previously agreed rent of $<input type="text" class="fill" data-field="current_rent" placeholder="amount" size="10" aria-label="amount"> per month while this is being resolved. Please direct any further communication on this matter in writing.</p>
           <p>Sincerely,</p>
           <p>[Your signature]<br>[Your printed name]<br>[Phone]<br>[Email]</p>
         </div>

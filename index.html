@@ -77,6 +77,7 @@
       color: var(--accent); letter-spacing: 0.01em;
     }
     .site-nav {
+      flex-wrap: wrap; row-gap: 0.5rem;
       display: flex; gap: 1.75rem;
       font-size: 0.875rem; color: var(--ink); font-weight: 500;
     }
@@ -678,9 +679,25 @@
       .walkthrough { padding: 1.75rem 1.5rem; }
       .walkthrough h2 { font-size: 1.375rem; }
     }
+  
+/* --- Accessibility additions (a11y audit, Aug 2026) --- */
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  background: var(--accent-deep, #08494c); color: #fff;
+  padding: 0.75rem 1.25rem; font-weight: 700; text-decoration: none;
+  font-size: 0.9375rem;
+}
+.skip-link:focus { left: 0; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+@media (max-width: 600px) {
+  .site-nav a { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+}
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header class="site-header">
     <div class="site-header-inner">
@@ -700,7 +717,7 @@
 
   <div class="page-layout">
 
-  <article>
+  <article id="main-content" role="main">
 
     <div class="hero">
       <span class="reading-label">
@@ -724,11 +741,13 @@
             class="search-input"
             placeholder="Try &lsquo;no heat&rsquo;, &lsquo;mold on ceiling&rsquo;, &lsquo;eviction notice&rsquo;&hellip;"
             autocomplete="off"
+            role="combobox"
+            aria-autocomplete="list"
             aria-label="Search scenarios"
             aria-controls="search-suggestions"
             aria-expanded="false">
         </div>
-        <div class="search-suggestions" id="search-suggestions" role="listbox"></div>
+        <div class="search-suggestions" id="search-suggestions" role="listbox" aria-label="Scenario suggestions"></div>
       </div>
       <p class="search-help">Type a few words about your situation. Suggestions will appear as you type.</p>
     </section>
@@ -1212,6 +1231,7 @@
       if (!q) {
         suggestionsBox.classList.remove('visible');
         searchInput.setAttribute('aria-expanded', 'false');
+        searchInput.removeAttribute('aria-activedescendant');
         return;
       }
 
@@ -1267,6 +1287,8 @@
         const el = document.createElement('a');
         el.className = 'suggestion';
         el.setAttribute('role', 'option');
+        el.setAttribute('aria-selected', 'false');
+        el.id = 'search-option-' + i;
         el.setAttribute('data-index', i);
         el.href = scenario.ready ? scenario.url : '#stub';
         el.dataset.scenarioReady = scenario.ready;
@@ -1436,8 +1458,14 @@
         } else {
           item.classList.remove('highlighted');
         }
+        item.setAttribute('aria-selected', i === index ? 'true' : 'false');
       });
       highlightedIndex = index;
+      if (index >= 0 && items[index]) {
+        searchInput.setAttribute('aria-activedescendant', items[index].id);
+      } else {
+        searchInput.removeAttribute('aria-activedescendant');
+      }
     }
 
     searchInput.addEventListener('input', function(e) {
@@ -1475,6 +1503,7 @@
       if (!e.target.closest('.search-wrap')) {
         suggestionsBox.classList.remove('visible');
         searchInput.setAttribute('aria-expanded', 'false');
+        searchInput.removeAttribute('aria-activedescendant');
       }
     });
 
