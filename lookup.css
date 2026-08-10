@@ -617,3 +617,32 @@
   .lookup-violation-bottom { gap: 0.5rem; }
   .lookup-pin-btn { font-size: 0.6875rem; padding: 0.3rem 0.55rem; }
 }
+
+/* -------- Storage consent row (session-first pins) -------- */
+.saved-violations-panel .saved-storage-row {
+  margin: 1rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--accent, #0d7377);
+}
+.saved-violations-panel .saved-keep-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--ink, #111111);
+  cursor: pointer;
+}
+.saved-violations-panel .saved-keep-checkbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--accent, #0d7377);
+  cursor: pointer;
+}
+.saved-violations-panel .saved-storage-note {
+  font-size: 0.8125rem;
+  color: var(--ink-soft, #3d3d3d);
+  line-height: 1.55;
+  margin: 0.35rem 0 0;
+  opacity: 0.85;
+}
