@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="../print.css" media="print">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <div class="progress-bar" id="progress"></div>
 
@@ -67,7 +68,7 @@
       </nav>
     </aside>
 
-    <article>
+    <article id="main-content" role="main">
 
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="../index.html">All scenarios</a>
@@ -282,17 +283,17 @@
           </button>
         </div>
         <div class="template-body" id="intake-template-step1-content">
-          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
-          <p><strong>Type of notice I received:</strong> <input type="text" class="fill" data-field="notice_type" placeholder="14-day rent demand, petition, etc." size="30"></p>
-          <p><strong>Date I received it:</strong> <input type="text" class="fill" data-field="notice_date" placeholder="date" size="12"></p>
-          <p><strong>Court index number (if any):</strong> <input type="text" class="fill" data-field="index_no" placeholder="L&amp;T 123456/YY" size="18"></p>
-          <p><strong>First court date (if any):</strong> <input type="text" class="fill" data-field="court_date" placeholder="date" size="12"></p>
-          <p><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26"></p>
-          <p><strong>Landlord's attorney (if listed):</strong> <input type="text" class="fill" data-field="attorney" placeholder="name" size="26"></p>
-          <p><strong>Reason for eviction:</strong> <input type="text" class="fill" data-field="reason" placeholder="nonpayment / lease violation / holdover" size="32"></p>
-          <p><strong>Amount demanded (if any):</strong> $<input type="text" class="fill" data-field="amount" placeholder="amount" size="10"></p>
-          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10"> &mdash; Household size: <input type="text" class="fill" data-field="household_size" placeholder="#" size="4"></p>
-          <p><strong>Rent-regulated?</strong> <input type="text" class="fill" data-field="regulated" placeholder="rent-stabilized / rent-controlled / market / NYCHA / Section 8 / unknown" size="40"></p>
+          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34" aria-label="street, apt #, borough, ZIP"></p>
+          <p><strong>Type of notice I received:</strong> <input type="text" class="fill" data-field="notice_type" placeholder="14-day rent demand, petition, etc." size="30" aria-label="14-day rent demand, petition, etc."></p>
+          <p><strong>Date I received it:</strong> <input type="text" class="fill" data-field="notice_date" placeholder="date" size="12" aria-label="date"></p>
+          <p><strong>Court index number (if any):</strong> <input type="text" class="fill" data-field="index_no" placeholder="L&amp;T 123456/YY" size="18" aria-label="L&amp;T 123456/YY"></p>
+          <p><strong>First court date (if any):</strong> <input type="text" class="fill" data-field="court_date" placeholder="date" size="12" aria-label="date"></p>
+          <p><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26" aria-label="name"></p>
+          <p><strong>Landlord's attorney (if listed):</strong> <input type="text" class="fill" data-field="attorney" placeholder="name" size="26" aria-label="name"></p>
+          <p><strong>Reason for eviction:</strong> <input type="text" class="fill" data-field="reason" placeholder="nonpayment / lease violation / holdover" size="32" aria-label="nonpayment / lease violation / holdover"></p>
+          <p><strong>Amount demanded (if any):</strong> $<input type="text" class="fill" data-field="amount" placeholder="amount" size="10" aria-label="amount"></p>
+          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10" aria-label="amount"> &mdash; Household size: <input type="text" class="fill" data-field="household_size" placeholder="#" size="4" aria-label="#"></p>
+          <p><strong>Rent-regulated?</strong> <input type="text" class="fill" data-field="regulated" placeholder="rent-stabilized / rent-controlled / market / NYCHA / Section 8 / unknown" size="40" aria-label="rent-stabilized / rent-controlled / market / NYCHA / Section 8 / unknown"></p>
         </div>
       </div>
 
@@ -355,17 +356,17 @@
           </button>
         </div>
         <div class="template-body" id="intake-template-step2-content">
-          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34"></p>
-          <p><strong>Type of notice I received:</strong> <input type="text" class="fill" data-field="notice_type" placeholder="14-day rent demand, petition, etc." size="30"></p>
-          <p><strong>Date I received it:</strong> <input type="text" class="fill" data-field="notice_date" placeholder="date" size="12"></p>
-          <p><strong>Court index number (if any):</strong> <input type="text" class="fill" data-field="index_no" placeholder="L&amp;T 123456/YY" size="18"></p>
-          <p><strong>First court date (if any):</strong> <input type="text" class="fill" data-field="court_date" placeholder="date" size="12"></p>
-          <p><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26"></p>
-          <p><strong>Landlord's attorney (if listed):</strong> <input type="text" class="fill" data-field="attorney" placeholder="name" size="26"></p>
-          <p><strong>Reason for eviction:</strong> <input type="text" class="fill" data-field="reason" placeholder="nonpayment / lease violation / holdover" size="32"></p>
-          <p><strong>Amount demanded (if any):</strong> $<input type="text" class="fill" data-field="amount" placeholder="amount" size="10"></p>
-          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10"> &mdash; Household size: <input type="text" class="fill" data-field="household_size" placeholder="#" size="4"></p>
-          <p><strong>Rent-regulated?</strong> <input type="text" class="fill" data-field="regulated" placeholder="rent-stabilized / rent-controlled / market / NYCHA / Section 8 / unknown" size="40"></p>
+          <p><strong>My address:</strong> <input type="text" class="fill" data-field="address" placeholder="street, apt #, borough, ZIP" size="34" aria-label="street, apt #, borough, ZIP"></p>
+          <p><strong>Type of notice I received:</strong> <input type="text" class="fill" data-field="notice_type" placeholder="14-day rent demand, petition, etc." size="30" aria-label="14-day rent demand, petition, etc."></p>
+          <p><strong>Date I received it:</strong> <input type="text" class="fill" data-field="notice_date" placeholder="date" size="12" aria-label="date"></p>
+          <p><strong>Court index number (if any):</strong> <input type="text" class="fill" data-field="index_no" placeholder="L&amp;T 123456/YY" size="18" aria-label="L&amp;T 123456/YY"></p>
+          <p><strong>First court date (if any):</strong> <input type="text" class="fill" data-field="court_date" placeholder="date" size="12" aria-label="date"></p>
+          <p><strong>Landlord / management company:</strong> <input type="text" class="fill" data-field="landlord" placeholder="name" size="26" aria-label="name"></p>
+          <p><strong>Landlord's attorney (if listed):</strong> <input type="text" class="fill" data-field="attorney" placeholder="name" size="26" aria-label="name"></p>
+          <p><strong>Reason for eviction:</strong> <input type="text" class="fill" data-field="reason" placeholder="nonpayment / lease violation / holdover" size="32" aria-label="nonpayment / lease violation / holdover"></p>
+          <p><strong>Amount demanded (if any):</strong> $<input type="text" class="fill" data-field="amount" placeholder="amount" size="10" aria-label="amount"></p>
+          <p><strong>Monthly household income:</strong> $<input type="text" class="fill" data-field="income" placeholder="amount" size="10" aria-label="amount"> &mdash; Household size: <input type="text" class="fill" data-field="household_size" placeholder="#" size="4" aria-label="#"></p>
+          <p><strong>Rent-regulated?</strong> <input type="text" class="fill" data-field="regulated" placeholder="rent-stabilized / rent-controlled / market / NYCHA / Section 8 / unknown" size="40" aria-label="rent-stabilized / rent-controlled / market / NYCHA / Section 8 / unknown"></p>
         </div>
       </div>
 

@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="../print.css" media="print">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <div class="progress-bar" id="progress"></div>
 
@@ -67,7 +68,7 @@
       </nav>
     </aside>
 
-    <article>
+    <article id="main-content" role="main">
 
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="../index.html">All scenarios</a>
@@ -312,15 +313,15 @@
           </button>
         </div>
         <div class="template-body" id="email-template-content">
-          <p><strong>Subject:</strong> Broken <input type="text" class="fill" data-field="item" placeholder="stove, fridge, window lock, etc." size="24"> at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"></p>
-          <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26">,</p>
-          <p>I am writing to formally report that the <input type="text" class="fill" data-field="item" placeholder="stove, fridge, window lock, etc." size="24"> in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"> is not working. The problem is <input type="text" class="fill" data-field="description" placeholder="describe what's wrong, e.g. oven won't heat above 200F" size="46"> and it has been this way since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">.</p>
-          <p>This condition is affecting my household: <input type="text" class="fill" data-field="impact" placeholder="unable to cook, food spoiling, no secure lock, etc." size="48">. I have photographs and video documenting the problem.</p>
+          <p><strong>Subject:</strong> Broken <input type="text" class="fill" data-field="item" placeholder="stove, fridge, window lock, etc." size="24" aria-label="stove, fridge, window lock, etc."> at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22" aria-label="your address, apt #"></p>
+          <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26" aria-label="landlord/management company">,</p>
+          <p>I am writing to formally report that the <input type="text" class="fill" data-field="item" placeholder="stove, fridge, window lock, etc." size="24" aria-label="stove, fridge, window lock, etc."> in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22" aria-label="your address, apt #"> is not working. The problem is <input type="text" class="fill" data-field="description" placeholder="describe what's wrong, e.g. oven won't heat above 200F" size="46" aria-label="describe what's wrong, e.g. oven won't heat above 200F"> and it has been this way since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12" aria-label="date">.</p>
+          <p>This condition is affecting my household: <input type="text" class="fill" data-field="impact" placeholder="unable to cook, food spoiling, no secure lock, etc." size="48" aria-label="unable to cook, food spoiling, no secure lock, etc.">. I have photographs and video documenting the problem.</p>
           <p>Under the NYC Housing Maintenance Code, you are required to provide and maintain this appliance/fixture in working order. Please arrange for inspection and repair immediately. If the problem is not addressed promptly, I will be filing a complaint with 311 and HPD.</p>
-          <p>For reference, related HPD violation(s) on file at this address: <input type="text" class="fill" data-field="prior_violation_ids" placeholder="violation IDs" size="34">.</p>
+          <p>For reference, related HPD violation(s) on file at this address: <input type="text" class="fill" data-field="prior_violation_ids" placeholder="violation IDs" size="34" aria-label="violation IDs">.</p>
           <p>Thank you,<br>
-          <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18"><br>
-          <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16"></p>
+          <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18" aria-label="your name"><br>
+          <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16" aria-label="phone number"></p>
         </div>
       </div>
 
@@ -357,7 +358,7 @@
           Say it in your own words
         </span>
         <div class="spoken-body">
-          <p>"I'd like to file a complaint about a broken <input type="text" class="fill" data-field="item" placeholder="stove, fridge, window lock, etc." size="22"> in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20">. The problem is <input type="text" class="fill" data-field="description" placeholder="describe what's wrong" size="28"> and it's been this way since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">. I already contacted my landlord on <input type="text" class="fill" data-field="contacted_date" placeholder="date" size="12"> and the problem hasn't been fixed. I have photos and video."</p>
+          <p>"I'd like to file a complaint about a broken <input type="text" class="fill" data-field="item" placeholder="stove, fridge, window lock, etc." size="22" aria-label="stove, fridge, window lock, etc."> in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20" aria-label="your address">. The problem is <input type="text" class="fill" data-field="description" placeholder="describe what's wrong" size="28" aria-label="describe what's wrong"> and it's been this way since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12" aria-label="date">. I already contacted my landlord on <input type="text" class="fill" data-field="contacted_date" placeholder="date" size="12" aria-label="date"> and the problem hasn't been fixed. I have photos and video."</p>
           <p>If it's a safety issue: <em>"This is a safety issue. I can't cook/secure my apartment/my smoke detector is missing."</em></p>
           <p>If anyone in your apartment is elderly, disabled, pregnant, or a young child, mention it &mdash; this can affect prioritization, especially for heat/cooking and safety items.</p>
         </div>

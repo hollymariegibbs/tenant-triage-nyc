@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="../print.css" media="print">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <div class="progress-bar" id="progress"></div>
 
@@ -67,7 +68,7 @@
       </nav>
     </aside>
 
-    <article>
+    <article id="main-content" role="main">
 
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="../index.html">All scenarios</a>
@@ -297,15 +298,15 @@
           </button>
         </div>
         <div class="template-body" id="email-template-content">
-          <p><strong>Subject:</strong> Water leak at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"></p>
-          <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26">,</p>
-          <p>I am writing to formally report a water leak in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22">. The leak is located in <input type="text" class="fill" data-field="location" placeholder="kitchen ceiling, bathroom wall, etc." size="32"> and has been ongoing since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">. The water appears to be coming from <input type="text" class="fill" data-field="source" placeholder="upstairs apartment, roof, pipe in wall, etc." size="32">.</p>
-          <p>The leak is causing <input type="text" class="fill" data-field="damage" placeholder="water stains, peeling paint, pooling water, damage to belongings, etc." size="48">. I have photographs and video documenting the condition and damage.</p>
+          <p><strong>Subject:</strong> Water leak at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22" aria-label="your address, apt #"></p>
+          <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26" aria-label="landlord/management company">,</p>
+          <p>I am writing to formally report a water leak in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22" aria-label="your address, apt #">. The leak is located in <input type="text" class="fill" data-field="location" placeholder="kitchen ceiling, bathroom wall, etc." size="32" aria-label="kitchen ceiling, bathroom wall, etc."> and has been ongoing since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12" aria-label="date">. The water appears to be coming from <input type="text" class="fill" data-field="source" placeholder="upstairs apartment, roof, pipe in wall, etc." size="32" aria-label="upstairs apartment, roof, pipe in wall, etc.">.</p>
+          <p>The leak is causing <input type="text" class="fill" data-field="damage" placeholder="water stains, peeling paint, pooling water, damage to belongings, etc." size="48" aria-label="water stains, peeling paint, pooling water, damage to belongings, etc.">. I have photographs and video documenting the condition and damage.</p>
           <p>Under the NYC Housing Maintenance Code, you are required to maintain all plumbing in good working order and repair conditions causing water damage. Please arrange for inspection and repair immediately. If the problem is not addressed promptly, I will be filing a complaint with 311 and HPD.</p>
-          <p>For reference, related HPD violation(s) on file at this address: <input type="text" class="fill" data-field="prior_violation_ids" placeholder="violation IDs" size="34">.</p>
+          <p>For reference, related HPD violation(s) on file at this address: <input type="text" class="fill" data-field="prior_violation_ids" placeholder="violation IDs" size="34" aria-label="violation IDs">.</p>
           <p>Thank you,<br>
-          <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18"><br>
-          <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16"></p>
+          <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18" aria-label="your name"><br>
+          <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16" aria-label="phone number"></p>
         </div>
       </div>
 
@@ -342,7 +343,7 @@
           Say it in your own words
         </span>
         <div class="spoken-body">
-          <p>"I'd like to file a complaint about a water leak in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20">. The leak is in my <input type="text" class="fill" data-field="location" placeholder="kitchen ceiling, bathroom, etc." size="22"> and it's been happening since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12">. The water appears to be coming from <input type="text" class="fill" data-field="source" placeholder="upstairs, roof, pipe" size="18">. I already contacted my landlord on <input type="text" class="fill" data-field="contacted_date" placeholder="date" size="12"> and the problem hasn't been fixed. I have photos and video."</p>
+          <p>"I'd like to file a complaint about a water leak in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20" aria-label="your address">. The leak is in my <input type="text" class="fill" data-field="location" placeholder="kitchen ceiling, bathroom, etc." size="22" aria-label="kitchen ceiling, bathroom, etc."> and it's been happening since <input type="text" class="fill" data-field="start_date" placeholder="date" size="12" aria-label="date">. The water appears to be coming from <input type="text" class="fill" data-field="source" placeholder="upstairs, roof, pipe" size="18" aria-label="upstairs, roof, pipe">. I already contacted my landlord on <input type="text" class="fill" data-field="contacted_date" placeholder="date" size="12" aria-label="date"> and the problem hasn't been fixed. I have photos and video."</p>
           <p>If the leak is severe: <em>"Water is actively coming in and causing damage to my apartment."</em></p>
           <p>If anyone in your apartment is elderly, disabled, or a young child, mention it.</p>
         </div>

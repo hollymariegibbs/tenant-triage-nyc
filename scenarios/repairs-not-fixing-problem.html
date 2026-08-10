@@ -189,6 +189,7 @@
   <link rel="stylesheet" href="../print.css" media="print">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <div class="progress-bar" id="progress"></div>
 
@@ -228,7 +229,7 @@
       </nav>
     </aside>
 
-    <article>
+    <article id="main-content" role="main">
 
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="../index.html">All scenarios</a>
@@ -419,14 +420,14 @@
           </button>
         </div>
         <div class="template-body" id="timeline-template-content">
-          <p><strong>Timeline &mdash; <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"></strong></p>
-          <p>First noticed: <input type="text" class="fill" data-field="first_noticed" placeholder="date" size="14"></p>
-          <p>First complaint to landlord: <input type="text" class="fill" data-field="first_landlord_contact" placeholder="date" size="14"></p>
-          <p>311 complaint #: <input type="text" class="fill" data-field="prior_311_sr" placeholder="SR # or 'none'" size="18"></p>
-          <p>HPD inspection date: <input type="text" class="fill" data-field="hpd_inspection_date" placeholder="date or 'none'" size="16"></p>
-          <p>Landlord's repair date: <input type="text" class="fill" data-field="repair_date" placeholder="date" size="14"></p>
-          <p>Date the problem returned: <input type="text" class="fill" data-field="recurrence_date" placeholder="date" size="14"></p>
-          <p>Today: <input type="text" class="fill" data-field="today" placeholder="date" size="14"></p>
+          <p><strong>Timeline &mdash; <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22" aria-label="your address, apt #"></strong></p>
+          <p>First noticed: <input type="text" class="fill" data-field="first_noticed" placeholder="date" size="14" aria-label="date"></p>
+          <p>First complaint to landlord: <input type="text" class="fill" data-field="first_landlord_contact" placeholder="date" size="14" aria-label="date"></p>
+          <p>311 complaint #: <input type="text" class="fill" data-field="prior_311_sr" placeholder="SR # or 'none'" size="18" aria-label="SR # or 'none'"></p>
+          <p>HPD inspection date: <input type="text" class="fill" data-field="hpd_inspection_date" placeholder="date or 'none'" size="16" aria-label="date or 'none'"></p>
+          <p>Landlord's repair date: <input type="text" class="fill" data-field="repair_date" placeholder="date" size="14" aria-label="date"></p>
+          <p>Date the problem returned: <input type="text" class="fill" data-field="recurrence_date" placeholder="date" size="14" aria-label="date"></p>
+          <p>Today: <input type="text" class="fill" data-field="today" placeholder="date" size="14" aria-label="date"></p>
         </div>
       </div>
 
@@ -510,15 +511,15 @@
           </button>
         </div>
         <div class="template-body" id="email-template-content">
-          <p><strong>Subject:</strong> Recurring <input type="text" class="fill" data-field="problem" placeholder="problem (mold/leak/heat/etc.)" size="28"> at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"> &mdash; prior repair was incomplete</p>
-          <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26">,</p>
-          <p>I am writing to follow up on a condition at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22"> that I first reported on <input type="text" class="fill" data-field="first_report_date" placeholder="original report date" size="14"> (311 SR #<input type="text" class="fill" data-field="prior_sr" placeholder="if known" size="12">; HPD violation #<input type="text" class="fill" data-field="prior_violation" placeholder="if known" size="12">).</p>
-          <p>On <input type="text" class="fill" data-field="repair_date" placeholder="repair date" size="14">, your office <input type="text" class="fill" data-field="repair_done" placeholder="describe what was done — e.g. painted over the affected area, sent a handyman to bleed the radiator" size="56">. As of <input type="text" class="fill" data-field="recurrence_date" placeholder="recurrence date" size="14">, the underlying problem has returned: <input type="text" class="fill" data-field="recurrence_detail" placeholder="describe what you are seeing now and where" size="56">.</p>
-          <p>Under <input type="text" class="fill" data-field="legal_hook" placeholder="legal hook — e.g. Local Law 55, NY RPL § 235-b" size="48">, the original repair obligation has not been satisfied. I have dated photographs of the prior condition, the repair work, and the current recurrence, and am happy to share them.</p>
-          <p>Please respond in writing within 7 days with a remediation plan that addresses the underlying cause &mdash; not just the surface. If I have not received a substantive response by <input type="text" class="fill" data-field="deadline_date" placeholder="deadline date" size="14">, I will re-file a 311 complaint referencing this letter and the prior service request, and pursue HPD re-inspection and any further enforcement available to me.</p>
+          <p><strong>Subject:</strong> Recurring <input type="text" class="fill" data-field="problem" placeholder="problem (mold/leak/heat/etc.)" size="28" aria-label="problem (mold/leak/heat/etc.)"> at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22" aria-label="your address, apt #"> &mdash; prior repair was incomplete</p>
+          <p>Dear <input type="text" class="fill" data-field="landlord" placeholder="landlord/management company" size="26" aria-label="landlord/management company">,</p>
+          <p>I am writing to follow up on a condition at <input type="text" class="fill" data-field="address" placeholder="your address, apt #" size="22" aria-label="your address, apt #"> that I first reported on <input type="text" class="fill" data-field="first_report_date" placeholder="original report date" size="14" aria-label="original report date"> (311 SR #<input type="text" class="fill" data-field="prior_sr" placeholder="if known" size="12" aria-label="if known">; HPD violation #<input type="text" class="fill" data-field="prior_violation" placeholder="if known" size="12" aria-label="if known">).</p>
+          <p>On <input type="text" class="fill" data-field="repair_date" placeholder="repair date" size="14" aria-label="repair date">, your office <input type="text" class="fill" data-field="repair_done" placeholder="describe what was done — e.g. painted over the affected area, sent a handyman to bleed the radiator" size="56" aria-label="describe what was done — e.g. painted over the affected area, sent a handyman to bleed the radiator">. As of <input type="text" class="fill" data-field="recurrence_date" placeholder="recurrence date" size="14" aria-label="recurrence date">, the underlying problem has returned: <input type="text" class="fill" data-field="recurrence_detail" placeholder="describe what you are seeing now and where" size="56" aria-label="describe what you are seeing now and where">.</p>
+          <p>Under <input type="text" class="fill" data-field="legal_hook" placeholder="legal hook — e.g. Local Law 55, NY RPL § 235-b" size="48" aria-label="legal hook — e.g. Local Law 55, NY RPL § 235-b">, the original repair obligation has not been satisfied. I have dated photographs of the prior condition, the repair work, and the current recurrence, and am happy to share them.</p>
+          <p>Please respond in writing within 7 days with a remediation plan that addresses the underlying cause &mdash; not just the surface. If I have not received a substantive response by <input type="text" class="fill" data-field="deadline_date" placeholder="deadline date" size="14" aria-label="deadline date">, I will re-file a 311 complaint referencing this letter and the prior service request, and pursue HPD re-inspection and any further enforcement available to me.</p>
           <p>Thank you,<br>
-          <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18"><br>
-          <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16"></p>
+          <input type="text" class="fill" data-field="your_name" placeholder="your name" size="18" aria-label="your name"><br>
+          <input type="text" class="fill" data-field="your_phone" placeholder="phone number" size="16" aria-label="phone number"></p>
         </div>
       </div>
 
@@ -555,7 +556,7 @@
           Say it in your own words
         </span>
         <div class="spoken-body">
-          <p>"I'd like to file a complaint about a recurring <input type="text" class="fill" data-field="problem" placeholder="problem (mold/leak/heat/etc.)" size="22"> in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20">. I first reported this on <input type="text" class="fill" data-field="first_report_date" placeholder="date" size="12"> &mdash; the prior service request number was <input type="text" class="fill" data-field="prior_sr" placeholder="SR # if you have it" size="14">, and HPD violation number was <input type="text" class="fill" data-field="prior_violation" placeholder="if known" size="12">. My landlord did some work on <input type="text" class="fill" data-field="repair_date" placeholder="date" size="12">, but the underlying problem has returned as of <input type="text" class="fill" data-field="recurrence_date" placeholder="date" size="12">. I have dated photos of the original condition, the repair, and the current recurrence. The repair did not address the root cause."</p>
+          <p>"I'd like to file a complaint about a recurring <input type="text" class="fill" data-field="problem" placeholder="problem (mold/leak/heat/etc.)" size="22" aria-label="problem (mold/leak/heat/etc.)"> in my apartment at <input type="text" class="fill" data-field="address" placeholder="your address" size="20" aria-label="your address">. I first reported this on <input type="text" class="fill" data-field="first_report_date" placeholder="date" size="12" aria-label="date"> &mdash; the prior service request number was <input type="text" class="fill" data-field="prior_sr" placeholder="SR # if you have it" size="14" aria-label="SR # if you have it">, and HPD violation number was <input type="text" class="fill" data-field="prior_violation" placeholder="if known" size="12" aria-label="if known">. My landlord did some work on <input type="text" class="fill" data-field="repair_date" placeholder="date" size="12" aria-label="date">, but the underlying problem has returned as of <input type="text" class="fill" data-field="recurrence_date" placeholder="date" size="12" aria-label="date">. I have dated photos of the original condition, the repair, and the current recurrence. The repair did not address the root cause."</p>
           <p>If anyone in your apartment has asthma, is elderly, is pregnant, or is a child under 6, mention it: <em>"There is someone with asthma (or a child under 6) living in the apartment."</em></p>
         </div>
         <span class="spoken-hint">Fill in the blanks above so you have a complete script to read from on the call. This is a guide, not a word-for-word script &mdash; use your own voice and answer their questions as they come.</span>
@@ -663,10 +664,10 @@
 
       <div class="ref-capture multi">
         <span class="ref-capture-label">If your re-filed complaint produced a new violation, write down the details here:</span>
-        <p>Violation ID: <input type="text" class="fill" data-field="new_violation_id" placeholder="e.g. 16723456" size="14"></p>
-        <p>Class: <input type="text" class="fill" data-field="new_violation_class" placeholder="A / B / C" size="8"></p>
-        <p>Date issued: <input type="text" class="fill" data-field="new_violation_date" placeholder="MM/DD/YYYY" size="12"></p>
-        <p>Legal cure window: <input type="text" class="fill" data-field="new_violation_cure" placeholder="e.g. 30 days" size="14"></p>
+        <p>Violation ID: <input type="text" class="fill" data-field="new_violation_id" placeholder="e.g. 16723456" size="14" aria-label="e.g. 16723456"></p>
+        <p>Class: <input type="text" class="fill" data-field="new_violation_class" placeholder="A / B / C" size="8" aria-label="A / B / C"></p>
+        <p>Date issued: <input type="text" class="fill" data-field="new_violation_date" placeholder="MM/DD/YYYY" size="12" aria-label="MM/DD/YYYY"></p>
+        <p>Legal cure window: <input type="text" class="fill" data-field="new_violation_cure" placeholder="e.g. 30 days" size="14" aria-label="e.g. 30 days"></p>
       </div>
 
       <span class="sub-label">What to expect</span>
