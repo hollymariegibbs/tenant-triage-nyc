@@ -42,7 +42,13 @@ To move to a new release:
 scripts/update-hpd-lookup.sh          # or: scripts/update-hpd-lookup.sh 1.2.0
 ```
 
-Then point the import at the top of `lookup.js` at the new filename and delete the old vendor file.
+Then point the imports at the new filename and delete the old vendor file. Two files import the bundle: `lookup.js` and `lookup-test.html`.
+
+```bash
+grep -rn 'hpd-lookup-.*\.js' lookup.js lookup-test.html
+```
+
+Then open `lookup-test.html` over a local server and search a building you know. Its debug panel prints HPD's raw `novdescription` and `currentstatus` next to what the new build made of them, and flags any status the package no longer recognizes — which is the cheapest way to catch a bad bump before it reaches the scenario pages.
 
 ### Data processing pipeline
 
@@ -101,9 +107,9 @@ The `file://` protocol will not work for the address lookup tool. Browsers block
 ├── lookup.css                  # Styles for the lookup component
 ├── vendor/                     # Vendored @howellandgibbs/hpd-lookup bundle
 ├── scripts/update-hpd-lookup.sh  # Refreshes the vendored bundle from npm
-├── lookup-test.html            # Dev page for testing the lookup in isolation
-│                               #   (standalone — still has its own inline copy
-│                               #    of the pre-package parser)
+├── lookup-test.html            # Dev page for spot-checking the parser against
+│                               #   live HPD data (raw vs. parsed debug panel);
+│                               #   imports the vendored bundle directly
 ├── sidebar.js                  # Scroll-spy + sticky TOC sidebar
 ├── sidebar.css                 # Styles for the sidebar component
 ├── print.css                   # Shared print stylesheet (letter-first)

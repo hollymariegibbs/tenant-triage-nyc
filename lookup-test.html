@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="/images/favicon.png">
+  <meta name="robots" content="noindex, nofollow">
   <title>Address lookup test — Tenant Triage NYC</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -467,18 +468,22 @@
 
     <span class="reading-label">Test page</span>
     <h1>Address lookup component test</h1>
-    <p class="standfirst">This is a standalone test page for the address lookup + violations display component. If it works here, it gets integrated into the scenario pages.</p>
+    <p class="standfirst">A standalone harness for the HPD lookup. It calls the same vendored <code>@howellandgibbs/hpd-lookup</code> package the live site calls, but shows HPD's raw data next to the parsed output so the parser can be spot-checked against real buildings.</p>
 
     <div class="test-instructions">
       <h2>How to test</h2>
+      <p>This page imports an ES module, so it must be served over HTTP &mdash; run <code>python3 -m http.server 8000</code> from the repo root and open it from <code>localhost</code>. It will not run from a <code>file://</code> URL.</p>
       <ol>
-        <li>Type an NYC address in the input below. Try a known-good one like <code>142 Ocean Pkwy, Brooklyn</code> or your own NYC address.</li>
+        <li>Type an NYC address in the input below. Try a known-good one like <code>250 Ocean Pkwy, Brooklyn</code> or your own NYC address.</li>
         <li>Suggestions should appear as you type (after ~3 characters). Click one.</li>
-        <li>The component should query HPD violations for that building and display them below.</li>
-        <li>Watch the debug panel at the bottom &mdash; it shows every API call and response so you can see what's happening.</li>
-        <li>If something fails, the debug panel will show the error and the component will fall back to a link-out to HPDOnline.</li>
+        <li>The page queries HPD violations for that building and displays them below.</li>
+        <li>Read the debug panel at the bottom. For the first few violations it prints HPD's raw <code>novdescription</code> and <code>currentstatus</code> directly above what the parser made of them, so you can see whether the citation chain was stripped correctly and the status was read the right way.</li>
+        <li>Any status the package does not recognize is flagged there explicitly rather than guessed at. Those belong upstream in <a href="https://github.com/howellandgibbs/hpd-lookup" target="_blank" rel="noopener">howellandgibbs/hpd-lookup</a>, not here.</li>
+        <li>If a request fails, the debug panel shows the error code the package raised and the page falls back to a link-out to HPDOnline.</li>
       </ol>
-      <p>This page is looking up <strong>all violations</strong> for testing. In the real scenario pages, the component will filter to scenario-specific violations (mold for mold, pests for pests, etc.).</p>
+      <p>Reach for this page after <code>scripts/update-hpd-lookup.sh</code> bumps the vendored bundle, to confirm a new build still reads HPD's text the way you expect.</p>
+      <p>You can also try a single status string from the browser console without doing a full lookup &mdash; for example <code>checkStatus('INVALID CERTIFICATION')</code>, which should come back <strong>open</strong>, not dismissed.</p>
+      <p>This page looks up <strong>all violations</strong> and applies no keyword filter. The scenario pages narrow results to scenario-specific violations (mold for mold, pests for pests) via <code>initLookup({ filterKeywords })</code> in <code>lookup.js</code>, which this page deliberately does not load.</p>
     </div>
 
     <!-- THE COMPONENT -->
@@ -493,7 +498,7 @@
           type="text"
           class="lookup-input"
           id="lookup-input"
-          placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn"
+          placeholder="Type your address, e.g. 250 Ocean Parkway Brooklyn"
           autocomplete="off"
           spellcheck="false">
         <div class="lookup-suggestions" id="lookup-suggestions"></div>
@@ -510,25 +515,44 @@
 
     <!-- DEBUG PANEL -->
     <div class="debug-panel" id="debug-panel">
-      <div class="debug-panel-label">Debug log (remove before production)</div>
+      <div class="debug-panel-label">Debug log — raw HPD data vs. parsed output</div>
       <div id="debug-lines"></div>
     </div>
 
   </article>
 
-  <script>
+  <script type="module">
+    // ============================================
+    // TEST HARNESS FOR THE LOOKUP COMPONENT
+    // ============================================
+    // This page deliberately does NOT load lookup.js. It calls the same
+    // vendored package lookup.js calls, but renders each step with a debug
+    // log attached, so the parser can be spot-checked against live HPD data
+    // without the scenario keyword filter or the "your case" pins in the way.
+    //
+    // Reach for it after scripts/update-hpd-lookup.sh bumps the vendored
+    // bundle: search a building, then read the RAW → PARSED pairs below to
+    // confirm the new build still reads HPD's text the way you expect.
+    //
+    // The package is an ES module, so this page must be served over HTTP
+    // (python3 -m http.server 8000). It will not run from file://.
+    // ============================================
+
+    import {
+      searchAddresses,
+      lookupByBBL,
+      translateStatus,
+      toSentenceCase,
+      isHpdLookupError,
+      CLASS_SEVERITY,
+      STATUS_MAP,
+    } from './vendor/hpd-lookup-1.0.0.js';
+
     // ============================================
     // CONFIGURATION
     // ============================================
-    // Socrata app token goes here when we register for one.
-    // Null is fine for prototyping — just means we use the anonymous rate limit.
+    // Socrata works unauthenticated; an app token only raises the rate limit.
     const SOCRATA_APP_TOKEN = null;
-
-    // NYC Planning Labs GeoSearch autocomplete endpoint
-    const GEOSEARCH_URL = 'https://geosearch.planninglabs.nyc/v2/autocomplete';
-
-    // NYC Open Data Socrata endpoint for Housing Maintenance Code Violations
-    const SOCRATA_VIOLATIONS_URL = 'https://data.cityofnewyork.us/resource/wvxf-dwi5.json';
 
     // How many suggestions to show in the autocomplete dropdown
     const MAX_SUGGESTIONS = 5;
@@ -540,11 +564,13 @@
     const VIOLATIONS_PER_PAGE = 20;
 
     // Maximum number of violations to fetch from Socrata in a single call.
-    // Socrata's hard limit is 50000 but we'll never realistically need that much.
     const SOCRATA_FETCH_LIMIT = 1000;
 
     // Debounce delay for autocomplete (ms)
     const DEBOUNCE_MS = 250;
+
+    // How many violations to dump RAW → PARSED for on each lookup.
+    const PARSER_SAMPLE_SIZE = 3;
 
     // ============================================
     // DEBUG LOGGING
@@ -558,13 +584,10 @@
       line.textContent = '[' + time + '] ' + msg;
       debugLinesEl.appendChild(line);
       debugLinesEl.parentElement.scrollTop = debugLinesEl.parentElement.scrollHeight;
-      // Also log to console
-      if (type === 'error') console.error(msg);
-      else if (type === 'success') console.log('%c' + msg, 'color: #5eb6b9');
-      else console.log(msg);
     }
 
-    debug('Test page loaded. Ready for input.');
+    debug('Test page loaded. Parsing via @howellandgibbs/hpd-lookup (vendored 1.0.0).');
+    debug(Object.keys(STATUS_MAP).length + ' HPD statuses mapped explicitly.');
 
     // ============================================
     // DOM REFERENCES
@@ -580,85 +603,43 @@
     let debounceTimer = null;
 
     // ============================================
-    // GEOSEARCH AUTOCOMPLETE
+    // ADDRESS SEARCH
     // ============================================
-    async function fetchGeoSearch(query) {
-      const url = GEOSEARCH_URL + '?text=' + encodeURIComponent(query) + '&size=' + MAX_SUGGESTIONS;
-      debug('→ GeoSearch: ' + url);
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status + ' ' + response.statusText);
-        }
-        const data = await response.json();
-        debug('← GeoSearch returned ' + (data.features ? data.features.length : 0) + ' features', 'success');
-        // Log the first feature's full structure so we can see what we're working with
-        if (data.features && data.features.length > 0) {
-          debug('First feature properties keys: ' + Object.keys(data.features[0].properties || {}).join(', '));
-          // Check for the key fields we need (BBL lives under addendum.pad in Pelias)
-          const props = data.features[0].properties || {};
-          const padData = (props.addendum && props.addendum.pad) || {};
-          debug('bbl=' + padData.bbl + ', bin=' + padData.bin + ', borough=' + props.borough + ', label=' + props.label);
-        }
-        return data;
-      } catch (err) {
-        debug('GeoSearch error: ' + err.message, 'error');
-        throw err;
+    // searchAddresses() wraps GeoSearch and hands back normalized buildings
+    // (bbl, bin, label, borough, ...), already dropping candidates with no BBL
+    // since those cannot be queried against Socrata.
+    async function fetchSuggestions(query) {
+      debug('→ searchAddresses(' + JSON.stringify(query) + ')');
+      const buildings = await searchAddresses(query, {
+        maxSuggestions: MAX_SUGGESTIONS,
+        appToken: SOCRATA_APP_TOKEN || undefined,
+      });
+      debug('← ' + buildings.length + ' building(s) with a BBL', 'success');
+      if (buildings.length > 0) {
+        const b = buildings[0];
+        debug('first: bbl=' + b.bbl + ', bin=' + (b.bin || '(none)') +
+              ', borough=' + (b.borough || '(none)') + ', label=' + b.label);
       }
+      return buildings;
     }
 
-    function renderSuggestions(features) {
+    function renderSuggestions(buildings) {
       suggestionsBox.innerHTML = '';
-      currentSuggestions = [];
+      currentSuggestions = buildings || [];
       highlightedIndex = -1;
 
-      if (!features || features.length === 0) {
+      if (currentSuggestions.length === 0) {
         suggestionsBox.classList.remove('visible');
         return;
       }
 
-      features.forEach(function(feature, i) {
-        const props = feature.properties || {};
-        // GeoSearch returns a 'label' field with the full normalized address
-        // and 'borough' as a separate field
-        const label = props.label || props.name || 'Unknown address';
-        const borough = props.borough || '';
-
-        // GeoSearch is built on Pelias, which nests source-specific data inside
-        // an 'addendum' object keyed by source name. NYC's Property Address
-        // Directory data lives at addendum.pad — so BBL is addendum.pad.bbl,
-        // BIN is addendum.pad.bin, etc.
-        const padData = (props.addendum && props.addendum.pad) || {};
-        const bbl = padData.bbl;
-        const bin = padData.bin;
-
-        // Debug: dump the full addendum so we can see what fields are available
-        if (i === 0) {
-          debug('addendum: ' + JSON.stringify(props.addendum || {}));
-        }
-
-        // We need a BBL to query Socrata. If there's no BBL, skip this suggestion.
-        if (!bbl) {
-          debug('Skipping suggestion with no BBL: ' + label);
-          return;
-        }
-
-        currentSuggestions.push({
-          label: label,
-          borough: borough,
-          bbl: bbl,
-          bin: bin,
-          housenumber: props.housenumber,
-          street: props.street,
-          postalcode: props.postalcode
-        });
-
+      currentSuggestions.forEach(function(building, i) {
         const el = document.createElement('div');
         el.className = 'lookup-suggestion';
-        el.dataset.index = currentSuggestions.length - 1;
+        el.dataset.index = i;
         el.innerHTML =
-          '<span class="lookup-suggestion-address">' + escapeHTML(label) + '</span>' +
-          (borough ? '<span class="lookup-suggestion-borough">' + escapeHTML(borough) + '</span>' : '');
+          '<span class="lookup-suggestion-address">' + escapeHTML(building.label) + '</span>' +
+          (building.borough ? '<span class="lookup-suggestion-borough">' + escapeHTML(building.borough) + '</span>' : '');
 
         el.addEventListener('click', function() {
           selectSuggestion(parseInt(el.dataset.index));
@@ -671,11 +652,7 @@
         suggestionsBox.appendChild(el);
       });
 
-      if (currentSuggestions.length > 0) {
-        suggestionsBox.classList.add('visible');
-      } else {
-        suggestionsBox.classList.remove('visible');
-      }
+      suggestionsBox.classList.add('visible');
     }
 
     function setHighlight(index) {
@@ -696,55 +673,88 @@
     }
 
     // ============================================
-    // SOCRATA VIOLATIONS QUERY
+    // VIOLATIONS LOOKUP
     // ============================================
+    // lookupByBBL() issues the Socrata query and returns violations already
+    // parsed: citation chain stripped, status translated, class severity
+    // resolved, newest inspection first. The untouched Socrata record stays
+    // on each violation's `.raw`, which is what makes this page useful.
     async function fetchViolations(building) {
       statusEl.textContent = 'Looking up violations...';
       statusEl.classList.remove('error');
       resultsEl.classList.remove('visible');
       fallbackEl.style.display = 'none';
 
-      // Socrata stores BBL as a string. Query uses SoQL.
-      // Filter by BBL and order by most recent first.
-      const bbl = building.bbl;
-
-      // SoQL: $where filter, $order by newest, $limit (pull a generous batch
-      // since we paginate in the UI rather than via additional API calls)
-      const whereClause = "bbl='" + bbl + "'";
-      const url = SOCRATA_VIOLATIONS_URL +
-        '?$where=' + encodeURIComponent(whereClause) +
-        '&$order=' + encodeURIComponent('inspectiondate DESC') +
-        '&$limit=' + SOCRATA_FETCH_LIMIT;
-
-      debug('→ Socrata: ' + url);
+      debug('→ lookupByBBL(' + building.bbl + ', limit ' + SOCRATA_FETCH_LIMIT + ')');
 
       try {
-        const headers = {};
-        if (SOCRATA_APP_TOKEN) {
-          headers['X-App-Token'] = SOCRATA_APP_TOKEN;
-        }
-        const response = await fetch(url, { headers: headers });
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status + ' ' + response.statusText);
-        }
-        const data = await response.json();
-        debug('← Socrata returned ' + data.length + ' violations', 'success');
-
-        // Log the first violation's structure so we can see what fields exist
-        if (data.length > 0) {
-          debug('First violation keys: ' + Object.keys(data[0]).join(', '));
-          debug('First violation sample: ' + JSON.stringify(data[0]).substring(0, 300));
-        }
-
-        renderViolations(building, data);
+        const result = await lookupByBBL(building.bbl, {
+          limit: SOCRATA_FETCH_LIMIT,
+          appToken: SOCRATA_APP_TOKEN || undefined,
+        });
+        debug('← ' + result.violations.length + ' violation(s) parsed', 'success');
+        logParserSample(result.violations);
+        renderViolations(building, result.violations);
       } catch (err) {
-        debug('Socrata error: ' + err.message, 'error');
-        statusEl.textContent = 'Could not fetch violations from HPD data. The HPD data service may be temporarily unavailable.';
+        debug('lookupByBBL failed: ' + err.message +
+              (isHpdLookupError(err) ? ' [code=' + err.code +
+                (err.status ? ', status=' + err.status : '') + ']' : ''), 'error');
+        statusEl.textContent = violationErrorMessage(err);
         statusEl.classList.add('error');
         fallbackEl.style.display = 'block';
       }
     }
 
+    // Every failure the package raises carries a `code`, so a bad BBL can say
+    // something more useful than a generic outage message.
+    function violationErrorMessage(err) {
+      if (isHpdLookupError(err) && err.code === 'invalid_input') {
+        return 'We could not identify that building. Try picking an address from the suggestions.';
+      }
+      return 'Could not fetch violations from HPD data. The HPD data service may be temporarily unavailable.';
+    }
+
+    // ============================================
+    // PARSER SPOT-CHECK
+    // ============================================
+    // The whole reason this page still exists. Two things get surfaced:
+    //
+    //   1. RAW → PARSED for the first few violations, so the description
+    //      parser can be eyeballed against HPD's actual text.
+    //   2. Any status the package did not recognize. translateStatus()
+    //      returns `known: false` rather than guessing silently, so a new
+    //      HPD status shows up here as a real signal instead of a plausible
+    //      wrong answer. Those belong upstream in howellandgibbs/hpd-lookup.
+    function logParserSample(violations) {
+      violations.slice(0, PARSER_SAMPLE_SIZE).forEach(function(v, i) {
+        const raw = v.raw || {};
+        debug('--- violation ' + (i + 1) + ' ---');
+        debug('RAW DESC:   ' + (raw.novdescription || raw.novtype || '(empty)'));
+        debug('PARSED:     ' + v.description);
+        debug('LOCATION:   ' + (v.location || '(none)'));
+        debug('RAW STATUS: ' + (raw.currentstatus || '(empty)') +
+              '  |  violationstatus=' + (raw.violationstatus || '(empty)'));
+        debug('PARSED:     ' + v.status.label + ' [' + v.status.state + ']' +
+              (v.status.known ? '' : '  ← NOT IN STATUS_MAP'),
+              v.status.known ? undefined : 'error');
+        debug('CLASS:      ' + (v.class || '(none)') +
+              (v.severity ? ' (' + v.severity + ')' : ''));
+      });
+
+      const unknown = violations.filter(function(v) { return !v.status.known; });
+      if (unknown.length > 0) {
+        const distinct = [...new Set(unknown.map(function(v) { return v.status.raw; }))];
+        debug(unknown.length + ' violation(s) carry ' + distinct.length +
+              ' status value(s) the package does not map: ' + distinct.join(' | '), 'error');
+        debug('Fix belongs upstream in howellandgibbs/hpd-lookup, then re-run scripts/update-hpd-lookup.sh.', 'error');
+      } else if (violations.length > 0) {
+        debug('All ' + violations.length + ' status values recognized.', 'success');
+      }
+    }
+
+    // ============================================
+    // RENDERING
+    // ============================================
     // State for progressive loading: track all fetched violations and how
     // many we're currently displaying so the "Show more" button can extend.
     let allViolations = [];
@@ -754,7 +764,6 @@
       statusEl.textContent = '';
       allViolations = violations;
       displayedCount = 0;
-      cardCleanupLogCount = 0;
 
       // Build the results display
       const header = document.createElement('div');
@@ -775,12 +784,12 @@
         summary.textContent = 'Good news — no violations on record for this building. That doesn\'t mean your landlord is responsible, but it does mean you\'re not in a building with a long enforcement history.';
         summary.classList.add('none');
       } else {
-        // Count open vs closed using the translated status state
-        let openCount = 0;
-        violations.forEach(function(v) {
-          const status = translateStatus(v.currentstatus);
-          if (status.state === 'open') openCount++;
-        });
+        // The package already resolved each status to open/closed/dismissed,
+        // taking the open/closed call from HPD's own violationstatus flag
+        // rather than inferring it from the wording.
+        const openCount = violations.filter(function(v) {
+          return v.status.state === 'open';
+        }).length;
 
         if (openCount > 0) {
           summary.textContent = openCount + ' open violation' + (openCount === 1 ? '' : 's') + ' on this building (plus ' + (violations.length - openCount) + ' resolved or dismissed in the fetched history).';
@@ -830,26 +839,12 @@
       renderFooter();
     }
 
-    let cardCleanupLogCount = 0;
-
+    // Everything this reads is already parsed. Nothing here interprets HPD's
+    // text — if a card looks wrong, the fix is upstream in the package, and
+    // the debug log above shows exactly what it was handed.
     function buildViolationCard(v) {
       const li = document.createElement('li');
-      li.className = 'lookup-violation';
-
-      // Translate the status first since it controls the state pill
-      const statusInfo = translateStatus(v.currentstatus);
-      li.classList.add('state-' + statusInfo.state);
-
-      // Process the description, splitting out apartment location
-      const desc = cleanDescription(v.novdescription || v.novtype);
-
-      // Debug: log raw vs cleaned for the first few cards so we can verify the parser
-      if (cardCleanupLogCount < 3) {
-        debug('RAW: ' + (v.novdescription || v.novtype || '(empty)'));
-        debug('MAIN: ' + desc.main);
-        debug('LOC: ' + (desc.location || '(none)'));
-        cardCleanupLogCount++;
-      }
+      li.className = 'lookup-violation state-' + v.status.state;
 
       // Top row: state pill + class pill, paired
       const top = document.createElement('div');
@@ -857,47 +852,40 @@
 
       // State pill (colored, indicates open/closed/dismissed)
       const statePill = document.createElement('span');
-      statePill.className = 'lookup-state-pill state-' + statusInfo.state;
-      statePill.innerHTML = '<span class="state-dot" aria-hidden="true"></span>' + escapeHTML(statusInfo.label);
+      statePill.className = 'lookup-state-pill state-' + v.status.state;
+      statePill.innerHTML = '<span class="state-dot" aria-hidden="true"></span>' + escapeHTML(v.status.label);
       top.appendChild(statePill);
 
       // Class pill (monochrome, indicates severity)
-      const violationClass = (v.class || '').toUpperCase();
-      const classDescriptor = {
-        'A': 'Non-hazardous',
-        'B': 'Hazardous',
-        'C': 'Immediately hazardous',
-        'I': 'Information'
-      }[violationClass] || '';
-
-      if (violationClass) {
+      if (v.class) {
         const classPill = document.createElement('span');
         classPill.className = 'lookup-class-pill';
+        const descriptor = v.severity || CLASS_SEVERITY[v.class] || '';
         classPill.innerHTML =
-          '<span class="class-letter">Class ' + escapeHTML(violationClass) + '</span>' +
-          (classDescriptor ? '<span class="class-descriptor">: ' + escapeHTML(classDescriptor) + '</span>' : '');
+          '<span class="class-letter">Class ' + escapeHTML(v.class) + '</span>' +
+          (descriptor ? '<span class="class-descriptor">: ' + escapeHTML(descriptor) + '</span>' : '');
         top.appendChild(classPill);
       }
 
       // Date — right-aligned via margin-left: auto in CSS
       const date = document.createElement('span');
       date.className = 'lookup-violation-date';
-      date.textContent = v.inspectiondate ? formatDate(v.inspectiondate) : '';
+      date.textContent = v.inspectionDate ? formatDate(v.inspectionDate) : '';
       top.appendChild(date);
 
       li.appendChild(top);
 
-      // Description (cleaned, sentence-cased)
+      // Description (citation stripped, sentence-cased)
       const descEl = document.createElement('div');
       descEl.className = 'lookup-violation-desc';
-      descEl.textContent = desc.main;
+      descEl.textContent = v.description;
       li.appendChild(descEl);
 
       // Apartment location (de-emphasized secondary line)
-      if (desc.location) {
+      if (v.location) {
         const locEl = document.createElement('div');
         locEl.className = 'lookup-violation-location';
-        locEl.textContent = desc.location;
+        locEl.textContent = v.location;
         li.appendChild(locEl);
       }
 
@@ -939,260 +927,31 @@
       }
     }
 
-    // ============================================
-    // STATUS TRANSLATION
-    // ============================================
-    // HPD stores statuses as internal shorthand. Translate to plain English
-    // for display, and classify each one as 'open' / 'closed' / 'dismissed'
-    // so we can apply the right state pill.
-    //
-    // TODO (post-launch): build a quarterly audit job that queries Socrata for
-    // distinct currentstatus values and flags any not in this map. Could be a
-    // GitHub Action triggered on cron. See PROJECT-PLAN.md for details.
-    const STATUS_MAP = {
-      // Open / in-progress states
-      'NOV SENT OUT':                          { label: 'Notice sent to landlord',                state: 'open' },
-      'FIRST NOTICE OF VIOLATION SENT':        { label: 'Notice sent to landlord',                state: 'open' },
-      'NOTICE OF ISSUANCE SENT TO TENANT':     { label: 'Tenant notified of violation',           state: 'open' },
-      'VIOLATION OPEN':                        { label: 'Open — landlord has not fixed yet',      state: 'open' },
-      'NOV CERTIFIED':                         { label: 'Landlord claims fixed (not re-inspected)', state: 'open' },
-      'CERTIFICATION POSTPONMENT GRANTED':     { label: 'Certification deadline extended',        state: 'open' },
-      'FIRST NO ACCESS TO RE-INSPECT VIOLATION': { label: 'HPD inspector could not access apartment', state: 'open' },
-      'CIV14 MAILED':                          { label: 'Court action initiated',                 state: 'open' },
-      // Closed / resolved states
-      'VIOLATION CLOSED':                      { label: 'Resolved',                                state: 'closed' },
-      'CLOSED':                                { label: 'Resolved',                                state: 'closed' },
-      // Dismissed states
-      'VIOLATION DISMISSED':                   { label: 'Dismissed by HPD',                       state: 'dismissed' },
-      'INVALID':                               { label: 'Marked invalid',                         state: 'dismissed' }
-    };
-
-    function translateStatus(rawStatus) {
-      if (!rawStatus) return { label: 'Status unknown', state: 'open' };
-      const upper = rawStatus.toUpperCase().trim();
-      if (STATUS_MAP[upper]) return STATUS_MAP[upper];
-
-      // Unknown status — log a warning so we know to add it to the map.
-      // In production this would also POST to an analytics endpoint.
-      console.warn('Unknown HPD status:', rawStatus);
-      debug('Unknown status (add to STATUS_MAP): ' + rawStatus);
-
-      // Fallback: best guess based on keywords, plus toSentenceCase the raw value
-      const isClosed = upper.includes('CLOS');
-      const isDismissed = upper.includes('DISMISS') || upper.includes('INVALID');
-      return {
-        label: toSentenceCase(rawStatus),
-        state: isDismissed ? 'dismissed' : (isClosed ? 'closed' : 'open')
-      };
-    }
-
-    // ============================================
-    // SENTENCE CASE UTILITY
-    // ============================================
-    // HPD stores most text in ALL CAPS. This makes cards hard to scan.
-    // Convert to sentence case while preserving known acronyms and unit numbers.
-    const PRESERVE_UPPERCASE = new Set([
-      'HPD', 'DEC', 'NOV', 'NYC', 'NYS', 'DOH', 'DOHMH', 'DEP', 'DOB',
-      'FDNY', 'NYCHA', 'IPM', 'DHCR', 'ADA', 'DOL', 'EPA', 'DCWP',
-      'HMC', 'MDL', 'ECB', 'OATH', 'TTY', 'EIN', 'SSN', 'LL', 'BIN',
-      'BBL', 'AEP', 'SRO', 'NYS', 'USPS', 'PDF', 'LLC', 'PC', 'PA',
-      'I', 'II', 'III', 'IV', 'V'  // roman numerals up to 5
-    ]);
-
-    function toSentenceCase(str) {
-      if (!str) return '';
-      // Lowercase the whole thing first
-      let out = str.toLowerCase();
-      // Capitalize first letter of each sentence (after . ! ?)
-      out = out.replace(/(^\s*|[.!?]\s+)([a-z])/g, function(_, prefix, ch) {
-        return prefix + ch.toUpperCase();
-      });
-      // Re-uppercase known acronyms and unit/floor designations
-      out = out.replace(/\b([a-z]+)\b/gi, function(match, word) {
-        const upper = word.toUpperCase();
-        if (PRESERVE_UPPERCASE.has(upper)) return upper;
-        return match;
-      });
-      // Re-uppercase apartment/floor codes like "apt 4b" → "Apt 4B"
-      out = out.replace(/\b(apt|fl|floor|unit|rm|room)\s+(\d+[a-z]?)\b/gi, function(_, prefix, num) {
-        const cap = prefix.charAt(0).toUpperCase() + prefix.slice(1).toLowerCase();
-        return cap + ' ' + num.toUpperCase();
-      });
-      // Re-uppercase standalone unit codes like "4b" or "12c" when adjacent to whitespace
-      out = out.replace(/\b(\d+[a-z])\b/g, function(match) {
-        return match.toUpperCase();
-      });
-      return out;
-    }
-
-    // ============================================
-    // DESCRIPTION CLEANUP
-    // ============================================
-    // Strip the legal code prefix (§ XX-XXXX ADM CODE) and apply sentence case.
-    // ============================================
-    // DESCRIPTION CLEANUP — VERB-ANCHORED PARSING
-    // ============================================
-    // HPD violation descriptions follow a reliable pattern:
-    //   [legal citation chain] [action verb] [what needs to be done] [location]
-    //
-    // The citation chain is highly variable, but the description almost always
-    // starts with an imperative verb (these are legal orders to the landlord).
-    // We scan for the first known HPD action verb and treat everything from
-    // there onward as the human-readable description.
-    //
-    // If no verb is found, we fall back to showing the full text (sentence-cased).
-    // The worst case is "we don't strip the citation," not "we mangle it."
-
-    const HPD_ACTION_VERBS = new Set([
-      'abate', 'adjust', 'apply',
-      'caulk', 'certify', 'clean', 'clear', 'close', 'correct',
-      'demolish', 'discontinue',
-      'eliminate', 'enclose', 'erect', 'establish', 'exterminate',
-      'file', 'fix', 'furnish',
-      'hang',
-      'install',
-      'keep',
-      'maintain', 'make',
-      'obtain',
-      'paint', 'patch', 'parge', 'perform', 'plaster', 'plug', 'post',
-      'properly', 'provide', 'purge',
-      'rearrange', 'rebuild', 'reconstruct', 'refit', 'refinish',
-      'rehang', 'remediate', 'remedy', 'remove', 'repair', 'replace',
-      'replaster', 'replumb', 'restore', 'resurface', 'rewire',
-      'seal', 'secure', 'submit', 'supply',
-      'tighten', 'trim',
-      'upgrade',
-      'ventilate',
-      'weatherize', 'wire',
-    ]);
-
-    function cleanDescription(rawDesc) {
-      if (!rawDesc) return { main: 'No description available', location: '' };
-
-      let working = rawDesc.trim();
-
-      // Step 1: Find the first HPD action verb that marks the start of the
-      // actual description. We look for a word boundary + verb, case-insensitive.
-      // We skip verbs that appear inside the citation chain itself (e.g., "repair"
-      // in "28 rcny §25-171: repair" where the colon precedes it — that's fine,
-      // we'd catch "repair" there too).
-      // Words that appear in citation chains but are NOT action verbs.
-      // Used by the fallback heuristic to skip past citation boilerplate.
-      const CITATION_WORDS = new Set([
-        'hmc', 'mdl', 'adm', 'admin', 'code', 'rcny', 'nyc', 'nys',
-        'and', 'or', 'of', 'the', 'in', 'at', 'to', 'for', 'by',
-        'a', 'an', 'no', 'not', 'per', 'law', 'local', 'section',
-        'sec', 'sub', 'subdivision', 'article', 'chapter', 'title',
-        'pursuant', 'accordance', 'with', 'under', 'also', 'see',
-        'dm', 'multiple', 'dwelling',
-        'dept', 'department', 'rules', 'regs', 'regulations', 'rule',
-      ]);
-
-      let descriptionStart = -1;
-      let passedCitationMaterial = false;
-      const words = working.split(/\s+/);
-      let charPos = 0;
-
-      for (let i = 0; i < words.length; i++) {
-        const word = words[i];
-        const cleaned = word.replace(/^[^a-zA-Z]+|[^a-zA-Z]+$/g, '').toLowerCase();
-
-        // Track whether we've passed any citation-like material:
-        // tokens with numbers, §, parenthesized refs, OR known citation
-        // keywords like "dept", "hmc", "rules", "regs", etc.
-        if (/[\d§():]/.test(word) || CITATION_WORDS.has(cleaned)) {
-          passedCitationMaterial = true;
-        }
-
-        // First pass: check known verb list
-        if (HPD_ACTION_VERBS.has(cleaned)) {
-          descriptionStart = charPos;
-          break;
-        }
-
-        // Second pass (fallback heuristic): if we've moved past citation
-        // material and hit a pure-letter word that isn't a citation keyword,
-        // it's very likely the start of the description.
-        if (passedCitationMaterial
-            && cleaned.length > 1
-            && /^[a-zA-Z]+$/.test(cleaned)
-            && !CITATION_WORDS.has(cleaned)) {
-          debug('Verb fallback triggered on: "' + cleaned + '" (not in known list — consider adding)');
-          descriptionStart = charPos;
-          break;
-        }
-
-        charPos += word.length;
-        if (charPos < working.length) {
-          const nextChar = working[charPos];
-          if (nextChar === ' ' || nextChar === '\t' || nextChar === '\n') {
-            charPos++;
-            while (charPos < working.length && (working[charPos] === ' ' || working[charPos] === '\t')) {
-              charPos++;
-            }
-          }
-        }
-      }
-
-      let description;
-      if (descriptionStart > 0) {
-        description = working.substring(descriptionStart).trim();
-      } else if (descriptionStart === 0) {
-        // Verb is the very first word — no citation prefix at all
-        description = working;
-      } else {
-        // No verb found — fall back to full text
-        description = working;
-      }
-
-      // Step 2: strip any leading punctuation/whitespace left over
-      description = description.replace(/^[\s:;,\-\.]+/, '');
-
-      // Step 3: Split out the apartment location block.
-      let main = description;
-      let location = '';
-
-      // Try "[in/at] the [room] located at [details]" as one block
-      const fullLocMatch = description.match(/\.\s+(in\s+(?:the\s+)?\w[\w\s]*?(?:located\s+at\s+.+))$/i);
-      if (fullLocMatch) {
-        main = description.substring(0, fullLocMatch.index + 1).trim();
-        location = fullLocMatch[1].trim();
-      } else {
-        // Try just "located at [details]"
-        const simpleLocMatch = description.match(/\.?\s*(located\s+at\s+.+)$/i);
-        if (simpleLocMatch) {
-          main = description.substring(0, simpleLocMatch.index).trim();
-          const danglingRoom = main.match(/\.\s+(in\s+(?:the\s+)?\w[\w\s]*)$/i);
-          if (danglingRoom) {
-            const roomText = danglingRoom[1].trim();
-            main = main.substring(0, danglingRoom.index + 1).trim();
-            location = roomText + ' — ' + simpleLocMatch[1].trim();
-          } else {
-            location = simpleLocMatch[1].trim();
-          }
-        } else {
-          const trailingRoom = main.match(/\.\s+(in\s+(?:the\s+)?\w[\w\s]*)$/i);
-          if (trailingRoom && trailingRoom[1].split(/\s+/).length <= 6) {
-            location = trailingRoom[1].trim();
-            main = main.substring(0, trailingRoom.index + 1).trim();
-          }
-        }
-      }
-
-      // Step 4: strip trailing punctuation off main
-      main = main.replace(/[\s:;,\-]+$/, '');
-
-      return {
-        main: toSentenceCase(main),
-        location: location ? toSentenceCase(location) : ''
-      };
-    }
-
     function escapeHTML(str) {
       const div = document.createElement('div');
       div.textContent = str || '';
       return div.innerHTML;
     }
+
+    // ============================================
+    // STATUS TRANSLATION SANDBOX
+    // ============================================
+    // Exposed so a status string can be tried straight from the console
+    // without doing a full lookup:
+    //
+    //   checkStatus('FIRST NO ACCESS TO RE- INSPECT VIOLATION')
+    //   checkStatus('INVALID CERTIFICATION')
+    //
+    // Both of those were mistranslated by the parser this page used to carry
+    // its own copy of, which is why they make good regression checks.
+    window.checkStatus = function(raw) {
+      const result = translateStatus(raw);
+      debug('checkStatus(' + JSON.stringify(raw) + ') → ' +
+            result.label + ' [' + result.state + ']' +
+            (result.known ? '' : '  ← NOT IN STATUS_MAP'),
+            result.known ? 'success' : 'error');
+      return result;
+    };
 
     // ============================================
     // INPUT HANDLING
@@ -1214,11 +973,11 @@
       // Debounce the API call
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(function() {
-        fetchGeoSearch(query)
-          .then(function(data) {
-            renderSuggestions(data.features || []);
-          })
+        fetchSuggestions(query)
+          .then(renderSuggestions)
           .catch(function(err) {
+            debug('searchAddresses failed: ' + err.message +
+                  (isHpdLookupError(err) ? ' [code=' + err.code + ']' : ''), 'error');
             suggestionsBox.classList.remove('visible');
             statusEl.textContent = 'Address lookup service is temporarily unavailable.';
             statusEl.classList.add('error');
