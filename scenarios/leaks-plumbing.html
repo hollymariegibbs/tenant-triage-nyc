@@ -218,7 +218,7 @@
         <p class="lookup-intro">HPD maintains a public database of every housing code violation ever issued in NYC. See what's on record for your building without leaving this page.</p>
         <div class="lookup-input-wrap">
           <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
+          <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 250 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
           <div class="lookup-suggestions" id="lookup-suggestions"></div>
         </div>
         <div class="lookup-status" id="lookup-status"></div>
@@ -714,8 +714,8 @@
       }, 2000);
     }
   </script>
-  <script src="../lookup.js"></script>
-  <script>
+  <script type="module" src="../lookup.js"></script>
+  <script type="module">
     initLookup({
       filterKeywords: ['leak', 'water', 'plumbing', 'pipe', 'drain', 'faucet', 'toilet', 'sewage', 'flooding', 'moisture', 'drip']
     });

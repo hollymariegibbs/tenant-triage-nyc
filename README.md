@@ -22,44 +22,59 @@ The site is also designed to be defensible in a post-LLM world. An LLM can summa
 
 ## Live HPD violation lookup
 
-Each repair scenario includes an inline address lookup tool that lets tenants see their building's real violation history without leaving the page. The tool chains two free, public NYC APIs:
+Each repair scenario includes an inline address lookup tool that lets tenants see their building's real violation history without leaving the page.
+
+The data layer is **[`@howellandgibbs/hpd-lookup`](https://github.com/howellandgibbs/hpd-lookup)**, an MIT-licensed package that was extracted from this repo and then audited against the live dataset. It chains two free, public NYC APIs:
 
 1. **[NYC Planning Labs GeoSearch](https://geosearch.planninglabs.nyc/)** — a Pelias-based geocoder that provides address autocomplete against the city's authoritative Property Address Directory (PAD). Returns a BBL (Borough-Block-Lot) identifier for each building.
 
 2. **[NYC Open Data — Housing Maintenance Code Violations](https://data.cityofnewyork.us/Housing-Development/Housing-Maintenance-Code-Violations/wvxf-dwi5)** (Socrata SODA API) — the same dataset that powers HPDOnline, queryable by BBL. Returns violation records with class, status, inspection date, and description.
 
-The lookup runs entirely in the browser. No backend, no server, no authentication required. An optional Socrata app token (free from [NYC Open Data](https://data.cityofnewyork.us/)) raises the rate limit for production traffic.
+The lookup runs entirely in the browser. No backend, no server, no authentication required. An optional Socrata app token (free from [NYC Open Data](https://data.cityofnewyork.us/)) raises the rate limit for production traffic — set `SOCRATA_APP_TOKEN` at the top of `lookup.js`.
+
+#### Why the package is vendored, not installed
+
+This site has no build step on purpose, so taking an npm dependency at runtime is not an option, and pulling the package from a CDN would put a third party in the path of a tool people open in a hallway on bad phone service. Instead a single self-contained ESM bundle is checked in at `vendor/hpd-lookup-<version>.js`, and `lookup.js` imports it directly.
+
+To move to a new release:
+
+```
+scripts/update-hpd-lookup.sh          # or: scripts/update-hpd-lookup.sh 1.2.0
+```
+
+Then point the import at the top of `lookup.js` at the new filename and delete the old vendor file.
 
 ### Data processing pipeline
 
-The raw HPD data is designed for city inspectors, not tenants. The lookup tool includes several processing layers to make the data readable:
+The raw HPD data is designed for city inspectors, not tenants. Every layer that makes it readable now lives in the package:
 
-- **Status translation.** HPD statuses like `NOV SENT OUT` and `FIRST NO ACCESS TO RE-INSPECT VIOLATION` are mapped to plain English ("Notice sent to landlord", "HPD inspector could not access apartment") and classified as open, closed, or dismissed for color-coded state pills. Unknown statuses fall back to sentence-cased display and log a `console.warn` for future mapping.
+- **Status translation.** HPD statuses like `NOV SENT OUT` and `FIRST NO ACCESS TO RE- INSPECT VIOLATION` are mapped to plain English ("Notice sent to landlord", "HPD could not get in to re-inspect") and classified as open, closed, or dismissed for color-coded state pills. Every status code HPD currently emits in `wvxf-dwi5` is mapped explicitly, with each one's open/closed state taken from HPD's own `violationstatus` flag rather than inferred from the wording. Anything unrecognized falls back to a heuristic and is flagged `known: false` instead of guessing silently.
 
-- **Verb-anchored description parsing.** HPD violation descriptions begin with a legal citation chain of variable length and format, followed by an imperative verb and the actual description of what needs fixing. The parser scans for the first known HPD action verb (~55 verbs: repair, provide, abate, install, etc.) and treats everything from that verb onward as the description. A fallback heuristic catches unknown verbs by looking for the first pure-letter, non-citation word after citation material (numbers, §, code references). If both passes fail, the full text is shown sentence-cased — the failure mode is "show too much," never "show too little."
+- **Verb-anchored description parsing.** HPD violation descriptions begin with a legal citation chain of variable length and format, followed by an imperative verb and the actual description of what needs fixing. The parser scans for the first known HPD action verb (~60 verbs: repair, provide, abate, install, etc.) and treats everything from that verb onward as the description. A fallback catches unknown verbs by looking for the first pure-letter, non-citation word after citation material (numbers, §, code references). If both passes fail, the full text is shown — the failure mode is "show too much," never "show too little."
 
-- **Sentence case conversion.** All HPD text is stored in ALL CAPS. A `toSentenceCase()` utility lowercases everything and then re-uppercases ~30 known acronyms (HPD, NYC, DEC, DHCR, NYCHA, IPM, etc.) and apartment designators (Apt 4B, Floor 3).
+- **Sentence case conversion.** All HPD text is stored in ALL CAPS. `toSentenceCase()` lowercases everything and then re-uppercases ~30 known acronyms (HPD, NYC, DEC, DHCR, NYCHA, IPM, etc.) and apartment designators (Apt 4B, Floor 3).
 
 - **Location splitting.** Apartment orientation text ("located at Apt 4K, 5th story, 3rd apartment from north at east") is split into a secondary line below the main description to reduce visual noise while preserving the information.
 
+What stays in this repo is the Tenant Triage interface on top of that:
+
+- **Scenario keyword filter.** Each scenario passes `filterKeywords` to `initLookup()`, and the results default to violations matching those words with a toggle for the building's full history.
+
 - **Progressive loading.** The first 10 violations display immediately. A "Show 20 more" button expands inline, with a permanent fallback link to HPDOnline.
+
+- **"Your case" pins.** Violations pin to a panel that persists across scenario pages, session-first with an opt-in to keep them on the device.
 
 ### Adding new status values
 
-HPD occasionally introduces new status strings. When an unknown status appears, the lookup logs it to `console.warn` and the debug panel. To add a new status:
-
-1. Open `lookup.js` (or the `<script>` block in `lookup-test.html`)
-2. Find the `STATUS_MAP` object
-3. Add the new status string as a key, with a `{ label: '...', state: 'open'|'closed'|'dismissed' }` value
-4. Commit and deploy
-
-A quarterly audit of distinct `currentstatus` values in the Socrata dataset is recommended post-launch. This could be automated with a GitHub Action that queries the API and opens an issue when new values appear. See the `TODO` comment above `STATUS_MAP` in the code.
+Status mapping is no longer maintained here. HPD occasionally introduces new status strings; when one appears, `translateStatus()` returns it with `known: false` rather than guessing silently. Fixes belong upstream in [howellandgibbs/hpd-lookup](https://github.com/howellandgibbs/hpd-lookup) — open an issue or PR there, then run `scripts/update-hpd-lookup.sh` here once a release is out.
 
 ---
 
 ## How it's built
 
-Plain static HTML/CSS/JS — no framework, no build step, no server-side logic. Each page is self-contained: its styles are in an inline `<style>` block and its JS is at the bottom of the document. The only shared assets are `lookup.js` and `lookup.css` (the HPD address-lookup component) and a single CNAME file for the custom domain.
+Plain static HTML/CSS/JS — no framework, no build step, no server-side logic. Each page is self-contained: its styles are in an inline `<style>` block and its JS is at the bottom of the document. The only shared assets are `lookup.js` and `lookup.css` (the HPD address-lookup component), the vendored `hpd-lookup` bundle they depend on, and a single CNAME file for the custom domain.
+
+`lookup.js` is an ES module, so the pages that use it load it with `<script type="module">` and call `initLookup()` from a module script that follows it.
 
 Deployed via GitHub Pages from the `main` branch. HTTPS is enforced. Nothing to configure to ship beyond merging to `main`.
 
@@ -72,7 +87,7 @@ python3 -m http.server 8000
 
 Then open [http://localhost:8000](http://localhost:8000). Edits to HTML/CSS/JS show up on refresh — no hot reload, no build.
 
-The `file://` protocol will not work for the address lookup tool because browsers block cross-origin fetch requests from `file://` URLs. You must use a local HTTP server.
+The `file://` protocol will not work for the address lookup tool. Browsers block cross-origin fetch requests from `file://` URLs, and `lookup.js` is an ES module, which `file://` will not load either. You must use a local HTTP server.
 
 ### Project structure
 
@@ -82,9 +97,13 @@ The `file://` protocol will not work for the address lookup tool because browser
 ├── about.html                  # About / mission
 ├── free-help.html              # Directory of free NYC tenant legal services
 ├── walkthrough.html            # Room-by-room apartment inspection tool
-├── lookup.js                   # Shared HPD address-lookup component
+├── lookup.js                   # Shared HPD address-lookup component (ES module)
 ├── lookup.css                  # Styles for the lookup component
+├── vendor/                     # Vendored @howellandgibbs/hpd-lookup bundle
+├── scripts/update-hpd-lookup.sh  # Refreshes the vendored bundle from npm
 ├── lookup-test.html            # Dev page for testing the lookup in isolation
+│                               #   (standalone — still has its own inline copy
+│                               #    of the pre-package parser)
 ├── sidebar.js                  # Scroll-spy + sticky TOC sidebar
 ├── sidebar.css                 # Styles for the sidebar component
 ├── print.css                   # Shared print stylesheet (letter-first)
