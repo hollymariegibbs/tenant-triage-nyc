@@ -1,0 +1,41 @@
+# GitHub Pages configuration.
+#
+# This site is served from the root of the `main` branch, which means every
+# file committed here becomes a public URL — there is no separate publish
+# step. The two files below are development-only tools that were never
+# meant to be part of the public site; they were reachable at
+# tenanttriagenyc.org simply because they existed in the repo.
+#
+# Excluding them keeps them in the repo and fully usable locally
+# (`python3 -m http.server 8000`) while removing them from the built site.
+#
+#   lookup-test.html        Parser spot-check harness with a raw-vs-parsed
+#                           debug panel. See "Why the package is vendored"
+#                           in README.md — it is how a vendored bundle
+#                           bump gets verified.
+#   og-image-template.html  Hand-built reference for the OG share card.
+#                           The shipped image is generated separately by
+#                           scripts/build_og_card.py, which does not read
+#                           this file.
+#
+# NOTE: Jekyll's `exclude` REPLACES its built-in default list rather than
+# adding to it, so those defaults are restated below. Do not add `vendor/`
+# to this list — the site loads vendor/hpd-lookup-1.0.0.js at runtime and
+# excluding it would break the address lookup on every page.
+
+exclude:
+  # Development-only pages (the reason this file exists)
+  - lookup-test.html
+  - og-image-template.html
+
+  # Jekyll's defaults, restated because the key above overrides them
+  - .jekyll-cache/
+  - .sass-cache/
+  - Gemfile
+  - Gemfile.lock
+  - gemfiles/
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/

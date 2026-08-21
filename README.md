@@ -84,6 +84,8 @@ Plain static HTML/CSS/JS — no framework, no build step, no server-side logic. 
 
 Deployed via GitHub Pages from the `main` branch. HTTPS is enforced. Nothing to configure to ship beyond merging to `main`.
 
+Because the site is served from the root of `main`, **committing a file here publishes it** — there is no separate publish step or allowlist. Anything added to the repo becomes a public URL at `tenanttriagenyc.org/<path>`. Development-only pages are therefore kept out of the built site explicitly, via `exclude:` in `_config.yml`. Add any future dev or scratch page to that list, or it ships.
+
 ### Running locally
 
 ```bash
@@ -109,12 +111,18 @@ The `file://` protocol will not work for the address lookup tool. Browsers block
 ├── scripts/update-hpd-lookup.sh  # Refreshes the vendored bundle from npm
 ├── lookup-test.html            # Dev page for spot-checking the parser against
 │                               #   live HPD data (raw vs. parsed debug panel);
-│                               #   imports the vendored bundle directly
+│                               #   imports the vendored bundle directly.
+│                               #   Local only — excluded from the built site
 ├── sidebar.js                  # Scroll-spy + sticky TOC sidebar
 ├── sidebar.css                 # Styles for the sidebar component
 ├── print.css                   # Shared print stylesheet (letter-first)
 ├── review.js                   # Site-wide ?review mode for content verification
-├── og-image-template.html      # Template for generating the OG share image
+├── og-image-template.html      # Hand-built reference for the OG share card
+│                               #   (the shipped PNG comes from
+│                               #    scripts/build_og_card.py, not this file).
+│                               #   Local only — excluded from the built site
+├── _config.yml                 # GitHub Pages config; keeps the two dev pages
+│                               #   above out of the published site
 ├── scenarios/
 │   ├── appliances.html
 │   ├── eviction-notice.html
