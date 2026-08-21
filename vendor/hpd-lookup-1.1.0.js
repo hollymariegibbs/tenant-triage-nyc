@@ -1,4 +1,4 @@
-/*! @howellandgibbs/hpd-lookup v1.0.0 | MIT | https://github.com/howellandgibbs/hpd-lookup
+/*! @howellandgibbs/hpd-lookup v1.1.0 | MIT | https://github.com/howellandgibbs/hpd-lookup
  * Vendored build — do not edit by hand.
  * Regenerate with scripts/update-hpd-lookup.sh
  */
@@ -6,7 +6,7 @@ var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
-// ../../../private/var/folders/89/s44jm7n11qbgysjt6j_3t7rm0000gn/T/tmp.PpZm3LejtV/package/dist/chunk-PXL2HWXB.js
+// ../../../private/var/folders/89/s44jm7n11qbgysjt6j_3t7rm0000gn/T/tmp.D5Xy6kJOMY/package/dist/chunk-P3BCMFRY.js
 var HpdLookupError = class extends Error {
   constructor(message, options) {
     super(message, options.cause !== void 0 ? { cause: options.cause } : void 0);
@@ -375,6 +375,63 @@ function nonEmpty(value) {
   const trimmed = value?.trim();
   return trimmed ? trimmed : null;
 }
+var ADDRESS_PRESERVE_UPPERCASE = /* @__PURE__ */ new Set([
+  "NY",
+  "NYC",
+  "NYS",
+  "US",
+  "USA"
+]);
+var MINOR_WORDS = /* @__PURE__ */ new Set([
+  "a",
+  "an",
+  "and",
+  "at",
+  "by",
+  "for",
+  "in",
+  "of",
+  "on",
+  "the",
+  "to"
+]);
+function isNumericToken(token) {
+  return /^[\d/-]+$/.test(token);
+}
+function formatAddress(label) {
+  if (!label) return "";
+  const parts = label.split(/(\s+)/);
+  let startOfSegment = true;
+  let stillLeadingNumbers = true;
+  return parts.map((part) => {
+    if (part === "" || /^\s+$/.test(part)) return part;
+    const core = part.replace(/[,.]+$/, "");
+    const trailing = part.slice(core.length);
+    const numeric = isNumericToken(core);
+    const formatted = formatToken(core, startOfSegment || stillLeadingNumbers) + trailing;
+    stillLeadingNumbers = (startOfSegment || stillLeadingNumbers) && numeric;
+    startOfSegment = /,$/.test(part);
+    if (startOfSegment) stillLeadingNumbers = true;
+    return formatted;
+  }).join("");
+}
+function formatToken(core, major) {
+  if (!core) return core;
+  const upper = core.toUpperCase();
+  if (ADDRESS_PRESERVE_UPPERCASE.has(upper)) return upper;
+  if (isNumericToken(core)) return core;
+  if (/^\d+(st|nd|rd|th)$/i.test(core)) return core.toLowerCase();
+  if (!major && MINOR_WORDS.has(core.toLowerCase())) return core.toLowerCase();
+  return core.split("-").map(capitalizeWord).join("-");
+}
+function capitalizeWord(word) {
+  if (!word) return word;
+  const lower = word.toLowerCase();
+  if (/^mc[a-z]{3,}$/.test(lower)) {
+    return "Mc" + lower.charAt(2).toUpperCase() + lower.slice(3);
+  }
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
+}
 var DEFAULT_TIMEOUT_MS = 15e3;
 async function fetchJson(url, options = {}) {
   const doFetch = options.fetch ?? globalThis.fetch;
@@ -467,10 +524,12 @@ function toBuilding(feature) {
   if (!bbl) return null;
   const coords = Array.isArray(feature.geometry?.coordinates) ? feature.geometry.coordinates : null;
   const [lon, lat] = coords ?? [];
+  const label = props.label ?? props.name ?? "Unknown address";
   return {
     bbl,
     bin: pad.bin?.trim() || null,
-    label: props.label ?? props.name ?? "Unknown address",
+    label,
+    displayLabel: formatAddress(label),
     borough: props.borough ?? null,
     houseNumber: props.housenumber ?? null,
     street: props.street ?? null,
@@ -542,6 +601,7 @@ function toSocrataDate(since) {
   return date.toISOString().replace(/\.\d{3}Z$/, "");
 }
 export {
+  ADDRESS_PRESERVE_UPPERCASE,
   CITATION_WORDS,
   CLASS_SEVERITY,
   DEFAULT_LIMIT,
@@ -554,6 +614,7 @@ export {
   SOCRATA_VIOLATIONS_URL,
   STATUS_MAP,
   cleanDescription,
+  formatAddress,
   isHpdLookupError,
   lookupByAddress,
   lookupByBBL,

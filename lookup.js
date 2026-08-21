@@ -23,9 +23,9 @@
 import {
   searchAddresses,
   lookupByBBL,
-  toSentenceCase,
+  formatAddress,
   isHpdLookupError,
-} from './vendor/hpd-lookup-1.0.0.js';
+} from './vendor/hpd-lookup-1.1.0.js';
 
 // Configuration
 // Socrata works unauthenticated; an app token only raises the rate limit.
@@ -292,7 +292,7 @@ function renderViolations(building, violations) {
 
   var buildingLabel = document.createElement('div');
   buildingLabel.className = 'lookup-results-building';
-  buildingLabel.textContent = toSentenceCase(building.label);
+  buildingLabel.textContent = building.displayLabel;
 
   var summary = document.createElement('div');
   summary.className = 'lookup-results-summary';
@@ -361,7 +361,7 @@ function updateViolationDisplay() {
         }
       }
     }
-    var buildingLabel = currentBuilding && currentBuilding.label ? toSentenceCase(currentBuilding.label) : 'this building';
+    var buildingLabel = currentBuilding && currentBuilding.displayLabel ? currentBuilding.displayLabel : 'this building';
     announceLookup('Results loaded for ' + buildingLabel + '. ' + summary.textContent);
   }
 
@@ -712,7 +712,7 @@ function renderPinnedPanel(container) {
   buildingOrder.forEach(function(buildingLabel) {
     var items = byBuilding[buildingLabel];
     if (buildingOrder.length > 1) {
-      html += '<div class="saved-building-label">' + escapeHTMLLookup(toSentenceCase(buildingLabel)) + '</div>';
+      html += '<div class="saved-building-label">' + escapeHTMLLookup(formatAddress(buildingLabel)) + '</div>';
     }
     html += '<ul class="saved-list">';
     items.forEach(function(p) { html += renderSavedItem(p); });
