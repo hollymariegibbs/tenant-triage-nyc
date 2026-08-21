@@ -542,11 +542,10 @@
       searchAddresses,
       lookupByBBL,
       translateStatus,
-      toSentenceCase,
       isHpdLookupError,
       CLASS_SEVERITY,
       STATUS_MAP,
-    } from './vendor/hpd-lookup-1.0.0.js';
+    } from './vendor/hpd-lookup-1.1.0.js';
 
     // ============================================
     // CONFIGURATION
@@ -775,7 +774,7 @@
 
       const buildingLabel = document.createElement('div');
       buildingLabel.className = 'lookup-results-building';
-      buildingLabel.textContent = toSentenceCase(building.label);
+      buildingLabel.textContent = building.displayLabel;
 
       const summary = document.createElement('div');
       summary.className = 'lookup-results-summary';
