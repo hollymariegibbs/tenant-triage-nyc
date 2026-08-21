@@ -2,16 +2,33 @@
 // ADDRESS LOOKUP + HPD VIOLATIONS COMPONENT
 // Shared across all scenario pages.
 //
+// The address search, the Socrata request, and every bit of translation out
+// of HPD's code-speak live in @howellandgibbs/hpd-lookup, which was extracted
+// from this file and then audited against the live dataset. What is left here
+// is only the Tenant Triage interface on top of it: rendering, the scenario
+// keyword filter, and the "your case" pins.
+//
+// The package is vendored as a single ESM bundle rather than installed, so the
+// site keeps its no-build-step, no-runtime-dependency setup.
+// See scripts/update-hpd-lookup.sh to refresh it.
+//
 // Usage:
 //   1. Include the lookup HTML block (see scenario pages)
 //   2. Include lookup.css styles
-//   3. <script src="../lookup.js"></script>
+//   3. <script type="module" src="../lookup.js"></script>
 //   4. Call: initLookup({ filterKeywords: ['mold', 'mildew', ...] })
+//      from a <script type="module"> so it runs after this module loads.
 // ============================================
 
+import {
+  searchAddresses,
+  lookupByBBL,
+  toSentenceCase,
+  isHpdLookupError,
+} from './vendor/hpd-lookup-1.0.0.js';
+
 // Configuration
-const GEOSEARCH_URL = 'https://geosearch.planninglabs.nyc/v2/autocomplete';
-const SOCRATA_VIOLATIONS_URL = 'https://data.cityofnewyork.us/resource/wvxf-dwi5.json';
+// Socrata works unauthenticated; an app token only raises the rate limit.
 const SOCRATA_APP_TOKEN = null;
 const MAX_SUGGESTIONS = 5;
 const INITIAL_VIOLATIONS_DISPLAY = 10;
@@ -82,10 +99,11 @@ function initLookup(options) {
 
     clearTimeout(lookupDebounceTimer);
     lookupDebounceTimer = setTimeout(function() {
-      fetchGeoSearch(query)
-        .then(function(data) {
-          renderLookupSuggestions(data.features || []);
-        })
+      searchAddresses(query, {
+        maxSuggestions: MAX_SUGGESTIONS,
+        appToken: SOCRATA_APP_TOKEN || undefined,
+      })
+        .then(renderLookupSuggestions)
         .catch(function() {
           closeLookupSuggestions();
           lookupStatusEl.textContent = 'Address lookup service is temporarily unavailable.';
@@ -125,15 +143,8 @@ function initLookup(options) {
 }
 
 // ============================================
-// GEOSEARCH
+// SUGGESTIONS
 // ============================================
-async function fetchGeoSearch(query) {
-  const url = GEOSEARCH_URL + '?text=' + encodeURIComponent(query) + '&size=' + MAX_SUGGESTIONS;
-  const response = await fetch(url);
-  if (!response.ok) throw new Error('HTTP ' + response.status);
-  return await response.json();
-}
-
 function announceLookup(message) {
   if (lookupAnnounceEl) lookupAnnounceEl.textContent = message;
 }
@@ -144,36 +155,25 @@ function closeLookupSuggestions() {
   lookupInput.removeAttribute('aria-activedescendant');
 }
 
-function renderLookupSuggestions(features) {
+function renderLookupSuggestions(buildings) {
   lookupSuggestionsBox.innerHTML = '';
   lookupCurrentSuggestions = [];
   lookupHighlightedIndex = -1;
   lookupInput.removeAttribute('aria-activedescendant');
 
-  if (!features || features.length === 0) {
+  if (!buildings || buildings.length === 0) {
     closeLookupSuggestions();
     announceLookup('No matching addresses found.');
     return;
   }
 
-  features.forEach(function(feature) {
-    const props = feature.properties || {};
-    const label = props.label || props.name || 'Unknown address';
-    const borough = props.borough || '';
-    const padData = (props.addendum && props.addendum.pad) || {};
-    const bbl = padData.bbl;
+  // searchAddresses already drops candidates with no BBL, which are the ones
+  // nothing downstream could have used anyway.
+  buildings.forEach(function(building) {
+    const label = building.label || 'Unknown address';
+    const borough = building.borough || '';
 
-    if (!bbl) return;
-
-    lookupCurrentSuggestions.push({
-      label: label,
-      borough: borough,
-      bbl: bbl,
-      bin: padData.bin,
-      housenumber: props.housenumber,
-      street: props.street,
-      postalcode: props.postalcode
-    });
+    lookupCurrentSuggestions.push(building);
 
     const el = document.createElement('div');
     el.className = 'lookup-suggestion';
@@ -237,30 +237,37 @@ async function fetchViolations(building) {
   lookupResultsEl.classList.remove('visible');
   lookupFallbackEl.style.display = 'none';
 
-  var whereClause = "bbl='" + building.bbl + "'";
-  var url = SOCRATA_VIOLATIONS_URL +
-    '?$where=' + encodeURIComponent(whereClause) +
-    '&$order=' + encodeURIComponent('inspectiondate DESC') +
-    '&$limit=' + SOCRATA_FETCH_LIMIT;
-
   try {
-    var headers = {};
-    if (SOCRATA_APP_TOKEN) headers['X-App-Token'] = SOCRATA_APP_TOKEN;
-    var response = await fetch(url, { headers: headers });
-    if (!response.ok) throw new Error('HTTP ' + response.status);
-    var data = await response.json();
-    renderViolations(building, data);
+    // Comes back parsed and newest-inspection-first: citation stripped,
+    // status translated, class severity resolved.
+    var result = await lookupByBBL(building.bbl, {
+      limit: SOCRATA_FETCH_LIMIT,
+      appToken: SOCRATA_APP_TOKEN || undefined,
+    });
+    renderViolations(building, result.violations);
   } catch (err) {
-    lookupStatusEl.textContent = 'Could not fetch violations from HPD data. The HPD data service may be temporarily unavailable.';
+    lookupStatusEl.textContent = violationErrorMessage(err);
     lookupStatusEl.classList.add('error');
     lookupFallbackEl.style.display = 'block';
   }
 }
 
+// Every failure the package raises carries a `code`, so a bad BBL can say
+// something more useful than a generic outage message.
+function violationErrorMessage(err) {
+  if (isHpdLookupError(err) && err.code === 'invalid_input') {
+    return 'We could not identify that building. Try picking an address from the suggestions.';
+  }
+  return 'Could not fetch violations from HPD data. The HPD data service may be temporarily unavailable.';
+}
+
 function applyFilter(violations) {
   if (!filterActive || filterKeywords.length === 0) return violations;
   return violations.filter(function(v) {
-    var desc = ((v.novdescription || '') + ' ' + (v.novtype || '')).toLowerCase();
+    // Match the raw HPD text, not the parsed description: the parser strips
+    // the citation, and a keyword could legitimately sit anywhere in either.
+    var raw = v.raw || {};
+    var desc = ((raw.novdescription || '') + ' ' + (raw.novtype || '')).toLowerCase();
     return filterKeywords.some(function(kw) { return desc.indexOf(kw) !== -1; });
   });
 }
@@ -334,7 +341,7 @@ function updateViolationDisplay() {
     } else {
       var openCount = 0;
       active.forEach(function(v) {
-        if (translateStatus(v.currentstatus).state === 'open') openCount++;
+        if (v.status.state === 'open') openCount++;
       });
 
       if (filterActive && filterKeywords.length > 0) {
@@ -410,10 +417,8 @@ function buildViolationCard(v) {
   var li = document.createElement('li');
   li.className = 'lookup-violation';
 
-  var statusInfo = translateStatus(v.currentstatus);
+  var statusInfo = v.status;
   li.classList.add('state-' + statusInfo.state);
-
-  var desc = cleanDescription(v.novdescription || v.novtype);
 
   // Top row
   var top = document.createElement('div');
@@ -424,8 +429,8 @@ function buildViolationCard(v) {
   statePill.innerHTML = '<span class="state-dot" aria-hidden="true"></span>' + escapeHTMLLookup(statusInfo.label);
   top.appendChild(statePill);
 
-  var violationClass = (v.class || '').toUpperCase();
-  var classDescriptor = { 'A': 'Non-hazardous', 'B': 'Hazardous', 'C': 'Immediately hazardous', 'I': 'Information' }[violationClass] || '';
+  var violationClass = v.class || '';
+  var classDescriptor = v.severity || '';
 
   if (violationClass) {
     var classPill = document.createElement('span');
@@ -438,43 +443,43 @@ function buildViolationCard(v) {
 
   var date = document.createElement('span');
   date.className = 'lookup-violation-date';
-  date.textContent = v.inspectiondate ? formatDateLookup(v.inspectiondate) : '';
+  date.textContent = v.inspectionDate ? formatDateLookup(v.inspectionDate) : '';
   top.appendChild(date);
 
   li.appendChild(top);
 
   var descEl = document.createElement('div');
   descEl.className = 'lookup-violation-desc';
-  descEl.textContent = desc.main;
+  descEl.textContent = v.description;
   li.appendChild(descEl);
 
-  if (desc.location) {
+  if (v.location) {
     var locEl = document.createElement('div');
     locEl.className = 'lookup-violation-location';
-    locEl.textContent = desc.location;
+    locEl.textContent = v.location;
     li.appendChild(locEl);
   }
 
   // Bottom row: ID + Pin button
-  if (v.violationid) {
+  if (v.id) {
     var bottom = document.createElement('div');
     bottom.className = 'lookup-violation-bottom';
 
     var idLabel = document.createElement('span');
     idLabel.className = 'lookup-violation-id';
-    idLabel.innerHTML = '<span class="id-label">ID</span> <span class="id-value">' + escapeHTMLLookup(v.violationid) + '</span>';
+    idLabel.innerHTML = '<span class="id-label">ID</span> <span class="id-value">' + escapeHTMLLookup(v.id) + '</span>';
     bottom.appendChild(idLabel);
 
     var pinBtn = document.createElement('button');
     pinBtn.type = 'button';
-    pinBtn.className = 'lookup-pin-btn' + (isPinned(v.violationid) ? ' is-pinned' : '');
-    pinBtn.setAttribute('data-violation-id', v.violationid);
-    pinBtn.setAttribute('aria-pressed', isPinned(v.violationid) ? 'true' : 'false');
+    pinBtn.className = 'lookup-pin-btn' + (isPinned(v.id) ? ' is-pinned' : '');
+    pinBtn.setAttribute('data-violation-id', v.id);
+    pinBtn.setAttribute('aria-pressed', isPinned(v.id) ? 'true' : 'false');
     var iconHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14l-1.4-1.4a4 4 0 0 1-1.17-2.83V8a4.5 4.5 0 0 0-9 0v4.77a4 4 0 0 1-1.17 2.83L5 17z"/></svg>';
-    pinBtn.innerHTML = iconHTML + '<span class="pin-btn-text">' + (isPinned(v.violationid) ? 'Pinned' : 'Pin to your case') + '</span>';
+    pinBtn.innerHTML = iconHTML + '<span class="pin-btn-text">' + (isPinned(v.id) ? 'Pinned' : 'Pin to your case') + '</span>';
     pinBtn.addEventListener('click', function() {
-      if (isPinned(v.violationid)) {
-        unpinViolation(v.violationid);
+      if (isPinned(v.id)) {
+        unpinViolation(v.id);
       } else {
         pinViolation(v, currentBuilding);
       }
@@ -533,189 +538,8 @@ function renderLookupFooter() {
 }
 
 // ============================================
-// STATUS TRANSLATION
+// SMALL HELPERS
 // ============================================
-const STATUS_MAP = {
-  'NOV SENT OUT':                          { label: 'Notice sent to landlord',                state: 'open' },
-  'FIRST NOTICE OF VIOLATION SENT':        { label: 'Notice sent to landlord',                state: 'open' },
-  'NOTICE OF ISSUANCE SENT TO TENANT':     { label: 'Tenant notified of violation',           state: 'open' },
-  'VIOLATION OPEN':                        { label: 'Open \u2014 landlord has not fixed yet', state: 'open' },
-  'NOV CERTIFIED':                         { label: 'Landlord claims fixed (not re-inspected)', state: 'open' },
-  'CERTIFICATION POSTPONMENT GRANTED':     { label: 'Certification deadline extended',        state: 'open' },
-  'FIRST NO ACCESS TO RE-INSPECT VIOLATION': { label: 'HPD inspector could not access apartment', state: 'open' },
-  'CIV14 MAILED':                          { label: 'Court action initiated',                 state: 'open' },
-  'VIOLATION CLOSED':                      { label: 'Resolved',                                state: 'closed' },
-  'CLOSED':                                { label: 'Resolved',                                state: 'closed' },
-  'VIOLATION DISMISSED':                   { label: 'Dismissed by HPD',                       state: 'dismissed' },
-  'INVALID':                               { label: 'Marked invalid',                         state: 'dismissed' }
-};
-
-function translateStatus(rawStatus) {
-  if (!rawStatus) return { label: 'Status unknown', state: 'open' };
-  var upper = rawStatus.toUpperCase().trim();
-  if (STATUS_MAP[upper]) return STATUS_MAP[upper];
-  var isClosed = upper.indexOf('CLOS') !== -1;
-  var isDismissed = upper.indexOf('DISMISS') !== -1 || upper.indexOf('INVALID') !== -1;
-  return {
-    label: toSentenceCase(rawStatus),
-    state: isDismissed ? 'dismissed' : (isClosed ? 'closed' : 'open')
-  };
-}
-
-// ============================================
-// TEXT UTILITIES
-// ============================================
-const PRESERVE_UPPERCASE = new Set([
-  'HPD', 'DEC', 'NOV', 'NYC', 'NYS', 'DOH', 'DOHMH', 'DEP', 'DOB',
-  'FDNY', 'NYCHA', 'IPM', 'DHCR', 'ADA', 'DOL', 'EPA', 'DCWP',
-  'HMC', 'MDL', 'ECB', 'OATH', 'TTY', 'EIN', 'SSN', 'LL', 'BIN',
-  'BBL', 'AEP', 'SRO', 'USPS', 'PDF', 'LLC', 'PC', 'PA',
-  'I', 'II', 'III', 'IV', 'V'
-]);
-
-function toSentenceCase(str) {
-  if (!str) return '';
-  var out = str.toLowerCase();
-  out = out.replace(/(^\s*|[.!?]\s+)([a-z])/g, function(_, prefix, ch) {
-    return prefix + ch.toUpperCase();
-  });
-  out = out.replace(/\b([a-z]+)\b/gi, function(match, word) {
-    var upper = word.toUpperCase();
-    if (PRESERVE_UPPERCASE.has(upper)) return upper;
-    return match;
-  });
-  out = out.replace(/\b(apt|fl|floor|unit|rm|room)\s+(\d+[a-z]?)\b/gi, function(_, prefix, num) {
-    var cap = prefix.charAt(0).toUpperCase() + prefix.slice(1).toLowerCase();
-    return cap + ' ' + num.toUpperCase();
-  });
-  out = out.replace(/\b(\d+[a-z])\b/g, function(match) {
-    return match.toUpperCase();
-  });
-  return out;
-}
-
-const HPD_ACTION_VERBS = new Set([
-  'abate', 'adjust', 'apply',
-  'caulk', 'certify', 'clean', 'clear', 'close', 'correct',
-  'demolish', 'discontinue',
-  'eliminate', 'enclose', 'erect', 'establish', 'exterminate',
-  'file', 'fix', 'furnish',
-  'hang',
-  'install',
-  'keep',
-  'maintain', 'make',
-  'obtain',
-  'paint', 'patch', 'parge', 'perform', 'plaster', 'plug', 'post',
-  'properly', 'provide', 'purge',
-  'rearrange', 'rebuild', 'reconstruct', 'refit', 'refinish',
-  'rehang', 'remediate', 'remedy', 'remove', 'repair', 'replace',
-  'replaster', 'replumb', 'restore', 'resurface', 'rewire',
-  'seal', 'secure', 'submit', 'supply',
-  'tighten', 'trim',
-  'upgrade',
-  'ventilate',
-  'weatherize', 'wire',
-]);
-
-const CITATION_WORDS = new Set([
-  'hmc', 'mdl', 'adm', 'admin', 'code', 'rcny', 'nyc', 'nys',
-  'and', 'or', 'of', 'the', 'in', 'at', 'to', 'for', 'by',
-  'a', 'an', 'no', 'not', 'per', 'law', 'local', 'section',
-  'sec', 'sub', 'subdivision', 'article', 'chapter', 'title',
-  'pursuant', 'accordance', 'with', 'under', 'also', 'see',
-  'dm', 'multiple', 'dwelling',
-  'dept', 'department', 'rules', 'regs', 'regulations', 'rule',
-]);
-
-function cleanDescription(rawDesc) {
-  if (!rawDesc) return { main: 'No description available', location: '' };
-  var working = rawDesc.trim();
-
-  var descriptionStart = -1;
-  var passedCitationMaterial = false;
-  var words = working.split(/\s+/);
-  var charPos = 0;
-
-  for (var i = 0; i < words.length; i++) {
-    var word = words[i];
-    var cleaned = word.replace(/^[^a-zA-Z]+|[^a-zA-Z]+$/g, '').toLowerCase();
-
-    if (/[\d§():]/.test(word) || CITATION_WORDS.has(cleaned)) {
-      passedCitationMaterial = true;
-    }
-
-    if (HPD_ACTION_VERBS.has(cleaned)) {
-      descriptionStart = charPos;
-      break;
-    }
-
-    if (passedCitationMaterial
-        && cleaned.length > 1
-        && /^[a-zA-Z]+$/.test(cleaned)
-        && !CITATION_WORDS.has(cleaned)) {
-      descriptionStart = charPos;
-      break;
-    }
-
-    charPos += word.length;
-    if (charPos < working.length) {
-      var nextChar = working[charPos];
-      if (nextChar === ' ' || nextChar === '\t' || nextChar === '\n') {
-        charPos++;
-        while (charPos < working.length && (working[charPos] === ' ' || working[charPos] === '\t')) {
-          charPos++;
-        }
-      }
-    }
-  }
-
-  var description;
-  if (descriptionStart > 0) {
-    description = working.substring(descriptionStart).trim();
-  } else if (descriptionStart === 0) {
-    description = working;
-  } else {
-    description = working;
-  }
-
-  description = description.replace(/^[\s:;,\-\.]+/, '');
-
-  var main = description;
-  var location = '';
-
-  var fullLocMatch = description.match(/\.\s+(in\s+(?:the\s+)?\w[\w\s]*?(?:located\s+at\s+.+))$/i);
-  if (fullLocMatch) {
-    main = description.substring(0, fullLocMatch.index + 1).trim();
-    location = fullLocMatch[1].trim();
-  } else {
-    var simpleLocMatch = description.match(/\.?\s*(located\s+at\s+.+)$/i);
-    if (simpleLocMatch) {
-      main = description.substring(0, simpleLocMatch.index).trim();
-      var danglingRoom = main.match(/\.\s+(in\s+(?:the\s+)?\w[\w\s]*)$/i);
-      if (danglingRoom) {
-        var roomText = danglingRoom[1].trim();
-        main = main.substring(0, danglingRoom.index + 1).trim();
-        location = roomText + ' \u2014 ' + simpleLocMatch[1].trim();
-      } else {
-        location = simpleLocMatch[1].trim();
-      }
-    } else {
-      var trailingRoom = main.match(/\.\s+(in\s+(?:the\s+)?\w[\w\s]*)$/i);
-      if (trailingRoom && trailingRoom[1].split(/\s+/).length <= 6) {
-        location = trailingRoom[1].trim();
-        main = main.substring(0, trailingRoom.index + 1).trim();
-      }
-    }
-  }
-
-  main = main.replace(/[\s:;,\-]+$/, '');
-
-  return {
-    main: toSentenceCase(main),
-    location: location ? toSentenceCase(location) : ''
-  };
-}
-
 function formatDateLookup(isoDate) {
   try {
     var d = new Date(isoDate);
@@ -799,21 +623,20 @@ function isPinned(violationId) {
 }
 
 function pinViolation(v, building) {
-  if (!v.violationid) return;
+  if (!v.id) return;
   var pinned = getPinnedViolations();
-  if (pinned.some(function(p) { return String(p.id) === String(v.violationid); })) return;
+  if (pinned.some(function(p) { return String(p.id) === String(v.id); })) return;
 
-  var statusInfo = translateStatus(v.currentstatus);
-  var desc = cleanDescription(v.novdescription || v.novtype);
-
+  // The stored shape is deliberately flat and unchanged from before the
+  // package landed, so pins saved by an older build still render.
   pinned.push({
-    id: String(v.violationid),
-    class: (v.class || '').toUpperCase(),
-    desc: desc.main,
-    location: desc.location || '',
-    date: v.inspectiondate || '',
-    statusLabel: statusInfo.label,
-    statusState: statusInfo.state,
+    id: String(v.id),
+    class: v.class || '',
+    desc: v.description,
+    location: v.location || '',
+    date: v.inspectionDate || '',
+    statusLabel: v.status.label,
+    statusState: v.status.state,
     building: building ? building.label : '',
     bbl: building ? building.bbl : '',
     pinnedAt: new Date().toISOString()
@@ -1000,3 +823,13 @@ if (document.readyState === 'loading') {
 } else {
   renderAllPinnedPanels();
 }
+
+// ============================================
+// MODULE SURFACE
+// ============================================
+// Pages call initLookup() from an inline <script type="module">, which runs
+// after this module has evaluated. The global keeps those call sites as they
+// were; the named export is for anything that wants to import it properly.
+window.initLookup = initLookup;
+
+export { initLookup };

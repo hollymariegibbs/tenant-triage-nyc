@@ -277,7 +277,7 @@
       <p class="lookup-intro">No account or signup. Data comes live from NYC Open Data and Department of City Planning.</p>
       <div class="lookup-input-wrap">
         <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 142 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
+        <input type="text" class="lookup-input" id="lookup-input" placeholder="Type your address, e.g. 250 Ocean Parkway Brooklyn" autocomplete="off" spellcheck="false">
         <div class="lookup-suggestions" id="lookup-suggestions"></div>
       </div>
       <div class="lookup-status" id="lookup-status"></div>
@@ -322,8 +322,8 @@
     Made by <a href="https://howellandgibbs.com" target="_blank" rel="noopener">Howell &amp; Gibbs</a>
   </footer>
 
-  <script src="lookup.js"></script>
-  <script>
+  <script type="module" src="lookup.js"></script>
+  <script type="module">
     initLookup({});
   </script>
   <script src="review.js"></script>
